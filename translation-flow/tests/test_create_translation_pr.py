@@ -11,6 +11,7 @@ from scripts.create_translation_pr import (
     create_or_update_branch,
     create_pr,
     html_to_markdown,
+    main,
     parse_feed,
     run_cmd,
     select_posts,
@@ -224,3 +225,31 @@ def test_create_pr_reuses_existing_pr_url(monkeypatch, tmp_path: Path) -> None:
     assert pr_url == "https://github.com/o/r/pull/1"
     assert ["git", "push", "-u", "origin", "translate/example"] in calls
     assert not any(call[:3] == ["gh", "pr", "create"] for call in calls)
+
+
+def test_main_writes_empty_run_summary_when_no_posts(monkeypatch, tmp_path: Path) -> None:
+    target = tmp_path / "target"
+    target.mkdir()
+    summary = tmp_path / "run-summary.json"
+
+    monkeypatch.setattr(create_translation_pr, "fetch_text", lambda url: "<rss><channel></channel></rss>")
+
+    result = main(
+        [
+            "--date",
+            "2026-05-18",
+            "--timezone",
+            "Asia/Seoul",
+            "--target-worktree",
+            str(target),
+            "--target-repo",
+            "owner/repo",
+            "--translator",
+            "none",
+            "--run-summary",
+            str(summary),
+        ]
+    )
+
+    assert result == 0
+    assert summary.read_text() == '{\n  "results": []\n}'

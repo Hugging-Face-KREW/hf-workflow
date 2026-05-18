@@ -139,7 +139,12 @@ jobs:
           import subprocess
           from pathlib import Path
 
-          summary = json.loads(Path("run-summary.json").read_text())
+          summary_path = Path("run-summary.json")
+          if not summary_path.exists():
+              print("No run summary found; skipping reports.")
+              raise SystemExit(0)
+
+          summary = json.loads(summary_path.read_text())
           for result in summary["results"]:
               if result["status"] != "created":
                   continue
