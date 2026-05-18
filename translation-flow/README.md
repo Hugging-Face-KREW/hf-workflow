@@ -119,6 +119,8 @@ Required repository secrets:
   can push branches, open PRs in
   `Hugging-Face-KREW/hugging-face-krew.github.io`, and dispatch workflows in
   `Hugging-Face-KREW/seo-skills` and `Hugging-Face-KREW/quality-skills`
+- `DISCORD_WEBHOOK_URL`: optional Discord webhook URL. When present, the
+  workflow posts a notification after it creates a translation PR.
 
 The workflow:
 
