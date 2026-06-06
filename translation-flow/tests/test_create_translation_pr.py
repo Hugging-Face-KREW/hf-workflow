@@ -10,6 +10,7 @@ from scripts.create_translation_pr import (
     build_translation_markdown,
     create_or_update_branch,
     create_pr,
+    default_manifest_path,
     html_to_markdown,
     main,
     parse_feed,
@@ -225,6 +226,24 @@ def test_create_pr_reuses_existing_pr_url(monkeypatch, tmp_path: Path) -> None:
     assert pr_url == "https://github.com/o/r/pull/1"
     assert ["git", "push", "-u", "origin", "translate/example"] in calls
     assert not any(call[:3] == ["gh", "pr", "create"] for call in calls)
+
+
+def test_default_manifest_path_reuses_existing_slug_manifest(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.chdir(tmp_path)
+    manifest_dir = tmp_path / "manifests"
+    manifest_dir.mkdir()
+    existing = manifest_dir / "2026-05-12-existing-post.yaml"
+    existing.write_text("version: 1\n")
+    post = FeedPost(
+        "Existing Post",
+        "https://huggingface.co/blog/existing-post",
+        datetime(2026, 6, 6, tzinfo=timezone.utc),
+        "existing-post",
+    )
+
+    manifest_path = default_manifest_path(post, date(2026, 6, 6))
+
+    assert manifest_path == Path("manifests/2026-05-12-existing-post.yaml")
 
 
 def test_main_writes_empty_run_summary_when_no_posts(monkeypatch, tmp_path: Path) -> None:

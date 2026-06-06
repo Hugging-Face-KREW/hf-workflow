@@ -1055,7 +1055,17 @@ def create_pr(
 
 
 def default_manifest_path(post: FeedPost, target_date: date) -> Path:
-    return Path("manifests") / f"{target_date.isoformat()}-{post.slug}.yaml"
+    manifest_dir = Path("manifests")
+    existing = sorted(manifest_dir.glob(f"????-??-??-{post.slug}.yaml"))
+    if existing:
+        return existing[0]
+    return manifest_dir / f"{target_date.isoformat()}-{post.slug}.yaml"
+
+
+def write_run_summary(summary_path: Path, run_results: list[dict[str, str]]) -> None:
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
+    summary_path.write_text(json.dumps({"results": run_results}, indent=2))
+    log(f"Wrote run summary: {summary_path}")
 
 
 def default_translation_file_path(posts_dir: str, post: FeedPost, target_date: date) -> str:
@@ -1158,10 +1168,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 }
             )
             if args.run_summary:
-                summary_path = Path(args.run_summary)
-                summary_path.parent.mkdir(parents=True, exist_ok=True)
-                summary_path.write_text(json.dumps({"results": run_results}, indent=2))
-                log(f"Wrote run summary: {summary_path}")
+                write_run_summary(Path(args.run_summary), run_results)
             return 0
     else:
         log(f"Fetching feed: {args.feed_url}")
@@ -1169,6 +1176,8 @@ def main(argv: Optional[list[str]] = None) -> int:
         selected = select_posts(posts, target_date, None, local_tz)
     if not selected:
         log(f"No posts found for {target_date.isoformat()}.")
+        if args.run_summary:
+            write_run_summary(Path(args.run_summary), run_results)
         return 0
     if len(selected) > 1 and args.output_manifest:
         parser.error("--output-manifest can only be used when one post is selected")
@@ -1358,10 +1367,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         )
 
     if args.run_summary:
-        summary_path = Path(args.run_summary)
-        summary_path.parent.mkdir(parents=True, exist_ok=True)
-        summary_path.write_text(json.dumps({"results": run_results}, indent=2))
-        log(f"Wrote run summary: {summary_path}")
+        write_run_summary(Path(args.run_summary), run_results)
 
     return 0
 

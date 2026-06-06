@@ -64,6 +64,10 @@ jobs:
           git -C target-repo config user.email "github-actions[bot]@users.noreply.github.com"
           git -C target-repo config user.name "github-actions[bot]"
 
+      - name: Initialize run summary
+        run: |
+          printf '{"results":[]}\n' > run-summary.json
+
       - name: Create translation PR
         working-directory: translation-flow
         run: |
@@ -102,7 +106,7 @@ jobs:
 
           summary = json.loads(summary_path.read_text())
           created = [
-              result for result in summary["results"]
+              result for result in summary.get("results", [])
               if result.get("status") == "created" and result.get("pr_url")
           ]
           if not created:
@@ -145,7 +149,7 @@ jobs:
               raise SystemExit(0)
 
           summary = json.loads(summary_path.read_text())
-          for result in summary["results"]:
+          for result in summary.get("results", []):
               if result["status"] != "created":
                   continue
               manifest = Path("translation-flow") / result["manifest_path"]
