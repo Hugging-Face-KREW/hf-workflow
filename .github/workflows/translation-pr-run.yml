@@ -1,0 +1,126 @@
+name: HF Agent Translation PR Run
+
+on:
+  workflow_call:
+    inputs:
+      target_repo:
+        description: "Target translation repository in OWNER/REPO form."
+        required: false
+        type: string
+        default: "Hugging-Face-KREW/hugging-face-krew.github.io"
+      pr_number:
+        description: "Target translation PR number."
+        required: true
+        type: string
+      stage:
+        description: "Runner stage."
+        required: false
+        type: string
+        default: "all"
+      post_comment:
+        description: "Publish or update the skill report comment."
+        required: false
+        type: boolean
+        default: true
+    secrets:
+      KREW_BOT_TOKEN:
+        required: true
+
+  workflow_dispatch:
+    inputs:
+      target_repo:
+        description: "Target translation repository in OWNER/REPO form."
+        required: true
+        type: string
+        default: "Hugging-Face-KREW/hugging-face-krew.github.io"
+      pr_number:
+        description: "Target translation PR number."
+        required: true
+        type: string
+      stage:
+        description: "Runner stage."
+        required: true
+        type: choice
+        default: "all"
+        options:
+          - manifest
+          - seo
+          - quality
+          - all
+          - comment
+      post_comment:
+        description: "Publish or update the skill report comment."
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: hf-agent-${{ inputs.target_repo }}-${{ inputs.pr_number }}
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      TARGET_REPO: ${{ inputs.target_repo }}
+      PR_NUMBER: ${{ inputs.pr_number }}
+      STAGE: ${{ inputs.stage }}
+      POST_COMMENT: ${{ inputs.post_comment }}
+      BOT_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
+      GH_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
+
+    steps:
+      - name: Checkout hf workflow
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Clone target translation repo
+        run: |
+          if [ -z "${BOT_TOKEN}" ]; then
+            echo "KREW_BOT_TOKEN secret is missing or empty."
+            exit 1
+          fi
+          git clone "https://x-access-token:${BOT_TOKEN}@github.com/${TARGET_REPO}.git" target-repo
+          git -C target-repo config user.email "github-actions[bot]@users.noreply.github.com"
+          git -C target-repo config user.name "github-actions[bot]"
+
+      - name: Checkout target PR branch
+        working-directory: target-repo
+        run: gh pr checkout "${PR_NUMBER}" --repo "${TARGET_REPO}"
+
+      - name: Build manifest from target PR
+        run: |
+          python3 scripts/hf_agent/build_manifest_from_pr.py \
+            --target-repo "${TARGET_REPO}" \
+            --pr-number "${PR_NUMBER}" \
+            --target-root target-repo \
+            --output "reports/pr-${PR_NUMBER}/manifest.yaml"
+
+      - name: Run selected skill stage
+        run: |
+          python3 scripts/hf_agent/run_skill_review.py \
+            --manifest "reports/pr-${PR_NUMBER}/manifest.yaml" \
+            --target-root target-repo \
+            --stage "${STAGE}" \
+            --run-json "reports/pr-${PR_NUMBER}/run.json"
+
+      - name: Publish PR comment
+        if: ${{ (inputs.post_comment && inputs.stage != 'manifest') || inputs.stage == 'comment' }}
+        run: |
+          python3 scripts/hf_agent/publish_pr_comment.py \
+            --run-json "reports/pr-${PR_NUMBER}/run.json"
+
+      - name: Upload agent run artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: hf-agent-pr-${{ inputs.pr_number }}-${{ inputs.stage }}
+          path: reports/pr-${{ inputs.pr_number }}/

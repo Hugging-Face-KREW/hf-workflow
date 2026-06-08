@@ -136,8 +136,14 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          import re
           import subprocess
+          import sys
           from pathlib import Path
+
+          sys.path.insert(0, "scripts")
+
+          from hf_agent.manifest import read_simple_manifest
 
           summary_path = Path("run-summary.json")
           if not summary_path.exists():
@@ -149,14 +155,30 @@ jobs:
               if result["status"] != "created":
                   continue
               manifest = Path("translation-flow") / result["manifest_path"]
+              manifest_data = read_simple_manifest(manifest)
+              pr_url = manifest_data.get("translation.pr_url", "")
+              match = re.search(r"/pull/(\d+)(?:$|[/?#])", pr_url)
+              if not match:
+                  print(f"No PR number found in manifest; skipping comment publishing: {manifest}")
+                  continue
+              pr_number = match.group(1)
               subprocess.run(
                   [
                       "python",
-                      "scripts/run_local_review.py",
+                      "scripts/hf_agent/run_skill_review.py",
                       "--manifest",
                       str(manifest),
                       "--target-root",
                       "target-repo",
+                  ],
+                  check=True,
+              )
+              subprocess.run(
+                  [
+                      "python",
+                      "scripts/hf_agent/publish_pr_comment.py",
+                      "--run-json",
+                      f"reports/pr-{pr_number}/run.json",
                   ],
                   check=True,
               )

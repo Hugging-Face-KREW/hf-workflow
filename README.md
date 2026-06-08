@@ -46,6 +46,27 @@ reports/
 A verification harness is not required for SEO or quality skills to run. It can
 be added later if the workflow needs replayable PR gates and stored run results.
 
+## HF agent PR runner
+
+Run the SEO and quality skills against an already-open translation PR with:
+
+```text
+.github/workflows/translation-pr-run.yml
+```
+
+Manual inputs:
+
+```text
+target_repo: Hugging-Face-KREW/hugging-face-krew.github.io
+pr_number: 141
+stage: manifest | seo | quality | all | comment
+post_comment: true | false
+```
+
+The runner rebuilds `reports/pr-<number>/manifest.yaml` from the target PR,
+runs the selected skill stage, writes `run.json`, and optionally upserts a
+marker-based PR comment.
+
 ## Local review replay
 
 Run SEO and quality checks from an existing translation manifest:
