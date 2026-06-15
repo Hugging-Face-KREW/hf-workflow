@@ -1,0 +1,36 @@
+version: 1
+
+run:
+  id: 2026-05-19-paddleocr-transformers
+  created_at: 2026-06-15T18:48:12+09:00
+  target_date: 2026-05-19
+
+source:
+  feed_url: https://huggingface.co/blog/feed.xml
+  url: https://huggingface.co/blog/PaddlePaddle/paddleocr-transformers
+  slug: paddleocr-transformers
+  title: "PaddleOCR 3.5: Running OCR and Document Parsing Tasks with a Transformers Backend"
+  published_date: 2026-05-18
+  published_at: 2026-05-18T15:12:46+00:00
+  language: en
+
+translation:
+  target_repo: Hugging-Face-KREW/hugging-face-krew.github.io
+  branch: translate/paddleocr-transformers
+  file_path: _posts/2026-05-19-paddleocr-transformers.md
+  pr_url: https://github.com/Hugging-Face-KREW/hugging-face-krew.github.io/pull/137
+  locale: ko
+
+handoff:
+  seo:
+    enabled: true
+    primary_keyword: ""
+    secondary_keywords: []
+  quality:
+    enabled: true
+    checks:
+      - fidelity
+      - fluency
+      - terminology
+      - formatting
+      - links

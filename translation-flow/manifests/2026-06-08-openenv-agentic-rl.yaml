@@ -1,0 +1,36 @@
+version: 1
+
+run:
+  id: 2026-06-08-openenv-agentic-rl
+  created_at: 2026-06-15T18:48:12+09:00
+  target_date: 2026-06-08
+
+source:
+  feed_url: https://huggingface.co/blog/feed.xml
+  url: https://huggingface.co/blog/openenv-agentic-rl
+  slug: openenv-agentic-rl
+  title: "The Open Source Community is backing OpenEnv for Agentic RL"
+  published_date: 2026-06-08
+  published_at: 2026-06-08T00:00:00+00:00
+  language: en
+
+translation:
+  target_repo: Hugging-Face-KREW/hugging-face-krew.github.io
+  branch: translate/openenv-agentic-rl
+  file_path: _posts/2026-06-08-openenv-agentic-rl.md
+  pr_url: https://github.com/Hugging-Face-KREW/hugging-face-krew.github.io/pull/142
+  locale: ko
+
+handoff:
+  seo:
+    enabled: true
+    primary_keyword: ""
+    secondary_keywords: []
+  quality:
+    enabled: true
+    checks:
+      - fidelity
+      - fluency
+      - terminology
+      - formatting
+      - links
