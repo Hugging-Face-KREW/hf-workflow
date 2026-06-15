@@ -46,6 +46,7 @@ on:
           - manifest
           - seo
           - quality
+          - humanize
           - all
           - comment
       post_comment:

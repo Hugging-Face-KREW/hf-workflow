@@ -59,7 +59,7 @@ Manual inputs:
 ```text
 target_repo: Hugging-Face-KREW/hugging-face-krew.github.io
 pr_number: 141
-stage: manifest | seo | quality | all | comment
+stage: manifest | seo | quality | humanize | all | comment
 post_comment: true | false
 ```
 

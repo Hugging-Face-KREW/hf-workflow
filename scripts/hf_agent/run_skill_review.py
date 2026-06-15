@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from hf_agent.manifest import read_simple_manifest
 
 
-VALID_STAGES = {"manifest", "seo", "quality", "all", "comment"}
+VALID_STAGES = {"manifest", "seo", "quality", "humanize", "all", "comment"}
 
 
 def report_id_for_manifest(manifest: dict[str, str], fallback: str) -> str:
@@ -105,6 +105,21 @@ def main() -> int:
             cwd=repo_root,
         )
         reports["quality"] = str(output)
+
+    if args.stage == "humanize":
+        output = report_dir / "humanize-report.md"
+        run(
+            [
+                "python3",
+                "skills/humanize-korean/tools/simple_humanize_report.py",
+                "--input",
+                str(target_root / manifest.get("translation.file_path", "")),
+                "--output",
+                str(output),
+            ],
+            cwd=repo_root,
+        )
+        reports["humanize"] = str(output)
 
     state = {
         "lifecycle": "finished",

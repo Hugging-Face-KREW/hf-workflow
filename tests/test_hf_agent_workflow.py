@@ -136,6 +136,7 @@ def test_comment_body_uses_stable_marker(tmp_path: Path) -> None:
     report_dir.mkdir(parents=True)
     (report_dir / "seo-report.md").write_text("# SEO Report\n\n- PASS: frontmatter title exists\n")
     (report_dir / "quality-report.md").write_text("# Quality Report\n\n- PASS: translation body is not empty\n")
+    (report_dir / "humanize-report.md").write_text("# Humanize Korean Report\n\n- PASS: no deterministic AI-tone patterns found\n")
     run_state = {
         "stage": "all",
         "lifecycle": "finished",
@@ -150,6 +151,7 @@ def test_comment_body_uses_stable_marker(tmp_path: Path) -> None:
     assert "HF Agent Skill Report" in body
     assert "frontmatter title exists" in body
     assert "translation body is not empty" in body
+    assert "Humanize Korean" in body
 
 
 def test_pr_number_from_url() -> None:

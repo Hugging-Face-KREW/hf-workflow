@@ -65,6 +65,10 @@ def build_comment_body(target_repo: str, pr_number: str, run_state: dict) -> str
         "",
         report_excerpt(report_dir / "quality-report.md"),
         "",
+        "## Humanize Korean",
+        "",
+        report_excerpt(report_dir / "humanize-report.md"),
+        "",
     ]
     return "\n".join(parts)
 

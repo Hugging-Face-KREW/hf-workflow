@@ -10,7 +10,7 @@ def main() -> int:
     parser.add_argument("--manifest", required=True, help="Path to translation-flow manifest YAML.")
     parser.add_argument("--target-root", required=True, help="Path to the translated blog repository.")
     parser.add_argument("--reports-root", default="reports", help="Directory where reports are written.")
-    parser.add_argument("--stage", choices=["manifest", "seo", "quality", "all", "comment"], default="all")
+    parser.add_argument("--stage", choices=["manifest", "seo", "quality", "humanize", "all", "comment"], default="all")
     args = parser.parse_args()
 
     repo_root = Path(__file__).resolve().parents[1]
