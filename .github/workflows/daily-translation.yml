@@ -87,49 +87,7 @@ jobs:
 
       - name: Notify Discord about translation PR
         if: ${{ inputs.dry_run != true && env.DISCORD_WEBHOOK_URL != '' }}
-        run: |
-          python - <<'PY'
-          import json
-          import os
-          import urllib.request
-          from pathlib import Path
-
-          webhook_url = os.environ["DISCORD_WEBHOOK_URL"]
-          summary_path = Path("run-summary.json")
-          if not summary_path.exists():
-              print("No run summary found; skipping Discord notification.")
-              raise SystemExit(0)
-
-          summary = json.loads(summary_path.read_text())
-          created = [
-              result for result in summary["results"]
-              if result.get("status") == "created" and result.get("pr_url")
-          ]
-          if not created:
-              print("No created PR URL found; skipping Discord notification.")
-              raise SystemExit(0)
-
-          lines = [
-              f"- [{result['slug']}]({result['pr_url']})"
-              for result in created
-          ]
-          payload = {
-              "content": "\n".join(
-                  [
-                      "HF Blog Korean translation PR created.",
-                      *lines,
-                  ]
-              )
-          }
-          request = urllib.request.Request(
-              webhook_url,
-              data=json.dumps(payload).encode("utf-8"),
-              headers={"Content-Type": "application/json"},
-              method="POST",
-          )
-          with urllib.request.urlopen(request, timeout=15) as response:
-              print(f"Discord notification sent: HTTP {response.status}")
-          PY
+        run: python scripts/notify_discord.py --summary run-summary.json
 
       - name: Generate SEO and quality reports
         if: ${{ inputs.dry_run != true }}
