@@ -110,10 +110,18 @@ jobs:
             --manifest "reports/pr-${PR_NUMBER}/manifest.yaml" \
             --target-root target-repo \
             --stage "${STAGE}" \
-            --result-json "${RUNNER_TEMP}/hf-agent-skill-result.json"
+            --result-json "${RUNNER_TEMP}/hf-agent-skill-result.json" \
+            --report-md "reports/pr-${PR_NUMBER}/skill-report.md"
 
       - name: Publish PR comment
         if: ${{ inputs.post_comment && inputs.stage != 'manifest' }}
         run: |
           python3 scripts/hf_agent/publish_pr_comment.py \
-            --result-json "${RUNNER_TEMP}/hf-agent-skill-result.json"
+            --report-md "reports/pr-${PR_NUMBER}/skill-report.md"
+
+      - name: Upload skill report artifact
+        if: ${{ inputs.stage != 'manifest' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: hf-agent-pr-${{ inputs.pr_number }}-${{ inputs.stage }}
+          path: reports/pr-${{ inputs.pr_number }}/skill-report.md

@@ -237,10 +237,12 @@ def rerun_skill_review(
     pr_number: str,
     manifest_path: Path,
     target_root: Path,
+    publish_skill_comment: bool = False,
 ) -> dict[str, Any]:
     repo_root = Path(__file__).resolve().parents[2]
     with tempfile.TemporaryDirectory(prefix="hf-agent-skill-rerun-") as tmp:
         result_json = Path(tmp) / "hf-agent-skill-result.json"
+        report_md = manifest_path.parent / "skill-report.md"
         run(
             [
                 "python3",
@@ -253,22 +255,25 @@ def rerun_skill_review(
                 "all",
                 "--result-json",
                 str(result_json),
+                "--report-md",
+                str(report_md),
             ],
             cwd=repo_root,
         )
-        run(
-            [
-                "python3",
-                "scripts/hf_agent/publish_pr_comment.py",
-                "--target-repo",
-                target_repo,
-                "--pr-number",
-                pr_number,
-                "--result-json",
-                str(result_json),
-            ],
-            cwd=repo_root,
-        )
+        if publish_skill_comment:
+            run(
+                [
+                    "python3",
+                    "scripts/hf_agent/publish_pr_comment.py",
+                    "--target-repo",
+                    target_repo,
+                    "--pr-number",
+                    pr_number,
+                    "--report-md",
+                    str(report_md),
+                ],
+                cwd=repo_root,
+            )
         return json.loads(result_json.read_text())
 
 
@@ -283,6 +288,7 @@ def main() -> int:
     parser.add_argument("--required-label", default="")
     parser.add_argument("--openai-model", default="gpt-5-nano")
     parser.add_argument("--skip-skill-rerun", action="store_true")
+    parser.add_argument("--publish-skill-comment", action="store_true")
     args = parser.parse_args()
 
     target_root = Path(args.target_root).resolve()
@@ -317,6 +323,14 @@ def main() -> int:
 
     if not pending:
         latest_skill_result = latest_skill_result_from_pr_comments(pr_json)
+        if args.apply and not args.skip_skill_rerun:
+            latest_skill_result = rerun_skill_review(
+                target_repo=args.target_repo,
+                pr_number=args.pr_number,
+                manifest_path=manifest_path,
+                target_root=target_root,
+                publish_skill_comment=args.publish_skill_comment,
+            )
         if args.apply and skill_result_is_merge_ready(latest_skill_result):
             upsert_merge_ready_comment(
                 target_repo=args.target_repo,
@@ -351,6 +365,7 @@ def main() -> int:
                 pr_number=args.pr_number,
                 manifest_path=manifest_path,
                 target_root=target_root,
+                publish_skill_comment=args.publish_skill_comment,
             )
             if skill_result_is_merge_ready(skill_result):
                 upsert_merge_ready_comment(
@@ -388,6 +403,7 @@ def main() -> int:
             pr_number=args.pr_number,
             manifest_path=manifest_path,
             target_root=target_root,
+            publish_skill_comment=args.publish_skill_comment,
         )
         if skill_result_is_merge_ready(skill_result):
             upsert_merge_ready_comment(

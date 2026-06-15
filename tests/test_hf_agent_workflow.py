@@ -10,7 +10,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
 from hf_agent.manifest import build_manifest_text, choose_translation_file, read_simple_manifest
-from hf_agent.publish_pr_comment import build_comment_body, pr_number_from_url
+from hf_agent.publish_pr_comment import build_comment_body, build_comment_body_from_markdown, extract_result_json, pr_number_from_url
 
 
 def translated_markdown() -> str:
@@ -140,6 +140,7 @@ skills:
     )
 
     result_json = tmp_path / "skill-result.json"
+    report_md = tmp_path / "skill-report.md"
     subprocess.run(
         [
             "python3",
@@ -152,6 +153,8 @@ skills:
             "all",
             "--result-json",
             str(result_json),
+            "--report-md",
+            str(report_md),
         ],
         cwd=REPO_ROOT,
         check=True,
@@ -163,6 +166,10 @@ skills:
     assert result["target_repo"] == "Hugging-Face-KREW/hugging-face-krew.github.io"
     assert [item["skill"]["id"] for item in result["skills"]] == ["seo", "quality"]
     assert all(item["schema_version"] == "hf.skill.result.v1" for item in result["skills"])
+    report = report_md.read_text()
+    assert "# HF Agent Skill Report" in report
+    assert "<!-- hf-agent-skill-result-json" in report
+    assert extract_result_json(report)["schema_version"] == "hf.agent.skill_run.v1"
     assert not (tmp_path / "reports" / "pr-141" / "run.json").exists()
     assert not (tmp_path / "reports" / "pr-141" / "seo-report.md").exists()
 
@@ -207,6 +214,24 @@ def test_comment_body_uses_stable_marker() -> None:
     assert "## seo" in body
     assert "## quality" in body
     assert "translation body is too short" in body
+
+
+def test_comment_body_can_use_markdown_report() -> None:
+    markdown = "\n".join(
+        [
+            "<!-- hf-agent-skill-result-json",
+            json.dumps({"target_repo": "o/r", "pr_url": "https://github.com/o/r/pull/1"}),
+            "-->",
+            "# HF Agent Skill Report",
+            "",
+            "- Conclusion: `pass`",
+        ]
+    )
+
+    body = build_comment_body_from_markdown("o/r", "1", markdown)
+
+    assert body.startswith("<!-- hf-workflow:skill-report repo=o/r pr=1 -->")
+    assert "# HF Agent Skill Report" in body
 
 
 def test_pr_number_from_url() -> None:

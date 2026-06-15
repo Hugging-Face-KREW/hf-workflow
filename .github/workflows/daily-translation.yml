@@ -131,7 +131,7 @@ jobs:
               print(f"Discord notification sent: HTTP {response.status}")
           PY
 
-      - name: Run skills and publish PR comments
+      - name: Run skills and write markdown reports
         if: ${{ inputs.dry_run != true }}
         run: |
           python - <<'PY'
@@ -164,6 +164,7 @@ jobs:
                   continue
               pr_number = match.group(1)
               result_json = Path(os.environ["RUNNER_TEMP"]) / f"hf-agent-skill-result-pr-{pr_number}.json"
+              report_md = Path("reports") / f"pr-{pr_number}" / "skill-report.md"
               subprocess.run(
                   [
                       "python",
@@ -174,15 +175,8 @@ jobs:
                       "target-repo",
                       "--result-json",
                       str(result_json),
-                  ],
-                  check=True,
-              )
-              subprocess.run(
-                  [
-                      "python",
-                      "scripts/hf_agent/publish_pr_comment.py",
-                      "--result-json",
-                      str(result_json),
+                      "--report-md",
+                      str(report_md),
                   ],
                   check=True,
               )
@@ -208,3 +202,4 @@ jobs:
           path: |
             run-summary.json
             translation-flow/manifests/*.yaml
+            reports/pr-*/skill-report.md

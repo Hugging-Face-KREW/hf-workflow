@@ -11,15 +11,28 @@ from pathlib import Path
 
 
 API_ROOT = "https://api.github.com"
+RESULT_JSON_MARKER_START = "<!-- hf-agent-skill-result-json"
+RESULT_JSON_MARKER_END = "-->"
 
 
 def marker(target_repo: str, pr_number: str) -> str:
     return f"<!-- hf-workflow:skill-report repo={target_repo} pr={pr_number} -->"
 
 
+def extract_result_json(markdown: str) -> dict:
+    if RESULT_JSON_MARKER_START not in markdown:
+        return {}
+    match = re.search(
+        re.escape(RESULT_JSON_MARKER_START) + r"\s*(\{.*?\})\s*" + re.escape(RESULT_JSON_MARKER_END),
+        markdown,
+        flags=re.DOTALL,
+    )
+    return json.loads(match.group(1)) if match else {}
+
+
 def result_json_marker(result: dict) -> str:
     payload = json.dumps(result, ensure_ascii=False, sort_keys=True).replace("--", "\\u002d\\u002d")
-    return f"<!-- hf-agent-skill-result-json\n{payload}\n-->"
+    return f"{RESULT_JSON_MARKER_START}\n{payload}\n{RESULT_JSON_MARKER_END}"
 
 
 def pr_number_from_url(pr_url: str) -> str:
@@ -85,6 +98,14 @@ def build_comment_body(target_repo: str, pr_number: str, run_state: dict) -> str
     return "\n".join(parts)
 
 
+def build_comment_body_from_markdown(target_repo: str, pr_number: str, markdown: str) -> str:
+    body = markdown.strip()
+    stable_marker = marker(target_repo, pr_number)
+    if stable_marker not in body:
+        body = f"{stable_marker}\n{body}"
+    return body + "\n"
+
+
 def gh_api(method: str, path: str, token: str, payload: dict | None = None) -> dict | list:
     data = json.dumps(payload).encode("utf-8") if payload is not None else None
     request = urllib.request.Request(
@@ -141,14 +162,16 @@ def main() -> int:
     parser.add_argument("--target-repo", default="", help="Target repo. Defaults to result JSON target_repo.")
     parser.add_argument("--pr-number", default="", help="Target PR number. Defaults to result JSON pr_url.")
     parser.add_argument("--result-json", default="", help="Path to hf.agent.skill_run.v1 JSON.")
+    parser.add_argument("--report-md", default="", help="Path to the Markdown skill report.")
     parser.add_argument("--body-output", default="")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--create-only", action="store_true", help="Use gh pr comment without marker upsert.")
     args = parser.parse_args()
 
-    if not args.result_json:
-        raise RuntimeError("--result-json is required.")
-    run_state = json.loads(Path(args.result_json).read_text())
+    if not args.result_json and not args.report_md:
+        raise RuntimeError("--result-json or --report-md is required.")
+    report_markdown = Path(args.report_md).read_text() if args.report_md else ""
+    run_state = extract_result_json(report_markdown) if report_markdown else json.loads(Path(args.result_json).read_text())
     target_repo = args.target_repo or str(run_state.get("target_repo") or "")
     pr_number = args.pr_number or pr_number_from_url(str(run_state.get("pr_url") or ""))
     if not target_repo:
@@ -156,7 +179,11 @@ def main() -> int:
     if not pr_number:
         raise RuntimeError("PR number is required in result JSON pr_url or --pr-number.")
 
-    body = build_comment_body(target_repo, pr_number, run_state)
+    body = (
+        build_comment_body_from_markdown(target_repo, pr_number, report_markdown)
+        if report_markdown
+        else build_comment_body(target_repo, pr_number, run_state)
+    )
     body_output = Path(args.body_output) if args.body_output else None
     if body_output:
         body_output.parent.mkdir(parents=True, exist_ok=True)

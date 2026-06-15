@@ -62,9 +62,13 @@ post_comment: true | false
 ```
 
 The runner rebuilds `reports/pr-<number>/manifest.yaml` from the target PR,
-runs the selected skill stage, and optionally upserts a marker-based PR comment.
-Skill output uses `hf.skill.result.v1` JSON inside the comment; markdown report
-files are no longer stored as durable workflow outputs.
+runs the selected skill stage, and writes a Markdown skill report. The PR
+comment publisher is optional and only projects that Markdown report into a
+marker-based comment when `post_comment` is enabled.
+
+The Markdown report is the human-facing skill output. It also embeds a hidden
+`hf.agent.skill_run.v1` JSON block so automation can still decide whether a PR
+needs action or is merge-ready.
 
 Run a daily feedback collection/apply loop with:
 
@@ -83,11 +87,11 @@ Run SEO and quality checks from an existing translation manifest:
 python3 scripts/run_local_review.py \
   --manifest translation-flow/manifests/2026-05-11-machinacheck.local.yaml \
   --target-root hugging-face-krew.github.io \
-  --result-json /tmp/hf-agent-skill-result.json
+  --report-md /tmp/hf-agent-skill-report.md
 ```
 
-The local command writes the same `hf.agent.skill_run.v1` aggregate JSON used by
-the PR comment publisher.
+The local command writes the same Markdown report shape used by workflow
+artifacts and the optional PR comment publisher.
 
 ## GitHub Action
 
@@ -100,7 +104,7 @@ The root workflow lives at:
 It runs the full remote flow:
 
 ```text
-RSS -> translation-flow -> target repo PR -> manifest -> skills -> PR comment
+RSS -> translation-flow -> target repo PR -> manifest -> skills -> Markdown report
 ```
 
 Required repository secrets:

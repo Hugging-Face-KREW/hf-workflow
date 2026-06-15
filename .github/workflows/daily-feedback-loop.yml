@@ -122,5 +122,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: hf-agent-daily-feedback
-          path: reports/pr-*/pending-feedback.json
+          path: |
+            reports/pr-*/pending-feedback.json
+            reports/pr-*/skill-report.md
           if-no-files-found: ignore

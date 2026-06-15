@@ -20,6 +20,8 @@ SKILL_COMMANDS = {
     "seo": ["python3", "skills/seo/tools/simple_seo_report.py"],
     "quality": ["python3", "skills/quality/tools/simple_quality_report.py"],
 }
+RESULT_JSON_MARKER_START = "<!-- hf-agent-skill-result-json"
+RESULT_JSON_MARKER_END = "-->"
 
 
 def run(cmd: list[str], cwd: Path) -> None:
@@ -121,12 +123,66 @@ def aggregate_conclusion(results: list[dict[str, Any]]) -> str:
     return max((str(result.get("conclusion") or "pass") for result in results), key=lambda item: order.get(item, 0))
 
 
+def result_json_marker(result: dict[str, Any]) -> str:
+    payload = json.dumps(result, ensure_ascii=False, sort_keys=True).replace("--", "\\u002d\\u002d")
+    return f"{RESULT_JSON_MARKER_START}\n{payload}\n{RESULT_JSON_MARKER_END}"
+
+
+def finding_lines(skill_result: dict[str, Any], max_items: int = 20) -> list[str]:
+    findings = skill_result.get("findings") or []
+    if not findings:
+        return ["_No findings._"]
+    lines: list[str] = []
+    for finding in findings[:max_items]:
+        severity = str(finding.get("severity") or "info").upper()
+        message = str(finding.get("message") or "").strip()
+        path = str(finding.get("path") or "").strip()
+        line = finding.get("line")
+        location = f" `{path}`" if path else ""
+        if line:
+            location += f":{line}"
+        lines.append(f"- {severity}:{location} {message}".rstrip())
+    if len(findings) > max_items:
+        lines.append(f"- ...and {len(findings) - max_items} more finding(s).")
+    return lines
+
+
+def render_markdown_report(result: dict[str, Any]) -> str:
+    parts = [
+        result_json_marker(result),
+        "# HF Agent Skill Report",
+        "",
+        f"- Stage: `{result.get('stage', '')}`",
+        f"- Conclusion: `{result.get('conclusion', '')}`",
+        f"- Translation file: `{result.get('translation_file', '')}`",
+        f"- Manifest: `{result.get('manifest', '')}`",
+        f"- Created at: `{result.get('created_at', '')}`",
+        "",
+    ]
+    for skill_result in result.get("skills") or []:
+        skill = skill_result.get("skill") or {}
+        skill_id = str(skill.get("id") or "unknown")
+        parts += [
+            f"## {skill_id}",
+            "",
+            f"- Conclusion: `{skill_result.get('conclusion', '')}`",
+            f"- Summary: {skill_result.get('summary', '')}",
+            "",
+            "### Findings",
+            "",
+            *finding_lines(skill_result),
+            "",
+        ]
+    return "\n".join(parts).rstrip() + "\n"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run enabled skills from a translation manifest.")
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--target-root", required=True)
     parser.add_argument("--stage", choices=sorted(VALID_STAGES), default="all")
     parser.add_argument("--result-json", default="", help="Optional path for machine-readable skill result JSON.")
+    parser.add_argument("--report-md", default="", help="Optional path for the Markdown skill report.")
     args = parser.parse_args()
 
     repo_root = Path(__file__).resolve().parents[2]
@@ -161,7 +217,12 @@ def main() -> int:
         result_json.parent.mkdir(parents=True, exist_ok=True)
         result_json.write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
         print(f"Wrote skill result: {result_json}")
-    else:
+    if args.report_md:
+        report_md = Path(args.report_md)
+        report_md.parent.mkdir(parents=True, exist_ok=True)
+        report_md.write_text(render_markdown_report(result))
+        print(f"Wrote skill report: {report_md}")
+    if not result_json and not args.report_md:
         print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
     return 0
 

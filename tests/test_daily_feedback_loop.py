@@ -268,8 +268,8 @@ def test_main_publishes_merge_ready_when_no_pending_and_latest_skill_passes(tmp_
         "conclusion": "pass",
         "skills": [{"skill": {"id": "seo"}, "conclusion": "pass"}],
     }
-    body = "\n".join(["<!-- hf-agent-skill-result-json", json.dumps(skill_result), "-->"])
     merge_ready_results: list[dict] = []
+    reruns: list[tuple[str, str]] = []
 
     monkeypatch.setattr(
         daily_feedback_loop,
@@ -278,10 +278,15 @@ def test_main_publishes_merge_ready_when_no_pending_and_latest_skill_passes(tmp_
             "url": "https://github.com/o/r/pull/1",
             "headRefOid": "abc123",
             "labels": [{"name": "hf-agent:autopilot"}],
-            "comments": [{"body": body, "author": {"login": "github-actions[bot]"}, "updatedAt": "2026-06-15T00:00:00Z"}],
+            "comments": [],
         },
     )
     monkeypatch.setattr(daily_feedback_loop, "fetch_review_comments", lambda target_repo, pr_number: [])
+    monkeypatch.setattr(
+        daily_feedback_loop,
+        "rerun_skill_review",
+        lambda **kwargs: reruns.append((kwargs["target_repo"], kwargs["pr_number"])) or skill_result,
+    )
     monkeypatch.setattr(
         daily_feedback_loop,
         "upsert_merge_ready_comment",
@@ -311,6 +316,7 @@ def test_main_publishes_merge_ready_when_no_pending_and_latest_skill_passes(tmp_
     assert daily_feedback_loop.main() == 0
 
     assert json.loads(output.read_text())["pending_count"] == 0
+    assert reruns == [("o/r", "1")]
     assert merge_ready_results == [skill_result]
 
 
