@@ -7,7 +7,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from hf_agent import daily_feedback_loop
-from hf_agent.daily_feedback_loop import build_pending_report, feedback_comments_from_json, should_apply_label
+from hf_agent.daily_feedback_loop import (
+    build_pending_report,
+    extract_skill_result_from_body,
+    feedback_comments_from_json,
+    latest_skill_result_from_pr_comments,
+    should_apply_label,
+    skill_result_is_merge_ready,
+)
 from hf_agent.feedback_state import FeedbackState
 
 
@@ -105,7 +112,54 @@ def test_should_apply_label_accepts_required_label() -> None:
     assert not should_apply_label(pr_json, "agent-wip")
 
 
-def test_main_marks_no_change_feedback_as_processed(tmp_path: Path, monkeypatch) -> None:
+def test_latest_skill_result_from_comment_supports_merge_ready() -> None:
+    pass_result = {
+        "schema_version": "hf.agent.skill_run.v1",
+        "conclusion": "pass",
+        "skills": [
+            {"skill": {"id": "seo"}, "conclusion": "pass"},
+            {"skill": {"id": "quality"}, "conclusion": "pass"},
+        ],
+    }
+    body = "\n".join(
+        [
+            "<!-- hf-workflow:skill-report repo=o/r pr=1 -->",
+            "<!-- hf-agent-skill-result-json",
+            json.dumps(pass_result),
+            "-->",
+            "# HF Agent Skill Report",
+        ]
+    )
+    pr_json = {
+        "comments": [
+            {
+                "body": body,
+                "createdAt": "2026-06-15T00:00:00Z",
+                "updatedAt": "2026-06-15T00:00:00Z",
+            }
+        ]
+    }
+
+    assert extract_skill_result_from_body(body) == pass_result
+    assert latest_skill_result_from_pr_comments(pr_json) == pass_result
+    assert skill_result_is_merge_ready(pass_result)
+
+
+def test_skill_result_needs_pass_for_merge_ready() -> None:
+    result = {
+        "schema_version": "hf.agent.skill_run.v1",
+        "conclusion": "needs_action",
+        "skills": [
+            {"skill": {"id": "seo"}, "conclusion": "pass"},
+            {"skill": {"id": "quality"}, "conclusion": "needs_action"},
+        ],
+    }
+
+    assert not skill_result_is_merge_ready(result)
+    assert not skill_result_is_merge_ready(None)
+
+
+def test_main_marks_no_change_feedback_as_processed_and_reruns_skills(tmp_path: Path, monkeypatch) -> None:
     target_root = tmp_path / "target"
     translation = target_root / "_posts" / "example.md"
     translation.parent.mkdir(parents=True)
@@ -125,12 +179,23 @@ def test_main_marks_no_change_feedback_as_processed(tmp_path: Path, monkeypatch)
     )
     output = tmp_path / "pending.json"
     updated_states: list[FeedbackState] = []
+    merge_ready_results: list[dict] = []
+    reruns: list[tuple[str, str]] = []
+    skill_result = {
+        "schema_version": "hf.agent.skill_run.v1",
+        "conclusion": "pass",
+        "skills": [
+            {"skill": {"id": "seo"}, "conclusion": "pass"},
+            {"skill": {"id": "quality"}, "conclusion": "pass"},
+        ],
+    }
 
     monkeypatch.setattr(
         daily_feedback_loop,
         "fetch_pr_json",
         lambda target_repo, pr_number: {
             "url": "https://github.com/o/r/pull/1",
+            "headRefOid": "abc123",
             "labels": [{"name": "hf-agent:autopilot"}],
             "comments": [
                 {
@@ -170,9 +235,138 @@ def test_main_marks_no_change_feedback_as_processed(tmp_path: Path, monkeypatch)
             "hf-agent:autopilot",
         ],
     )
+    monkeypatch.setattr(
+        daily_feedback_loop,
+        "rerun_skill_review",
+        lambda **kwargs: reruns.append((kwargs["target_repo"], kwargs["pr_number"])) or skill_result,
+    )
+    monkeypatch.setattr(
+        daily_feedback_loop,
+        "upsert_merge_ready_comment",
+        lambda **kwargs: merge_ready_results.append(kwargs["skill_result"]),
+    )
 
     assert daily_feedback_loop.main() == 0
 
     assert json.loads(output.read_text())["pending_count"] == 1
     assert updated_states
     assert updated_states[0].processed_comments["issue:1"]["status"] == "no_changes"
+    assert reruns == [("o/r", "1")]
+    assert merge_ready_results == [skill_result]
+
+
+def test_main_publishes_merge_ready_when_no_pending_and_latest_skill_passes(tmp_path: Path, monkeypatch) -> None:
+    target_root = tmp_path / "target"
+    translation = target_root / "_posts" / "example.md"
+    translation.parent.mkdir(parents=True)
+    translation.write_text("번역입니다.\n")
+    manifest = tmp_path / "manifest.yaml"
+    manifest.write_text("translation:\n  file_path: _posts/example.md\n")
+    output = tmp_path / "pending.json"
+    skill_result = {
+        "schema_version": "hf.agent.skill_run.v1",
+        "conclusion": "pass",
+        "skills": [{"skill": {"id": "seo"}, "conclusion": "pass"}],
+    }
+    body = "\n".join(["<!-- hf-agent-skill-result-json", json.dumps(skill_result), "-->"])
+    merge_ready_results: list[dict] = []
+
+    monkeypatch.setattr(
+        daily_feedback_loop,
+        "fetch_pr_json",
+        lambda target_repo, pr_number: {
+            "url": "https://github.com/o/r/pull/1",
+            "headRefOid": "abc123",
+            "labels": [{"name": "hf-agent:autopilot"}],
+            "comments": [{"body": body, "author": {"login": "github-actions[bot]"}, "updatedAt": "2026-06-15T00:00:00Z"}],
+        },
+    )
+    monkeypatch.setattr(daily_feedback_loop, "fetch_review_comments", lambda target_repo, pr_number: [])
+    monkeypatch.setattr(
+        daily_feedback_loop,
+        "upsert_merge_ready_comment",
+        lambda **kwargs: merge_ready_results.append(kwargs["skill_result"]),
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "daily_feedback_loop.py",
+            "--target-repo",
+            "o/r",
+            "--pr-number",
+            "1",
+            "--target-root",
+            str(target_root),
+            "--manifest",
+            str(manifest),
+            "--output",
+            str(output),
+            "--apply",
+            "--required-label",
+            "hf-agent:autopilot",
+        ],
+    )
+
+    assert daily_feedback_loop.main() == 0
+
+    assert json.loads(output.read_text())["pending_count"] == 0
+    assert merge_ready_results == [skill_result]
+
+
+def test_main_collect_only_does_not_publish_merge_ready(tmp_path: Path, monkeypatch) -> None:
+    target_root = tmp_path / "target"
+    translation = target_root / "_posts" / "example.md"
+    translation.parent.mkdir(parents=True)
+    translation.write_text("번역입니다.\n")
+    manifest = tmp_path / "manifest.yaml"
+    manifest.write_text("translation:\n  file_path: _posts/example.md\n")
+    output = tmp_path / "pending.json"
+    skill_result = {
+        "schema_version": "hf.agent.skill_run.v1",
+        "conclusion": "pass",
+        "skills": [{"skill": {"id": "seo"}, "conclusion": "pass"}],
+    }
+    body = "\n".join(["<!-- hf-agent-skill-result-json", json.dumps(skill_result), "-->"])
+    merge_ready_results: list[dict] = []
+
+    monkeypatch.setattr(
+        daily_feedback_loop,
+        "fetch_pr_json",
+        lambda target_repo, pr_number: {
+            "url": "https://github.com/o/r/pull/1",
+            "headRefOid": "abc123",
+            "labels": [{"name": "hf-agent:autopilot"}],
+            "comments": [{"body": body, "author": {"login": "github-actions[bot]"}, "updatedAt": "2026-06-15T00:00:00Z"}],
+        },
+    )
+    monkeypatch.setattr(daily_feedback_loop, "fetch_review_comments", lambda target_repo, pr_number: [])
+    monkeypatch.setattr(
+        daily_feedback_loop,
+        "upsert_merge_ready_comment",
+        lambda **kwargs: merge_ready_results.append(kwargs["skill_result"]),
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "daily_feedback_loop.py",
+            "--target-repo",
+            "o/r",
+            "--pr-number",
+            "1",
+            "--target-root",
+            str(target_root),
+            "--manifest",
+            str(manifest),
+            "--output",
+            str(output),
+            "--required-label",
+            "hf-agent:autopilot",
+        ],
+    )
+
+    assert daily_feedback_loop.main() == 0
+
+    assert json.loads(output.read_text())["pending_count"] == 0
+    assert merge_ready_results == []
