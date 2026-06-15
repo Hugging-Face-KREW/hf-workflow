@@ -9,6 +9,7 @@ from scripts.create_translation_pr import (
     FeedPost,
     build_translation_markdown,
     create_or_update_branch,
+    create_manifest,
     create_pr,
     html_to_markdown,
     main,
@@ -170,6 +171,33 @@ def test_default_translation_prompt_is_stored_in_docs() -> None:
     assert "Hugging Face technical blog posts" in prompt
     assert "Output Korean Markdown only" in prompt
     assert "Chunking Rules" in prompt
+
+
+def test_create_manifest_uses_skills_schema(tmp_path: Path) -> None:
+    post = FeedPost(
+        title="Hello MLX",
+        url="https://huggingface.co/blog/hello-mlx",
+        published_at=datetime(2026, 5, 11, tzinfo=timezone.utc),
+        slug="hello-mlx",
+    )
+    manifest = tmp_path / "manifest.yaml"
+
+    create_manifest(
+        post,
+        "https://huggingface.co/blog/feed.xml",
+        "owner/repo",
+        "translate/hello-mlx",
+        "_posts/2026-05-11-hello-mlx.md",
+        "https://github.com/owner/repo/pull/123",
+        date(2026, 5, 11),
+        manifest,
+    )
+
+    text = manifest.read_text()
+    assert "skills:" in text
+    assert "handoff:" not in text
+    assert "  seo:\n    enabled: true\n    config:" in text
+    assert "  quality:\n    enabled: true\n    config:" in text
 
 
 def init_git_repo(path: Path) -> None:

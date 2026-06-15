@@ -944,19 +944,21 @@ translation:
   pr_url: {pr_url}
   locale: {DEFAULT_LOCALE}
 
-handoff:
+skills:
   seo:
     enabled: true
-    primary_keyword: ""
-    secondary_keywords: []
+    config:
+      primary_keyword: ""
+      secondary_keywords: []
   quality:
     enabled: true
-    checks:
-      - fidelity
-      - fluency
-      - terminology
-      - formatting
-      - links
+    config:
+      checks:
+        - fidelity
+        - fluency
+        - terminology
+        - formatting
+        - links
 """
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
     manifest_path.write_text(content)
@@ -1322,7 +1324,7 @@ def main(argv: Optional[list[str]] = None) -> int:
 
             This PR adds a Korean translation draft for `{post.slug}`.
 
-            Downstream handoff:
+            Downstream skills:
             - SEO review should use the translation-flow manifest.
             - Quality review should use the translation-flow manifest.
             """

@@ -131,11 +131,12 @@ jobs:
               print(f"Discord notification sent: HTTP {response.status}")
           PY
 
-      - name: Generate SEO and quality reports
+      - name: Run skills and publish PR comments
         if: ${{ inputs.dry_run != true }}
         run: |
           python - <<'PY'
           import json
+          import os
           import re
           import subprocess
           import sys
@@ -147,7 +148,7 @@ jobs:
 
           summary_path = Path("run-summary.json")
           if not summary_path.exists():
-              print("No run summary found; skipping reports.")
+              print("No run summary found; skipping skill runner.")
               raise SystemExit(0)
 
           summary = json.loads(summary_path.read_text())
@@ -162,6 +163,7 @@ jobs:
                   print(f"No PR number found in manifest; skipping comment publishing: {manifest}")
                   continue
               pr_number = match.group(1)
+              result_json = Path(os.environ["RUNNER_TEMP"]) / f"hf-agent-skill-result-pr-{pr_number}.json"
               subprocess.run(
                   [
                       "python",
@@ -170,6 +172,8 @@ jobs:
                       str(manifest),
                       "--target-root",
                       "target-repo",
+                      "--result-json",
+                      str(result_json),
                   ],
                   check=True,
               )
@@ -177,23 +181,23 @@ jobs:
                   [
                       "python",
                       "scripts/hf_agent/publish_pr_comment.py",
-                      "--run-json",
-                      f"reports/pr-{pr_number}/run.json",
+                      "--result-json",
+                      str(result_json),
                   ],
                   check=True,
               )
           PY
 
-      - name: Commit manifests and reports
+      - name: Commit manifests
         if: ${{ inputs.dry_run != true }}
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add translation-flow/manifests reports
+          git add translation-flow/manifests
           if git diff --cached --quiet; then
-            echo "No manifest or report changes to commit."
+            echo "No manifest changes to commit."
           else
-            git commit -m "Add HF blog workflow reports for ${{ steps.date.outputs.value }}"
+            git commit -m "Add HF blog workflow manifests for ${{ steps.date.outputs.value }}"
             git push
           fi
 
@@ -204,4 +208,3 @@ jobs:
           path: |
             run-summary.json
             translation-flow/manifests/*.yaml
-            reports/**

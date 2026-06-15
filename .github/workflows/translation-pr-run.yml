@@ -47,7 +47,6 @@ on:
           - seo
           - quality
           - all
-          - comment
       post_comment:
         description: "Publish or update the skill report comment."
         required: true
@@ -111,16 +110,10 @@ jobs:
             --manifest "reports/pr-${PR_NUMBER}/manifest.yaml" \
             --target-root target-repo \
             --stage "${STAGE}" \
-            --run-json "reports/pr-${PR_NUMBER}/run.json"
+            --result-json "${RUNNER_TEMP}/hf-agent-skill-result.json"
 
       - name: Publish PR comment
-        if: ${{ (inputs.post_comment && inputs.stage != 'manifest') || inputs.stage == 'comment' }}
+        if: ${{ inputs.post_comment && inputs.stage != 'manifest' }}
         run: |
           python3 scripts/hf_agent/publish_pr_comment.py \
-            --run-json "reports/pr-${PR_NUMBER}/run.json"
-
-      - name: Upload agent run artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: hf-agent-pr-${{ inputs.pr_number }}-${{ inputs.stage }}
-          path: reports/pr-${{ inputs.pr_number }}/
+            --result-json "${RUNNER_TEMP}/hf-agent-skill-result.json"

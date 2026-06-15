@@ -9,7 +9,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
-from hf_agent.manifest import build_manifest_text, choose_translation_file
+from hf_agent.manifest import build_manifest_text, choose_translation_file, read_simple_manifest
 from hf_agent.publish_pr_comment import build_comment_body, pr_number_from_url
 
 
@@ -70,9 +70,37 @@ def test_build_manifest_text_from_pr_json() -> None:
     assert "branch: translate/sample-post" in manifest
     assert "file_path: _posts/2026-06-08-sample-post.md" in manifest
     assert 'title: "Sample Source Title"' in manifest
+    assert "skills:" in manifest
+    assert "handoff:" not in manifest
 
 
-def test_run_skill_review_writes_reports_and_state(tmp_path: Path) -> None:
+def test_read_simple_manifest_flattens_skill_config(tmp_path: Path) -> None:
+    manifest = tmp_path / "manifest.yaml"
+    manifest.write_text(
+        """version: 1
+
+translation:
+  file_path: _posts/2026-06-08-sample-post.md
+
+skills:
+  seo:
+    enabled: false
+    config:
+      primary_keyword: "sample"
+  quality:
+    enabled: true
+"""
+    )
+
+    parsed = read_simple_manifest(manifest)
+
+    assert parsed["translation.file_path"] == "_posts/2026-06-08-sample-post.md"
+    assert parsed["skills.seo.enabled"] == "false"
+    assert parsed["skills.seo.config.primary_keyword"] == "sample"
+    assert parsed["skills.quality.enabled"] == "true"
+
+
+def test_run_skill_review_writes_skill_result_json(tmp_path: Path) -> None:
     target_root = tmp_path / "target"
     translation_file = target_root / "_posts" / "2026-06-08-sample-post.md"
     translation_file.parent.mkdir(parents=True)
@@ -102,10 +130,16 @@ translation:
   file_path: _posts/2026-06-08-sample-post.md
   pr_url: https://github.com/Hugging-Face-KREW/hugging-face-krew.github.io/pull/141
   locale: ko
+
+skills:
+  seo:
+    enabled: true
+  quality:
+    enabled: true
 """
     )
 
-    reports_root = tmp_path / "reports"
+    result_json = tmp_path / "skill-result.json"
     subprocess.run(
         [
             "python3",
@@ -114,42 +148,65 @@ translation:
             str(manifest),
             "--target-root",
             str(target_root),
-            "--reports-root",
-            str(reports_root),
             "--stage",
             "all",
+            "--result-json",
+            str(result_json),
         ],
         cwd=REPO_ROOT,
         check=True,
     )
 
-    report_dir = reports_root / "pr-141"
-    run_state = json.loads((report_dir / "run.json").read_text())
-    assert (report_dir / "seo-report.md").exists()
-    assert (report_dir / "quality-report.md").exists()
-    assert run_state["lifecycle"] == "finished"
-    assert run_state["reports"]["seo"].endswith("seo-report.md")
+    result = json.loads(result_json.read_text())
+    assert result["schema_version"] == "hf.agent.skill_run.v1"
+    assert result["stage"] == "all"
+    assert result["target_repo"] == "Hugging-Face-KREW/hugging-face-krew.github.io"
+    assert [item["skill"]["id"] for item in result["skills"]] == ["seo", "quality"]
+    assert all(item["schema_version"] == "hf.skill.result.v1" for item in result["skills"])
+    assert not (tmp_path / "reports" / "pr-141" / "run.json").exists()
+    assert not (tmp_path / "reports" / "pr-141" / "seo-report.md").exists()
 
 
-def test_comment_body_uses_stable_marker(tmp_path: Path) -> None:
-    report_dir = tmp_path / "reports" / "pr-141"
-    report_dir.mkdir(parents=True)
-    (report_dir / "seo-report.md").write_text("# SEO Report\n\n- PASS: frontmatter title exists\n")
-    (report_dir / "quality-report.md").write_text("# Quality Report\n\n- PASS: translation body is not empty\n")
+def test_comment_body_uses_stable_marker() -> None:
     run_state = {
+        "schema_version": "hf.agent.skill_run.v1",
         "stage": "all",
-        "lifecycle": "finished",
+        "conclusion": "needs_action",
         "translation_file": "_posts/2026-06-08-sample-post.md",
-        "manifest": str(report_dir / "manifest.yaml"),
-        "report_dir": str(report_dir),
+        "manifest": "reports/pr-141/manifest.yaml",
+        "skills": [
+            {
+                "schema_version": "hf.skill.result.v1",
+                "skill": {"id": "seo", "version": "0.1.0"},
+                "conclusion": "pass",
+                "summary": "seo completed with 0 warning(s).",
+                "findings": [],
+            },
+            {
+                "schema_version": "hf.skill.result.v1",
+                "skill": {"id": "quality", "version": "0.1.0"},
+                "conclusion": "needs_action",
+                "summary": "quality completed with 1 warning(s).",
+                "findings": [
+                    {
+                        "severity": "warning",
+                        "path": "_posts/2026-06-08-sample-post.md",
+                        "line": 12,
+                        "message": "translation body is too short",
+                    }
+                ],
+            },
+        ],
     }
 
     body = build_comment_body("Hugging-Face-KREW/hugging-face-krew.github.io", "141", run_state)
 
     assert "<!-- hf-workflow:skill-report repo=Hugging-Face-KREW/hugging-face-krew.github.io pr=141 -->" in body
+    assert "<!-- hf-agent-skill-result-json" in body
     assert "HF Agent Skill Report" in body
-    assert "frontmatter title exists" in body
-    assert "translation body is not empty" in body
+    assert "## seo" in body
+    assert "## quality" in body
+    assert "translation body is too short" in body
 
 
 def test_pr_number_from_url() -> None:

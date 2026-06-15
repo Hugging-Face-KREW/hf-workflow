@@ -16,18 +16,26 @@ def yaml_quote(value: str) -> str:
 
 def read_simple_manifest(path: Path) -> dict[str, str]:
     data: dict[str, str] = {}
-    section = ""
+    parents_by_level: dict[int, str] = {}
     for raw_line in path.read_text().splitlines():
         if not raw_line.strip() or raw_line.lstrip().startswith("- "):
             continue
-        if not raw_line.startswith(" ") and raw_line.endswith(":"):
-            section = raw_line[:-1].strip()
-            continue
-        match = re.match(r"^\s{2}([A-Za-z0-9_]+):\s*(.*)$", raw_line)
+        match = re.match(r"^(?P<indent>\s*)(?P<key>[A-Za-z0-9_-]+):\s*(?P<value>.*)$", raw_line)
         if not match:
             continue
-        key, value = match.groups()
-        data[f"{section}.{key}"] = value.strip().strip('"')
+        indent = len(match.group("indent"))
+        key = match.group("key")
+        value = match.group("value").strip()
+        level = indent // 2
+        for stored_level in list(parents_by_level):
+            if stored_level >= level:
+                del parents_by_level[stored_level]
+
+        parents = [parents_by_level[index] for index in range(level) if index in parents_by_level]
+        dotted = ".".join([*parents, key])
+        data[dotted] = value.strip('"')
+        if value == "":
+            parents_by_level[level] = key
     return data
 
 
@@ -128,17 +136,19 @@ translation:
   pr_url: {pr_url}
   locale: {locale}
 
-handoff:
+skills:
   seo:
     enabled: true
-    primary_keyword: ""
-    secondary_keywords: []
+    config:
+      primary_keyword: ""
+      secondary_keywords: []
   quality:
     enabled: true
-    checks:
-      - fidelity
-      - fluency
-      - terminology
-      - formatting
-      - links
+    config:
+      checks:
+        - fidelity
+        - fluency
+        - terminology
+        - formatting
+        - links
 """

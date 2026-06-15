@@ -21,16 +21,18 @@ translation:
   pr_url: https://github.com/Hugging-Face-KREW/hugging-face-krew.github.io/pull/132
   locale: ko
 
-handoff:
+skills:
   seo:
     enabled: true
-    primary_keyword: ""
-    secondary_keywords: []
+    config:
+      primary_keyword: ""
+      secondary_keywords: []
   quality:
     enabled: true
-    checks:
-      - fidelity
-      - fluency
-      - terminology
-      - formatting
-      - links
+    config:
+      checks:
+        - fidelity
+        - fluency
+        - terminology
+        - formatting
+        - links

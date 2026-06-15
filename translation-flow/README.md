@@ -19,8 +19,8 @@ Those live in `seo-skills` and `quality-skills`.
 
 ## Manifest
 
-The manifest is the handoff artifact. It tells downstream skills which source
-post and translation file to operate on.
+The manifest is the workflow contract. It tells downstream skills which source
+post and translation file to operate on, and which skills are enabled.
 
 See:
 
