@@ -1,0 +1,121 @@
+name: Daily HF Agent Feedback Loop
+
+on:
+  schedule:
+    - cron: "30 0 * * *"
+  workflow_dispatch:
+    inputs:
+      target_repo:
+        description: "Target translation repository in OWNER/REPO form."
+        required: true
+        type: string
+        default: "Hugging-Face-KREW/hugging-face-krew.github.io"
+      pr_number:
+        description: "Optional single PR number. Empty means all open translation PRs with the required label."
+        required: false
+        type: string
+      apply:
+        description: "Apply pending feedback with OpenAI. False means collect-only dry run."
+        required: true
+        type: boolean
+        default: false
+      required_label:
+        description: "Label required for automatic apply/list mode."
+        required: true
+        type: string
+        default: "hf-agent:autopilot"
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  daily-feedback:
+    runs-on: ubuntu-latest
+    env:
+      TARGET_REPO: ${{ inputs.target_repo || 'Hugging-Face-KREW/hugging-face-krew.github.io' }}
+      PR_NUMBER: ${{ inputs.pr_number }}
+      REQUIRED_LABEL: ${{ inputs.required_label || 'hf-agent:autopilot' }}
+      APPLY_FEEDBACK: ${{ github.event_name == 'schedule' || inputs.apply }}
+      BOT_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
+      GH_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: gpt-5-nano
+
+    steps:
+      - name: Checkout hf workflow
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Clone target translation repo
+        run: |
+          if [ -z "${BOT_TOKEN}" ]; then
+            echo "KREW_BOT_TOKEN secret is missing or empty."
+            exit 1
+          fi
+          git clone "https://x-access-token:${BOT_TOKEN}@github.com/${TARGET_REPO}.git" target-repo
+          git -C target-repo config user.email "github-actions[bot]@users.noreply.github.com"
+          git -C target-repo config user.name "github-actions[bot]"
+
+      - name: Resolve target PRs
+        id: prs
+        run: |
+          if [ -n "${PR_NUMBER}" ]; then
+            printf '%s\n' "${PR_NUMBER}" > pr-list.txt
+          else
+            gh pr list \
+              --repo "${TARGET_REPO}" \
+              --state open \
+              --search "Translate Hugging Face blog post" \
+              --json number,labels \
+              --jq ".[] | select([.labels[].name] | index(\"${REQUIRED_LABEL}\")) | .number" \
+              > pr-list.txt
+          fi
+          echo "count=$(wc -l < pr-list.txt | tr -d ' ')" >> "$GITHUB_OUTPUT"
+          cat pr-list.txt
+
+      - name: Run daily feedback loop
+        if: ${{ steps.prs.outputs.count != '0' }}
+        run: |
+          while read -r pr_number; do
+            if [ -z "${pr_number}" ]; then
+              continue
+            fi
+
+            echo "Running daily feedback loop for ${TARGET_REPO}#${pr_number}"
+            git -C target-repo fetch origin main
+            git -C target-repo checkout main
+            git -C target-repo reset --hard origin/main
+            (cd target-repo && gh pr checkout "${pr_number}" --repo "${TARGET_REPO}")
+
+            python3 scripts/hf_agent/build_manifest_from_pr.py \
+              --target-repo "${TARGET_REPO}" \
+              --pr-number "${pr_number}" \
+              --target-root target-repo \
+              --output "reports/pr-${pr_number}/manifest.yaml"
+
+            args=(
+              --target-repo "${TARGET_REPO}"
+              --pr-number "${pr_number}"
+              --target-root target-repo
+              --manifest "reports/pr-${pr_number}/manifest.yaml"
+              --output "reports/pr-${pr_number}/pending-feedback.json"
+              --openai-model "${OPENAI_MODEL}"
+            )
+            if [ "${APPLY_FEEDBACK}" = "true" ]; then
+              args+=(--apply)
+            fi
+            python3 scripts/hf_agent/daily_feedback_loop.py "${args[@]}"
+          done < pr-list.txt
+
+      - name: Upload feedback artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: hf-agent-daily-feedback
+          path: reports/pr-*/pending-feedback.json
+          if-no-files-found: ignore

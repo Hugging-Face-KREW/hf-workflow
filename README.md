@@ -66,6 +66,15 @@ runs the selected skill stage, and optionally upserts a marker-based PR comment.
 Skill output uses `hf.skill.result.v1` JSON inside the comment; markdown report
 files are no longer stored as durable workflow outputs.
 
+Run a daily feedback collection/apply loop with:
+
+```text
+.github/workflows/daily-feedback-loop.yml
+```
+
+Scheduled runs apply only to open translation PRs with `hf-agent:autopilot`.
+Manual runs can target one PR and can run in collect-only mode.
+
 ## Local review replay
 
 Run SEO and quality checks from an existing translation manifest:
