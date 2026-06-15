@@ -6,7 +6,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from hf_agent.daily_feedback_loop import build_pending_report, feedback_comments_from_json
+from hf_agent import daily_feedback_loop
+from hf_agent.daily_feedback_loop import build_pending_report, feedback_comments_from_json, should_apply_label
 from hf_agent.feedback_state import FeedbackState
 
 
@@ -91,3 +92,87 @@ def test_build_pending_report_includes_new_and_edited_feedback() -> None:
     assert statuses == {"issue:1": "edited", "issue:2": "new", "review:9": "new"}
     assert json.dumps(report, ensure_ascii=False)
 
+
+def test_should_apply_label_accepts_required_label() -> None:
+    pr_json = {
+        "labels": [
+            {"name": "translation"},
+            {"name": "hf-agent:autopilot"},
+        ]
+    }
+
+    assert should_apply_label(pr_json, "hf-agent:autopilot")
+    assert not should_apply_label(pr_json, "agent-wip")
+
+
+def test_main_marks_no_change_feedback_as_processed(tmp_path: Path, monkeypatch) -> None:
+    target_root = tmp_path / "target"
+    translation = target_root / "_posts" / "example.md"
+    translation.parent.mkdir(parents=True)
+    translation.write_text("이미 반영된 번역입니다.\n")
+    manifest = tmp_path / "manifest.yaml"
+    manifest.write_text(
+        "\n".join(
+            [
+                "version: 1",
+                "source:",
+                "  url: https://huggingface.co/blog/example",
+                "translation:",
+                "  file_path: _posts/example.md",
+                "",
+            ]
+        )
+    )
+    output = tmp_path / "pending.json"
+    updated_states: list[FeedbackState] = []
+
+    monkeypatch.setattr(
+        daily_feedback_loop,
+        "fetch_pr_json",
+        lambda target_repo, pr_number: {
+            "url": "https://github.com/o/r/pull/1",
+            "labels": [{"name": "hf-agent:autopilot"}],
+            "comments": [
+                {
+                    "id": "1",
+                    "author": {"login": "reviewer"},
+                    "body": "이미 반영된 것 같습니다.",
+                    "createdAt": "2026-06-15T00:00:00Z",
+                    "updatedAt": "2026-06-15T00:00:00Z",
+                }
+            ],
+        },
+    )
+    monkeypatch.setattr(daily_feedback_loop, "fetch_review_comments", lambda target_repo, pr_number: [])
+    monkeypatch.setattr(daily_feedback_loop, "rewrite_with_openai", lambda prompt, model: translation.read_text())
+    monkeypatch.setattr(
+        daily_feedback_loop,
+        "upsert_state_comment",
+        lambda target_repo, pr_number, state: updated_states.append(state),
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "daily_feedback_loop.py",
+            "--target-repo",
+            "o/r",
+            "--pr-number",
+            "1",
+            "--target-root",
+            str(target_root),
+            "--manifest",
+            str(manifest),
+            "--output",
+            str(output),
+            "--apply",
+            "--required-label",
+            "hf-agent:autopilot",
+        ],
+    )
+
+    assert daily_feedback_loop.main() == 0
+
+    assert json.loads(output.read_text())["pending_count"] == 1
+    assert updated_states
+    assert updated_states[0].processed_comments["issue:1"]["status"] == "no_changes"

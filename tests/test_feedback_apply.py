@@ -5,7 +5,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from hf_agent.feedback_apply import build_feedback_prompt, mark_feedback_applied
+from hf_agent.feedback_apply import build_feedback_prompt, mark_feedback_processed
 from hf_agent.feedback_state import FeedbackComment, FeedbackState, PendingFeedback, stable_body_hash
 
 
@@ -52,7 +52,7 @@ def test_build_feedback_prompt_contains_manifest_file_and_comments() -> None:
     assert "Return only the full updated markdown" in prompt
 
 
-def test_mark_feedback_applied_records_hashes_and_sha() -> None:
+def test_mark_feedback_processed_records_hashes_sha_and_status() -> None:
     state = FeedbackState()
     pending = [
         PendingFeedback(
@@ -69,11 +69,12 @@ def test_mark_feedback_applied_records_hashes_and_sha() -> None:
         )
     ]
 
-    updated = mark_feedback_applied(
+    updated = mark_feedback_processed(
         state,
         pending,
         applied_sha="abc123",
         run_at="2026-06-15T01:00:00Z",
+        status="applied",
     )
 
     assert updated.last_applied_sha == "abc123"
@@ -81,3 +82,32 @@ def test_mark_feedback_applied_records_hashes_and_sha() -> None:
     assert updated.processed_comments["issue:2"]["body_hash"] == stable_body_hash("반영할 피드백")
     assert updated.processed_comments["issue:2"]["status"] == "applied"
 
+
+def test_mark_feedback_processed_allows_no_changes_without_sha() -> None:
+    pending = [
+        PendingFeedback(
+            key="review:3",
+            status="new",
+            comment=FeedbackComment(
+                kind="review",
+                comment_id="3",
+                author="reviewer",
+                body="이미 반영된 것 같습니다.",
+                created_at="2026-06-15T00:00:00Z",
+                updated_at="2026-06-15T00:00:00Z",
+                path="_posts/example.md",
+                line=12,
+            ),
+        )
+    ]
+
+    updated = mark_feedback_processed(
+        FeedbackState(),
+        pending,
+        applied_sha="",
+        run_at="2026-06-15T01:00:00Z",
+        status="no_changes",
+    )
+
+    assert updated.last_applied_sha == ""
+    assert updated.processed_comments["review:3"]["status"] == "no_changes"

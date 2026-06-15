@@ -71,6 +71,12 @@ def state_from_pr_comments(pr_json: dict[str, Any]) -> FeedbackState:
     return FeedbackState()
 
 
+def should_apply_label(pr_json: dict[str, Any], required_label: str) -> bool:
+    if not required_label:
+        return True
+    return required_label in {str(item.get("name") or "") for item in pr_json.get("labels") or []}
+
+
 def build_pending_report(
     *,
     target_repo: str,
@@ -142,6 +148,7 @@ def main() -> int:
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--required-label", default="")
     parser.add_argument("--openai-model", default="gpt-5-nano")
     args = parser.parse_args()
 
@@ -154,6 +161,10 @@ def main() -> int:
         raise FileNotFoundError(f"Translation file does not exist: {translation_path}")
 
     pr_json = fetch_pr_json(args.target_repo, args.pr_number)
+    if args.apply and args.required_label and not should_apply_label(pr_json, args.required_label):
+        print(f"Skipping apply because PR does not have required label: {args.required_label}")
+        args.apply = False
+
     review_comments = fetch_review_comments(args.target_repo, args.pr_number)
     comments = feedback_comments_from_json(pr_json, review_comments)
     state = state_from_pr_comments(pr_json)
@@ -174,11 +185,22 @@ def main() -> int:
     if not args.apply or not pending:
         return 0
 
+    run_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
     markdown = translation_path.read_text()
     prompt = build_feedback_prompt(manifest=manifest, markdown=markdown, pending=pending)
     updated = rewrite_with_openai(prompt, args.openai_model)
     if updated == markdown:
         print("Feedback application produced no changes.")
+        from hf_agent.feedback_apply import mark_feedback_processed
+
+        updated_state = mark_feedback_processed(
+            state,
+            pending,
+            applied_sha="",
+            run_at=run_at,
+            status="no_changes",
+        )
+        upsert_state_comment(args.target_repo, args.pr_number, updated_state)
         return 0
 
     translation_path.write_text(updated)
@@ -199,7 +221,7 @@ def main() -> int:
         state,
         pending,
         applied_sha=applied_sha,
-        run_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        run_at=run_at,
     )
     upsert_state_comment(args.target_repo, args.pr_number, updated_state)
     return 0
@@ -207,4 +229,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

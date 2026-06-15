@@ -59,12 +59,13 @@ def build_feedback_prompt(
     )
 
 
-def mark_feedback_applied(
+def mark_feedback_processed(
     state: FeedbackState,
     pending: list[PendingFeedback],
     *,
     applied_sha: str,
     run_at: str,
+    status: str,
 ) -> FeedbackState:
     processed = dict(state.processed_comments)
     for item in pending:
@@ -72,13 +73,29 @@ def mark_feedback_applied(
             "body_hash": stable_body_hash(item.body),
             "updated_at": item.comment.updated_at,
             "applied_sha": applied_sha,
-            "status": "applied",
+            "status": status,
         }
     return replace(
         state,
         last_run_at=run_at,
         last_applied_sha=applied_sha,
         processed_comments=processed,
+    )
+
+
+def mark_feedback_applied(
+    state: FeedbackState,
+    pending: list[PendingFeedback],
+    *,
+    applied_sha: str,
+    run_at: str,
+) -> FeedbackState:
+    return mark_feedback_processed(
+        state,
+        pending,
+        applied_sha=applied_sha,
+        run_at=run_at,
+        status="applied",
     )
 
 
@@ -112,4 +129,3 @@ def rewrite_with_openai(prompt: str, model: str) -> str:
     if not text:
         raise RuntimeError("OpenAI returned an empty feedback application.")
     return text
-

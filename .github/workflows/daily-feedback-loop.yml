@@ -30,6 +30,10 @@ permissions:
   issues: write
   pull-requests: write
 
+concurrency:
+  group: hf-agent-feedback-${{ github.event.inputs.target_repo || 'Hugging-Face-KREW/hugging-face-krew.github.io' }}-${{ github.event.inputs.pr_number || 'all' }}
+  cancel-in-progress: false
+
 jobs:
   daily-feedback:
     runs-on: ubuntu-latest
@@ -105,6 +109,7 @@ jobs:
               --target-root target-repo
               --manifest "reports/pr-${pr_number}/manifest.yaml"
               --output "reports/pr-${pr_number}/pending-feedback.json"
+              --required-label "${REQUIRED_LABEL}"
               --openai-model "${OPENAI_MODEL}"
             )
             if [ "${APPLY_FEEDBACK}" = "true" ]; then
