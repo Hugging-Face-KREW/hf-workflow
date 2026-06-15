@@ -25,7 +25,7 @@ post and translation file to operate on.
 See:
 
 - `docs/manifest.md`
-- `manifests/example.yaml`
+- `../reports/pr-XXX/manifest.yaml`
 
 ## Initial command shape
 
@@ -68,7 +68,7 @@ uv run python scripts/create_translation_pr.py \
   --translator openai \
   --no-pr \
   --no-push \
-  --output-manifest manifests/2026-05-11-example.yaml
+  --output-manifest ../reports/pr-local-example/manifest.yaml
 ```
 
 Open a PR by omitting `--no-pr` and `--no-push`. This requires a configured

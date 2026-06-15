@@ -17,7 +17,6 @@ translation file, branch, and PR they should work on.
 
 ```text
 translation-flow/
-  manifests/
   scripts/
   docs/
 
@@ -52,7 +51,7 @@ Run SEO and quality checks from an existing translation manifest:
 
 ```bash
 python3 scripts/run_local_review.py \
-  --manifest translation-flow/manifests/2026-05-11-machinacheck.local.yaml \
+  --manifest reports/pr-130/manifest.yaml \
   --target-root hugging-face-krew.github.io
 ```
 

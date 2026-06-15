@@ -10,9 +10,13 @@ from scripts.create_translation_pr import (
     build_translation_markdown,
     create_or_update_branch,
     create_pr,
+    default_manifest_path,
     html_to_markdown,
     main,
+    manifest_path_for_pr,
     parse_feed,
+    pr_number_from_url,
+    resolve_manifest_write_path,
     run_cmd,
     select_posts,
     slug_from_url,
@@ -94,6 +98,27 @@ def test_select_posts_by_local_timezone_date() -> None:
 
 def test_slug_from_url() -> None:
     assert slug_from_url("https://huggingface.co/blog/Transformers-to-MLX?x=1") == "transformers-to-mlx"
+
+
+def test_manifest_paths_use_reports_directory(monkeypatch, tmp_path: Path) -> None:
+    post = FeedPost(
+        "Example",
+        "https://huggingface.co/blog/example",
+        datetime(2026, 5, 11, tzinfo=timezone.utc),
+        "example",
+    )
+
+    fallback = default_manifest_path(post, date(2026, 5, 11))
+
+    assert fallback == Path("reports/2026-05-11-example/manifest.yaml")
+    assert pr_number_from_url("https://github.com/o/r/pull/143") == "143"
+    assert manifest_path_for_pr("https://github.com/o/r/pull/143", fallback) == Path("reports/pr-143/manifest.yaml")
+
+    workdir = tmp_path / "translation-flow"
+    workdir.mkdir()
+    monkeypatch.chdir(workdir)
+
+    assert resolve_manifest_write_path(Path("reports/pr-143/manifest.yaml")) == Path("../reports/pr-143/manifest.yaml")
 
 
 def test_build_translation_markdown_preserves_source_metadata() -> None:
