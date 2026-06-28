@@ -9,6 +9,9 @@ from pathlib import Path
 from typing import Any
 
 
+DISCORD_USER_AGENT = "DiscordBot (https://github.com/Hugging-Face-KREW/hf-workflow, 1.0)"
+
+
 def build_discord_payload(summary: dict[str, Any]) -> dict[str, str] | None:
     created = [
         result
@@ -49,7 +52,10 @@ def notify_discord(webhook_url: str, summary_path: Path) -> int:
     request = urllib.request.Request(
         webhook_url,
         data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
+        headers={
+            "Content-Type": "application/json",
+            "User-Agent": DISCORD_USER_AGENT,
+        },
         method="POST",
     )
     try:

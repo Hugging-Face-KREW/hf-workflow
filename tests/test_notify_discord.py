@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from notify_discord import build_discord_payload, notify_discord
+from notify_discord import DISCORD_USER_AGENT, build_discord_payload, notify_discord
 
 
 def test_build_discord_payload_uses_created_prs_only() -> None:
@@ -37,7 +37,8 @@ def test_notify_discord_treats_http_error_as_non_blocking(tmp_path: Path, monkey
         )
     )
 
-    def raise_forbidden(*args, **kwargs):
+    def raise_forbidden(request, *args, **kwargs):
+        assert request.get_header("User-agent") == DISCORD_USER_AGENT
         raise urllib.error.HTTPError(
             url="https://discord.example/webhook",
             code=403,
