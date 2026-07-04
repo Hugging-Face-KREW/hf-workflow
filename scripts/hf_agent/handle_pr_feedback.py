@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import argparse
 import difflib
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Literal
@@ -149,3 +151,56 @@ def apply_feedback(
     if result.disposition == "actionable":
         post_path.write_text(result.content)
     return result
+
+
+def call_openai(prompt: str, *, model: str, client: Any | None = None) -> str:
+    if client is None:
+        from openai import OpenAI
+
+        client = OpenAI()
+    response = client.responses.create(
+        input=prompt,
+        instructions="Return valid JSON only.",
+        model=model,
+    )
+    output = response.output_text.strip()
+    if not output:
+        raise RuntimeError("OpenAI returned an empty feedback response")
+    return output
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Apply one trusted PR feedback item.")
+    parser.add_argument("--target-root", type=Path, required=True)
+    parser.add_argument("--file", required=True)
+    parser.add_argument("--feedback", required=True)
+    parser.add_argument("--result-json", type=Path, required=True)
+    parser.add_argument("--max-changed-lines", type=int, default=200)
+    parser.add_argument("--model", default=os.getenv("OPENAI_MODEL", "gpt-5-nano"))
+    args = parser.parse_args()
+    result = apply_feedback(
+        target_root=args.target_root,
+        file_path=args.file,
+        feedback=args.feedback,
+        max_changed_lines=args.max_changed_lines,
+        model_call=lambda prompt: call_openai(prompt, model=args.model),
+    )
+    args.result_json.parent.mkdir(parents=True, exist_ok=True)
+    args.result_json.write_text(
+        json.dumps(
+            {
+                "changed": result.disposition == "actionable",
+                "disposition": result.disposition,
+                "reason": result.reason,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
+    )
+    print(f"Feedback disposition: {result.disposition} ({result.reason})")
+    return 0 if result.disposition != "needs-human" else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

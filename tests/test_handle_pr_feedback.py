@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from hf_agent.handle_pr_feedback import (
     apply_feedback,
     apply_model_response,
+    call_openai,
     parse_feedback_event,
     resolve_translation_path,
 )
@@ -157,3 +158,25 @@ def test_apply_feedback_does_not_write_for_a_question(tmp_path: Path) -> None:
 
     assert result.disposition == "no-change"
     assert post.read_text() == "Original\n"
+
+
+def test_call_openai_requests_one_json_response() -> None:
+    calls = []
+
+    class Responses:
+        def create(self, **kwargs):
+            calls.append(kwargs)
+            return type("Response", (), {"output_text": '{"disposition":"no-change","reason":"ok"}'})()
+
+    client = type("Client", (), {"responses": Responses()})()
+
+    output = call_openai("prompt", model="gpt-test", client=client)
+
+    assert json.loads(output)["disposition"] == "no-change"
+    assert calls == [
+        {
+            "input": "prompt",
+            "instructions": "Return valid JSON only.",
+            "model": "gpt-test",
+        }
+    ]
