@@ -1,0 +1,113 @@
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+import pytest
+
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+
+from hf_agent.handle_pr_feedback import (
+    apply_model_response,
+    parse_feedback_event,
+    resolve_translation_path,
+)
+
+
+def test_parse_trusted_issue_comment() -> None:
+    payload = {
+        "action": "created",
+        "comment": {
+            "id": 42,
+            "body": "Keep the API name in English.",
+            "user": {"login": "reviewer", "type": "User"},
+        },
+        "issue": {
+            "number": 161,
+            "state": "open",
+            "pull_request": {"url": "https://api.github.com/pulls/161"},
+            "labels": [{"name": "hf-agent:managed"}],
+        },
+    }
+
+    feedback = parse_feedback_event("issue_comment", payload, permission="write")
+
+    assert feedback.pr_number == 161
+    assert feedback.comment_id == "42"
+    assert feedback.body == "Keep the API name in English."
+
+
+@pytest.mark.parametrize("permission", ["read", "triage", "none"])
+def test_parse_feedback_rejects_untrusted_permissions(permission: str) -> None:
+    payload = {
+        "action": "created",
+        "comment": {"id": 1, "body": "Change it", "user": {"login": "reader", "type": "User"}},
+        "issue": {
+            "number": 1,
+            "state": "open",
+            "pull_request": {},
+            "labels": [{"name": "hf-agent:managed"}],
+        },
+    }
+
+    with pytest.raises(ValueError, match="trusted reviewer"):
+        parse_feedback_event("issue_comment", payload, permission=permission)
+
+
+def test_parse_feedback_rejects_paused_and_bot_events() -> None:
+    payload = {
+        "action": "created",
+        "comment": {
+            "id": 1,
+            "body": "<!-- hf-agent-report -->",
+            "user": {"login": "github-actions[bot]", "type": "Bot"},
+        },
+        "issue": {
+            "number": 1,
+            "state": "open",
+            "pull_request": {},
+            "labels": [
+                {"name": "hf-agent:managed"},
+                {"name": "hf-agent:paused"},
+            ],
+        },
+    }
+
+    with pytest.raises(ValueError):
+        parse_feedback_event("issue_comment", payload, permission="write")
+
+
+def test_resolve_translation_path_rejects_traversal(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="translation post"):
+        resolve_translation_path(tmp_path, "../.github/workflows/pwn.yml")
+
+
+def test_apply_model_response_accepts_a_small_actionable_change() -> None:
+    original = "# Title\n\nUse Foo api.\n"
+    response = json.dumps(
+        {
+            "disposition": "actionable",
+            "reason": "Preserve the official API spelling.",
+            "content": "# Title\n\nUse Foo API.\n",
+        }
+    )
+
+    result = apply_model_response(original, response, max_changed_lines=10)
+
+    assert result.disposition == "actionable"
+    assert result.content.endswith("Foo API.\n")
+
+
+def test_apply_model_response_rejects_large_changes() -> None:
+    response = json.dumps(
+        {
+            "disposition": "actionable",
+            "reason": "Rewrite everything.",
+            "content": "\n".join(f"new {index}" for index in range(20)),
+        }
+    )
+
+    with pytest.raises(ValueError, match="changed-line limit"):
+        apply_model_response("one line\n", response, max_changed_lines=5)
