@@ -10,6 +10,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from hf_agent.handle_pr_feedback import (
+    apply_feedback,
     apply_model_response,
     parse_feedback_event,
     resolve_translation_path,
@@ -111,3 +112,48 @@ def test_apply_model_response_rejects_large_changes() -> None:
 
     with pytest.raises(ValueError, match="changed-line limit"):
         apply_model_response("one line\n", response, max_changed_lines=5)
+
+
+def test_apply_feedback_writes_only_the_selected_post(tmp_path: Path) -> None:
+    post = tmp_path / "_posts" / "post.md"
+    post.parent.mkdir()
+    post.write_text("# Title\n\nUse Foo api.\n")
+
+    result = apply_feedback(
+        target_root=tmp_path,
+        file_path="_posts/post.md",
+        feedback="Keep the official API spelling.",
+        max_changed_lines=10,
+        model_call=lambda prompt: json.dumps(
+            {
+                "disposition": "actionable",
+                "reason": "Preserve the product spelling.",
+                "content": "# Title\n\nUse Foo API.\n",
+            }
+        ),
+    )
+
+    assert result.disposition == "actionable"
+    assert post.read_text().endswith("Foo API.\n")
+
+
+def test_apply_feedback_does_not_write_for_a_question(tmp_path: Path) -> None:
+    post = tmp_path / "_posts" / "post.md"
+    post.parent.mkdir()
+    post.write_text("Original\n")
+
+    result = apply_feedback(
+        target_root=tmp_path,
+        file_path="_posts/post.md",
+        feedback="Why was this term retained?",
+        max_changed_lines=10,
+        model_call=lambda prompt: json.dumps(
+            {
+                "disposition": "no-change",
+                "reason": "The term is an official product name.",
+            }
+        ),
+    )
+
+    assert result.disposition == "no-change"
+    assert post.read_text() == "Original\n"
