@@ -15,6 +15,7 @@ from hf_agent.handle_pr_feedback import (
     call_openai,
     parse_feedback_event,
     resolve_translation_path,
+    route_feedback,
 )
 
 
@@ -180,3 +181,42 @@ def test_call_openai_requests_one_json_response() -> None:
             "model": "gpt-test",
         }
     ]
+
+
+def test_route_feedback_marks_the_current_head_pending() -> None:
+    payload = {
+        "action": "created",
+        "comment": {
+            "id": 42,
+            "body": "Keep the API name in English.",
+            "user": {"login": "reviewer", "type": "User"},
+        },
+        "issue": {
+            "number": 161,
+            "state": "open",
+            "pull_request": {},
+            "labels": [{"name": "hf-agent:managed"}],
+        },
+    }
+    statuses = []
+
+    def requester(method, path, token, payload=None):
+        if path.endswith("/collaborators/reviewer/permission"):
+            return {"permission": "write"}
+        if path.endswith("/pulls/161"):
+            return {"head": {"sha": "current-sha"}}
+        raise AssertionError(path)
+
+    context = route_feedback(
+        event_name="issue_comment",
+        payload=payload,
+        repository="owner/repo",
+        token="token",
+        requester=requester,
+        status_publisher=lambda **status: statuses.append(status),
+    )
+
+    assert context["head_sha"] == "current-sha"
+    assert context["pr_number"] == 161
+    assert statuses[0]["state"] == "pending"
+    assert statuses[0]["sha"] == "current-sha"

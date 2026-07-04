@@ -8,6 +8,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Literal
 
+from hf_agent.github_api import Requester, publish_commit_status, request_json
+
 
 Disposition = Literal["actionable", "addressed", "no-change", "needs-human"]
 TRUSTED_PERMISSIONS = {"write", "maintain", "admin"}
@@ -30,6 +32,7 @@ class ApplyResult:
 
 
 ModelCall = Callable[[str], str]
+StatusPublisher = Callable[..., None]
 
 
 def parse_feedback_event(
@@ -74,6 +77,52 @@ def parse_feedback_event(
         author=str(author["login"]),
         body=body,
     )
+
+
+def route_feedback(
+    *,
+    event_name: str,
+    payload: dict[str, Any],
+    repository: str,
+    token: str,
+    requester: Requester = request_json,
+    status_publisher: StatusPublisher = publish_commit_status,
+) -> dict[str, Any]:
+    comment = payload.get("review") or payload.get("comment") or {}
+    author = str(comment.get("user", {}).get("login", ""))
+    permission_result = requester(
+        "GET",
+        f"/repos/{repository}/collaborators/{author}/permission",
+        token,
+        None,
+    )
+    feedback = parse_feedback_event(
+        event_name,
+        payload,
+        permission=str(permission_result.get("permission", "none")),
+    )
+    pull_request = requester(
+        "GET",
+        f"/repos/{repository}/pulls/{feedback.pr_number}",
+        token,
+        None,
+    )
+    head_sha = str(pull_request["head"]["sha"])
+    status_publisher(
+        repository=repository,
+        sha=head_sha,
+        state="pending",
+        description="Reviewing trusted feedback",
+        token=token,
+        target_url="",
+    )
+    return {
+        "author": feedback.author,
+        "body": feedback.body,
+        "comment_id": feedback.comment_id,
+        "head_sha": head_sha,
+        "pr_number": feedback.pr_number,
+    }
 
 
 def resolve_translation_path(target_root: Path, file_path: str) -> Path:
