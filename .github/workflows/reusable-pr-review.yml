@@ -1,0 +1,131 @@
+name: Reusable HF Agent PR Review
+
+on:
+  workflow_call:
+    inputs:
+      target_repo:
+        required: true
+        type: string
+      pr_number:
+        required: true
+        type: string
+      head_sha:
+        required: true
+        type: string
+      file_path:
+        required: true
+        type: string
+      workflow_ref:
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      target_repo:
+        required: true
+        type: string
+      pr_number:
+        required: true
+        type: string
+      head_sha:
+        required: true
+        type: string
+      file_path:
+        required: true
+        type: string
+      workflow_ref:
+        required: true
+        default: main
+        type: string
+
+jobs:
+  review:
+    name: HF Agent / ${{ matrix.skill }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        skill: [seo, quality]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout workflow tools
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: Hugging-Face-KREW/hf-workflow
+          ref: ${{ inputs.workflow_ref }}
+          path: workflow
+
+      - name: Checkout candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: ${{ inputs.target_repo }}
+          ref: ${{ inputs.head_sha }}
+          path: target
+
+      - name: Set up Python
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        with:
+          python-version: "3.11"
+
+      - name: Install review dependencies
+        run: python -m pip install pyyaml
+
+      - name: Run review skill
+        working-directory: workflow
+        run: >-
+          python scripts/hf_agent/run_skill_review.py
+          --skill "${{ matrix.skill }}"
+          --file "${{ inputs.file_path }}"
+          --target-root ../target
+          --report "${{ runner.temp }}/${{ matrix.skill }}.md"
+          --result-json "${{ runner.temp }}/${{ matrix.skill }}.json"
+
+      - name: Upload review result
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hf-agent-${{ matrix.skill }}-${{ inputs.head_sha }}
+          path: |
+            ${{ runner.temp }}/${{ matrix.skill }}.md
+            ${{ runner.temp }}/${{ matrix.skill }}.json
+
+  verifier:
+    name: HF Agent / Independent Verifier
+    needs: review
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout workflow tools
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: Hugging-Face-KREW/hf-workflow
+          ref: ${{ inputs.workflow_ref }}
+          path: workflow
+
+      - name: Checkout exact candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: ${{ inputs.target_repo }}
+          ref: ${{ inputs.head_sha }}
+          path: target
+
+      - name: Set up Python
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        with:
+          python-version: "3.11"
+
+      - name: Install review dependencies
+        run: python -m pip install pyyaml
+
+      - name: Verify candidate independently
+        working-directory: workflow
+        run: |
+          for skill in seo quality; do
+            python scripts/hf_agent/run_skill_review.py \
+              --skill "$skill" \
+              --file "${{ inputs.file_path }}" \
+              --target-root ../target \
+              --report "${{ runner.temp }}/verify-$skill.md" \
+              --result-json "${{ runner.temp }}/verify-$skill.json"
+          done
