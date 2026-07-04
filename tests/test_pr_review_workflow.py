@@ -28,3 +28,14 @@ def test_verifier_is_read_only_and_waits_for_reviews() -> None:
 
     assert "verifier:" in workflow
     assert "needs: review" in workflow
+
+
+def test_report_and_finalizer_run_after_failures() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "report:" in workflow
+    assert "name: HF Agent / Publish Report" in workflow
+    assert "finalize:" in workflow
+    assert "name: HF Agent / Finalize Lifecycle" in workflow
+    assert workflow.count("if: ${{ always() }}") >= 3
+    assert "statuses: write" in workflow

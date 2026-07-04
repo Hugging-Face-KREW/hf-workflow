@@ -18,6 +18,10 @@ on:
       workflow_ref:
         required: true
         type: string
+      feedback_revision:
+        required: false
+        default: ""
+        type: string
   workflow_dispatch:
     inputs:
       target_repo:
@@ -35,6 +39,10 @@ on:
       workflow_ref:
         required: true
         default: main
+        type: string
+      feedback_revision:
+        required: false
+        default: ""
         type: string
 
 jobs:
@@ -129,3 +137,79 @@ jobs:
               --report "${{ runner.temp }}/verify-$skill.md" \
               --result-json "${{ runner.temp }}/verify-$skill.json"
           done
+
+  report:
+    name: HF Agent / Publish Report
+    if: ${{ always() }}
+    needs: [review, verifier]
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout workflow tools
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: Hugging-Face-KREW/hf-workflow
+          ref: ${{ inputs.workflow_ref }}
+          path: workflow
+
+      - name: Download review results
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          path: results
+
+      - name: Publish marker report
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PYTHONPATH: workflow/scripts
+        run: >-
+          python -m hf_agent.publish_pr_comment
+          --results results
+          --repository "${{ inputs.target_repo }}"
+          --pr-number "${{ inputs.pr_number }}"
+          --head-sha "${{ inputs.head_sha }}"
+
+  finalize:
+    name: HF Agent / Finalize Lifecycle
+    if: ${{ always() }}
+    needs: [review, verifier, report]
+    permissions:
+      contents: read
+      statuses: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout workflow tools
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: Hugging-Face-KREW/hf-workflow
+          ref: ${{ inputs.workflow_ref }}
+          path: workflow
+
+      - name: Build reviewed snapshot
+        run: >-
+          jq -n
+          --arg head_sha "${{ inputs.head_sha }}"
+          --arg feedback_revision "${{ inputs.feedback_revision }}"
+          --arg expected_head_sha "${{ inputs.head_sha }}"
+          --arg expected_feedback_revision "${{ inputs.feedback_revision }}"
+          --argjson gates_passed "${{ needs.review.result == 'success' }}"
+          --argjson verifier_passed "${{ needs.verifier.result == 'success' }}"
+          --argjson report_published "${{ needs.report.result == 'success' }}"
+          '{head_sha: $head_sha, feedback_revision: $feedback_revision,
+          expected_head_sha: $expected_head_sha,
+          expected_feedback_revision: $expected_feedback_revision,
+          gates_passed: $gates_passed, verifier_passed: $verifier_passed,
+          report_published: $report_published}'
+          > "${{ runner.temp }}/snapshot.json"
+
+      - name: Publish lifecycle status
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PYTHONPATH: workflow/scripts
+        run: >-
+          python -m hf_agent.finalize_pr
+          --snapshot "${{ runner.temp }}/snapshot.json"
+          --repository "${{ inputs.target_repo }}"
+          --target-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
