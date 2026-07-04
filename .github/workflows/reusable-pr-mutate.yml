@@ -57,6 +57,7 @@ jobs:
         with:
           repository: Hugging-Face-KREW/hf-workflow
           ref: ${{ inputs.workflow_ref }}
+          token: ${{ secrets.KREW_BOT_TOKEN }}
           path: workflow
 
       - name: Checkout candidate

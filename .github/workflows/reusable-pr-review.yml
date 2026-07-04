@@ -33,7 +33,7 @@ on:
       DISCORD_WEBHOOK_URL:
         required: false
       KREW_BOT_TOKEN:
-        required: false
+        required: true
       OPENAI_API_KEY:
         required: false
   workflow_dispatch:
@@ -82,6 +82,7 @@ jobs:
         with:
           repository: Hugging-Face-KREW/hf-workflow
           ref: ${{ inputs.workflow_ref }}
+          token: ${{ secrets.KREW_BOT_TOKEN }}
           path: workflow
 
       - name: Checkout candidate
@@ -130,6 +131,7 @@ jobs:
         with:
           repository: Hugging-Face-KREW/hf-workflow
           ref: ${{ inputs.workflow_ref }}
+          token: ${{ secrets.KREW_BOT_TOKEN }}
           path: workflow
 
       - name: Checkout exact candidate
@@ -174,6 +176,7 @@ jobs:
         with:
           repository: Hugging-Face-KREW/hf-workflow
           ref: ${{ inputs.workflow_ref }}
+          token: ${{ secrets.KREW_BOT_TOKEN }}
           path: workflow
 
       - name: Download review results
@@ -206,6 +209,7 @@ jobs:
         with:
           repository: Hugging-Face-KREW/hf-workflow
           ref: ${{ inputs.workflow_ref }}
+          token: ${{ secrets.KREW_BOT_TOKEN }}
           path: workflow
 
       - name: Count unresolved review threads
@@ -245,6 +249,7 @@ jobs:
         with:
           repository: Hugging-Face-KREW/hf-workflow
           ref: ${{ inputs.workflow_ref }}
+          token: ${{ secrets.KREW_BOT_TOKEN }}
           path: workflow
 
       - name: Checkout failed candidate
@@ -348,6 +353,7 @@ jobs:
         with:
           repository: Hugging-Face-KREW/hf-workflow
           ref: ${{ inputs.workflow_ref }}
+          token: ${{ secrets.KREW_BOT_TOKEN }}
           path: workflow
 
       - name: Build reviewed snapshot
@@ -393,6 +399,7 @@ jobs:
         with:
           repository: Hugging-Face-KREW/hf-workflow
           ref: ${{ inputs.workflow_ref }}
+          token: ${{ secrets.KREW_BOT_TOKEN }}
           path: workflow
 
       - name: Request human merge approval

@@ -69,3 +69,9 @@ def test_failed_gates_trigger_a_bounded_repair() -> None:
     assert "python -m hf_agent.repair_gates" in workflow
     assert "🐛 Repair failed PR gates" in workflow
     assert "steps.verify.outcome == 'failure'" in workflow
+
+
+def test_private_workflow_checkout_uses_the_bot_token() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert workflow.count("token: ${{ secrets.KREW_BOT_TOKEN }}") >= 5

@@ -36,3 +36,9 @@ def test_mutation_workflow_resolves_handled_inline_threads() -> None:
     assert "Resolve the handled review thread" in workflow
     assert "--resolve-comment-id" in workflow
     assert "steps.apply.outputs.disposition != 'needs-human'" in workflow
+
+
+def test_private_workflow_checkout_uses_the_bot_token() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "token: ${{ secrets.KREW_BOT_TOKEN }}" in workflow
