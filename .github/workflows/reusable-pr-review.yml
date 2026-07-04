@@ -15,6 +15,9 @@ on:
       file_path:
         required: true
         type: string
+      branch:
+        required: true
+        type: string
       workflow_ref:
         required: true
         type: string
@@ -22,8 +25,16 @@ on:
         required: false
         default: ""
         type: string
+      max_repair_attempts:
+        required: false
+        default: 3
+        type: number
     secrets:
       DISCORD_WEBHOOK_URL:
+        required: false
+      KREW_BOT_TOKEN:
+        required: false
+      OPENAI_API_KEY:
         required: false
   workflow_dispatch:
     inputs:
@@ -39,6 +50,9 @@ on:
       file_path:
         required: true
         type: string
+      branch:
+        required: true
+        type: string
       workflow_ref:
         required: true
         default: main
@@ -47,6 +61,10 @@ on:
         required: false
         default: ""
         type: string
+      max_repair_attempts:
+        required: false
+        default: 3
+        type: number
 
 jobs:
   review:
@@ -204,10 +222,122 @@ jobs:
           echo "count=$count" >> "$GITHUB_OUTPUT"
           test "$count" -eq 0
 
+  repair:
+    name: HF Agent / Repair Failed Gates
+    if: ${{ always() && needs.review.result == 'failure' }}
+    needs: [review, verifier, report]
+    permissions:
+      actions: read
+      contents: read
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      PYTHONPATH: workflow/scripts
+    steps:
+      - name: Require mutation secrets
+        run: |
+          test -n "$GITHUB_TOKEN"
+          test -n "$OPENAI_API_KEY"
+
+      - name: Checkout workflow tools
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: Hugging-Face-KREW/hf-workflow
+          ref: ${{ inputs.workflow_ref }}
+          path: workflow
+
+      - name: Checkout failed candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: ${{ inputs.target_repo }}
+          ref: ${{ inputs.head_sha }}
+          token: ${{ secrets.KREW_BOT_TOKEN }}
+          path: target
+
+      - name: Download gate reports
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          path: results
+
+      - name: Prepare bounded repair
+        id: prepare
+        run: |
+          python -m hf_agent.repair_gates \
+            --results results \
+            --repository "${{ inputs.target_repo }}" \
+            --pr-number "${{ inputs.pr_number }}" \
+            --max-attempts "${{ inputs.max_repair_attempts }}" \
+            --feedback-file "${{ runner.temp }}/gate-feedback.txt" \
+            --result-json "${{ runner.temp }}/repair.json"
+          echo "allowed=$(jq -r .allowed "${{ runner.temp }}/repair.json")" >> "$GITHUB_OUTPUT"
+
+      - name: Stop exhausted autopilot
+        if: steps.prepare.outputs.allowed != 'true'
+        run: |
+          gh pr edit "${{ inputs.pr_number }}" --repo "${{ inputs.target_repo }}" \
+            --add-label "hf-agent:needs-human"
+          exit 1
+
+      - name: Install repair dependencies
+        if: steps.prepare.outputs.allowed == 'true'
+        run: python -m pip install openai pyyaml
+
+      - name: Apply failed gate reports
+        id: apply
+        if: steps.prepare.outputs.allowed == 'true'
+        run: |
+          feedback=$(<"${{ runner.temp }}/gate-feedback.txt")
+          python -m hf_agent.handle_pr_feedback \
+            --target-root target \
+            --file "${{ inputs.file_path }}" \
+            --feedback "$feedback" \
+            --result-json "${{ runner.temp }}/repair-result.json"
+          echo "changed=$(jq -r .changed "${{ runner.temp }}/repair-result.json")" >> "$GITHUB_OUTPUT"
+          echo "disposition=$(jq -r .disposition "${{ runner.temp }}/repair-result.json")" >> "$GITHUB_OUTPUT"
+
+      - name: Stop non-actionable repair
+        if: ${{ steps.prepare.outputs.allowed == 'true' && steps.apply.outputs.changed != 'true' }}
+        run: |
+          gh pr edit "${{ inputs.pr_number }}" --repo "${{ inputs.target_repo }}" \
+            --add-label "hf-agent:needs-human"
+          exit 1
+
+      - name: Verify repaired content
+        id: verify
+        if: steps.apply.outputs.changed == 'true'
+        working-directory: workflow
+        run: |
+          for skill in seo quality; do
+            python scripts/hf_agent/run_skill_review.py \
+              --skill "$skill" \
+              --file "${{ inputs.file_path }}" \
+              --target-root ../target \
+              --report "${{ runner.temp }}/repair-$skill.md" \
+              --result-json "${{ runner.temp }}/repair-$skill.json"
+          done
+
+      - name: Stop rejected repair
+        if: ${{ always() && steps.verify.outcome == 'failure' }}
+        run: |
+          gh pr edit "${{ inputs.pr_number }}" --repo "${{ inputs.target_repo }}" \
+            --add-label "hf-agent:needs-human"
+          exit 1
+
+      - name: Push repaired candidate
+        if: steps.apply.outputs.changed == 'true'
+        working-directory: target
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add -- "${{ inputs.file_path }}"
+          git commit -m "🐛 Repair failed PR gates"
+          git push origin "HEAD:${{ inputs.branch }}"
+
   finalize:
     name: HF Agent / Finalize Lifecycle
     if: ${{ always() }}
-    needs: [review, verifier, report, review_threads]
+    needs: [review, verifier, report, review_threads, repair]
     permissions:
       contents: read
       statuses: write

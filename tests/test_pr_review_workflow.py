@@ -48,7 +48,7 @@ def test_unresolved_review_threads_are_a_blocking_gate() -> None:
     assert "name: HF Agent / Review Threads" in workflow
     assert "python -m hf_agent.review_threads" in workflow
     assert "unresolved_threads:" in workflow
-    assert "needs: [review, verifier, report, review_threads]" in workflow
+    assert "needs: [review, verifier, report, review_threads, repair]" in workflow
 
 
 def test_discord_merge_request_runs_only_after_ready() -> None:
@@ -58,3 +58,14 @@ def test_discord_merge_request_runs_only_after_ready() -> None:
     assert "notify_ready:" in workflow
     assert "needs: finalize" in workflow
     assert "--ready-pr-url" in workflow
+
+
+def test_failed_gates_trigger_a_bounded_repair() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "repair:" in workflow
+    assert "name: HF Agent / Repair Failed Gates" in workflow
+    assert "max_repair_attempts:" in workflow
+    assert "python -m hf_agent.repair_gates" in workflow
+    assert "🐛 Repair failed PR gates" in workflow
+    assert "steps.verify.outcome == 'failure'" in workflow
