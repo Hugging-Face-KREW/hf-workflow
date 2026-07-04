@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from hf_agent.review_threads import list_unresolved_threads, reply_and_resolve
+from hf_agent.review_threads import list_unresolved_threads, reply_and_resolve, thread_gate
 
 
 def test_list_unresolved_threads_filters_resolved_nodes() -> None:
@@ -58,3 +58,14 @@ def test_reply_and_resolve_keeps_evidence_order() -> None:
     assert "addPullRequestReviewThreadReply" in calls[0]["query"]
     assert calls[0]["variables"]["body"] == "Addressed in abc123 after verification."
     assert "resolveReviewThread" in calls[1]["query"]
+
+
+def test_thread_gate_returns_the_unresolved_count() -> None:
+    count = thread_gate(
+        repository="owner/repo",
+        pr_number=161,
+        token="token",
+        loader=lambda **_: [{"id": "one"}, {"id": "two"}],
+    )
+
+    assert count == 2

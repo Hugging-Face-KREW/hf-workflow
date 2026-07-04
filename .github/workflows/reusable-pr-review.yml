@@ -171,10 +171,40 @@ jobs:
           --pr-number "${{ inputs.pr_number }}"
           --head-sha "${{ inputs.head_sha }}"
 
+  review_threads:
+    name: HF Agent / Review Threads
+    permissions:
+      contents: read
+      pull-requests: read
+    runs-on: ubuntu-latest
+    outputs:
+      count: ${{ steps.threads.outputs.count }}
+    steps:
+      - name: Checkout workflow tools
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: Hugging-Face-KREW/hf-workflow
+          ref: ${{ inputs.workflow_ref }}
+          path: workflow
+
+      - name: Count unresolved review threads
+        id: threads
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PYTHONPATH: workflow/scripts
+        run: |
+          python -m hf_agent.review_threads \
+            --repository "${{ inputs.target_repo }}" \
+            --pr-number "${{ inputs.pr_number }}" \
+            --result-json "${{ runner.temp }}/threads.json"
+          count=$(jq -r .unresolved_threads "${{ runner.temp }}/threads.json")
+          echo "count=$count" >> "$GITHUB_OUTPUT"
+          test "$count" -eq 0
+
   finalize:
     name: HF Agent / Finalize Lifecycle
     if: ${{ always() }}
-    needs: [review, verifier, report]
+    needs: [review, verifier, report, review_threads]
     permissions:
       contents: read
       statuses: write
@@ -197,11 +227,12 @@ jobs:
           --argjson gates_passed "${{ needs.review.result == 'success' }}"
           --argjson verifier_passed "${{ needs.verifier.result == 'success' }}"
           --argjson report_published "${{ needs.report.result == 'success' }}"
+          --argjson unresolved_threads "${{ needs.review_threads.outputs.count || '1' }}"
           '{head_sha: $head_sha, feedback_revision: $feedback_revision,
           expected_head_sha: $expected_head_sha,
           expected_feedback_revision: $expected_feedback_revision,
           gates_passed: $gates_passed, verifier_passed: $verifier_passed,
-          report_published: $report_published}'
+          report_published: $report_published, unresolved_threads: $unresolved_threads}'
           > "${{ runner.temp }}/snapshot.json"
 
       - name: Publish lifecycle status

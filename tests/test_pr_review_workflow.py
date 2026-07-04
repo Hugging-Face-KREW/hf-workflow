@@ -39,3 +39,13 @@ def test_report_and_finalizer_run_after_failures() -> None:
     assert "name: HF Agent / Finalize Lifecycle" in workflow
     assert workflow.count("if: ${{ always() }}") >= 3
     assert "statuses: write" in workflow
+
+
+def test_unresolved_review_threads_are_a_blocking_gate() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "review_threads:" in workflow
+    assert "name: HF Agent / Review Threads" in workflow
+    assert "python -m hf_agent.review_threads" in workflow
+    assert "unresolved_threads:" in workflow
+    assert "needs: [review, verifier, report, review_threads]" in workflow

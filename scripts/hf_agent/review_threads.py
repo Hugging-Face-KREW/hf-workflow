@@ -1,6 +1,10 @@
 from __future__ import annotations
 
-from typing import Any
+import argparse
+import json
+import os
+from pathlib import Path
+from typing import Any, Callable
 
 from hf_agent.github_api import Requester, request_json
 
@@ -89,3 +93,36 @@ def reply_and_resolve(
         token=token,
         requester=requester,
     )
+
+
+ThreadLoader = Callable[..., list[dict[str, Any]]]
+
+
+def thread_gate(
+    *,
+    repository: str,
+    pr_number: int,
+    token: str,
+    loader: ThreadLoader = list_unresolved_threads,
+) -> int:
+    return len(loader(repository=repository, pr_number=pr_number, token=token))
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Count unresolved pull request threads")
+    parser.add_argument("--repository", required=True)
+    parser.add_argument("--pr-number", required=True, type=int)
+    parser.add_argument("--result-json", required=True, type=Path)
+    args = parser.parse_args()
+    count = thread_gate(
+        repository=args.repository,
+        pr_number=args.pr_number,
+        token=os.environ["GITHUB_TOKEN"],
+    )
+    args.result_json.write_text(json.dumps({"unresolved_threads": count}) + "\n")
+    print(f"Unresolved review threads: {count}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
