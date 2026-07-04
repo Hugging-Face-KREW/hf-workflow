@@ -37,7 +37,7 @@ def test_report_and_finalizer_run_after_failures() -> None:
     assert "name: HF Agent / Publish Report" in workflow
     assert "finalize:" in workflow
     assert "name: HF Agent / Finalize Lifecycle" in workflow
-    assert workflow.count("if: ${{ always() }}") >= 3
+    assert workflow.count("if: ${{ always() }}") >= 2
     assert "statuses: write" in workflow
 
 
@@ -75,3 +75,11 @@ def test_private_workflow_checkout_uses_the_bot_token() -> None:
     workflow = WORKFLOW.read_text()
 
     assert workflow.count("token: ${{ secrets.KREW_BOT_TOKEN }}") >= 5
+
+
+def test_reports_are_published_without_ephemeral_artifacts() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "upload-artifact" not in workflow
+    assert "download-artifact" not in workflow
+    assert "Generate comment reports" in workflow

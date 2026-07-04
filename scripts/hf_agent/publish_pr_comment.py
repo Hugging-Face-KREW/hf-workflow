@@ -10,6 +10,7 @@ from hf_agent.github_api import upsert_issue_comment
 
 
 REPORT_MARKER = "<!-- hf-agent-report -->"
+MAX_REPORT_CHARS = 24_000
 
 
 def load_results(root: Path) -> list[dict[str, Any]]:
@@ -17,17 +18,35 @@ def load_results(root: Path) -> list[dict[str, Any]]:
     for path in root.glob("**/*.json"):
         result = json.loads(path.read_text())
         if {"skill", "conclusion"} <= result.keys():
+            report_path = path.with_name(f"{result['skill']}.md")
+            result["report"] = (
+                report_path.read_text()[:MAX_REPORT_CHARS]
+                if report_path.exists()
+                else "Detailed report was not produced."
+            )
             results.append(result)
     return sorted(results, key=lambda result: result["skill"])
 
 
 def render_report(results: list[dict[str, Any]], *, head_sha: str) -> str:
     rows = []
+    details = []
     for result in results:
         passed = result["conclusion"] == "pass"
         outcome = "✅ Pass" if passed else "❌ Fail"
         name = "SEO" if result["skill"] == "seo" else result["skill"].title()
         rows.append(f"| {name} | {outcome} |")
+        details.extend(
+            [
+                "<details>",
+                f"<summary>{name} report — {outcome}</summary>",
+                "",
+                str(result.get("report", "Detailed report was not produced.")),
+                "",
+                "</details>",
+                "",
+            ]
+        )
     return "\n".join(
         [
             REPORT_MARKER,
@@ -39,6 +58,7 @@ def render_report(results: list[dict[str, Any]], *, head_sha: str) -> str:
             "",
             f"Head SHA: `{head_sha}`",
             "",
+            *details,
         ]
     )
 

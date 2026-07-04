@@ -20,6 +20,8 @@ def test_render_report_uses_compact_skill_rows(tmp_path: Path) -> None:
     quality.write_text(
         json.dumps({"skill": "quality", "conclusion": "fail", "report_path": "quality.md"})
     )
+    (tmp_path / "seo.md").write_text("# SEO Report\n\nAll required checks passed.")
+    (quality.parent / "quality.md").write_text("# Quality Report\n\n- WARN: TODO remains")
 
     report = render_report(load_results(tmp_path), head_sha="abc123")
 
@@ -27,6 +29,11 @@ def test_render_report_uses_compact_skill_rows(tmp_path: Path) -> None:
     assert "| SEO | ✅ Pass |" in report
     assert "| Quality | ❌ Fail |" in report
     assert "Head SHA: `abc123`" in report
+    assert "<details>" in report
+    assert "<summary>SEO report — ✅ Pass</summary>" in report
+    assert "All required checks passed." in report
+    assert "<summary>Quality report — ❌ Fail</summary>" in report
+    assert "- WARN: TODO remains" in report
 
 
 def test_upsert_issue_comment_updates_the_existing_marker() -> None:
