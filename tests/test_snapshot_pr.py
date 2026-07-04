@@ -61,3 +61,29 @@ def test_snapshot_uses_current_head_and_trusted_feedback_only() -> None:
         "managed": True,
         "pr_number": 161,
     }
+
+
+def test_snapshot_allows_non_translation_files_for_unmanaged_pr() -> None:
+    responses = {
+        "/repos/owner/repo/pulls/164": {
+            "head": {"sha": "infra", "ref": "infra", "repo": {"full_name": "owner/repo"}},
+            "labels": [],
+            "state": "open",
+        },
+        "/repos/owner/repo/pulls/164/files?per_page=100": [
+            {"filename": ".github/workflows/hf-agent-review.yml"}
+        ],
+        "/repos/owner/repo/issues/164/comments?per_page=100": [],
+        "/repos/owner/repo/pulls/164/reviews?per_page=100": [],
+        "/repos/owner/repo/pulls/164/comments?per_page=100": [],
+    }
+
+    snapshot = load_pr_snapshot(
+        repository="owner/repo",
+        pr_number=164,
+        token="token",
+        requester=lambda method, path, token, payload=None: responses[path],
+    )
+
+    assert snapshot["managed"] is False
+    assert snapshot["file_path"] == ""

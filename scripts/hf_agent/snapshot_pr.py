@@ -79,7 +79,7 @@ def load_pr_snapshot(
         for item in files
         if PurePosixPath(str(item.get("filename", ""))).match("_posts/*.md")
     ]
-    if len(post_files) != 1:
+    if managed and len(post_files) != 1:
         raise ValueError("Managed pull requests must change exactly one _posts Markdown file")
 
     sources = (
@@ -111,7 +111,7 @@ def load_pr_snapshot(
     return {
         "branch": str(head["ref"]),
         "feedback_revision": feedback_revision(feedback),
-        "file_path": post_files[0],
+        "file_path": post_files[0] if len(post_files) == 1 else "",
         "head_sha": str(head["sha"]),
         "managed": managed,
         "pr_number": pr_number,
