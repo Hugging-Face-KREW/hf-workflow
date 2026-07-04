@@ -212,4 +212,5 @@ jobs:
           python -m hf_agent.finalize_pr
           --snapshot "${{ runner.temp }}/snapshot.json"
           --repository "${{ inputs.target_repo }}"
+          --pr-number "${{ inputs.pr_number }}"
           --target-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

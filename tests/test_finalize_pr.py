@@ -123,3 +123,37 @@ def test_finalize_returns_nonzero_when_feedback_changed(tmp_path: Path) -> None:
 
     assert result == 1
     assert published[0]["state"] == "pending"
+
+
+def test_finalize_refreshes_current_pr_state_before_success(tmp_path: Path) -> None:
+    snapshot = tmp_path / "snapshot.json"
+    snapshot.write_text(
+        json.dumps(
+            {
+                "head_sha": "old-sha",
+                "feedback_revision": "old-feedback",
+                "expected_head_sha": "old-sha",
+                "expected_feedback_revision": "old-feedback",
+                "gates_passed": True,
+                "verifier_passed": True,
+                "report_published": True,
+            }
+        )
+    )
+    published = []
+
+    result = finalize(
+        snapshot_path=snapshot,
+        repository="owner/repo",
+        pr_number=161,
+        token="token",
+        snapshot_loader=lambda **_: {
+            "head_sha": "new-sha",
+            "feedback_revision": "new-feedback",
+        },
+        publisher=lambda **status: published.append(status),
+    )
+
+    assert result == 1
+    assert published[0]["sha"] == "new-sha"
+    assert published[0]["state"] == "pending"
