@@ -1,0 +1,144 @@
+name: Reusable HF Agent PR Mutation
+
+on:
+  workflow_call:
+    inputs:
+      target_repo:
+        required: true
+        type: string
+      pr_number:
+        required: true
+        type: string
+      branch:
+        required: true
+        type: string
+      expected_head_sha:
+        required: true
+        type: string
+      file_path:
+        required: true
+        type: string
+      feedback:
+        required: true
+        type: string
+      workflow_ref:
+        required: true
+        type: string
+      review_workflow:
+        required: false
+        default: hf-agent-review.yml
+        type: string
+    secrets:
+      KREW_BOT_TOKEN:
+        required: true
+      OPENAI_API_KEY:
+        required: true
+
+concurrency:
+  group: hf-agent-mutate-${{ inputs.target_repo }}-${{ inputs.pr_number }}
+  cancel-in-progress: false
+
+jobs:
+  mutate:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      TARGET_REPO: ${{ inputs.target_repo }}
+    steps:
+      - name: Checkout workflow tools
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: Hugging-Face-KREW/hf-workflow
+          ref: ${{ inputs.workflow_ref }}
+          path: workflow
+
+      - name: Checkout candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: ${{ inputs.target_repo }}
+          ref: ${{ inputs.expected_head_sha }}
+          token: ${{ secrets.KREW_BOT_TOKEN }}
+          path: target
+
+      - name: Set up Python
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        with:
+          python-version: "3.11"
+
+      - name: Install mutation dependencies
+        run: python -m pip install openai pyyaml
+
+      - name: Reject a stale candidate
+        run: |
+          current_sha=$(gh api "repos/${TARGET_REPO}/pulls/${{ inputs.pr_number }}" --jq .head.sha)
+          test "$current_sha" = "${{ inputs.expected_head_sha }}"
+
+      - name: Apply feedback
+        id: apply
+        env:
+          HF_FEEDBACK: ${{ inputs.feedback }}
+          PYTHONPATH: workflow/scripts
+        run: |
+          python -m hf_agent.handle_pr_feedback \
+            --target-root target \
+            --file "${{ inputs.file_path }}" \
+            --feedback "$HF_FEEDBACK" \
+            --result-json "${{ runner.temp }}/feedback-result.json"
+          echo "changed=$(jq -r .changed "${{ runner.temp }}/feedback-result.json")" >> "$GITHUB_OUTPUT"
+          echo "disposition=$(jq -r .disposition "${{ runner.temp }}/feedback-result.json")" >> "$GITHUB_OUTPUT"
+
+      - name: Verify changed content
+        if: steps.apply.outputs.changed == 'true'
+        working-directory: workflow
+        run: |
+          for skill in seo quality; do
+            python scripts/hf_agent/run_skill_review.py \
+              --skill "$skill" \
+              --file "${{ inputs.file_path }}" \
+              --target-root ../target \
+              --report "${{ runner.temp }}/post-$skill.md" \
+              --result-json "${{ runner.temp }}/post-$skill.json"
+          done
+
+      - name: Commit and push the verified change
+        id: push
+        if: steps.apply.outputs.changed == 'true'
+        working-directory: target
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add -- "${{ inputs.file_path }}"
+          git commit -m "🐛 Address PR feedback"
+          git push origin "HEAD:${{ inputs.branch }}"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Report the disposition
+        env:
+          RESULT_PATH: ${{ runner.temp }}/feedback-result.json
+        run: |
+          reason=$(jq -r .reason "$RESULT_PATH")
+          if [ "${{ steps.apply.outputs.changed }}" = "true" ]; then
+            body="<!-- hf-agent-response --> Applied the feedback in ${{ steps.push.outputs.sha }}. $reason"
+          else
+            body="<!-- hf-agent-response --> No code change was made. $reason"
+          fi
+          gh pr comment "${{ inputs.pr_number }}" --repo "$TARGET_REPO" --body "$body"
+
+      - name: Mark human decision required
+        if: steps.apply.outputs.disposition == 'needs-human'
+        run: |
+          gh pr edit "${{ inputs.pr_number }}" --repo "$TARGET_REPO" --add-label "hf-agent:needs-human"
+          gh api "repos/${TARGET_REPO}/statuses/${{ inputs.expected_head_sha }}" \
+            -f state=failure \
+            -f context="HF Agent / Lifecycle Gate" \
+            -f description="Human decision required"
+
+      - name: Recheck an unchanged candidate
+        if: steps.apply.outputs.changed != 'true' && steps.apply.outputs.disposition != 'needs-human'
+        run: >-
+          gh workflow run "${{ inputs.review_workflow }}"
+          --repo "$TARGET_REPO"
+          -f pr_number="${{ inputs.pr_number }}"

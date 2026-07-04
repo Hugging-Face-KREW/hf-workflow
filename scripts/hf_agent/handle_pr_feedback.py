@@ -248,7 +248,7 @@ def main() -> int:
         + "\n"
     )
     print(f"Feedback disposition: {result.disposition} ({result.reason})")
-    return 0 if result.disposition != "needs-human" else 2
+    return 0
 
 
 if __name__ == "__main__":
