@@ -610,6 +610,42 @@ def test_create_pr_reuses_existing_pr_url(monkeypatch, tmp_path: Path) -> None:
     assert not any(call[:3] == ["gh", "pr", "create"] for call in calls)
 
 
+def test_create_pr_opts_into_the_managed_loop(monkeypatch, tmp_path: Path) -> None:
+    calls: list[list[str]] = []
+
+    def fake_run_cmd(args, cwd=None, check=True):
+        calls.append(args)
+        if args[:3] == ["gh", "pr", "view"]:
+            return create_translation_pr.subprocess.CompletedProcess(args, 1, "", "missing")
+        if args[:3] == ["gh", "pr", "create"]:
+            return create_translation_pr.subprocess.CompletedProcess(
+                args, 0, "https://github.com/o/r/pull/2\n", ""
+            )
+        return create_translation_pr.subprocess.CompletedProcess(args, 0, "", "")
+
+    monkeypatch.setattr(create_translation_pr, "run_cmd", fake_run_cmd)
+
+    assert create_pr(
+        tmp_path,
+        "translate/example",
+        "Title",
+        "Body",
+        push=False,
+        open_pr=True,
+    ) == "https://github.com/o/r/pull/2"
+    assert [
+        "gh",
+        "pr",
+        "create",
+        "--title",
+        "Title",
+        "--body",
+        "Body",
+        "--label",
+        "hf-agent:managed",
+    ] in calls
+
+
 def test_main_writes_empty_run_summary_when_no_posts(monkeypatch, tmp_path: Path) -> None:
     target = tmp_path / "target"
     target.mkdir()

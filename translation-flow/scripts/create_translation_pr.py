@@ -1117,7 +1117,17 @@ def create_pr(
         return existing.stdout.strip()
 
     result = run_cmd(
-        ["gh", "pr", "create", "--title", title, "--body", body],
+        [
+            "gh",
+            "pr",
+            "create",
+            "--title",
+            title,
+            "--body",
+            body,
+            "--label",
+            "hf-agent:managed",
+        ],
         cwd=worktree,
         check=False,
     )
