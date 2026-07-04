@@ -35,20 +35,22 @@ def build_discord_payload(summary: dict[str, Any]) -> dict[str, str] | None:
     }
 
 
-def notify_discord(webhook_url: str, summary_path: Path) -> int:
+def build_ready_payload(*, pr_url: str, head_sha: str) -> dict[str, str]:
+    pr_number = pr_url.rstrip("/").rsplit("/", 1)[-1]
+    return {
+        "content": "\n".join(
+            [
+                "HF Agent gates are green. Human merge approval requested.",
+                f"- [PR #{pr_number}]({pr_url}) at `{head_sha[:7]}`",
+            ]
+        )
+    }
+
+
+def notify_payload(webhook_url: str, payload: dict[str, str]) -> int:
     if not webhook_url:
         print("DISCORD_WEBHOOK_URL is empty; skipping Discord notification.")
         return 0
-    if not summary_path.exists():
-        print("No run summary found; skipping Discord notification.")
-        return 0
-
-    summary = json.loads(summary_path.read_text())
-    payload = build_discord_payload(summary)
-    if not payload:
-        print("No created PR URL found; skipping Discord notification.")
-        return 0
-
     request = urllib.request.Request(
         webhook_url,
         data=json.dumps(payload).encode("utf-8"),
@@ -66,10 +68,36 @@ def notify_discord(webhook_url: str, summary_path: Path) -> int:
     return 0
 
 
+def notify_discord(webhook_url: str, summary_path: Path) -> int:
+    if not webhook_url:
+        print("DISCORD_WEBHOOK_URL is empty; skipping Discord notification.")
+        return 0
+    if not summary_path.exists():
+        print("No run summary found; skipping Discord notification.")
+        return 0
+
+    summary = json.loads(summary_path.read_text())
+    payload = build_discord_payload(summary)
+    if not payload:
+        print("No created PR URL found; skipping Discord notification.")
+        return 0
+
+    return notify_payload(webhook_url, payload)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Send a non-blocking Discord workflow notification.")
     parser.add_argument("--summary", default="run-summary.json")
+    parser.add_argument("--ready-pr-url")
+    parser.add_argument("--head-sha")
     args = parser.parse_args()
+    if args.ready_pr_url:
+        if not args.head_sha:
+            parser.error("--head-sha is required with --ready-pr-url")
+        return notify_payload(
+            os.environ.get("DISCORD_WEBHOOK_URL", ""),
+            build_ready_payload(pr_url=args.ready_pr_url, head_sha=args.head_sha),
+        )
     return notify_discord(os.environ.get("DISCORD_WEBHOOK_URL", ""), Path(args.summary))
 
 

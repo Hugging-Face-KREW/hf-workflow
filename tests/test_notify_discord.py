@@ -7,7 +7,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from notify_discord import DISCORD_USER_AGENT, build_discord_payload, notify_discord
+from notify_discord import (
+    DISCORD_USER_AGENT,
+    build_discord_payload,
+    build_ready_payload,
+    notify_discord,
+)
 
 
 def test_build_discord_payload_uses_created_prs_only() -> None:
@@ -54,3 +59,15 @@ def test_notify_discord_treats_http_error_as_non_blocking(tmp_path: Path, monkey
 
 def test_notify_discord_skips_missing_summary(tmp_path: Path) -> None:
     assert notify_discord("https://discord.example/webhook", tmp_path / "missing.json") == 0
+
+
+def test_build_ready_payload_requests_human_merge_for_exact_sha() -> None:
+    assert build_ready_payload(
+        pr_url="https://github.com/o/r/pull/161",
+        head_sha="abcdef1234567890",
+    ) == {
+        "content": (
+            "HF Agent gates are green. Human merge approval requested.\n"
+            "- [PR #161](https://github.com/o/r/pull/161) at `abcdef1`"
+        )
+    }

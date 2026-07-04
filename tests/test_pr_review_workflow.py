@@ -49,3 +49,12 @@ def test_unresolved_review_threads_are_a_blocking_gate() -> None:
     assert "python -m hf_agent.review_threads" in workflow
     assert "unresolved_threads:" in workflow
     assert "needs: [review, verifier, report, review_threads]" in workflow
+
+
+def test_discord_merge_request_runs_only_after_ready() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "DISCORD_WEBHOOK_URL:" in workflow
+    assert "notify_ready:" in workflow
+    assert "needs: finalize" in workflow
+    assert "--ready-pr-url" in workflow

@@ -22,6 +22,9 @@ on:
         required: false
         default: ""
         type: string
+    secrets:
+      DISCORD_WEBHOOK_URL:
+        required: false
   workflow_dispatch:
     inputs:
       target_repo:
@@ -245,3 +248,26 @@ jobs:
           --repository "${{ inputs.target_repo }}"
           --pr-number "${{ inputs.pr_number }}"
           --target-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  notify_ready:
+    name: HF Agent / Request Human Merge
+    needs: finalize
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    env:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+    steps:
+      - name: Checkout workflow tools
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: Hugging-Face-KREW/hf-workflow
+          ref: ${{ inputs.workflow_ref }}
+          path: workflow
+
+      - name: Request human merge approval
+        if: ${{ env.DISCORD_WEBHOOK_URL != '' }}
+        run: >-
+          python workflow/scripts/notify_discord.py
+          --ready-pr-url "${{ github.server_url }}/${{ inputs.target_repo }}/pull/${{ inputs.pr_number }}"
+          --head-sha "${{ inputs.head_sha }}"
