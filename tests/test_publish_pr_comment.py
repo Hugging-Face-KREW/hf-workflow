@@ -1,0 +1,80 @@
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+
+from hf_agent.github_api import upsert_issue_comment
+from hf_agent.publish_pr_comment import REPORT_MARKER, load_results, render_report
+
+
+def test_render_report_uses_compact_skill_rows(tmp_path: Path) -> None:
+    (tmp_path / "seo.json").write_text(
+        json.dumps({"skill": "seo", "conclusion": "pass", "report_path": "seo.md"})
+    )
+    quality = tmp_path / "nested" / "quality.json"
+    quality.parent.mkdir()
+    quality.write_text(
+        json.dumps({"skill": "quality", "conclusion": "fail", "report_path": "quality.md"})
+    )
+
+    report = render_report(load_results(tmp_path), head_sha="abc123")
+
+    assert report.startswith(REPORT_MARKER)
+    assert "| SEO | ✅ Pass |" in report
+    assert "| Quality | ❌ Fail |" in report
+    assert "Head SHA: `abc123`" in report
+
+
+def test_upsert_issue_comment_updates_the_existing_marker() -> None:
+    calls = []
+
+    def requester(method, path, token, payload=None):
+        calls.append((method, path, payload))
+        if method == "GET":
+            return [
+                {"id": 1, "body": "Unrelated"},
+                {"id": 2, "body": f"{REPORT_MARKER}\nOld report"},
+            ]
+        return {"id": 2}
+
+    upsert_issue_comment(
+        repository="owner/repo",
+        issue_number=7,
+        marker=REPORT_MARKER,
+        body=f"{REPORT_MARKER}\nNew report",
+        token="token",
+        requester=requester,
+    )
+
+    assert calls[-1] == (
+        "PATCH",
+        "/repos/owner/repo/issues/comments/2",
+        {"body": f"{REPORT_MARKER}\nNew report"},
+    )
+
+
+def test_upsert_issue_comment_creates_a_missing_marker() -> None:
+    calls = []
+
+    def requester(method, path, token, payload=None):
+        calls.append((method, path, payload))
+        return [] if method == "GET" else {"id": 3}
+
+    upsert_issue_comment(
+        repository="owner/repo",
+        issue_number=7,
+        marker=REPORT_MARKER,
+        body=f"{REPORT_MARKER}\nReport",
+        token="token",
+        requester=requester,
+    )
+
+    assert calls[-1] == (
+        "POST",
+        "/repos/owner/repo/issues/7/comments",
+        {"body": f"{REPORT_MARKER}\nReport"},
+    )
