@@ -14,7 +14,13 @@ query ReviewThreads($owner: String!, $name: String!, $number: Int!) {
   repository(owner: $owner, name: $name) {
     pullRequest(number: $number) {
       reviewThreads(first: 100) {
-        nodes { id isResolved path line }
+        nodes {
+          id
+          isResolved
+          path
+          line
+          comments(first: 100) { nodes { databaseId } }
+        }
       }
     }
   }
@@ -95,6 +101,14 @@ def reply_and_resolve(
     )
 
 
+def find_thread_id(threads: list[dict[str, Any]], *, comment_id: int) -> str:
+    for thread in threads:
+        comments = thread.get("comments", {}).get("nodes", [])
+        if any(comment.get("databaseId") == comment_id for comment in comments):
+            return str(thread["id"])
+    raise ValueError(f"Review thread was not found for comment {comment_id}")
+
+
 ThreadLoader = Callable[..., list[dict[str, Any]]]
 
 
@@ -112,12 +126,32 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Count unresolved pull request threads")
     parser.add_argument("--repository", required=True)
     parser.add_argument("--pr-number", required=True, type=int)
-    parser.add_argument("--result-json", required=True, type=Path)
+    parser.add_argument("--result-json", type=Path)
+    parser.add_argument("--resolve-comment-id", type=int)
+    parser.add_argument("--body")
     args = parser.parse_args()
+    token = os.environ["GITHUB_TOKEN"]
+    if args.resolve_comment_id is not None:
+        if not args.body:
+            parser.error("--body is required with --resolve-comment-id")
+        threads = list_unresolved_threads(
+            repository=args.repository,
+            pr_number=args.pr_number,
+            token=token,
+        )
+        reply_and_resolve(
+            thread_id=find_thread_id(threads, comment_id=args.resolve_comment_id),
+            body=args.body,
+            token=token,
+        )
+        print(f"Resolved review comment: {args.resolve_comment_id}")
+        return 0
+    if args.result_json is None:
+        parser.error("--result-json is required when checking threads")
     count = thread_gate(
         repository=args.repository,
         pr_number=args.pr_number,
-        token=os.environ["GITHUB_TOKEN"],
+        token=token,
     )
     args.result_json.write_text(json.dumps({"unresolved_threads": count}) + "\n")
     print(f"Unresolved review threads: {count}")

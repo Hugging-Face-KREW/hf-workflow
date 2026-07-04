@@ -28,6 +28,10 @@ on:
         required: false
         default: hf-agent-review.yml
         type: string
+      review_comment_id:
+        required: false
+        default: ""
+        type: string
     secrets:
       KREW_BOT_TOKEN:
         required: true
@@ -126,6 +130,25 @@ jobs:
             body="<!-- hf-agent-response --> No code change was made. $reason"
           fi
           gh pr comment "${{ inputs.pr_number }}" --repo "$TARGET_REPO" --body "$body"
+
+      - name: Resolve the handled review thread
+        if: ${{ inputs.review_comment_id != '' && steps.apply.outputs.disposition != 'needs-human' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
+          PYTHONPATH: workflow/scripts
+          RESULT_PATH: ${{ runner.temp }}/feedback-result.json
+        run: |
+          reason=$(jq -r .reason "$RESULT_PATH")
+          if [ "${{ steps.apply.outputs.changed }}" = "true" ]; then
+            body="Applied in ${{ steps.push.outputs.sha }}. $reason"
+          else
+            body="No code change was needed. $reason"
+          fi
+          python -m hf_agent.review_threads \
+            --repository "$TARGET_REPO" \
+            --pr-number "${{ inputs.pr_number }}" \
+            --resolve-comment-id "${{ inputs.review_comment_id }}" \
+            --body "$body"
 
       - name: Mark human decision required
         if: steps.apply.outputs.disposition == 'needs-human'

@@ -6,7 +6,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from hf_agent.review_threads import list_unresolved_threads, reply_and_resolve, thread_gate
+from hf_agent.review_threads import (
+    find_thread_id,
+    list_unresolved_threads,
+    reply_and_resolve,
+    thread_gate,
+)
 
 
 def test_list_unresolved_threads_filters_resolved_nodes() -> None:
@@ -69,3 +74,12 @@ def test_thread_gate_returns_the_unresolved_count() -> None:
     )
 
     assert count == 2
+
+
+def test_find_thread_id_matches_the_rest_comment_database_id() -> None:
+    threads = [
+        {"id": "thread-one", "comments": {"nodes": [{"databaseId": 41}]}},
+        {"id": "thread-two", "comments": {"nodes": [{"databaseId": 42}]}},
+    ]
+
+    assert find_thread_id(threads, comment_id=42) == "thread-two"

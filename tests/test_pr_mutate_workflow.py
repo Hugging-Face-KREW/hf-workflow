@@ -27,3 +27,12 @@ def test_mutation_workflow_does_not_interpolate_feedback_as_code() -> None:
     assert "HF_FEEDBACK: ${{ inputs.feedback }}" in workflow
     assert '--feedback "$HF_FEEDBACK"' in workflow
     assert "pull_request_target" not in workflow
+
+
+def test_mutation_workflow_resolves_handled_inline_threads() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "review_comment_id:" in workflow
+    assert "Resolve the handled review thread" in workflow
+    assert "--resolve-comment-id" in workflow
+    assert "steps.apply.outputs.disposition != 'needs-human'" in workflow
