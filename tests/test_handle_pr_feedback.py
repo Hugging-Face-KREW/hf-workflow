@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
+import types
 from pathlib import Path
 
 import pytest
@@ -181,6 +182,27 @@ def test_call_openai_requests_one_json_response() -> None:
             "model": "gpt-test",
         }
     ]
+
+
+def test_call_openai_strips_environment_api_key(monkeypatch: pytest.MonkeyPatch) -> None:
+    captured = {}
+
+    class Responses:
+        def create(self, **kwargs):
+            return type("Response", (), {"output_text": '{"disposition":"no-change","reason":"ok"}'})()
+
+    class OpenAI:
+        def __init__(self, **kwargs):
+            captured.update(kwargs)
+            self.responses = Responses()
+
+    monkeypatch.setenv("OPENAI_API_KEY", " sk-test \n")
+    monkeypatch.setitem(sys.modules, "openai", types.SimpleNamespace(OpenAI=OpenAI))
+
+    output = call_openai("prompt", model="gpt-test")
+
+    assert json.loads(output)["disposition"] == "no-change"
+    assert captured["api_key"] == "sk-test"
 
 
 def test_route_feedback_marks_the_current_head_pending() -> None:

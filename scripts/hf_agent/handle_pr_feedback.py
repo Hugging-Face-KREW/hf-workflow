@@ -206,7 +206,11 @@ def call_openai(prompt: str, *, model: str, client: Any | None = None) -> str:
     if client is None:
         from openai import OpenAI
 
-        client = OpenAI()
+        client_kwargs = {}
+        api_key = os.getenv("OPENAI_API_KEY")
+        if api_key is not None:
+            client_kwargs["api_key"] = api_key.strip()
+        client = OpenAI(**client_kwargs)
     response = client.responses.create(
         input=prompt,
         instructions="Return valid JSON only.",
