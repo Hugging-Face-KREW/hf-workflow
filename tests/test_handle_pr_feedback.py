@@ -162,6 +162,28 @@ def test_apply_feedback_does_not_write_for_a_question(tmp_path: Path) -> None:
     assert post.read_text() == "Original\n"
 
 
+def test_apply_feedback_removes_todo_comment_for_gate_repair(tmp_path: Path) -> None:
+    post = tmp_path / "_posts" / "post.md"
+    post.parent.mkdir()
+    post.write_text("# Title\n\n본문입니다.\n<!-- TODO: temporary E2E failure sentinel. -->\n")
+
+    result = apply_feedback(
+        target_root=tmp_path,
+        file_path="_posts/post.md",
+        feedback=(
+            "This is an automated PR gate repair.\n"
+            "QUALITY gate failed:\n"
+            "- WARN: no TODO marker remains\n"
+            "- TODO markers: 1"
+        ),
+        max_changed_lines=10,
+        model_call=lambda prompt: pytest.fail("deterministic gate repair should not call the model"),
+    )
+
+    assert result.disposition == "actionable"
+    assert "TODO" not in post.read_text()
+
+
 def test_call_openai_requests_one_json_response() -> None:
     calls = []
 
