@@ -24,6 +24,8 @@ def test_build_gate_feedback_includes_only_failed_reports(tmp_path: Path) -> Non
 
     feedback = build_gate_feedback(tmp_path)
 
+    assert "automated PR gate repair" in feedback
+    assert "Only return needs-human" in feedback
     assert "SEO gate failed" in feedback
     assert "Missing description" in feedback
     assert "Everything is fine" not in feedback

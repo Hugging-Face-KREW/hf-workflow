@@ -27,7 +27,10 @@ def build_gate_feedback(results_root: Path) -> str:
     if not sections:
         raise ValueError("No failed gate report was found")
     return (
-        "Fix only the blocking findings in these automated gate reports.\n\n"
+        "This is an automated PR gate repair, not an open-ended human review comment.\n"
+        "Fix only the blocking findings in these automated gate reports with the smallest safe edit.\n"
+        "If a report says TODO markers remain, remove placeholder TODO markers or comments from the translated post.\n"
+        "Only return needs-human when the report cannot be resolved safely from the file content alone.\n\n"
         + "\n\n".join(sections)
     )[:MAX_FEEDBACK_CHARS]
 
