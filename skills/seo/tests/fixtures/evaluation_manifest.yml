@@ -1,0 +1,381 @@
+version: 1
+purpose: >
+  SEO skill 평가 데이터셋의 독립 라벨과 커버리지 근거를 문서화한다.
+  이 manifest의 label은 current checker 결과를 그대로 답습하지 않고,
+  사람이 보기에 해당 샘플이 어떤 현상을 검증하기 위한 자료인지 설명한다.
+
+label_definitions:
+  strong_positive: "본문/구조가 대체로 양호한 positive control"
+  acceptable_positive: "실사용 가능하지만 일부 advisory가 있을 수 있는 positive sample"
+  borderline: "한두 가지 명확한 개선점이 있는 경계 샘플"
+  negative: "명확한 품질/구조 문제가 있는 샘플"
+  blocker: "게시 또는 색인을 중단해야 하는 hard blocker 샘플"
+  real_regression: "실제 HFKREW 글 형태를 보존한 회귀 샘플"
+
+coverage_targets:
+  status_shape:
+    - pass_like
+    - needs_changes_like
+    - fail_like
+    - blocked_like
+  phenomena:
+    - missing_description
+    - missing_author
+    - noindex
+    - broken_internal_link
+    - broken_image_path
+    - missing_alt
+    - empty_body
+    - no_markdown_h1
+    - multiple_h1
+    - heading_level_skip
+    - missing_citation
+    - toc_before_opening
+    - long_real_translation
+    - image_heavy_real_post
+    - hfkrew_layout_h1_ambiguity
+    - description_body_mismatch
+    - meaningless_alt
+    - generic_link_text
+    - source_canonical_policy_conflict
+    - curated_gold_positive
+    - semantic_metadata_negative
+    - title_body_mismatch
+    - hreflang_policy_review
+
+cases:
+  - id: generated_excellent
+    path: generated/excellent-post.md
+    source_type: synthetic
+    label: strong_positive
+    phenomena: [pass_like, synthetic_quality_gradient]
+    rationale: "가짜 수치나 placeholder 링크 없이 제목, 도입부, 근거 링크, 이미지 alt를 갖춘 high-quality positive control."
+    limitation: "여전히 synthetic 샘플이므로 실제 번역글의 길이와 원문 구조 보존 문제는 대표하지 않는다."
+
+  - id: generated_good
+    path: generated/good-post.md
+    source_type: synthetic
+    label: acceptable_positive
+    phenomena: [pass_like, synthetic_quality_gradient]
+    rationale: "필수 구조와 공식 근거 링크를 갖춘 단순 positive sample."
+    limitation: "이미지와 긴 번역문 구조가 단순화되어 있어 실전 대표성은 제한적이다."
+
+  - id: generated_medium
+    path: generated/medium-post.md
+    source_type: synthetic
+    label: borderline
+    phenomena: [needs_changes_like, missing_citation, synthetic_quality_gradient]
+    rationale: "대체로 읽히지만 외부 근거가 부족한 경계 샘플."
+    limitation: "citation 필요 여부는 글 유형에 따라 달라질 수 있어 hard-fail 근거로는 약하다."
+
+  - id: generated_poor
+    path: generated/poor-post.md
+    source_type: synthetic
+    label: negative
+    phenomena: [fail_like, empty_or_thin_body, missing_alt, missing_metadata]
+    rationale: "짧고 구조가 부족하며 이미지 alt/메타데이터도 부족한 명확한 negative control."
+    limitation: "너무 인위적으로 나빠서 실제 PR에서 자주 나올 실패 모드와는 거리가 있다."
+
+  - id: generated_blocked
+    path: generated/blocked-post.md
+    source_type: synthetic
+    label: blocker
+    phenomena: [blocked_like, noindex]
+    rationale: "본문 품질과 무관하게 noindex가 있으면 게시 전 차단되어야 함을 검증한다."
+    limitation: "noindex 단일 blocker만 다룬다."
+
+  - id: mutated_missing_description
+    path: mutated/missing-description.md
+    source_type: mutation
+    label: borderline
+    phenomena: [missing_description]
+    rationale: "description 누락이 body quality failure와 분리되어야 하는지 검증한다."
+    limitation: "description 내용 품질이나 본문과의 정합성은 검증하지 않는다."
+
+  - id: mutated_missing_alt
+    path: mutated/missing-alt.md
+    source_type: mutation
+    label: negative
+    phenomena: [missing_alt, fail_like]
+    rationale: "빈 이미지 alt를 접근성/SEO 문제로 감지하는지 검증한다."
+    limitation: "alt는 있지만 의미가 부실한 semantic alt 문제는 별도 케이스가 필요하다."
+
+  - id: mutated_noindex
+    path: mutated/noindex.md
+    source_type: mutation
+    label: blocker
+    phenomena: [blocked_like, noindex]
+    rationale: "robots noindex가 hard blocker로 분리되는지 검증한다."
+    limitation: "robots.txt나 HTTP header X-Robots-Tag는 다루지 않는다."
+
+  - id: mutated_broken_internal_link
+    path: mutated/broken-internal-link.md
+    source_type: mutation
+    label: blocker
+    phenomena: [blocked_like, broken_internal_link]
+    rationale: "target_root가 있을 때 repository 내부 링크가 실제 파일로 resolve되는지 검증한다."
+    limitation: "Jekyll permalink 생성 결과까지는 검증하지 않는다."
+
+  - id: mutated_short_opening
+    path: mutated/short-opening.md
+    source_type: mutation
+    label: borderline
+    phenomena: [short_opening]
+    rationale: "도입부가 짧은 경우를 사람이 검토해야 할 signal로 남기기 위한 샘플."
+    limitation: "현재 raw threshold로 hard fail을 입증하기보다 policy/rubric 판단용 signal에 가깝다."
+
+  - id: mutated_empty_body
+    path: mutated/empty-body.md
+    source_type: mutation
+    label: negative
+    phenomena: [fail_like, empty_body]
+    rationale: "본문이 비어 있는 명확한 negative control."
+    limitation: "현실적인 저품질 글보다 극단적이다."
+
+  - id: mutated_missing_h1_no_title
+    path: mutated/missing-h1-no-title.md
+    source_type: mutation
+    label: negative
+    phenomena: [no_markdown_h1, missing_title]
+    rationale: "frontmatter title도 본문 H1도 없는 경우 제목 신호가 부족함을 검증한다."
+    limitation: "렌더링 layout에서 다른 제목을 주입하는 경우는 반영하지 않는다."
+
+  - id: mutated_layout_title_no_body_h1
+    path: mutated/layout-title-no-body-h1.md
+    source_type: mutation
+    label: borderline
+    phenomena: [no_markdown_h1, hfkrew_layout_h1_ambiguity]
+    rationale: "frontmatter title이 있을 때 body H1 0개를 무조건 실패시켜도 되는지 검토하기 위한 샘플."
+    limitation: "Jekyll 렌더 결과를 직접 포함하지 않아 최종 판단에는 렌더 테스트가 필요하다."
+
+  - id: mutated_multiple_h1
+    path: mutated/multiple-h1.md
+    source_type: mutation
+    label: negative
+    phenomena: [multiple_h1]
+    rationale: "본문에 H1이 여러 개 있는 구조 문제를 검증한다."
+    limitation: "긴 원문 번역글에서 섹션 제목을 H1로 유지하는 실제 관행과 충돌할 수 있다."
+
+  - id: mutated_heading_skip
+    path: mutated/heading-skip.md
+    source_type: mutation
+    label: negative
+    phenomena: [heading_level_skip]
+    rationale: "H1 다음 H3로 건너뛰는 heading hierarchy 문제를 검증한다."
+    limitation: "마크다운 내부 코드블록의 # 문자는 별도 파서 테스트가 필요하다."
+
+  - id: mutated_no_citation
+    path: mutated/no-citation.md
+    source_type: mutation
+    label: borderline
+    phenomena: [missing_citation]
+    rationale: "외부 근거가 없는 정보성 글을 개선 필요 후보로 잡기 위한 샘플."
+    limitation: "회고/공지/사용법 글에는 외부 citation hard requirement가 부적절할 수 있다."
+
+  - id: mutated_broken_image_path
+    path: mutated/broken-image-path.md
+    source_type: mutation
+    label: blocker
+    phenomena: [broken_image_path]
+    rationale: "target_root가 있을 때 로컬 이미지 파일 존재 여부를 검증하기 위한 샘플."
+    limitation: "외부 이미지 URL의 HTTP 상태는 검증하지 않는다."
+
+  - id: mutated_missing_author
+    path: mutated/missing-author.md
+    source_type: mutation
+    label: borderline
+    phenomena: [missing_author]
+    rationale: "author 누락을 metadata 보완 대상으로 분리하기 위한 샘플."
+    limitation: "작성자 신뢰도나 author page 연결은 검증하지 않는다."
+
+  - id: mutated_too_long_title
+    path: mutated/too-long-title.md
+    source_type: mutation
+    label: borderline
+    phenomena: [long_title]
+    rationale: "title 길이 advisory를 확인하기 위한 샘플."
+    limitation: "SERP 실제 truncation은 픽셀 폭과 검색엔진 rewrite에 좌우된다."
+
+  - id: mutated_toc_before_opening
+    path: mutated/toc-before-opening.md
+    source_type: mutation
+    label: acceptable_positive
+    phenomena: [toc_before_opening]
+    rationale: "TOC marker가 첫 문단 판단에 섞이지 않아야 함을 검증한다."
+    limitation: "다양한 Liquid/Jekyll include 문법은 추가 샘플이 필요하다."
+
+  - id: mutated_description_body_mismatch
+    path: mutated/description-body-mismatch.md
+    source_type: mutation
+    label: negative
+    phenomena: [description_body_mismatch]
+    rationale: "description이 존재하지만 본문 주제와 완전히 다른 semantic metadata 오류를 검증한다."
+    limitation: "현재 deterministic checker만으로는 잡기 어려우며 rubric/policy judge가 필요하다."
+
+  - id: mutated_meaningless_alt
+    path: mutated/meaningless-alt.md
+    source_type: mutation
+    label: negative
+    phenomena: [meaningless_alt]
+    rationale: "alt가 비어 있지는 않지만 `image-1`처럼 의미 없는 경우를 검증한다."
+    limitation: "현재 길이/filename 기반 alt checker는 일부 meaningless alt를 놓칠 수 있다."
+
+  - id: mutated_generic_link_text
+    path: mutated/generic-link-text.md
+    source_type: mutation
+    label: borderline
+    phenomena: [generic_link_text]
+    rationale: "`여기` 같은 generic anchor text를 SEO/접근성 개선 후보로 보기 위한 샘플."
+    limitation: "현재 body gate가 아니라 Lighthouse-equivalent heuristic 쪽에서 다루는 항목이다."
+
+  - id: mutated_source_canonical
+    path: mutated/source-canonical.md
+    source_type: mutation
+    label: borderline
+    phenomena: [source_canonical_policy_conflict]
+    rationale: "번역본 canonical을 원문 URL로 둘지 self-canonical로 둘지 정책 결정이 필요한 케이스."
+    limitation: "정답은 SEO checker가 아니라 HFKREW 콘텐츠/번역 정책에서 결정해야 한다."
+
+  - id: curated_metadata_policy_positive
+    path: curated/metadata-policy-positive.md
+    source_type: curated_internal
+    label: acceptable_positive
+    phenomena: [pass_like, curated_gold_positive, source_canonical_policy_conflict]
+    rationale: "번역 SEO 정책처럼 도구가 자동 확정하면 안 되는 주제를, 본문 구조와 근거 링크는 갖춘 positive control로 문서화한다."
+    limitation: "정책 내용의 최종 정답은 팀 합의가 필요하므로 기술적 gold label은 아니다."
+
+  - id: curated_realistic_positive_no_image
+    path: curated/realistic-positive-no-image.md
+    source_type: curated_internal
+    label: strong_positive
+    phenomena: [pass_like, curated_gold_positive]
+    rationale: "이미지 없이도 제목, 도입부, 공식 근거, 소제목 구조가 안정적인 내부 gold positive 후보."
+    limitation: "팀 리뷰어가 승인한 최종 gold sample은 아니며, 실제 PR 코멘트 적용까지 검증하지는 않는다."
+
+  - id: curated_semantic_negative_description
+    path: curated/semantic-negative-description.md
+    source_type: curated_internal
+    label: negative
+    phenomena: [pass_like, semantic_metadata_negative, description_body_mismatch]
+    rationale: "본문 gate는 통과할 수 있지만 description이 완전히 다른 주제를 말하는 semantic metadata negative."
+    limitation: "현재 deterministic body gate는 이 문제를 차단하지 못하며, policy/rubric layer 검증이 필요하다."
+
+  - id: curated_semantic_negative_title
+    path: curated/semantic-negative-title.md
+    source_type: curated_internal
+    label: negative
+    phenomena: [pass_like, semantic_metadata_negative, title_body_mismatch]
+    rationale: "본문 H1/도입부는 통과하지만 frontmatter title이 다른 주제를 말하는 semantic metadata negative."
+    limitation: "현재 body-only gate는 frontmatter title과 본문 의미 정합성을 차단하지 않는다."
+
+  - id: curated_hreflang_policy_positive
+    path: curated/hreflang-policy-positive.md
+    source_type: curated_internal
+    label: acceptable_positive
+    phenomena: [pass_like, curated_gold_positive, hreflang_policy_review, source_canonical_policy_conflict]
+    rationale: "번역 페이지의 hreflang/canonical 후보 검토처럼 정책 입력이 필요한 positive policy case."
+    limitation: "실제 hreflang 태그 생성과 Jekyll 렌더 결과 검증은 포함하지 않는다."
+
+  - id: real_how_to_contribute
+    path: real/2024-09-16-how-to-contribute.md
+    source_type: real_hfkrew
+    label: real_regression
+    phenomena: [real_post, hfkrew_layout_h1_ambiguity]
+    rationale: "짧은 기여 안내 글의 실제 구조를 보존한 회귀 샘플."
+    limitation: "SEO 품질 정답 라벨은 아니며 current behavior 관찰용이다."
+
+  - id: real_pseudocon_recap
+    path: real/2025-05-31-2025-PseudoCon-recap.md
+    source_type: real_hfkrew
+    label: real_regression
+    phenomena: [real_post, recap_post, multiple_h1]
+    rationale: "행사 recap처럼 외부 citation 요구가 낮은 글 유형을 포함한다."
+    limitation: "회고성 글에 정보성 글 규칙을 적용하면 오탐이 생길 수 있다."
+
+  - id: real_translation_guide
+    path: real/2025-06-22-HuggingFace-Docs-Translation-Guide.md
+    source_type: real_hfkrew
+    label: real_regression
+    phenomena: [real_post, guide_post, toc_before_opening]
+    rationale: "가이드 글과 TOC marker가 있는 실제 문서를 포함한다."
+    limitation: "렌더링 후 TOC 처리 결과는 포함하지 않는다."
+
+  - id: real_tiny_agents_ko
+    path: real/2025-09-14-python-tiny-agents-ko.md
+    source_type: real_hfkrew
+    label: real_regression
+    phenomena: [real_post, long_real_translation, code_heavy_post]
+    rationale: "긴 기술 번역글의 heading/code 구조를 보존한다."
+    limitation: "코드블록 내부 heading-like text를 완전히 검증하려면 별도 parser fixture가 필요하다."
+
+  - id: real_mcp_servers_python
+    path: real/2025-09-14-Implementing-MCP-Servers-in-Python.md
+    source_type: real_hfkrew
+    label: acceptable_positive
+    phenomena: [real_post, pass_like, positive_candidate]
+    rationale: "31개 실제 audit에서 body required failure 없이 통과한 실제 positive 후보."
+    limitation: "frontmatter description은 여전히 누락되어 있어 완전한 SEO gold sample은 아니다."
+
+  - id: real_vlm_explained_ko
+    path: real/2025-10-12-vlm-explained-ko.md
+    source_type: real_hfkrew
+    label: acceptable_positive
+    phenomena: [real_post, pass_like, positive_candidate, image_heavy_real_post]
+    rationale: "이미지가 있으면서도 required body gate를 통과한 실제 positive 후보."
+    limitation: "metadata category/description 보완은 별도 필요하다."
+
+  - id: real_vlm_2025
+    path: real/2025-10-20-2025-VLM.md
+    source_type: real_hfkrew
+    label: real_regression
+    phenomena: [real_post, image_heavy_real_post, no_markdown_h1]
+    rationale: "이미지가 많고 body H1이 없는 실제 글을 포함한다."
+    limitation: "외부 이미지 URL 상태나 alt 의미 품질은 별도 검증이 필요하다."
+
+  - id: real_rteb
+    path: real/2025-12-01-rteb.md
+    source_type: real_hfkrew
+    label: real_regression
+    phenomena: [real_post, pass_like, benchmark_post]
+    rationale: "현재 checker에서 비교적 잘 통과하는 실제 positive-ish sample."
+    limitation: "description 누락 등 metadata 문제는 여전히 존재한다."
+
+  - id: real_hf_translation_hub_design
+    path: real/2025-11-17-hf_translation_hub_mcp_design_and_tooling.md
+    source_type: real_hfkrew
+    label: acceptable_positive
+    phenomena: [real_post, pass_like, positive_candidate]
+    rationale: "31개 실제 audit에서 body required failure 없이 통과한 실제 positive 후보."
+    limitation: "metadata description/category 보완이 필요해 완전한 SEO gold sample은 아니다."
+
+  - id: real_ai_agents
+    path: real/2025-12-15-ai-agents-are-here.md
+    source_type: real_hfkrew
+    label: real_regression
+    phenomena: [real_post, long_real_translation, multiple_h1]
+    rationale: "긴 번역글에서 H1 과다/heading 구조 문제가 어떻게 나타나는지 관찰한다."
+    limitation: "원문 구조 보존과 SEO 구조 개선 사이의 정책 결정이 필요하다."
+
+  - id: real_smolvla
+    path: real/2025-12-22-smolvla.md
+    source_type: real_hfkrew
+    label: real_regression
+    phenomena: [real_post, missing_author, toc_before_opening]
+    rationale: "실제 metadata 누락과 TOC marker 케이스를 포함한다."
+    limitation: "frontmatter title 누락이 의도인지 변환 오류인지 별도 확인 필요."
+
+  - id: real_mcp_overview
+    path: real/2025-12-28-translation-mcp-project-overview.md
+    source_type: real_hfkrew
+    label: real_regression
+    phenomena: [real_post, no_markdown_h1, toc_before_opening]
+    rationale: "MCP 프로젝트 소개 글의 실제 heading/TOC 구조를 포함한다."
+    limitation: "프로젝트 소개 글에는 citation 요구가 정보성 글과 다를 수 있다."
+
+  - id: real_mcp_n8n
+    path: real/2026-01-05-hf-translation-mcp-n8n.md
+    source_type: real_hfkrew
+    label: real_regression
+    phenomena: [real_post, workflow_post, image_heavy_real_post]
+    rationale: "워크플로우 설명과 다수 이미지가 있는 실제 글을 포함한다."
+    limitation: "이미지 alt의 의미 품질은 사람이 별도 판정해야 한다."

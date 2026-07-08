@@ -1,0 +1,1081 @@
+{
+  "summary": {
+    "total": 31,
+    "status_counts": {
+      "PASS": 19,
+      "NEEDS_CHANGES": 8,
+      "FAIL": 4
+    },
+    "metadata_missing": {
+      "description": 31,
+      "author": 1
+    },
+    "required_failures": {
+      "descriptive_alt_text": 7,
+      "alt_text_coverage": 6,
+      "heading_hierarchy": 4
+    },
+    "blocker_failures": {}
+  },
+  "posts": [
+    {
+      "file": "_posts/2024-09-16-how-to-contribute.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "🤗 어떻게 기여하나요?",
+        "description": "",
+        "image": "assets/images/thumbnail_default.png",
+        "categories": [
+          "contribute",
+          "tutorial"
+        ],
+        "author": "admin",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 1789,
+        "headings": 5,
+        "h1_count": 0,
+        "image_count": 0,
+        "link_count": 2
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2024-09-19-creating-gradio-based-NL2SQL-chatbot.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "Gradio 기반 NL2SQL 챗봇 만들기 - Part 1: 이론과 데이터셋",
+        "description": "",
+        "image": "assets/images/blog/posts/2024-09-19-creating-gradio-based-NL2SQL-chatbot/gradio_free_1160.png",
+        "categories": [
+          "NLP",
+          "SQL",
+          "chatbot"
+        ],
+        "author": "chaewon",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 4792,
+        "headings": 17,
+        "h1_count": 0,
+        "image_count": 1,
+        "link_count": 5
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2024-10-02-creating-web-interface.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "Gradio 기반 NL2SQL 챗봇 만들기 - Part 2: 웹 인터페이스 만들기",
+        "description": "",
+        "image": "assets/images/blog/posts/2024-09-19-creating-gradio-based-NL2SQL-chatbot/gradio_free_1160.png",
+        "categories": [
+          "NLP",
+          "Web"
+        ],
+        "author": "chaewon",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 4023,
+        "headings": 9,
+        "h1_count": 0,
+        "image_count": 0,
+        "link_count": 2
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2024-10-05-how-to-use-translator.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "Hugging Face Transformers 한글화 - 초벌 번역기 사용법",
+        "description": "",
+        "image": "assets/images/blog/posts/2024-10-05-how-to-use-translator/thumbnail.png",
+        "categories": [
+          "Transformers",
+          "Translation"
+        ],
+        "author": "minju",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 2543,
+        "headings": 6,
+        "h1_count": 0,
+        "image_count": 10,
+        "link_count": 5
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-05-27-2024-open-source-academy-recap.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "Hugging Face와 함께한 13주: (2024) OSSCA 오픈소스 기여 스토리",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-05-27-2024-open-source-academy-recap/title.png",
+        "categories": [
+          "HuggingFaceKREW"
+        ],
+        "author": "minju",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 5703,
+        "headings": 9,
+        "h1_count": 0,
+        "image_count": 5,
+        "link_count": 4
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-05-31-2025-PseudoCon-recap.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "HuggingFace KREW in 2025 PseudoCon",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-05-31-2025-PseudoCon-recap/thumbnail.png",
+        "categories": [
+          "contribute"
+        ],
+        "author": "jeong",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 4398,
+        "headings": 4,
+        "h1_count": 3,
+        "image_count": 0,
+        "link_count": 7
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-06-14-text2sql-spider-ko-dataset.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "한국어 Text2SQL 프로젝트 - Part 1: 번역한 데이터셋의 품질 개선하기",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-06-14-text2sql-spider-ko-dataset/text2sql-thumbnail.png",
+        "categories": [
+          "NLP",
+          "SQL"
+        ],
+        "author": "sohyun",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 5012,
+        "headings": 21,
+        "h1_count": 0,
+        "image_count": 0,
+        "link_count": 4
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-06-22-HuggingFace-Docs-Translation-Guide.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "Hugging Face transformers 기술 문서 번역 가이드",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-06-22-HuggingFace-Docs-Translation-Guide/transformers.png",
+        "categories": [
+          "contribute"
+        ],
+        "author": "jeong",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 6767,
+        "headings": 15,
+        "h1_count": 0,
+        "image_count": 0,
+        "link_count": 4
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-09-14-Implementing-MCP-Servers-in-Python.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "Python으로 구현하는 MCP 서버: Gradio를 활용한 AI 쇼핑 어시스턴트",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-09-14-Implementing-MCP-Servers-in-Python/thumbnail.png",
+        "categories": [
+          "MCP",
+          "Gradio"
+        ],
+        "author": "sohyun",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 4534,
+        "headings": 6,
+        "h1_count": 1,
+        "image_count": 0,
+        "link_count": 5
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-09-14-python-tiny-agents-ko.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "파이썬 Tiny Agents: 약 70줄의 코드로 MCP 기반 에이전트 구현하기",
+        "description": "",
+        "image": "assets/images/blog/posts/2015-09-14-python-tiny-agents/thumbnail.png",
+        "categories": [
+          "Agent"
+        ],
+        "author": "minju",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 15941,
+        "headings": 12,
+        "h1_count": 1,
+        "image_count": 0,
+        "link_count": 21
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-09-14-python-tiny-agents-study.md",
+      "status": "NEEDS_CHANGES",
+      "gate_passed": false,
+      "metadata": {
+        "title": "파이썬 Tiny Agents 스터디",
+        "description": "",
+        "image": "assets/images/blog/posts/2015-09-14-python-tiny-agents/thumbnail2.png",
+        "categories": [
+          "스터디"
+        ],
+        "author": "minju",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 4770,
+        "headings": 10,
+        "h1_count": 0,
+        "image_count": 5,
+        "link_count": 7
+      },
+      "failures": {
+        "blockers": [],
+        "required": [
+          "descriptive_alt_text"
+        ],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-09-26-Introducing-smolagents.md",
+      "status": "NEEDS_CHANGES",
+      "gate_passed": false,
+      "metadata": {
+        "title": "쉽게 에이전트를 만들 수 있는 라이브러리, smolagents를 소개합니다.",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-09-26-Introducing-smolagents/thumbnail.png",
+        "categories": [
+          "Agent"
+        ],
+        "author": "jeong",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 10925,
+        "headings": 8,
+        "h1_count": 2,
+        "image_count": 4,
+        "link_count": 36
+      },
+      "failures": {
+        "blockers": [],
+        "required": [
+          "alt_text_coverage"
+        ],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-09-29-building-hf-mcp-ko.md",
+      "status": "NEEDS_CHANGES",
+      "gate_passed": false,
+      "metadata": {
+        "title": "Hugging Face MCP 서버 구축기",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-09-29-building-hf-mcp/thumbnail.png",
+        "categories": [
+          "MCP"
+        ],
+        "author": "hyeonseo",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 9662,
+        "headings": 10,
+        "h1_count": 1,
+        "image_count": 2,
+        "link_count": 20
+      },
+      "failures": {
+        "blockers": [],
+        "required": [
+          "heading_hierarchy"
+        ],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-09-29-building-hf-mcp-study.md",
+      "status": "NEEDS_CHANGES",
+      "gate_passed": false,
+      "metadata": {
+        "title": "Hugging Face MCP 서버 스터디",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-09-29-building-hf-mcp/thumbnail-study.png",
+        "categories": [
+          "스터디"
+        ],
+        "author": "hyeonseo",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 10332,
+        "headings": 9,
+        "h1_count": 0,
+        "image_count": 7,
+        "link_count": 1
+      },
+      "failures": {
+        "blockers": [],
+        "required": [
+          "descriptive_alt_text"
+        ],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-10-06-mcp-for-research.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "MCP for Research: AI와 연구 도구 연결하기",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-10-06-mcp-for-research/thumbnail.png",
+        "categories": [
+          "MCP",
+          "Research"
+        ],
+        "author": "hyojung",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 4089,
+        "headings": 8,
+        "h1_count": 1,
+        "image_count": 1,
+        "link_count": 15
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-10-12-vlm-explained-ko.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "비전 언어 모델 쉽게 이해하기",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-10-12-vlm-explained-ko/thumbnail.png",
+        "categories": [
+          "Multimodal"
+        ],
+        "author": "woojun",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 12643,
+        "headings": 9,
+        "h1_count": 1,
+        "image_count": 5,
+        "link_count": 26
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-10-13-structured-codeagent-ko.md",
+      "status": "FAIL",
+      "gate_passed": false,
+      "metadata": {
+        "title": "CodeAgents + Structure: 액션 실행을 위한 더 좋은 방법",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-10-13-structured-codeagent/thumbnail.png",
+        "categories": [
+          "Agent"
+        ],
+        "author": "Jimin",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 8206,
+        "headings": 17,
+        "h1_count": 1,
+        "image_count": 2,
+        "link_count": 8
+      },
+      "failures": {
+        "blockers": [],
+        "required": [
+          "heading_hierarchy",
+          "alt_text_coverage",
+          "descriptive_alt_text"
+        ],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-10-20-2025-VLM.md",
+      "status": "NEEDS_CHANGES",
+      "gate_passed": false,
+      "metadata": {
+        "title": "2025년의 VLM : 더 좋아지고, 더 빠르고, 더 강해진 비전 언어 모델",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-10-20-2025-VLM/thumbnail.png",
+        "categories": [
+          "VLM"
+        ],
+        "author": "youngjun",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 20760,
+        "headings": 19,
+        "h1_count": 0,
+        "image_count": 15,
+        "link_count": 45
+      },
+      "failures": {
+        "blockers": [],
+        "required": [
+          "alt_text_coverage"
+        ],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-11-02-DABStep.md",
+      "status": "NEEDS_CHANGES",
+      "gate_passed": false,
+      "metadata": {
+        "title": "DABStep: 다단계 추론을 위한 데이터 에이전트 벤치마크",
+        "description": "",
+        "image": "assets/images/thumbnail_default.png",
+        "categories": [
+          "Benchmark",
+          "Agent"
+        ],
+        "author": "sohyun",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 11824,
+        "headings": 14,
+        "h1_count": 1,
+        "image_count": 2,
+        "link_count": 9
+      },
+      "failures": {
+        "blockers": [],
+        "required": [
+          "descriptive_alt_text"
+        ],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-11-10-pi0-fast.md",
+      "status": "NEEDS_CHANGES",
+      "gate_passed": false,
+      "metadata": {
+        "title": "π0 & π0-FAST: 범용 로봇 제어를 위한 Vision-Language-Action 모델",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-11-10-pi-fast/thumbnail.png",
+        "categories": [
+          "Robotics",
+          "AI",
+          "Community"
+        ],
+        "author": "hyojung",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 14421,
+        "headings": 24,
+        "h1_count": 0,
+        "image_count": 2,
+        "link_count": 18
+      },
+      "failures": {
+        "blockers": [],
+        "required": [
+          "heading_hierarchy"
+        ],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-11-17-agent-leaderboard.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "에이전트 리더보드: 다중 도메인 시나리오에서의 AI 에이전트 평가",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-11-17-agent-leaderboard/thumbnail.png",
+        "categories": [
+          "Agent"
+        ],
+        "author": "Jimin",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 14972,
+        "headings": 35,
+        "h1_count": 1,
+        "image_count": 0,
+        "link_count": 3
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-11-17-hf_translation_hub_mcp_design_and_tooling.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "MCP 서버 설계 전략 및 개발 도구 선정",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-11-17-hf_translation_hub_mcp_design_and_tooling/thumbnail.png",
+        "categories": [
+          "MCP"
+        ],
+        "author": "hyeonseo",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 6249,
+        "headings": 14,
+        "h1_count": 1,
+        "image_count": 0,
+        "link_count": 7
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-11-3-Welcome-GPT-OSS.md",
+      "status": "FAIL",
+      "gate_passed": false,
+      "metadata": {
+        "title": "OpenAI의 새로운 오픈소스 모델 패밀리, GPT OSS를 환영합니다!",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-11-3-Welcome-GPT-OSS/thumbnail.png",
+        "categories": [
+          "OpenSource",
+          "Model"
+        ],
+        "author": "youngjun",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 19189,
+        "headings": 20,
+        "h1_count": 8,
+        "image_count": 3,
+        "link_count": 27
+      },
+      "failures": {
+        "blockers": [],
+        "required": [
+          "alt_text_coverage",
+          "descriptive_alt_text"
+        ],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-12-01-math-verify-leaderboard.md",
+      "status": "FAIL",
+      "gate_passed": false,
+      "metadata": {
+        "title": "Math-Verify로 Open LLM 리더보드 바로잡기",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-12-01-math-verify-leaderboard/thumbnail.png",
+        "categories": [
+          "LLM",
+          "leaderboard"
+        ],
+        "author": "Jimin",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 7443,
+        "headings": 8,
+        "h1_count": 1,
+        "image_count": 5,
+        "link_count": 6
+      },
+      "failures": {
+        "blockers": [],
+        "required": [
+          "alt_text_coverage",
+          "descriptive_alt_text"
+        ],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-12-01-rteb.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "RTEB: 검색 평가의 새로운 표준",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-12-01-rteb/thumbnail.png",
+        "categories": [
+          "Retrieval",
+          "Embedding",
+          "Benchmark"
+        ],
+        "author": "sohyun",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 11927,
+        "headings": 9,
+        "h1_count": 1,
+        "image_count": 0,
+        "link_count": 5
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-12-08-hugging_face_blog_fetch_automation.md",
+      "status": "FAIL",
+      "gate_passed": false,
+      "metadata": {
+        "title": "n8n을 이용해 블로그 수동적으로 탐험하기",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-12-08-hugging_face_blog_fetch_automation/thumbnail.png",
+        "categories": [
+          "automation"
+        ],
+        "author": "youngjun",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 17935,
+        "headings": 20,
+        "h1_count": 6,
+        "image_count": 10,
+        "link_count": 2
+      },
+      "failures": {
+        "blockers": [],
+        "required": [
+          "alt_text_coverage",
+          "descriptive_alt_text"
+        ],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-12-15-ai-agents-are-here.md",
+      "status": "NEEDS_CHANGES",
+      "gate_passed": false,
+      "metadata": {
+        "title": "AI Agents의 도래: 그래서, 이제는?",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-12-15-ai-agents-are-here/thumbnail.png",
+        "categories": [
+          "Agents",
+          "Ethic"
+        ],
+        "author": "jeong",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 22286,
+        "headings": 38,
+        "h1_count": 6,
+        "image_count": 0,
+        "link_count": 65
+      },
+      "failures": {
+        "blockers": [],
+        "required": [
+          "heading_hierarchy"
+        ],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-12-15-hf-translation-hub-mcp-server-usage-guide.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "HuggingFace 번역 MCP 서버 사용법",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-12-15-hf-i18n-mcp-server-usage-guide/thumbnail.png",
+        "categories": [
+          "MCP"
+        ],
+        "author": "hyeonseo",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 7262,
+        "headings": 14,
+        "h1_count": 6,
+        "image_count": 7,
+        "link_count": 4
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description",
+          "categories"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-12-22-smolvla.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "SmolVLA: Lerobot 커뮤니티 데이터로 학습된 효율적인 Vision-Language-Action 모델",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-12-22-smolvla/thumbnail.png",
+        "categories": [
+          "Lerobot",
+          "Robotics"
+        ],
+        "author": "",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 17258,
+        "headings": 24,
+        "h1_count": 1,
+        "image_count": 8,
+        "link_count": 38
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "title",
+          "description",
+          "author"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2025-12-28-translation-mcp-project-overview.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "Hugging Face 번역 MCP 서버 총정리",
+        "description": "",
+        "image": "assets/images/blog/posts/2025-12-28-translation-mcp-project-overview/thumbnail.png",
+        "categories": [
+          "Robotics",
+          "AI",
+          "Community"
+        ],
+        "author": "minju",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 7400,
+        "headings": 25,
+        "h1_count": 0,
+        "image_count": 3,
+        "link_count": 4
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    },
+    {
+      "file": "_posts/2026-01-05-hf-translation-mcp-n8n.md",
+      "status": "PASS",
+      "gate_passed": true,
+      "metadata": {
+        "title": "n8n으로 번역 MCP Server 워크플로우 구축하기: 실전 트러블슈팅과 실행 방식 비교",
+        "description": "",
+        "image": "assets/images/blog/posts/2026-01-05-hf-translation-mcp-n8n/meme.jpg",
+        "categories": [
+          "Robotics",
+          "AI",
+          "Community"
+        ],
+        "author": "minju",
+        "robots": "",
+        "locale": "",
+        "source_url": "",
+        "translation_status": ""
+      },
+      "shape": {
+        "chars": 11647,
+        "headings": 22,
+        "h1_count": 0,
+        "image_count": 12,
+        "link_count": 3
+      },
+      "failures": {
+        "blockers": [],
+        "required": [],
+        "frontmatter": [
+          "description"
+        ]
+      }
+    }
+  ]
+}
