@@ -1,0 +1,53 @@
+scripts/run_local_review.py
+  s_559c9a5be17a06::t_40793cea13270e 4,45-53,90-103,105,110-127,129
+.github/workflows/reusable-pr-mutate.yml
+  s_559c9a5be17a06::t_5eeed47471441d 53-54
+skills/seo/tools/metadata_suggestion.py
+  s_559c9a5be17a06::t_698734629c9e69 11,21-24,64-66,100-103,110,114-117,131,144-149,151-152,160-162
+scripts/hf_agent/run_skill_review.py
+  s_559c9a5be17a06::t_c85851b441416c 177-182
+  s_559c9a5be17a06::t_9fb534492eda29 5,17-29,111-112
+  s_559c9a5be17a06::t_e745694083949a 148-163,165
+skills/seo/README.md
+  s_559c9a5be17a06::t_1be8a078d9dbfe 51-55
+skills/seo/tools/seo_eval.py
+  s_559c9a5be17a06::t_5f1e2e2684b92a 25,43,141-142,192-197,265-266,302-303,337-340,347-349,351-354
+  s_559c9a5be17a06::t_fbd3502b2da25f 240-245
+  s_559c9a5be17a06::t_4831ce1e04ac14 246
+tests/test_run_skill_review.py
+  s_559c9a5be17a06::t_0e08edb730a9b3 135-186
+.github/workflows/reusable-pr-review.yml
+  s_559c9a5be17a06::t_15819c63425416 38,79-82,105,123-126,149,171-174,197,267-268,293
+skills/seo/tools/openai_integration.py
+  s_559c9a5be17a06::t_95139016223208 1-177
+skills/seo/tests/test_openai_integration.py
+  s_559c9a5be17a06::t_dfff6f4832c3e6 1-64
+skills/seo/tests/test_rubric_semantic_judges.py
+  s_559c9a5be17a06::t_36a4d6da514633 40-56
+.github/workflows/daily-translation.yml
+  s_559c9a5be17a06::t_0dabb8cd0e2d61 31
+skills/seo/tests/test_metadata_suggestion.py
+  s_559c9a5be17a06::t_b99a094b574771 4,77-144
+  s_559c9a5be17a06::t_2ebcee18a37d09 145-146
+skills/seo/SKILL.md
+  s_559c9a5be17a06::t_e175c9900068ae 40-42,62
+skills/seo/tools/report.py
+  s_559c9a5be17a06::t_6658b7abed4861 27-45,91-96
+  s_559c9a5be17a06::t_beee5d3c423e09 97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "b1e90253f89e8ada1d8dd83a5fefc721efad3d6a",
+  "prompts": {},
+  "sessions": {
+    "s_559c9a5be17a06": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019daac0-5b1d-7573-a4fb-4bbeb42671a6",
+        "model": "gpt-5.5"
+      },
+      "human_author": "hongseongmin <hong112424@naver.com>"
+    }
+  }
+}
