@@ -34,6 +34,9 @@ SEO eval (body only) ──fail──> return feedback (failing REQUIRED checks)
 - Gate = deterministic required checks plus optional rubric checks when a
   schema-bound judge is injected. Without a judge function, the skill remains
   fully offline and gates on deterministic checks alone.
+- In the PR agent, metadata generation is read-only: it writes
+  `metadata-suggestion.json` for a later apply/repair step, but does not edit or
+  commit the post.
 
 ## Inputs
 - PR / pre-publish: `--manifest <translation-flow manifest.yaml>`
@@ -54,6 +57,16 @@ python skills/seo/tools/seo_eval.py --file _posts/2025-12-01-rteb.md \
 # Optional informational Lighthouse SEO benchmark (Tier A real / Tier B heuristic)
 python skills/seo/tools/seo_eval.py ... --benchmark heuristic
 ```
+
+## PR agent output contract
+- `results/seo.md`: existing Markdown SEO Eval Report used in PR comments and
+  failed-gate repair feedback.
+- `results/seo.json`: existing wrapper JSON with `skill`, `conclusion`, and
+  `report_path`; kept for backwards compatibility.
+- `results/seo-eval.json`: full SEO evaluation JSON.
+- `results/metadata-suggestion.json`: metadata candidate JSON. It must not
+  include `skill` or `conclusion`, so existing PR agent loaders ignore it as a
+  non-gate artifact.
 
 ## Deterministic items (body only)
 - **REQUIRED (hard gate):** D1 H1 count == 1 · D2 heading hierarchy (no skips) ·

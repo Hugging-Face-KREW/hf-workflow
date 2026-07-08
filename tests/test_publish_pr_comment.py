@@ -20,11 +20,20 @@ def test_render_report_uses_compact_skill_rows(tmp_path: Path) -> None:
     quality.write_text(
         json.dumps({"skill": "quality", "conclusion": "fail", "report_path": "quality.md"})
     )
+    (tmp_path / "metadata-suggestion.json").write_text(
+        json.dumps({
+            "kind": "seo_metadata_suggestion",
+            "status": "PARTIAL",
+            "candidate": {"title": "Metadata candidate"},
+        })
+    )
     (tmp_path / "seo.md").write_text("# SEO Report\n\nAll required checks passed.")
     (quality.parent / "quality.md").write_text("# Quality Report\n\n- WARN: TODO remains")
 
-    report = render_report(load_results(tmp_path), head_sha="abc123")
+    results = load_results(tmp_path)
+    report = render_report(results, head_sha="abc123")
 
+    assert {result["skill"] for result in results} == {"seo", "quality"}
     assert report.startswith(REPORT_MARKER)
     assert "| SEO | ✅ Pass |" in report
     assert "| Quality | ❌ Fail |" in report
@@ -34,6 +43,7 @@ def test_render_report_uses_compact_skill_rows(tmp_path: Path) -> None:
     assert "All required checks passed." in report
     assert "<summary>Quality report — ❌ Fail</summary>" in report
     assert "- WARN: TODO remains" in report
+    assert "Metadata candidate" not in report
 
 
 def test_upsert_issue_comment_updates_the_existing_marker() -> None:

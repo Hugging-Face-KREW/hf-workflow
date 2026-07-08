@@ -87,11 +87,32 @@ def main() -> int:
             str(target_root),
             "--output",
             str(report_dir / "seo-report.md"),
+            "--json",
+            str(report_dir / "seo-eval.json"),
         ],
         cwd=repo_root,
         check=False,
     )
     print(f"SEO gate: {'PASS' if seo_code == 0 else 'FAIL'} (exit {seo_code})")
+    run(
+        [
+            "python3",
+            "skills/seo/tools/metadata_suggestion.py",
+            "--file",
+            manifest.get("translation.file_path", ""),
+            "--target-root",
+            str(target_root),
+            "--eval-json",
+            str(report_dir / "seo-eval.json"),
+            "--output",
+            str(report_dir / "metadata-suggestion.json"),
+            "--manifest",
+            str(manifest_copy),
+            "--report-path",
+            str(report_dir / "seo-report.md"),
+        ],
+        cwd=repo_root,
+    )
     run(
         [
             "python3",

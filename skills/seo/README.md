@@ -33,6 +33,21 @@ keyword checks (D5/D10); the manifest's `handoff.seo.primary_keyword` is empty
 in practice. `--benchmark heuristic` adds an informational Lighthouse-SEO score
 (never affects the gate).
 
+## PR agent outputs
+
+The existing HF Agent review bot depends on stable SEO output names:
+
+- `results/seo.md`: human-readable SEO Eval Report / rubric feedback.
+- `results/seo.json`: PR-agent wrapper, e.g.
+  `{"skill":"seo","conclusion":"pass","report_path":"results/seo.md"}`.
+- `results/seo-eval.json`: full machine-readable `seo_eval.py` result.
+- `results/metadata-suggestion.json`: metadata candidate JSON for later
+  review/apply. It deliberately omits `skill` and `conclusion` so existing PR
+  report and repair loaders do not treat it as a gate result.
+
+For local/daily reports the same split is written under `reports/<report_id>/`
+as `seo-report.md`, `seo-eval.json`, and `metadata-suggestion.json`.
+
 ## Quality-status fixtures
 
 The test harness is not meant to make every existing blog post pass. It checks
@@ -82,6 +97,7 @@ tools/
   report.py          # markdown renderer over the result dict
   rubric.py          # R1–R6 compatibility + semantic/alt judge seams
   metadata.py        # policy-aware metadata candidate + deterministic write-back
+  metadata_suggestion.py  # read-only metadata candidate JSON output
   checkers/          # content / keywords / images / frontmatter / seo_audits
   utils.py           # frontmatter parse + text metrics
   heuristic.py       # Lighthouse Tier-B heuristic
