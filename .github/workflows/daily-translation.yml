@@ -64,6 +64,24 @@ jobs:
           git -C target-repo config user.email "github-actions[bot]@users.noreply.github.com"
           git -C target-repo config user.name "github-actions[bot]"
 
+      - name: Ensure HF agent labels exist
+        run: |
+          gh label create "hf-agent:managed" \
+            --repo "${KREW_REPO}" \
+            --description "Opt PR into HF Agent review automation" \
+            --color "0E8A16" \
+            --force
+          gh label create "hf-agent:paused" \
+            --repo "${KREW_REPO}" \
+            --description "Pause HF Agent mutations for this PR" \
+            --color "B60205" \
+            --force
+          gh label create "hf-agent:needs-human" \
+            --repo "${KREW_REPO}" \
+            --description "HF Agent needs human follow-up" \
+            --color "D93F0B" \
+            --force
+
       - name: Create translation PR
         working-directory: translation-flow
         run: |
@@ -97,6 +115,17 @@ jobs:
           import subprocess
           from pathlib import Path
 
+          def resolve_manifest_path(raw_path):
+              manifest = Path(raw_path)
+              candidates = [manifest]
+              if not manifest.is_absolute():
+                  candidates.append(Path("translation-flow") / manifest)
+              for candidate in candidates:
+                  if candidate.exists():
+                      return candidate
+              tried = ", ".join(str(candidate) for candidate in candidates)
+              raise FileNotFoundError(f"Manifest file not found. Tried: {tried}")
+
           summary_path = Path("run-summary.json")
           if not summary_path.exists():
               print("No run summary found; skipping reports.")
@@ -106,7 +135,7 @@ jobs:
           for result in summary["results"]:
               if result["status"] != "created":
                   continue
-              manifest = Path(result["manifest_path"])
+              manifest = resolve_manifest_path(result["manifest_path"])
               subprocess.run(
                   [
                       "python",
