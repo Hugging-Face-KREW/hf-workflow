@@ -18,15 +18,6 @@ FIXTURES = [
     "generated/medium-post",
     "generated/poor-post",
     "generated/blocked-post",
-    # Synthetic negative ("mutated") samples — one mutation each. noindex /
-    # broken-internal-link / blocked-post are intended BLOCKED but the v1 gate
-    # has no BLOCKED tier yet, so their golden snapshots current (pre-BLOCKED)
-    # behavior and will re-baseline when that tier lands (see NOTES.md).
-    "mutated/broken-internal-link",
-    "mutated/missing-alt",
-    "mutated/missing-description",
-    "mutated/noindex",
-    "mutated/short-opening",
     "real/2025-12-01-rteb",
     "real/2025-12-22-smolvla",
     "real/2025-12-15-ai-agents-are-here",

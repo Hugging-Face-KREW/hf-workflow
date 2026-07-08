@@ -1,60 +1,67 @@
 {
+  "blockers": {
+    "checks": [
+      {
+        "message": "Body is not empty",
+        "name": "body_not_empty",
+        "passed": true,
+        "severity": "blocker",
+        "value": 1232
+      },
+      {
+        "message": "Robots is indexable",
+        "name": "robots_indexable",
+        "passed": true,
+        "severity": "blocker",
+        "value": ""
+      }
+    ],
+    "passed": true,
+    "score": 1.0,
+    "summary": {
+      "blocker": "2/2"
+    }
+  },
   "deterministic": {
     "advisory": {
       "checks": [
         {
-          "message": "Opening 3 paragraphs: 427 chars (recommend ≥150 for KO/GEO)",
+          "default_severity": "review",
+          "message": "Opening 3 paragraphs: 624 chars (recommend ≥150 for KO/GEO)",
           "name": "opening_summary",
           "passed": true,
-          "severity": "recommended",
-          "value": "Transformer 모델은 자연어 처리 및 다양한 머신러닝 분야에서 혁신적인 성과를 이루어내고 있습니다. 그러나 이러한 모델의 성능을 극대화하기 위해서는 여러 최적화 기법이 필요합니다.\n\nTransformer 모델의 성능을 높이기 위해 가장 먼저 고려해야 할 것은 파라미터 조정입니다. 학습률, 배치 크기, 드롭아웃 비율 등 다양한 파라미터가 모델의 성능에..."
+          "severity": "review",
+          "value": "한국어 기술 번역 글의 메타 설명은 본문을 과장해서 홍보하는 문구가 아니라, 독자가 검색결과에서 글의 범위와 쓸모를 빠르게 판단하도록 돕는 요약입니다. 특히 Hugging Face 문서나 블로그 번역 글은 원문 제목, 한국어 제목, 첫 문단, description이 서로 다른 약속을 하지 않도록 맞추는 것이 중요합니다. 이 기준은 게시 전 PR에서 메타데이..."
         },
         {
-          "message": "Heading hierarchy: Valid",
-          "name": "heading_hierarchy",
-          "passed": true,
-          "severity": "recommended",
-          "value": [
-            [
-              1,
-              "Transformer 모델 최적화 기법"
-            ],
-            [
-              2,
-              "1. 파라미터 조정"
-            ],
-            [
-              2,
-              "2. 전이 학습 활용"
-            ],
-            [
-              2,
-              "3. 하드웨어 최적화"
-            ]
-          ]
-        },
-        {
-          "message": "Body H1 count: 1 (0 or 1 OK — layout renders title as H1; never multiple)",
+          "default_severity": "review",
+          "message": "Markdown H1 count: 1 (review against rendered layout)",
           "name": "h1_count",
           "passed": true,
-          "severity": "recommended",
+          "severity": "review",
           "value": 1
         },
         {
-          "message": "Citations/statistics: 2 (recommend ≥1 for GEO)",
+          "default_severity": "review",
+          "message": "Citations/statistics: 1 (recommend ≥1 for GEO)",
           "name": "citations",
           "passed": true,
-          "severity": "recommended",
-          "value": 2
+          "severity": "review",
+          "value": 1
         },
         {
-          "message": "Scannable H2/H3 (question or keyword): 0 (0 question, 0 keyword)",
+          "default_severity": "recommended",
+          "message": "Scannable H2/H3 (question or keyword): 2 (2 question, 0 keyword)",
           "name": "question_headings",
-          "passed": false,
+          "passed": true,
           "severity": "recommended",
-          "value": []
+          "value": [
+            "메타 설명은 무엇을 포함해야 하나?",
+            "제목, 도입부, description은 어떻게 비교하나?"
+          ]
         },
         {
+          "default_severity": "recommended",
           "message": "Internal links: 0 (recommend 2-3)",
           "name": "internal_links",
           "passed": false,
@@ -62,11 +69,12 @@
           "value": []
         },
         {
-          "message": "Body length: 823 chars (recommend ≥800 for KO)",
+          "default_severity": "optional",
+          "message": "Body length: 1232 chars (recommend ≥800 for KO)",
           "name": "word_count",
           "passed": true,
           "severity": "optional",
-          "value": 823
+          "value": 1232
         },
         {
           "message": "No primary_keyword in manifest — keyword check skipped",
@@ -76,6 +84,7 @@
           "value": null
         },
         {
+          "default_severity": "optional",
           "message": "WebP format: 0/1 images (≥50% recommend)",
           "name": "webp_format",
           "passed": false,
@@ -83,6 +92,7 @@
           "value": []
         },
         {
+          "default_severity": "optional",
           "message": "Lazy loading: 0 images (optional)",
           "name": "lazy_loading",
           "passed": false,
@@ -94,11 +104,11 @@
     "checkers": {
       "content": {
         "passed": true,
-        "score": 0.7222222222222223,
+        "score": 0.875,
         "summary": {
           "optional": "1/1",
-          "recommended": "4/6",
-          "required": "0/0"
+          "recommended": "1/2",
+          "required": "1/1"
         }
       },
       "images": {
@@ -121,18 +131,41 @@
     "required": {
       "checks": [
         {
+          "default_severity": "required",
+          "message": "Heading hierarchy: Valid",
+          "name": "heading_hierarchy",
+          "passed": true,
+          "severity": "required",
+          "value": [
+            [
+              1,
+              "한국어 기술 번역 글의 메타 설명 작성 기준"
+            ],
+            [
+              2,
+              "메타 설명은 무엇을 포함해야 하나?"
+            ],
+            [
+              2,
+              "제목, 도입부, description은 어떻게 비교하나?"
+            ]
+          ]
+        },
+        {
+          "default_severity": "required",
           "message": "Alt text coverage: 1/1 images",
           "name": "alt_text_coverage",
           "passed": true,
           "severity": "required",
           "value": [
             {
-              "alt": "Transformer 모델 최적화",
-              "src": "https://example.com/assets/images/transformer-optimization.jpg \"Transformer 모델 최적화\""
+              "alt": "메타 설명 작성 기준 예시",
+              "src": "/assets/images/seo-review/meta-description-guide.png"
             }
           ]
         },
         {
+          "default_severity": "required",
           "message": "Descriptive alt text: 1/1 (≥80% recommend)",
           "name": "descriptive_alt_text",
           "passed": true,
@@ -140,8 +173,8 @@
           "value": {
             "descriptive": [
               {
-                "alt": "Transformer 모델 최적화",
-                "src": "https://example.com/assets/images/transformer-optimization.jpg \"Transformer 모델 최적화\""
+                "alt": "메타 설명 작성 기준 예시",
+                "src": "/assets/images/seo-review/meta-description-guide.png"
               }
             ],
             "non_descriptive": []
@@ -154,25 +187,25 @@
   "frontmatter_advisory": {
     "checks": [
       {
-        "message": "Title: 21 chars (recommend ≤60)",
+        "message": "Title: 24 chars (recommend ≤60)",
         "name": "title",
         "passed": true,
         "severity": "required",
-        "value": "Transformer 모델 최적화 기법"
+        "value": "한국어 기술 번역 글의 메타 설명 작성 기준"
       },
       {
-        "message": "Description: 44 chars (recommend 150-160)",
+        "message": "Description: 74 chars (semantic quality reviewed separately)",
         "name": "description",
-        "passed": false,
+        "passed": true,
         "severity": "required",
-        "value": "Transformer 모델의 성능을 극대화하는 다양한 최적화 기법을 탐구합니다."
+        "value": "한국어 기술 번역 글을 게시하기 전에 title, description, 도입부가 같은 주제를 설명하는지 점검하는 기준을 정리합니다."
       },
       {
-        "message": "OG image: /assets/images/transformer-optimization.jpg",
+        "message": "OG image: /assets/images/seo-review/meta-description-guide.png",
         "name": "image",
         "passed": true,
         "severity": "required",
-        "value": "/assets/images/transformer-optimization.jpg"
+        "value": "/assets/images/seo-review/meta-description-guide.png"
       },
       {
         "message": "Categories: 2 (recommend 2-3)",
@@ -180,30 +213,32 @@
         "passed": true,
         "severity": "recommended",
         "value": [
-          "AI",
-          "Machine Learning"
+          "SEO",
+          "Translation"
         ]
       },
       {
-        "message": "Author: 김철수",
+        "message": "Author: test_author",
         "name": "author",
         "passed": true,
         "severity": "recommended",
-        "value": "김철수"
+        "value": "test_author"
       }
     ],
-    "passed": false,
-    "score": 0.7333333333333334,
+    "passed": true,
+    "score": 1.0,
     "summary": {
       "recommended": "2/2",
-      "required": "2/3"
+      "required": "3/3"
     }
   },
   "gate": {
+    "blockers_passed": true,
     "deterministic_passed": true,
     "passed": true,
-    "reason": "deterministic gate only (rubric is stage-1 skeleton)",
-    "rubric_passed": null
+    "reason": "deterministic gate only (rubric judge not configured)",
+    "rubric_passed": null,
+    "status": "PASS"
   },
   "input": {
     "file_path": "good-post.md",
@@ -211,12 +246,112 @@
     "primary_keyword": "",
     "source_url": ""
   },
+  "policy": {
+    "name": "default",
+    "rubric_required": false,
+    "severities": {
+      "alt_text_coverage": "required",
+      "citations": "review",
+      "descriptive_alt_text": "required",
+      "h1_count": "review",
+      "heading_hierarchy": "required",
+      "image_files_exist": "required",
+      "internal_links": "recommended",
+      "lazy_loading": "optional",
+      "no_images": "info",
+      "opening_summary": "review",
+      "primary_keyword": "required",
+      "question_headings": "recommended",
+      "secondary_keywords": "recommended",
+      "webp_format": "optional",
+      "word_count": "optional"
+    }
+  },
   "rubric": {
     "available": false,
+    "checks": [],
     "mean": null,
     "min": null,
+    "notes": {},
     "passed": null,
-    "reason": "rubric not run (stage-1 skeleton)",
+    "reason": "rubric not run (schema-bound policy judge not configured)",
+    "required": false,
     "scores": {}
+  },
+  "signals": {
+    "frontmatter": {
+      "author_present": true,
+      "canonical_present": false,
+      "categories_count": 2,
+      "description_chars": 74,
+      "description_present": true,
+      "description_text": "한국어 기술 번역 글을 게시하기 전에 title, description, 도입부가 같은 주제를 설명하는지 점검하는 기준을 정리합니다.",
+      "robots": "",
+      "title_chars": 24,
+      "title_present": true,
+      "title_text": "한국어 기술 번역 글의 메타 설명 작성 기준"
+    },
+    "headings": {
+      "layout_title_used_as_h1": true,
+      "markdown_h1_count": 1,
+      "markdown_heading_count": 3,
+      "markdown_headings": [
+        {
+          "level": 1,
+          "text": "한국어 기술 번역 글의 메타 설명 작성 기준"
+        },
+        {
+          "level": 2,
+          "text": "메타 설명은 무엇을 포함해야 하나?"
+        },
+        {
+          "level": 2,
+          "text": "제목, 도입부, description은 어떻게 비교하나?"
+        }
+      ],
+      "rendered_effective_h1": [
+        "한국어 기술 번역 글의 메타 설명 작성 기준",
+        "한국어 기술 번역 글의 메타 설명 작성 기준"
+      ],
+      "rendered_effective_h1_count": 2
+    },
+    "images": {
+      "empty_alt_count": 0,
+      "empty_alt_sources": [],
+      "filename_like_alt_count": 0,
+      "filename_like_alt_values": [],
+      "image_details": [
+        {
+          "alt": "메타 설명 작성 기준 예시",
+          "src": "/assets/images/seo-review/meta-description-guide.png"
+        }
+      ],
+      "missing_local_file_count": 0,
+      "missing_local_file_sources": [],
+      "total_count": 1
+    },
+    "links": {
+      "citation_signal_count": 1,
+      "external_count": 1,
+      "internal_count": 0,
+      "total_count": 1
+    },
+    "opening": {
+      "first_real_paragraph": "한국어 기술 번역 글의 메타 설명은 본문을 과장해서 홍보하는 문구가 아니라, 독자가 검색결과에서 글의 범위와 쓸모를 빠르게 판단하도록 돕는 요약입니다. 특히 Hugging Face 문서나 블로그 번역 글은 원문 제목, 한국어 제목, 첫 문단, description이 서로 다른 약속을 하지 않도록 맞추는 것이 중요합니다. 이 기준은 게시 전 PR에서 메타데이터를 점검할 때 사용할 수 있습니다.",
+      "first_real_paragraph_chars": 220,
+      "first_three_paragraph_chars": 624
+    },
+    "semantic_review": {
+      "canonical": "",
+      "description_text": "한국어 기술 번역 글을 게시하기 전에 title, description, 도입부가 같은 주제를 설명하는지 점검하는 기준을 정리합니다.",
+      "opening_text": "한국어 기술 번역 글의 메타 설명은 본문을 과장해서 홍보하는 문구가 아니라, 독자가 검색결과에서 글의 범위와 쓸모를 빠르게 판단하도록 돕는 요약입니다. 특히 Hugging Face 문서나 블로그 번역 글은 원문 제목, 한국어 제목, 첫 문단, description이 서로 다른 약속을 하지 않도록 맞추는 것이 중요합니다. 이 기준은 게시 전 PR에서 메타데이터를 점검할 때 사용할 수 있습니다.",
+      "rendered_h1_texts": [
+        "한국어 기술 번역 글의 메타 설명 작성 기준",
+        "한국어 기술 번역 글의 메타 설명 작성 기준"
+      ],
+      "review_instruction": "Compare title, description, rendered H1, and opening text for meaning consistency. This packet is evidence only; it does not decide pass/fail.",
+      "source_url_hint": "",
+      "title_text": "한국어 기술 번역 글의 메타 설명 작성 기준"
+    }
   }
 }

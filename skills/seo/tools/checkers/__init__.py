@@ -10,10 +10,12 @@ from .frontmatter import check_frontmatter
 from .content import check_content_structure
 from .images import check_images
 from .keywords import check_keywords
+from .blockers import check_blockers
 
 __all__ = [
     'check_frontmatter',
     'check_content_structure',
     'check_images',
     'check_keywords',
+    'check_blockers',
 ]

@@ -1,49 +1,56 @@
 {
+  "blockers": {
+    "checks": [
+      {
+        "message": "Body is not empty",
+        "name": "body_not_empty",
+        "passed": true,
+        "severity": "blocker",
+        "value": 450
+      },
+      {
+        "message": "Robots is indexable",
+        "name": "robots_indexable",
+        "passed": true,
+        "severity": "blocker",
+        "value": ""
+      }
+    ],
+    "passed": true,
+    "score": 1.0,
+    "summary": {
+      "blocker": "2/2"
+    }
+  },
   "deterministic": {
     "advisory": {
       "checks": [
         {
+          "default_severity": "review",
           "message": "Opening 3 paragraphs: 305 chars (recommend ≥150 for KO/GEO)",
           "name": "opening_summary",
           "passed": true,
-          "severity": "recommended",
+          "severity": "review",
           "value": "Transformer 모델은 자연어 처리에서 혁신적인 변화를 가져왔습니다. 그러나 이러한 모델은 대량의 데이터와 계산 자원을 요구하기 때문에 최적화가 필수적입니다. 이 글에서는 Transformer 모델의 최적화 기법을 살펴보겠습니다.\n\n하이퍼파라미터 조정은 모델 성능을 극대화하는 데 중요한 역할을 합니다. 학습률, 배치 크기, 층 수 등을 조정함으로써 모..."
         },
         {
-          "message": "Heading hierarchy: Valid",
-          "name": "heading_hierarchy",
-          "passed": true,
-          "severity": "recommended",
-          "value": [
-            [
-              1,
-              "Transformer 모델 최적화 기법"
-            ],
-            [
-              2,
-              "하이퍼파라미터 조정"
-            ],
-            [
-              2,
-              "지식 증류"
-            ]
-          ]
-        },
-        {
-          "message": "Body H1 count: 1 (0 or 1 OK — layout renders title as H1; never multiple)",
+          "default_severity": "review",
+          "message": "Markdown H1 count: 1 (review against rendered layout)",
           "name": "h1_count",
           "passed": true,
-          "severity": "recommended",
+          "severity": "review",
           "value": 1
         },
         {
+          "default_severity": "review",
           "message": "Citations/statistics: 0 (recommend ≥1 for GEO)",
           "name": "citations",
           "passed": false,
-          "severity": "recommended",
+          "severity": "review",
           "value": 0
         },
         {
+          "default_severity": "recommended",
           "message": "Scannable H2/H3 (question or keyword): 0 (0 question, 0 keyword)",
           "name": "question_headings",
           "passed": false,
@@ -51,6 +58,7 @@
           "value": []
         },
         {
+          "default_severity": "recommended",
           "message": "Internal links: 0 (recommend 2-3)",
           "name": "internal_links",
           "passed": false,
@@ -58,6 +66,7 @@
           "value": []
         },
         {
+          "default_severity": "optional",
           "message": "Body length: 450 chars (recommend ≥800 for KO)",
           "name": "word_count",
           "passed": false,
@@ -72,6 +81,7 @@
           "value": null
         },
         {
+          "default_severity": "optional",
           "message": "WebP format: 0/1 images (≥50% recommend)",
           "name": "webp_format",
           "passed": false,
@@ -79,6 +89,7 @@
           "value": []
         },
         {
+          "default_severity": "optional",
           "message": "Lazy loading: 0 images (optional)",
           "name": "lazy_loading",
           "passed": false,
@@ -90,11 +101,11 @@
     "checkers": {
       "content": {
         "passed": true,
-        "score": 0.4166666666666667,
+        "score": 0.7,
         "summary": {
           "optional": "0/1",
-          "recommended": "3/6",
-          "required": "0/0"
+          "recommended": "0/2",
+          "required": "1/1"
         }
       },
       "images": {
@@ -117,6 +128,28 @@
     "required": {
       "checks": [
         {
+          "default_severity": "required",
+          "message": "Heading hierarchy: Valid",
+          "name": "heading_hierarchy",
+          "passed": true,
+          "severity": "required",
+          "value": [
+            [
+              1,
+              "Transformer 모델 최적화 기법"
+            ],
+            [
+              2,
+              "하이퍼파라미터 조정"
+            ],
+            [
+              2,
+              "지식 증류"
+            ]
+          ]
+        },
+        {
+          "default_severity": "required",
           "message": "Alt text coverage: 1/1 images",
           "name": "alt_text_coverage",
           "passed": true,
@@ -129,6 +162,7 @@
           ]
         },
         {
+          "default_severity": "required",
           "message": "Descriptive alt text: 1/1 (≥80% recommend)",
           "name": "descriptive_alt_text",
           "passed": true,
@@ -195,10 +229,12 @@
     }
   },
   "gate": {
+    "blockers_passed": true,
     "deterministic_passed": true,
     "passed": true,
-    "reason": "deterministic gate only (rubric is stage-1 skeleton)",
-    "rubric_passed": null
+    "reason": "deterministic gate only (rubric judge not configured)",
+    "rubric_passed": null,
+    "status": "PASS"
   },
   "input": {
     "file_path": "medium-post.md",
@@ -206,12 +242,112 @@
     "primary_keyword": "",
     "source_url": ""
   },
+  "policy": {
+    "name": "default",
+    "rubric_required": false,
+    "severities": {
+      "alt_text_coverage": "required",
+      "citations": "review",
+      "descriptive_alt_text": "required",
+      "h1_count": "review",
+      "heading_hierarchy": "required",
+      "image_files_exist": "required",
+      "internal_links": "recommended",
+      "lazy_loading": "optional",
+      "no_images": "info",
+      "opening_summary": "review",
+      "primary_keyword": "required",
+      "question_headings": "recommended",
+      "secondary_keywords": "recommended",
+      "webp_format": "optional",
+      "word_count": "optional"
+    }
+  },
   "rubric": {
     "available": false,
+    "checks": [],
     "mean": null,
     "min": null,
+    "notes": {},
     "passed": null,
-    "reason": "rubric not run (stage-1 skeleton)",
+    "reason": "rubric not run (schema-bound policy judge not configured)",
+    "required": false,
     "scores": {}
+  },
+  "signals": {
+    "frontmatter": {
+      "author_present": false,
+      "canonical_present": false,
+      "categories_count": 1,
+      "description_chars": 0,
+      "description_present": false,
+      "description_text": "",
+      "robots": "",
+      "title_chars": 21,
+      "title_present": true,
+      "title_text": "Transformer 모델 최적화 기법"
+    },
+    "headings": {
+      "layout_title_used_as_h1": true,
+      "markdown_h1_count": 1,
+      "markdown_heading_count": 3,
+      "markdown_headings": [
+        {
+          "level": 1,
+          "text": "Transformer 모델 최적화 기법"
+        },
+        {
+          "level": 2,
+          "text": "하이퍼파라미터 조정"
+        },
+        {
+          "level": 2,
+          "text": "지식 증류"
+        }
+      ],
+      "rendered_effective_h1": [
+        "Transformer 모델 최적화 기법",
+        "Transformer 모델 최적화 기법"
+      ],
+      "rendered_effective_h1_count": 2
+    },
+    "images": {
+      "empty_alt_count": 0,
+      "empty_alt_sources": [],
+      "filename_like_alt_count": 0,
+      "filename_like_alt_values": [],
+      "image_details": [
+        {
+          "alt": "Transformer 모델 최적화",
+          "src": "https://example.com/transformer-optimization.jpg \"Transformer 모델 최적화\""
+        }
+      ],
+      "missing_local_file_count": 0,
+      "missing_local_file_sources": [],
+      "total_count": 1
+    },
+    "links": {
+      "citation_signal_count": 0,
+      "external_count": 0,
+      "internal_count": 0,
+      "total_count": 0
+    },
+    "opening": {
+      "first_real_paragraph": "Transformer 모델은 자연어 처리에서 혁신적인 변화를 가져왔습니다. 그러나 이러한 모델은 대량의 데이터와 계산 자원을 요구하기 때문에 최적화가 필수적입니다. 이 글에서는 Transformer 모델의 최적화 기법을 살펴보겠습니다.",
+      "first_real_paragraph_chars": 131,
+      "first_three_paragraph_chars": 305
+    },
+    "semantic_review": {
+      "canonical": "",
+      "description_text": "",
+      "opening_text": "Transformer 모델은 자연어 처리에서 혁신적인 변화를 가져왔습니다. 그러나 이러한 모델은 대량의 데이터와 계산 자원을 요구하기 때문에 최적화가 필수적입니다. 이 글에서는 Transformer 모델의 최적화 기법을 살펴보겠습니다.",
+      "rendered_h1_texts": [
+        "Transformer 모델 최적화 기법",
+        "Transformer 모델 최적화 기법"
+      ],
+      "review_instruction": "Compare title, description, rendered H1, and opening text for meaning consistency. This packet is evidence only; it does not decide pass/fail.",
+      "source_url_hint": "",
+      "title_text": "Transformer 모델 최적화 기법"
+    }
   }
 }

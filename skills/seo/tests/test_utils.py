@@ -7,7 +7,6 @@ from utils import (
     check_citations,
     count_chars,
     is_mostly_korean,
-    get_opening_paragraphs,
 )
 
 
@@ -58,26 +57,3 @@ def test_extract_images_markdown_and_html():
             '<img alt="alt three" src="c.png">')
     srcs = {i["src"] for i in extract_images(body)}
     assert {"a.png", "b.png", "c.png"} <= srcs
-
-
-def test_extract_images_altless_img_detected():
-    # `<figure><img src=…>` with no alt must be captured (alt='') so alt-coverage
-    # can flag it, not silently skipped (PR #8 review).
-    body = '<figure><img src="/d.png"></figure>'
-    imgs = extract_images(body)
-    assert len(imgs) == 1
-    assert imgs[0]["src"] == "/d.png" and imgs[0]["alt"] == ""
-
-
-def test_opening_skips_toc_and_boilerplate():
-    # The TOC / HTML-comment / Liquid scaffolding before the lede must NOT be
-    # measured as the opening (PR #8 review).
-    body = (
-        "---\ntitle: x\n---\n"
-        "<!--toc-->\n\n"
-        "* TOC\n{:toc}\n\n"
-        "_이 글은 원문을 번역한 글입니다._\n\n"
-        "이것이 진짜 도입부 문단입니다."
-    )
-    opening = get_opening_paragraphs(body, 3)
-    assert opening == "이것이 진짜 도입부 문단입니다."

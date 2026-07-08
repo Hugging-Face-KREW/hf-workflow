@@ -75,22 +75,20 @@ def check_keywords(
     placements = {'H1': in_h1, 'first paragraph': in_opening}
     missing = [k for k, v in placements.items() if not v]
 
-    # D5 REQUIRED: keyword present in the opening paragraph (reference_02 #3).
-    # Gate on the first paragraph only — KREW bodies have no body H1 (the Jekyll
-    # layout renders frontmatter `title` as the H1), so requiring the keyword in
-    # a body H1 would over-block every post (PR #8 review). H1 placement is still
-    # reported for the metadata writer, which generates `title` to match.
-    # Subheading keyword placement is intentionally NOT required — reference_01's
-    # checklist treats H2/H3 as "question-form OR keyword", which D8
-    # (question_headings) already covers.
+    # D5 REQUIRED: title-H1-first-paragraph consistency (reference_02 #3).
+    # Eval is body-only, so H1 stands in for the title promise; the metadata
+    # writer later generates `title` to match this H1. Subheading keyword
+    # placement is intentionally NOT required here — reference_01's checklist
+    # treats H2/H3 as "question-form OR keyword", which D8 (question_headings)
+    # already covers; mandating verbatim keyword in subheadings has no source
+    # and runs against current Google guidance.
     checks.append({
         'name': 'primary_keyword',
-        'passed': in_opening,
+        'passed': in_h1 and in_opening,
         'severity': 'required',
         'message': (
-            f'Primary keyword "{primary_keyword}" in first paragraph: '
-            f'{"present" if in_opening else "missing"} '
-            f'(body H1: {"present" if in_h1 else "none — layout renders title as H1"})'
+            f'Primary keyword "{primary_keyword}" in H1+first paragraph: '
+            f'{"consistent" if not missing else "missing in " + ", ".join(missing)}'
         ),
         'value': placements,
     })

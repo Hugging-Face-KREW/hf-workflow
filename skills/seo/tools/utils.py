@@ -61,8 +61,14 @@ def extract_headings(content: str) -> list[tuple[int, str]]:
         List of (level, text) tuples
     """
     headings = []
+    in_fence = False
     for line in content.split('\n'):
         line = line.strip()
+        if line.startswith(('```', '~~~')):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
         if line.startswith('#'):
             level = len(line) - len(line.lstrip('#'))
             text = line.lstrip('#').strip()
@@ -88,18 +94,20 @@ def extract_images(content: str) -> list[Dict[str, str]]:
             'src': match.group(2)
         })
 
-    # HTML images: <img ...>. Scan the whole tag and read src/alt independently
-    # so an alt-LESS <img> (e.g. `<figure><img src=…>`) is captured with alt=''
-    # and still counted against alt-coverage, instead of being silently skipped.
-    for match in re.finditer(r'<img\b[^>]*>', content, re.IGNORECASE):
-        tag = match.group(0)
-        src_m = re.search(r'src=["\']([^"\']*)["\']', tag, re.IGNORECASE)
-        if not src_m:
-            continue
-        alt_m = re.search(r'alt=["\']([^"\']*)["\']', tag, re.IGNORECASE)
+    # HTML images: <img src="..." alt="...">
+    html_pattern = r'<img[^>]*src=["\']([^"\']*)["\'][^>]*alt=["\']([^"\']*)["\'][^>]*>'
+    for match in re.finditer(html_pattern, content):
         images.append({
-            'src': src_m.group(1),
-            'alt': alt_m.group(1) if alt_m else '',
+            'src': match.group(1),
+            'alt': match.group(2)
+        })
+
+    # HTML images: <img alt="..." src="...">
+    html_pattern2 = r'<img[^>]*alt=["\']([^"\']*)["\'][^>]*src=["\']([^"\']*)["\'][^>]*>'
+    for match in re.finditer(html_pattern2, content):
+        images.append({
+            'alt': match.group(1),
+            'src': match.group(2)
         })
 
     return images
@@ -145,51 +153,28 @@ def check_citations(content: str) -> int:
     return count
 
 
-def _is_boilerplate_line(line: str) -> bool:
-    """True for template scaffolding that precedes the real lede on Jekyll/KREW
-    posts — HTML comments (incl. ``<!--toc-->``), the ``{:toc}`` / ``* TOC``
-    table-of-contents markers, and Liquid tags. Treated as not-prose so the
-    opening-summary measurement reflects the introduction, not the TOC."""
-    s = line.strip()
-    if not s:
-        return True
-    if s.startswith('<!--') and s.endswith('-->'):
-        return True
-    if (s.startswith('{%') and s.endswith('%}')) or (s.startswith('{{') and s.endswith('}}')):
-        return True
-    if '{:toc}' in s:
-        return True
-    if re.match(r'^[*+\-]\s*TOC\b', s, re.IGNORECASE):
-        return True
-    return False
-
-
-def _is_attribution(paragraph: str) -> bool:
-    """True for the italic source-attribution line KREW posts place before the
-    lede (e.g. ``_이 글은 … 을 번역한 글입니다._``) — not the real opening."""
-    s = paragraph.strip()
-    italic = (s.startswith('_') and s.endswith('_')) or (s.startswith('*') and s.endswith('*'))
-    return italic and ('번역' in s)
-
-
 def get_opening_paragraphs(content: str, num_paragraphs: int = 3) -> str:
-    """Get the first N real paragraphs from markdown content.
-
-    Skips template boilerplate (HTML comments / ``<!--toc-->`` / ``{:toc}`` /
-    ``* TOC`` / Liquid tags) and the italic source-attribution line so the
-    opening reflects the actual introduction rather than the table of contents
-    (PR #8 review: previously a false-positive source for the opening check).
-    """
+    """Get first N paragraphs from markdown content"""
     # Remove frontmatter if exists
     _, body = parse_frontmatter(content)
 
-    paragraphs = []
-    for block in body.split('\n\n'):
-        # Drop boilerplate lines inside the block (e.g. `<!--toc-->` glued to text).
-        kept = [ln for ln in block.split('\n') if not _is_boilerplate_line(ln)]
-        para = '\n'.join(kept).strip()
-        if not para or para.startswith('#') or _is_attribution(para):
-            continue
-        paragraphs.append(para)
+    # Split by double newline
+    paragraphs = [p.strip() for p in body.split('\n\n') if p.strip()]
 
-    return '\n\n'.join(paragraphs[:num_paragraphs])
+    # Filter out headings and template/navigation markers. HFKREW posts often
+    # start with TOC comments; treating those as prose creates false positives.
+    ignored_exact = {'* TOC', '{:toc}', '<!--toc-->', '<!-- toc -->'}
+    filtered = []
+    for p in paragraphs:
+        lowered = p.strip().lower()
+        if p.startswith('#'):
+            continue
+        if p in ignored_exact or lowered in ignored_exact:
+            continue
+        if lowered.startswith('<!--') and lowered.endswith('-->'):
+            continue
+        if lowered.startswith('{%') and lowered.endswith('%}'):
+            continue
+        filtered.append(p)
+
+    return '\n\n'.join(filtered[:num_paragraphs])

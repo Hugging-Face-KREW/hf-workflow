@@ -1,19 +1,163 @@
 {
+  "blockers": {
+    "checks": [
+      {
+        "message": "Body is not empty",
+        "name": "body_not_empty",
+        "passed": true,
+        "severity": "blocker",
+        "value": 17257
+      },
+      {
+        "message": "Robots is indexable",
+        "name": "robots_indexable",
+        "passed": true,
+        "severity": "blocker",
+        "value": ""
+      }
+    ],
+    "passed": true,
+    "score": 1.0,
+    "summary": {
+      "blocker": "2/2"
+    }
+  },
   "deterministic": {
     "advisory": {
       "checks": [
         {
-          "message": "Opening 3 paragraphs: 18 words (recommend ≥50 for GEO)",
+          "default_severity": "review",
+          "message": "Opening 3 paragraphs: 24 words (recommend ≥50 for GEO)",
           "name": "opening_summary",
           "passed": false,
-          "severity": "recommended",
-          "value": "---\n\n**Useful links**:\n\n- SO-100/101 학습 및 평가에 사용된 하드웨어: https://github.com/TheRobotStudio/SO-ARM100  \n- Base model https://huggingface.co/lerobot/smolvla_base\n- Paper: https://huggingface.co/papers/25..."
+          "severity": "review",
+          "value": "* TOC\n{:toc}\n<!--toc-->\n_이 글은 Hugging Face 블로그의 [SmolVLA: Efficient Vision-Language-Action Model trained on Lerobot Community Data](https://huggingface.co/blog/smolvla)를 한국어로 번역한 글입니다._\n\n---\n\n**Useful..."
         },
         {
+          "default_severity": "review",
+          "message": "Markdown H1 count: 1 (review against rendered layout)",
+          "name": "h1_count",
+          "passed": true,
+          "severity": "review",
+          "value": 1
+        },
+        {
+          "default_severity": "review",
+          "message": "Citations/statistics: 25 (recommend ≥1 for GEO)",
+          "name": "citations",
+          "passed": true,
+          "severity": "review",
+          "value": 25
+        },
+        {
+          "default_severity": "recommended",
+          "message": "Scannable H2/H3 (question or keyword): 1 (1 question, 0 keyword)",
+          "name": "question_headings",
+          "passed": true,
+          "severity": "recommended",
+          "value": [
+            "🚀 How to Use SmolVLA?"
+          ]
+        },
+        {
+          "default_severity": "recommended",
+          "message": "Internal links: 22 (recommend 2-3)",
+          "name": "internal_links",
+          "passed": true,
+          "severity": "recommended",
+          "value": [
+            "#tl-dr",
+            "#introduction",
+            "#meet-smolvla",
+            "#-how-to-use-smolvla",
+            "#install",
+            "#finetune-the-pretrained-model",
+            "#train-from-scratch",
+            "#method",
+            "#main-architecture",
+            "#vision-language-model-vlm",
+            "#action-expert-flow-matching-transformer",
+            "#design-choices-for-efficiency-and-robustness",
+            "#visual-token-reduction",
+            "#faster-inference-via-layer-skipping",
+            "#interleaved-cross-and-self-attention",
+            "#asynchronous-inference",
+            "#community-datasets",
+            "#improving-task-annotations",
+            "#standardizing-camera-views",
+            "#results",
+            "#conclusion",
+            "#call-to-action"
+          ]
+        },
+        {
+          "default_severity": "optional",
+          "message": "Word count: 2633 (recommend ≥300)",
+          "name": "word_count",
+          "passed": true,
+          "severity": "optional",
+          "value": 2633
+        },
+        {
+          "message": "No primary_keyword in manifest — keyword check skipped",
+          "name": "primary_keyword",
+          "passed": true,
+          "severity": "info",
+          "value": null
+        },
+        {
+          "default_severity": "optional",
+          "message": "WebP format: 0/8 images (≥50% recommend)",
+          "name": "webp_format",
+          "passed": false,
+          "severity": "optional",
+          "value": []
+        },
+        {
+          "default_severity": "optional",
+          "message": "Lazy loading: 0 images (optional)",
+          "name": "lazy_loading",
+          "passed": false,
+          "severity": "optional",
+          "value": 0
+        }
+      ]
+    },
+    "checkers": {
+      "content": {
+        "passed": true,
+        "score": 1.0,
+        "summary": {
+          "optional": "1/1",
+          "recommended": "2/2",
+          "required": "1/1"
+        }
+      },
+      "images": {
+        "passed": true,
+        "score": 0.85,
+        "summary": {
+          "optional": "0/2",
+          "required": "2/2"
+        }
+      },
+      "keywords": {
+        "passed": true,
+        "score": 1.0,
+        "summary": {
+          "recommended": "0/0",
+          "required": "0/0"
+        }
+      }
+    },
+    "required": {
+      "checks": [
+        {
+          "default_severity": "required",
           "message": "Heading hierarchy: Valid",
           "name": "heading_hierarchy",
           "passed": true,
-          "severity": "recommended",
+          "severity": "required",
           "value": [
             [
               1,
@@ -114,121 +258,10 @@
           ]
         },
         {
-          "message": "Body H1 count: 1 (0 or 1 OK — layout renders title as H1; never multiple)",
-          "name": "h1_count",
-          "passed": true,
-          "severity": "recommended",
-          "value": 1
-        },
-        {
-          "message": "Citations/statistics: 25 (recommend ≥1 for GEO)",
-          "name": "citations",
-          "passed": true,
-          "severity": "recommended",
-          "value": 25
-        },
-        {
-          "message": "Scannable H2/H3 (question or keyword): 1 (1 question, 0 keyword)",
-          "name": "question_headings",
-          "passed": true,
-          "severity": "recommended",
-          "value": [
-            "🚀 How to Use SmolVLA?"
-          ]
-        },
-        {
-          "message": "Internal links: 22 (recommend 2-3)",
-          "name": "internal_links",
-          "passed": true,
-          "severity": "recommended",
-          "value": [
-            "#tl-dr",
-            "#introduction",
-            "#meet-smolvla",
-            "#-how-to-use-smolvla",
-            "#install",
-            "#finetune-the-pretrained-model",
-            "#train-from-scratch",
-            "#method",
-            "#main-architecture",
-            "#vision-language-model-vlm",
-            "#action-expert-flow-matching-transformer",
-            "#design-choices-for-efficiency-and-robustness",
-            "#visual-token-reduction",
-            "#faster-inference-via-layer-skipping",
-            "#interleaved-cross-and-self-attention",
-            "#asynchronous-inference",
-            "#community-datasets",
-            "#improving-task-annotations",
-            "#standardizing-camera-views",
-            "#results",
-            "#conclusion",
-            "#call-to-action"
-          ]
-        },
-        {
-          "message": "Word count: 2633 (recommend ≥300)",
-          "name": "word_count",
-          "passed": true,
-          "severity": "optional",
-          "value": 2633
-        },
-        {
-          "message": "No primary_keyword in manifest — keyword check skipped",
-          "name": "primary_keyword",
-          "passed": true,
-          "severity": "info",
-          "value": null
-        },
-        {
-          "message": "WebP format: 0/9 images (≥50% recommend)",
-          "name": "webp_format",
-          "passed": false,
-          "severity": "optional",
-          "value": []
-        },
-        {
-          "message": "Lazy loading: 0 images (optional)",
-          "name": "lazy_loading",
-          "passed": false,
-          "severity": "optional",
-          "value": 0
-        }
-      ]
-    },
-    "checkers": {
-      "content": {
-        "passed": true,
-        "score": 0.8611111111111112,
-        "summary": {
-          "optional": "1/1",
-          "recommended": "5/6",
-          "required": "0/0"
-        }
-      },
-      "images": {
-        "passed": false,
-        "score": 0.425,
-        "summary": {
-          "optional": "0/2",
-          "required": "1/2"
-        }
-      },
-      "keywords": {
-        "passed": true,
-        "score": 1.0,
-        "summary": {
-          "recommended": "0/0",
-          "required": "0/0"
-        }
-      }
-    },
-    "required": {
-      "checks": [
-        {
-          "message": "Alt text coverage: 8/9 images",
+          "default_severity": "required",
+          "message": "Alt text coverage: 8/8 images",
           "name": "alt_text_coverage",
-          "passed": false,
+          "passed": true,
           "severity": "required",
           "value": [
             {
@@ -266,6 +299,7 @@
           ]
         },
         {
+          "default_severity": "required",
           "message": "Descriptive alt text: 8/8 (≥80% recommend)",
           "name": "descriptive_alt_text",
           "passed": true,
@@ -309,7 +343,7 @@
           }
         }
       ],
-      "passed": false
+      "passed": true
     }
   },
   "frontmatter_advisory": {
@@ -361,10 +395,12 @@
     }
   },
   "gate": {
-    "deterministic_passed": false,
-    "passed": false,
-    "reason": "deterministic REQUIRED checks failed",
-    "rubric_passed": null
+    "blockers_passed": true,
+    "deterministic_passed": true,
+    "passed": true,
+    "reason": "deterministic gate only (rubric judge not configured)",
+    "rubric_passed": null,
+    "status": "PASS"
   },
   "input": {
     "file_path": "2025-12-22-smolvla.md",
@@ -372,12 +408,208 @@
     "primary_keyword": "",
     "source_url": ""
   },
+  "policy": {
+    "name": "default",
+    "rubric_required": false,
+    "severities": {
+      "alt_text_coverage": "required",
+      "citations": "review",
+      "descriptive_alt_text": "required",
+      "h1_count": "review",
+      "heading_hierarchy": "required",
+      "image_files_exist": "required",
+      "internal_links": "recommended",
+      "lazy_loading": "optional",
+      "no_images": "info",
+      "opening_summary": "review",
+      "primary_keyword": "required",
+      "question_headings": "recommended",
+      "secondary_keywords": "recommended",
+      "webp_format": "optional",
+      "word_count": "optional"
+    }
+  },
   "rubric": {
     "available": false,
+    "checks": [],
     "mean": null,
     "min": null,
+    "notes": {},
     "passed": null,
-    "reason": "rubric not run (stage-1 skeleton)",
+    "reason": "rubric not run (schema-bound policy judge not configured)",
+    "required": false,
     "scores": {}
+  },
+  "signals": {
+    "frontmatter": {
+      "author_present": false,
+      "canonical_present": false,
+      "categories_count": 2,
+      "description_chars": 0,
+      "description_present": false,
+      "description_text": "",
+      "robots": "",
+      "title_chars": 61,
+      "title_present": true,
+      "title_text": "SmolVLA: Lerobot 커뮤니티 데이터로 학습된 효율적인 Vision-Language-Action 모델"
+    },
+    "headings": {
+      "layout_title_used_as_h1": true,
+      "markdown_h1_count": 1,
+      "markdown_heading_count": 24,
+      "markdown_headings": [
+        {
+          "level": 1,
+          "text": "SmolVLA: Lerobot 커뮤니티 데이터로 학습된 효율적인 Vision-Language-Action 모델"
+        },
+        {
+          "level": 2,
+          "text": "🧭TL;DR"
+        },
+        {
+          "level": 2,
+          "text": "📚 Table of Contents"
+        },
+        {
+          "level": 2,
+          "text": "Introduction"
+        },
+        {
+          "level": 2,
+          "text": "Meet SmolVLA!"
+        },
+        {
+          "level": 2,
+          "text": "🚀 How to Use SmolVLA?"
+        },
+        {
+          "level": 3,
+          "text": "Install"
+        },
+        {
+          "level": 3,
+          "text": "Finetune the pretrained model"
+        },
+        {
+          "level": 3,
+          "text": "Train from scratch"
+        },
+        {
+          "level": 2,
+          "text": "Method"
+        },
+        {
+          "level": 3,
+          "text": "Main Architecture"
+        },
+        {
+          "level": 4,
+          "text": "Vision-Language Model (VLM)"
+        },
+        {
+          "level": 4,
+          "text": "Action Expert: Flow Matching Transformer"
+        },
+        {
+          "level": 3,
+          "text": "Design Choices for Efficiency and Robustness"
+        },
+        {
+          "level": 4,
+          "text": "Visual Token Reduction"
+        },
+        {
+          "level": 4,
+          "text": "Faster Inference via Layer Skipping"
+        },
+        {
+          "level": 4,
+          "text": "Interleaved Cross and Self-Attention"
+        },
+        {
+          "level": 2,
+          "text": "Asynchronous Inference"
+        },
+        {
+          "level": 2,
+          "text": "Community Datasets"
+        },
+        {
+          "level": 3,
+          "text": "Improving Task Annotations"
+        }
+      ],
+      "rendered_effective_h1": [
+        "SmolVLA: Lerobot 커뮤니티 데이터로 학습된 효율적인 Vision-Language-Action 모델",
+        "SmolVLA: Lerobot 커뮤니티 데이터로 학습된 효율적인 Vision-Language-Action 모델"
+      ],
+      "rendered_effective_h1_count": 2
+    },
+    "images": {
+      "empty_alt_count": 0,
+      "empty_alt_sources": [],
+      "filename_like_alt_count": 0,
+      "filename_like_alt_values": [],
+      "image_details": [
+        {
+          "alt": "Comparison of SmolVLA across task variations.",
+          "src": "https://cdn-uploads.huggingface.co/production/uploads/640e21ef3c82bd463ee5a76d/S-3vvVCulChREwHDkquoc.gif"
+        },
+        {
+          "alt": "SmolVLA architecture.",
+          "src": "https://cdn-uploads.huggingface.co/production/uploads/640e21ef3c82bd463ee5a76d/aooU0a3DMtYmy_1IWMaIM.png"
+        },
+        {
+          "alt": "Asynchronous inference",
+          "src": "https://cdn-uploads.huggingface.co/production/uploads/640e21ef3c82bd463ee5a76d/IV6vxVHCxUuYMEc7otXtv.png"
+        },
+        {
+          "alt": "A glimpse of the community dataset.",
+          "src": "https://cdn-uploads.huggingface.co/production/uploads/640e21ef3c82bd463ee5a76d/V4QU-B-6YBONb-8K_lSpj.gif"
+        },
+        {
+          "alt": "SmolVLA Performance on Simulation Benchmarks.",
+          "src": "https://cdn-uploads.huggingface.co/production/uploads/640e21ef3c82bd463ee5a76d/_v01LDKSy8zgcYr_7yQMx.png"
+        },
+        {
+          "alt": "SmolVLA vs Baselines on Real-World Tasks (SO100).",
+          "src": "https://cdn-uploads.huggingface.co/production/uploads/640e21ef3c82bd463ee5a76d/ahQpohnpqRw6sQFMzjmg4.png"
+        },
+        {
+          "alt": "Generalization of SmolVLA to New Embodiment (SO101) vs ACT..",
+          "src": "https://cdn-uploads.huggingface.co/production/uploads/640e21ef3c82bd463ee5a76d/MZuG6UzXZ1SJ1MOfUfyzb.png"
+        },
+        {
+          "alt": "Asynchronous vs. Synchronous Inference in Real-World Tasks.",
+          "src": "https://cdn-uploads.huggingface.co/production/uploads/640e21ef3c82bd463ee5a76d/Goxb9y5cE_Ty1SWCetCoT.png"
+        }
+      ],
+      "missing_local_file_count": 0,
+      "missing_local_file_sources": [],
+      "total_count": 8
+    },
+    "links": {
+      "citation_signal_count": 25,
+      "external_count": 16,
+      "internal_count": 0,
+      "total_count": 38
+    },
+    "opening": {
+      "first_real_paragraph": "* TOC\n{:toc}\n<!--toc-->\n_이 글은 Hugging Face 블로그의 [SmolVLA: Efficient Vision-Language-Action Model trained on Lerobot Community Data](https://huggingface.co/blog/smolvla)를 한국어로 번역한 글입니다._",
+      "first_real_paragraph_chars": 185,
+      "first_three_paragraph_chars": 209
+    },
+    "semantic_review": {
+      "canonical": "",
+      "description_text": "",
+      "opening_text": "* TOC\n{:toc}\n<!--toc-->\n_이 글은 Hugging Face 블로그의 [SmolVLA: Efficient Vision-Language-Action Model trained on Lerobot Community Data](https://huggingface.co/blog/smolvla)를 한국어로 번역한 글입니다._",
+      "rendered_h1_texts": [
+        "SmolVLA: Lerobot 커뮤니티 데이터로 학습된 효율적인 Vision-Language-Action 모델",
+        "SmolVLA: Lerobot 커뮤니티 데이터로 학습된 효율적인 Vision-Language-Action 모델"
+      ],
+      "review_instruction": "Compare title, description, rendered H1, and opening text for meaning consistency. This packet is evidence only; it does not decide pass/fail.",
+      "source_url_hint": "",
+      "title_text": "SmolVLA: Lerobot 커뮤니티 데이터로 학습된 효율적인 Vision-Language-Action 모델"
+    }
   }
 }

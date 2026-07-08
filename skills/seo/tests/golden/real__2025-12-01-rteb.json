@@ -1,19 +1,130 @@
 {
+  "blockers": {
+    "checks": [
+      {
+        "message": "Body is not empty",
+        "name": "body_not_empty",
+        "passed": true,
+        "severity": "blocker",
+        "value": 11927
+      },
+      {
+        "message": "Robots is indexable",
+        "name": "robots_indexable",
+        "passed": true,
+        "severity": "blocker",
+        "value": ""
+      }
+    ],
+    "passed": true,
+    "score": 1.0,
+    "summary": {
+      "blocker": "2/2"
+    }
+  },
   "deterministic": {
     "advisory": {
       "checks": [
         {
-          "message": "Opening 3 paragraphs: 583 chars (recommend ≥150 for KO/GEO)",
+          "default_severity": "review",
+          "message": "Opening 3 paragraphs: 573 chars (recommend ≥150 for KO/GEO)",
           "name": "opening_summary",
           "passed": true,
-          "severity": "recommended",
-          "value": "---\n# RTEB: 검색 평가의 새로운 표준\n\n**요약 –** 여러분께 새로운 벤치마크, [RTEB(Retrieval Embedding Benchmark, 검색 임베딩 벤치마크)](https://huggingface.co/spaces/mteb/leaderboard?benchmark_name=RTEB%28beta%29)의 베타 버전을 소개합니다. RTEB는..."
+          "severity": "review",
+          "value": "* TOC\n{:toc}\n<!--toc-->\n_이 글은 Hugging Face 블로그의 [Introducing RTEB: A New Standard for Retrieval Evaluation](https://huggingface.co/blog/rteb)를 한국어로 번역한 글입니다._\n\n---\n# RTEB: 검색 평가의 새로운 표준\n\n**요약 –** 여러분께..."
         },
         {
+          "default_severity": "review",
+          "message": "Markdown H1 count: 1 (review against rendered layout)",
+          "name": "h1_count",
+          "passed": true,
+          "severity": "review",
+          "value": 1
+        },
+        {
+          "default_severity": "review",
+          "message": "Citations/statistics: 8 (recommend ≥1 for GEO)",
+          "name": "citations",
+          "passed": true,
+          "severity": "review",
+          "value": 8
+        },
+        {
+          "default_severity": "recommended",
+          "message": "Scannable H2/H3 (question or keyword): 0 (0 question, 0 keyword)",
+          "name": "question_headings",
+          "passed": false,
+          "severity": "recommended",
+          "value": []
+        },
+        {
+          "default_severity": "recommended",
+          "message": "Internal links: 0 (recommend 2-3)",
+          "name": "internal_links",
+          "passed": false,
+          "severity": "recommended",
+          "value": []
+        },
+        {
+          "default_severity": "optional",
+          "message": "Body length: 11927 chars (recommend ≥800 for KO)",
+          "name": "word_count",
+          "passed": true,
+          "severity": "optional",
+          "value": 11927
+        },
+        {
+          "message": "No primary_keyword in manifest — keyword check skipped",
+          "name": "primary_keyword",
+          "passed": true,
+          "severity": "info",
+          "value": null
+        },
+        {
+          "message": "No images found (optional)",
+          "name": "no_images",
+          "passed": true,
+          "severity": "info",
+          "value": 0
+        }
+      ]
+    },
+    "checkers": {
+      "content": {
+        "passed": true,
+        "score": 0.75,
+        "summary": {
+          "optional": "1/1",
+          "recommended": "0/2",
+          "required": "1/1"
+        }
+      },
+      "images": {
+        "passed": true,
+        "score": 1.0,
+        "summary": {
+          "optional": "0/0",
+          "recommended": "0/0",
+          "required": "0/0"
+        }
+      },
+      "keywords": {
+        "passed": true,
+        "score": 1.0,
+        "summary": {
+          "recommended": "0/0",
+          "required": "0/0"
+        }
+      }
+    },
+    "required": {
+      "checks": [
+        {
+          "default_severity": "required",
           "message": "Heading hierarchy: Valid",
           "name": "heading_hierarchy",
           "passed": true,
-          "severity": "recommended",
+          "severity": "required",
           "value": [
             [
               1,
@@ -52,113 +163,9 @@
               "한계점과 향후 계획"
             ]
           ]
-        },
-        {
-          "message": "Body H1 count: 1 (0 or 1 OK — layout renders title as H1; never multiple)",
-          "name": "h1_count",
-          "passed": true,
-          "severity": "recommended",
-          "value": 1
-        },
-        {
-          "message": "Citations/statistics: 8 (recommend ≥1 for GEO)",
-          "name": "citations",
-          "passed": true,
-          "severity": "recommended",
-          "value": 8
-        },
-        {
-          "message": "Scannable H2/H3 (question or keyword): 0 (0 question, 0 keyword)",
-          "name": "question_headings",
-          "passed": false,
-          "severity": "recommended",
-          "value": []
-        },
-        {
-          "message": "Internal links: 0 (recommend 2-3)",
-          "name": "internal_links",
-          "passed": false,
-          "severity": "recommended",
-          "value": []
-        },
-        {
-          "message": "Body length: 11927 chars (recommend ≥800 for KO)",
-          "name": "word_count",
-          "passed": true,
-          "severity": "optional",
-          "value": 11927
-        },
-        {
-          "message": "No primary_keyword in manifest — keyword check skipped",
-          "name": "primary_keyword",
-          "passed": true,
-          "severity": "info",
-          "value": null
-        },
-        {
-          "message": "WebP format: 0/2 images (≥50% recommend)",
-          "name": "webp_format",
-          "passed": false,
-          "severity": "optional",
-          "value": []
-        },
-        {
-          "message": "Lazy loading: 0 images (optional)",
-          "name": "lazy_loading",
-          "passed": false,
-          "severity": "optional",
-          "value": 0
-        }
-      ]
-    },
-    "checkers": {
-      "content": {
-        "passed": true,
-        "score": 0.7222222222222223,
-        "summary": {
-          "optional": "1/1",
-          "recommended": "4/6",
-          "required": "0/0"
-        }
-      },
-      "images": {
-        "passed": false,
-        "score": 0.0,
-        "summary": {
-          "optional": "0/2",
-          "required": "0/2"
-        }
-      },
-      "keywords": {
-        "passed": true,
-        "score": 1.0,
-        "summary": {
-          "recommended": "0/0",
-          "required": "0/0"
-        }
-      }
-    },
-    "required": {
-      "checks": [
-        {
-          "message": "Alt text coverage: 0/2 images",
-          "name": "alt_text_coverage",
-          "passed": false,
-          "severity": "required",
-          "value": []
-        },
-        {
-          "message": "Descriptive alt text: 0/0 (≥80% recommend)",
-          "name": "descriptive_alt_text",
-          "passed": false,
-          "severity": "required",
-          "value": {
-            "descriptive": [],
-            "non_descriptive": []
-          }
         }
       ],
-      "passed": false
+      "passed": true
     }
   },
   "frontmatter_advisory": {
@@ -211,10 +218,12 @@
     }
   },
   "gate": {
-    "deterministic_passed": false,
-    "passed": false,
-    "reason": "deterministic REQUIRED checks failed",
-    "rubric_passed": null
+    "blockers_passed": true,
+    "deterministic_passed": true,
+    "passed": true,
+    "reason": "deterministic gate only (rubric judge not configured)",
+    "rubric_passed": null,
+    "status": "PASS"
   },
   "input": {
     "file_path": "2025-12-01-rteb.md",
@@ -222,12 +231,131 @@
     "primary_keyword": "",
     "source_url": ""
   },
+  "policy": {
+    "name": "default",
+    "rubric_required": false,
+    "severities": {
+      "alt_text_coverage": "required",
+      "citations": "review",
+      "descriptive_alt_text": "required",
+      "h1_count": "review",
+      "heading_hierarchy": "required",
+      "image_files_exist": "required",
+      "internal_links": "recommended",
+      "lazy_loading": "optional",
+      "no_images": "info",
+      "opening_summary": "review",
+      "primary_keyword": "required",
+      "question_headings": "recommended",
+      "secondary_keywords": "recommended",
+      "webp_format": "optional",
+      "word_count": "optional"
+    }
+  },
   "rubric": {
     "available": false,
+    "checks": [],
     "mean": null,
     "min": null,
+    "notes": {},
     "passed": null,
-    "reason": "rubric not run (stage-1 skeleton)",
+    "reason": "rubric not run (schema-bound policy judge not configured)",
+    "required": false,
     "scores": {}
+  },
+  "signals": {
+    "frontmatter": {
+      "author_present": true,
+      "canonical_present": false,
+      "categories_count": 3,
+      "description_chars": 0,
+      "description_present": false,
+      "description_text": "",
+      "robots": "",
+      "title_chars": 19,
+      "title_present": true,
+      "title_text": "RTEB: 검색 평가의 새로운 표준"
+    },
+    "headings": {
+      "layout_title_used_as_h1": true,
+      "markdown_h1_count": 1,
+      "markdown_heading_count": 9,
+      "markdown_headings": [
+        {
+          "level": 1,
+          "text": "RTEB: 검색 평가의 새로운 표준"
+        },
+        {
+          "level": 2,
+          "text": "기존 벤치마크가 부족한 이유"
+        },
+        {
+          "level": 2,
+          "text": "RTEB 소개"
+        },
+        {
+          "level": 3,
+          "text": "진정한 일반화를 위한 하이브리드 전략"
+        },
+        {
+          "level": 3,
+          "text": "실제 도메인을 위해 설계됨"
+        },
+        {
+          "level": 4,
+          "text": "Open"
+        },
+        {
+          "level": 4,
+          "text": "비공개"
+        },
+        {
+          "level": 2,
+          "text": "RTEB 출시: 커뮤니티의 노력"
+        },
+        {
+          "level": 2,
+          "text": "한계점과 향후 계획"
+        }
+      ],
+      "rendered_effective_h1": [
+        "RTEB: 검색 평가의 새로운 표준",
+        "RTEB: 검색 평가의 새로운 표준"
+      ],
+      "rendered_effective_h1_count": 2
+    },
+    "images": {
+      "empty_alt_count": 0,
+      "empty_alt_sources": [],
+      "filename_like_alt_count": 0,
+      "filename_like_alt_values": [],
+      "image_details": [],
+      "missing_local_file_count": 0,
+      "missing_local_file_sources": [],
+      "total_count": 0
+    },
+    "links": {
+      "citation_signal_count": 8,
+      "external_count": 5,
+      "internal_count": 0,
+      "total_count": 5
+    },
+    "opening": {
+      "first_real_paragraph": "* TOC\n{:toc}\n<!--toc-->\n_이 글은 Hugging Face 블로그의 [Introducing RTEB: A New Standard for Retrieval Evaluation](https://huggingface.co/blog/rteb)를 한국어로 번역한 글입니다._",
+      "first_real_paragraph_chars": 158,
+      "first_three_paragraph_chars": 573
+    },
+    "semantic_review": {
+      "canonical": "",
+      "description_text": "",
+      "opening_text": "* TOC\n{:toc}\n<!--toc-->\n_이 글은 Hugging Face 블로그의 [Introducing RTEB: A New Standard for Retrieval Evaluation](https://huggingface.co/blog/rteb)를 한국어로 번역한 글입니다._",
+      "rendered_h1_texts": [
+        "RTEB: 검색 평가의 새로운 표준",
+        "RTEB: 검색 평가의 새로운 표준"
+      ],
+      "review_instruction": "Compare title, description, rendered H1, and opening text for meaning consistency. This packet is evidence only; it does not decide pass/fail.",
+      "source_url_hint": "",
+      "title_text": "RTEB: 검색 평가의 새로운 표준"
+    }
   }
 }

@@ -1,41 +1,56 @@
 {
+  "blockers": {
+    "checks": [
+      {
+        "message": "Body is not empty",
+        "name": "body_not_empty",
+        "passed": true,
+        "severity": "blocker",
+        "value": 179
+      },
+      {
+        "message": "Robots is indexable",
+        "name": "robots_indexable",
+        "passed": true,
+        "severity": "blocker",
+        "value": ""
+      }
+    ],
+    "passed": true,
+    "score": 1.0,
+    "summary": {
+      "blocker": "2/2"
+    }
+  },
   "deterministic": {
     "advisory": {
       "checks": [
         {
+          "default_severity": "review",
           "message": "Opening 3 paragraphs: 152 chars (recommend ≥150 for KO/GEO)",
           "name": "opening_summary",
           "passed": true,
-          "severity": "recommended",
+          "severity": "review",
           "value": "Transformer 모델의 성능을 향상시키기 위해 다양한 최적화 기법이 개발되고 있습니다. 대표적으로는 학습률 조정, 정규화 기법, 그리고 모델 경량화 방법이 있습니다. 이러한 기법들은 모델의 일반화 능력을 높이고, 훈련 시간을 단축시킵니다.\n\n![](image.png)"
         },
         {
-          "message": "Heading hierarchy: Valid",
-          "name": "heading_hierarchy",
-          "passed": true,
-          "severity": "recommended",
-          "value": [
-            [
-              3,
-              "Transformer 모델 최적화 기법"
-            ]
-          ]
-        },
-        {
-          "message": "Body H1 count: 0 (0 or 1 OK — layout renders title as H1; never multiple)",
+          "default_severity": "review",
+          "message": "Markdown H1 count: 0 (review against rendered layout)",
           "name": "h1_count",
-          "passed": true,
-          "severity": "recommended",
+          "passed": false,
+          "severity": "review",
           "value": 0
         },
         {
+          "default_severity": "review",
           "message": "Citations/statistics: 0 (recommend ≥1 for GEO)",
           "name": "citations",
           "passed": false,
-          "severity": "recommended",
+          "severity": "review",
           "value": 0
         },
         {
+          "default_severity": "recommended",
           "message": "Scannable H2/H3 (question or keyword): 0 (0 question, 0 keyword)",
           "name": "question_headings",
           "passed": false,
@@ -43,6 +58,7 @@
           "value": []
         },
         {
+          "default_severity": "recommended",
           "message": "Internal links: 0 (recommend 2-3)",
           "name": "internal_links",
           "passed": false,
@@ -50,6 +66,7 @@
           "value": []
         },
         {
+          "default_severity": "optional",
           "message": "Body length: 179 chars (recommend ≥800 for KO)",
           "name": "word_count",
           "passed": false,
@@ -64,6 +81,7 @@
           "value": null
         },
         {
+          "default_severity": "optional",
           "message": "WebP format: 0/1 images (≥50% recommend)",
           "name": "webp_format",
           "passed": false,
@@ -71,6 +89,7 @@
           "value": []
         },
         {
+          "default_severity": "optional",
           "message": "Lazy loading: 0 images (optional)",
           "name": "lazy_loading",
           "passed": false,
@@ -82,11 +101,11 @@
     "checkers": {
       "content": {
         "passed": true,
-        "score": 0.4166666666666667,
+        "score": 0.7,
         "summary": {
           "optional": "0/1",
-          "recommended": "3/6",
-          "required": "0/0"
+          "recommended": "0/2",
+          "required": "1/1"
         }
       },
       "images": {
@@ -109,6 +128,20 @@
     "required": {
       "checks": [
         {
+          "default_severity": "required",
+          "message": "Heading hierarchy: Valid",
+          "name": "heading_hierarchy",
+          "passed": true,
+          "severity": "required",
+          "value": [
+            [
+              3,
+              "Transformer 모델 최적화 기법"
+            ]
+          ]
+        },
+        {
+          "default_severity": "required",
           "message": "Alt text coverage: 0/1 images",
           "name": "alt_text_coverage",
           "passed": false,
@@ -116,6 +149,7 @@
           "value": []
         },
         {
+          "default_severity": "required",
           "message": "Descriptive alt text: 0/0 (≥80% recommend)",
           "name": "descriptive_alt_text",
           "passed": false,
@@ -178,10 +212,12 @@
     }
   },
   "gate": {
+    "blockers_passed": true,
     "deterministic_passed": false,
     "passed": false,
     "reason": "deterministic REQUIRED checks failed",
-    "rubric_passed": null
+    "rubric_passed": null,
+    "status": "FAIL"
   },
   "input": {
     "file_path": "poor-post.md",
@@ -189,12 +225,100 @@
     "primary_keyword": "",
     "source_url": ""
   },
+  "policy": {
+    "name": "default",
+    "rubric_required": false,
+    "severities": {
+      "alt_text_coverage": "required",
+      "citations": "review",
+      "descriptive_alt_text": "required",
+      "h1_count": "review",
+      "heading_hierarchy": "required",
+      "image_files_exist": "required",
+      "internal_links": "recommended",
+      "lazy_loading": "optional",
+      "no_images": "info",
+      "opening_summary": "review",
+      "primary_keyword": "required",
+      "question_headings": "recommended",
+      "secondary_keywords": "recommended",
+      "webp_format": "optional",
+      "word_count": "optional"
+    }
+  },
   "rubric": {
     "available": false,
+    "checks": [],
     "mean": null,
     "min": null,
+    "notes": {},
     "passed": null,
-    "reason": "rubric not run (stage-1 skeleton)",
+    "reason": "rubric not run (schema-bound policy judge not configured)",
+    "required": false,
     "scores": {}
+  },
+  "signals": {
+    "frontmatter": {
+      "author_present": false,
+      "canonical_present": false,
+      "categories_count": 2,
+      "description_chars": 0,
+      "description_present": false,
+      "description_text": "",
+      "robots": "",
+      "title_chars": 0,
+      "title_present": false,
+      "title_text": ""
+    },
+    "headings": {
+      "layout_title_used_as_h1": false,
+      "markdown_h1_count": 0,
+      "markdown_heading_count": 1,
+      "markdown_headings": [
+        {
+          "level": 3,
+          "text": "Transformer 모델 최적화 기법"
+        }
+      ],
+      "rendered_effective_h1": [],
+      "rendered_effective_h1_count": 0
+    },
+    "images": {
+      "empty_alt_count": 1,
+      "empty_alt_sources": [
+        "image.png"
+      ],
+      "filename_like_alt_count": 0,
+      "filename_like_alt_values": [],
+      "image_details": [
+        {
+          "alt": "",
+          "src": "image.png"
+        }
+      ],
+      "missing_local_file_count": 0,
+      "missing_local_file_sources": [],
+      "total_count": 1
+    },
+    "links": {
+      "citation_signal_count": 0,
+      "external_count": 0,
+      "internal_count": 0,
+      "total_count": 0
+    },
+    "opening": {
+      "first_real_paragraph": "Transformer 모델의 성능을 향상시키기 위해 다양한 최적화 기법이 개발되고 있습니다. 대표적으로는 학습률 조정, 정규화 기법, 그리고 모델 경량화 방법이 있습니다. 이러한 기법들은 모델의 일반화 능력을 높이고, 훈련 시간을 단축시킵니다.",
+      "first_real_paragraph_chars": 136,
+      "first_three_paragraph_chars": 152
+    },
+    "semantic_review": {
+      "canonical": "",
+      "description_text": "",
+      "opening_text": "Transformer 모델의 성능을 향상시키기 위해 다양한 최적화 기법이 개발되고 있습니다. 대표적으로는 학습률 조정, 정규화 기법, 그리고 모델 경량화 방법이 있습니다. 이러한 기법들은 모델의 일반화 능력을 높이고, 훈련 시간을 단축시킵니다.",
+      "rendered_h1_texts": [],
+      "review_instruction": "Compare title, description, rendered H1, and opening text for meaning consistency. This packet is evidence only; it does not decide pass/fail.",
+      "source_url_hint": "",
+      "title_text": ""
+    }
   }
 }

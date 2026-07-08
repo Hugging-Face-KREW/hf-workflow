@@ -1,0 +1,1512 @@
+{
+  "fixtures": {
+    "summary": {
+      "current": {
+        "PASS": 34,
+        "FAIL": 2,
+        "BLOCKED": 3,
+        "NEEDS_CHANGES": 3
+      },
+      "demote_h1": {
+        "PASS": 34,
+        "FAIL": 2,
+        "BLOCKED": 3,
+        "NEEDS_CHANGES": 3
+      },
+      "demote_contextual": {
+        "PASS": 34,
+        "FAIL": 2,
+        "BLOCKED": 3,
+        "NEEDS_CHANGES": 3
+      },
+      "blockers_plus_structural": {
+        "PASS": 34,
+        "FAIL": 2,
+        "BLOCKED": 3,
+        "NEEDS_CHANGES": 3
+      },
+      "blockers_only": {
+        "PASS": 39,
+        "BLOCKED": 3
+      }
+    },
+    "details": [
+      {
+        "id": "generated_excellent",
+        "path": "generated/excellent-post.md",
+        "label": "strong_positive",
+        "source_type": "synthetic",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "generated_good",
+        "path": "generated/good-post.md",
+        "label": "acceptable_positive",
+        "source_type": "synthetic",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "generated_medium",
+        "path": "generated/medium-post.md",
+        "label": "borderline",
+        "source_type": "synthetic",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "generated_poor",
+        "path": "generated/poor-post.md",
+        "label": "negative",
+        "source_type": "synthetic",
+        "failed_required": [
+          "alt_text_coverage",
+          "descriptive_alt_text"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "FAIL",
+          "demote_h1": "FAIL",
+          "demote_contextual": "FAIL",
+          "blockers_plus_structural": "FAIL",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "generated_blocked",
+        "path": "generated/blocked-post.md",
+        "label": "blocker",
+        "source_type": "synthetic",
+        "failed_required": [],
+        "blockers_passed": false,
+        "statuses": {
+          "current": "BLOCKED",
+          "demote_h1": "BLOCKED",
+          "demote_contextual": "BLOCKED",
+          "blockers_plus_structural": "BLOCKED",
+          "blockers_only": "BLOCKED"
+        }
+      },
+      {
+        "id": "mutated_missing_description",
+        "path": "mutated/missing-description.md",
+        "label": "borderline",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_missing_alt",
+        "path": "mutated/missing-alt.md",
+        "label": "negative",
+        "source_type": "mutation",
+        "failed_required": [
+          "alt_text_coverage",
+          "descriptive_alt_text"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "FAIL",
+          "demote_h1": "FAIL",
+          "demote_contextual": "FAIL",
+          "blockers_plus_structural": "FAIL",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_noindex",
+        "path": "mutated/noindex.md",
+        "label": "blocker",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": false,
+        "statuses": {
+          "current": "BLOCKED",
+          "demote_h1": "BLOCKED",
+          "demote_contextual": "BLOCKED",
+          "blockers_plus_structural": "BLOCKED",
+          "blockers_only": "BLOCKED"
+        }
+      },
+      {
+        "id": "mutated_broken_internal_link",
+        "path": "mutated/broken-internal-link.md",
+        "label": "blocker",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_short_opening",
+        "path": "mutated/short-opening.md",
+        "label": "borderline",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_empty_body",
+        "path": "mutated/empty-body.md",
+        "label": "negative",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": false,
+        "statuses": {
+          "current": "BLOCKED",
+          "demote_h1": "BLOCKED",
+          "demote_contextual": "BLOCKED",
+          "blockers_plus_structural": "BLOCKED",
+          "blockers_only": "BLOCKED"
+        }
+      },
+      {
+        "id": "mutated_missing_h1_no_title",
+        "path": "mutated/missing-h1-no-title.md",
+        "label": "negative",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_layout_title_no_body_h1",
+        "path": "mutated/layout-title-no-body-h1.md",
+        "label": "borderline",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_multiple_h1",
+        "path": "mutated/multiple-h1.md",
+        "label": "negative",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_heading_skip",
+        "path": "mutated/heading-skip.md",
+        "label": "negative",
+        "source_type": "mutation",
+        "failed_required": [
+          "heading_hierarchy"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "NEEDS_CHANGES",
+          "demote_h1": "NEEDS_CHANGES",
+          "demote_contextual": "NEEDS_CHANGES",
+          "blockers_plus_structural": "NEEDS_CHANGES",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_no_citation",
+        "path": "mutated/no-citation.md",
+        "label": "borderline",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_broken_image_path",
+        "path": "mutated/broken-image-path.md",
+        "label": "blocker",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_missing_author",
+        "path": "mutated/missing-author.md",
+        "label": "borderline",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_too_long_title",
+        "path": "mutated/too-long-title.md",
+        "label": "borderline",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_toc_before_opening",
+        "path": "mutated/toc-before-opening.md",
+        "label": "acceptable_positive",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_description_body_mismatch",
+        "path": "mutated/description-body-mismatch.md",
+        "label": "negative",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_meaningless_alt",
+        "path": "mutated/meaningless-alt.md",
+        "label": "negative",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_generic_link_text",
+        "path": "mutated/generic-link-text.md",
+        "label": "borderline",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "mutated_source_canonical",
+        "path": "mutated/source-canonical.md",
+        "label": "borderline",
+        "source_type": "mutation",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "curated_metadata_policy_positive",
+        "path": "curated/metadata-policy-positive.md",
+        "label": "acceptable_positive",
+        "source_type": "curated_internal",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "curated_realistic_positive_no_image",
+        "path": "curated/realistic-positive-no-image.md",
+        "label": "strong_positive",
+        "source_type": "curated_internal",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "curated_semantic_negative_description",
+        "path": "curated/semantic-negative-description.md",
+        "label": "negative",
+        "source_type": "curated_internal",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "curated_semantic_negative_title",
+        "path": "curated/semantic-negative-title.md",
+        "label": "negative",
+        "source_type": "curated_internal",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "curated_hreflang_policy_positive",
+        "path": "curated/hreflang-policy-positive.md",
+        "label": "acceptable_positive",
+        "source_type": "curated_internal",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_how_to_contribute",
+        "path": "real/2024-09-16-how-to-contribute.md",
+        "label": "real_regression",
+        "source_type": "real_hfkrew",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_pseudocon_recap",
+        "path": "real/2025-05-31-2025-PseudoCon-recap.md",
+        "label": "real_regression",
+        "source_type": "real_hfkrew",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_translation_guide",
+        "path": "real/2025-06-22-HuggingFace-Docs-Translation-Guide.md",
+        "label": "real_regression",
+        "source_type": "real_hfkrew",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_tiny_agents_ko",
+        "path": "real/2025-09-14-python-tiny-agents-ko.md",
+        "label": "real_regression",
+        "source_type": "real_hfkrew",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_mcp_servers_python",
+        "path": "real/2025-09-14-Implementing-MCP-Servers-in-Python.md",
+        "label": "acceptable_positive",
+        "source_type": "real_hfkrew",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_vlm_explained_ko",
+        "path": "real/2025-10-12-vlm-explained-ko.md",
+        "label": "acceptable_positive",
+        "source_type": "real_hfkrew",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_vlm_2025",
+        "path": "real/2025-10-20-2025-VLM.md",
+        "label": "real_regression",
+        "source_type": "real_hfkrew",
+        "failed_required": [
+          "alt_text_coverage"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "NEEDS_CHANGES",
+          "demote_h1": "NEEDS_CHANGES",
+          "demote_contextual": "NEEDS_CHANGES",
+          "blockers_plus_structural": "NEEDS_CHANGES",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_rteb",
+        "path": "real/2025-12-01-rteb.md",
+        "label": "real_regression",
+        "source_type": "real_hfkrew",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_hf_translation_hub_design",
+        "path": "real/2025-11-17-hf_translation_hub_mcp_design_and_tooling.md",
+        "label": "acceptable_positive",
+        "source_type": "real_hfkrew",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_ai_agents",
+        "path": "real/2025-12-15-ai-agents-are-here.md",
+        "label": "real_regression",
+        "source_type": "real_hfkrew",
+        "failed_required": [
+          "heading_hierarchy"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "NEEDS_CHANGES",
+          "demote_h1": "NEEDS_CHANGES",
+          "demote_contextual": "NEEDS_CHANGES",
+          "blockers_plus_structural": "NEEDS_CHANGES",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_smolvla",
+        "path": "real/2025-12-22-smolvla.md",
+        "label": "real_regression",
+        "source_type": "real_hfkrew",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_mcp_overview",
+        "path": "real/2025-12-28-translation-mcp-project-overview.md",
+        "label": "real_regression",
+        "source_type": "real_hfkrew",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "real_mcp_n8n",
+        "path": "real/2026-01-05-hf-translation-mcp-n8n.md",
+        "label": "real_regression",
+        "source_type": "real_hfkrew",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      }
+    ]
+  },
+  "risks_negative_or_blocker_as_pass": [
+    {
+      "id": "generated_poor",
+      "label": "negative",
+      "variant": "blockers_only",
+      "failed_required": [
+        "alt_text_coverage",
+        "descriptive_alt_text"
+      ],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_missing_alt",
+      "label": "negative",
+      "variant": "blockers_only",
+      "failed_required": [
+        "alt_text_coverage",
+        "descriptive_alt_text"
+      ],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_broken_internal_link",
+      "label": "blocker",
+      "variant": "current",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_broken_internal_link",
+      "label": "blocker",
+      "variant": "demote_h1",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_broken_internal_link",
+      "label": "blocker",
+      "variant": "demote_contextual",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_broken_internal_link",
+      "label": "blocker",
+      "variant": "blockers_plus_structural",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_broken_internal_link",
+      "label": "blocker",
+      "variant": "blockers_only",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_missing_h1_no_title",
+      "label": "negative",
+      "variant": "current",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_missing_h1_no_title",
+      "label": "negative",
+      "variant": "demote_h1",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_missing_h1_no_title",
+      "label": "negative",
+      "variant": "demote_contextual",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_missing_h1_no_title",
+      "label": "negative",
+      "variant": "blockers_plus_structural",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_missing_h1_no_title",
+      "label": "negative",
+      "variant": "blockers_only",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_multiple_h1",
+      "label": "negative",
+      "variant": "current",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_multiple_h1",
+      "label": "negative",
+      "variant": "demote_h1",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_multiple_h1",
+      "label": "negative",
+      "variant": "demote_contextual",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_multiple_h1",
+      "label": "negative",
+      "variant": "blockers_plus_structural",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_multiple_h1",
+      "label": "negative",
+      "variant": "blockers_only",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_heading_skip",
+      "label": "negative",
+      "variant": "blockers_only",
+      "failed_required": [
+        "heading_hierarchy"
+      ],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_broken_image_path",
+      "label": "blocker",
+      "variant": "current",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_broken_image_path",
+      "label": "blocker",
+      "variant": "demote_h1",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_broken_image_path",
+      "label": "blocker",
+      "variant": "demote_contextual",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_broken_image_path",
+      "label": "blocker",
+      "variant": "blockers_plus_structural",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_broken_image_path",
+      "label": "blocker",
+      "variant": "blockers_only",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_description_body_mismatch",
+      "label": "negative",
+      "variant": "current",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_description_body_mismatch",
+      "label": "negative",
+      "variant": "demote_h1",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_description_body_mismatch",
+      "label": "negative",
+      "variant": "demote_contextual",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_description_body_mismatch",
+      "label": "negative",
+      "variant": "blockers_plus_structural",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_description_body_mismatch",
+      "label": "negative",
+      "variant": "blockers_only",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_meaningless_alt",
+      "label": "negative",
+      "variant": "current",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_meaningless_alt",
+      "label": "negative",
+      "variant": "demote_h1",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_meaningless_alt",
+      "label": "negative",
+      "variant": "demote_contextual",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_meaningless_alt",
+      "label": "negative",
+      "variant": "blockers_plus_structural",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "mutated_meaningless_alt",
+      "label": "negative",
+      "variant": "blockers_only",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "curated_semantic_negative_description",
+      "label": "negative",
+      "variant": "current",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "curated_semantic_negative_description",
+      "label": "negative",
+      "variant": "demote_h1",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "curated_semantic_negative_description",
+      "label": "negative",
+      "variant": "demote_contextual",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "curated_semantic_negative_description",
+      "label": "negative",
+      "variant": "blockers_plus_structural",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "curated_semantic_negative_description",
+      "label": "negative",
+      "variant": "blockers_only",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "curated_semantic_negative_title",
+      "label": "negative",
+      "variant": "current",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "curated_semantic_negative_title",
+      "label": "negative",
+      "variant": "demote_h1",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "curated_semantic_negative_title",
+      "label": "negative",
+      "variant": "demote_contextual",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "curated_semantic_negative_title",
+      "label": "negative",
+      "variant": "blockers_plus_structural",
+      "failed_required": [],
+      "blockers_passed": true
+    },
+    {
+      "id": "curated_semantic_negative_title",
+      "label": "negative",
+      "variant": "blockers_only",
+      "failed_required": [],
+      "blockers_passed": true
+    }
+  ],
+  "posts": {
+    "summary": {
+      "current": {
+        "PASS": 19,
+        "NEEDS_CHANGES": 8,
+        "FAIL": 4
+      },
+      "demote_h1": {
+        "PASS": 19,
+        "NEEDS_CHANGES": 8,
+        "FAIL": 4
+      },
+      "demote_contextual": {
+        "PASS": 19,
+        "NEEDS_CHANGES": 8,
+        "FAIL": 4
+      },
+      "blockers_plus_structural": {
+        "PASS": 19,
+        "NEEDS_CHANGES": 8,
+        "FAIL": 4
+      },
+      "blockers_only": {
+        "PASS": 31
+      }
+    },
+    "details": [
+      {
+        "id": "2024-09-16-how-to-contribute.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2024-09-16-how-to-contribute.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2024-09-19-creating-gradio-based-NL2SQL-chatbot.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2024-09-19-creating-gradio-based-NL2SQL-chatbot.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2024-10-02-creating-web-interface.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2024-10-02-creating-web-interface.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2024-10-05-how-to-use-translator.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2024-10-05-how-to-use-translator.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-05-27-2024-open-source-academy-recap.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-05-27-2024-open-source-academy-recap.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-05-31-2025-PseudoCon-recap.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-05-31-2025-PseudoCon-recap.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-06-14-text2sql-spider-ko-dataset.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-06-14-text2sql-spider-ko-dataset.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-06-22-HuggingFace-Docs-Translation-Guide.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-06-22-HuggingFace-Docs-Translation-Guide.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-09-14-Implementing-MCP-Servers-in-Python.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-09-14-Implementing-MCP-Servers-in-Python.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-09-14-python-tiny-agents-ko.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-09-14-python-tiny-agents-ko.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-09-14-python-tiny-agents-study.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-09-14-python-tiny-agents-study.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [
+          "descriptive_alt_text"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "NEEDS_CHANGES",
+          "demote_h1": "NEEDS_CHANGES",
+          "demote_contextual": "NEEDS_CHANGES",
+          "blockers_plus_structural": "NEEDS_CHANGES",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-09-26-Introducing-smolagents.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-09-26-Introducing-smolagents.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [
+          "alt_text_coverage"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "NEEDS_CHANGES",
+          "demote_h1": "NEEDS_CHANGES",
+          "demote_contextual": "NEEDS_CHANGES",
+          "blockers_plus_structural": "NEEDS_CHANGES",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-09-29-building-hf-mcp-ko.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-09-29-building-hf-mcp-ko.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [
+          "heading_hierarchy"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "NEEDS_CHANGES",
+          "demote_h1": "NEEDS_CHANGES",
+          "demote_contextual": "NEEDS_CHANGES",
+          "blockers_plus_structural": "NEEDS_CHANGES",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-09-29-building-hf-mcp-study.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-09-29-building-hf-mcp-study.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [
+          "descriptive_alt_text"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "NEEDS_CHANGES",
+          "demote_h1": "NEEDS_CHANGES",
+          "demote_contextual": "NEEDS_CHANGES",
+          "blockers_plus_structural": "NEEDS_CHANGES",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-10-06-mcp-for-research.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-10-06-mcp-for-research.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-10-12-vlm-explained-ko.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-10-12-vlm-explained-ko.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-10-13-structured-codeagent-ko.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-10-13-structured-codeagent-ko.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [
+          "heading_hierarchy",
+          "alt_text_coverage",
+          "descriptive_alt_text"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "FAIL",
+          "demote_h1": "FAIL",
+          "demote_contextual": "FAIL",
+          "blockers_plus_structural": "FAIL",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-10-20-2025-VLM.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-10-20-2025-VLM.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [
+          "alt_text_coverage"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "NEEDS_CHANGES",
+          "demote_h1": "NEEDS_CHANGES",
+          "demote_contextual": "NEEDS_CHANGES",
+          "blockers_plus_structural": "NEEDS_CHANGES",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-11-02-DABStep.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-11-02-DABStep.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [
+          "descriptive_alt_text"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "NEEDS_CHANGES",
+          "demote_h1": "NEEDS_CHANGES",
+          "demote_contextual": "NEEDS_CHANGES",
+          "blockers_plus_structural": "NEEDS_CHANGES",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-11-10-pi0-fast.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-11-10-pi0-fast.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [
+          "heading_hierarchy"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "NEEDS_CHANGES",
+          "demote_h1": "NEEDS_CHANGES",
+          "demote_contextual": "NEEDS_CHANGES",
+          "blockers_plus_structural": "NEEDS_CHANGES",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-11-17-agent-leaderboard.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-11-17-agent-leaderboard.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-11-17-hf_translation_hub_mcp_design_and_tooling.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-11-17-hf_translation_hub_mcp_design_and_tooling.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-11-3-Welcome-GPT-OSS.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-11-3-Welcome-GPT-OSS.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [
+          "alt_text_coverage",
+          "descriptive_alt_text"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "FAIL",
+          "demote_h1": "FAIL",
+          "demote_contextual": "FAIL",
+          "blockers_plus_structural": "FAIL",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-12-01-math-verify-leaderboard.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-12-01-math-verify-leaderboard.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [
+          "alt_text_coverage",
+          "descriptive_alt_text"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "FAIL",
+          "demote_h1": "FAIL",
+          "demote_contextual": "FAIL",
+          "blockers_plus_structural": "FAIL",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-12-01-rteb.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-12-01-rteb.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-12-08-hugging_face_blog_fetch_automation.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-12-08-hugging_face_blog_fetch_automation.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [
+          "alt_text_coverage",
+          "descriptive_alt_text"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "FAIL",
+          "demote_h1": "FAIL",
+          "demote_contextual": "FAIL",
+          "blockers_plus_structural": "FAIL",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-12-15-ai-agents-are-here.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-12-15-ai-agents-are-here.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [
+          "heading_hierarchy"
+        ],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "NEEDS_CHANGES",
+          "demote_h1": "NEEDS_CHANGES",
+          "demote_contextual": "NEEDS_CHANGES",
+          "blockers_plus_structural": "NEEDS_CHANGES",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-12-15-hf-translation-hub-mcp-server-usage-guide.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-12-15-hf-translation-hub-mcp-server-usage-guide.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-12-22-smolvla.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-12-22-smolvla.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2025-12-28-translation-mcp-project-overview.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2025-12-28-translation-mcp-project-overview.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      },
+      {
+        "id": "2026-01-05-hf-translation-mcp-n8n.md",
+        "path": "/home/hong/code/hugging-face-krew.github.io/_posts/2026-01-05-hf-translation-mcp-n8n.md",
+        "label": "unlabeled",
+        "source_type": "real_post",
+        "failed_required": [],
+        "blockers_passed": true,
+        "statuses": {
+          "current": "PASS",
+          "demote_h1": "PASS",
+          "demote_contextual": "PASS",
+          "blockers_plus_structural": "PASS",
+          "blockers_only": "PASS"
+        }
+      }
+    ]
+  }
+}

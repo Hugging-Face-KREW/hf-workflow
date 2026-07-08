@@ -35,13 +35,19 @@ def check_frontmatter(frontmatter: Dict[str, Any]) -> Dict[str, Any]:
     })
 
     # 2. Description check (REQUIRED)
+    # Search engines may use meta descriptions as snippet candidates, but there
+    # is no official fixed character count. Gate on presence only; semantic
+    # quality is reviewed through the evidence packet in `signals`.
     description = frontmatter.get('description', '')
     desc_len = len(description)
     checks.append({
         'name': 'description',
-        'passed': bool(description) and 150 <= desc_len <= 160,
+        'passed': bool(description),
         'severity': 'required',
-        'message': f'Description: {desc_len} chars (recommend 150-160)' if description else 'Description is missing',
+        'message': (
+            f'Description: {desc_len} chars (semantic quality reviewed separately)'
+            if description else 'Description is missing'
+        ),
         'value': description
     })
 

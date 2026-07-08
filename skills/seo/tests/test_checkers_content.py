@@ -6,15 +6,9 @@ def _by_name(result):
     return {c["name"]: c for c in result["checks"]}
 
 
-def test_h1_count_zero_or_one_ok_multiple_fails():
-    # Body H1 of 1 is fine.
-    one = "# Only One\n## sub\ncontent"
-    assert _by_name(check_content_structure(one, one))["h1_count"]["passed"]
-    # Body H1 of 0 is fine too — Jekyll renders the frontmatter title as the H1.
-    zero = "## sub only\n\ncontent"
-    c0 = _by_name(check_content_structure(zero, zero))["h1_count"]
-    assert c0["passed"] and c0["value"] == 0
-    # Multiple body H1s still fail.
+def test_h1_count_exactly_one():
+    body = "# Only One\n## sub\ncontent"
+    assert _by_name(check_content_structure(body, body))["h1_count"]["passed"]
     two = "# One\n# Two\ntext"
     c = _by_name(check_content_structure(two, two))["h1_count"]
     assert not c["passed"] and c["value"] == 2

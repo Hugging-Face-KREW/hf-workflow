@@ -24,15 +24,6 @@ def test_primary_keyword_particle_tolerant():
     assert _by_name(check_keywords(body, primary_keyword="모델"))["primary_keyword"]["passed"]
 
 
-def test_primary_keyword_in_opening_without_body_h1_passes():
-    # KREW bodies have no H1 (layout renders the title). The keyword being in the
-    # opening paragraph is enough to pass; H1 absence must not block (PR #8).
-    body = "## 소제목\n\n모델 최적화 기법은 성능을 높입니다."
-    c = _by_name(check_keywords(body, primary_keyword="모델 최적화"))["primary_keyword"]
-    assert c["passed"]
-    assert c["value"] == {"H1": False, "first paragraph": True}
-
-
 def test_primary_keyword_missing_fails():
     body = "# 다른 제목\n\n관련 없는 내용입니다."
     assert not check_keywords(body, primary_keyword="임베딩 벤치마크")["passed"]

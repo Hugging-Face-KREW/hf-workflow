@@ -6,8 +6,9 @@ REQUIRED gate (D1–D7) AND an LLM rubric (R1–R6). Frontmatter is intentionall
 excluded from the gate — the metadata writer (Module 2) generates it *after* a
 pass, so gating on it would deadlock (design `seo-eval-decisions.md` §2–§3).
 
-Stage 1 ships the deterministic gate + a rubric seam (skeleton); with the rubric
-unavailable the gate runs on the deterministic result alone.
+The deterministic gate always runs offline. Optional schema-bound rubric checks
+can be injected by the caller; without them the gate runs on deterministic
+results alone.
 
 Inputs (mutually exclusive):
   --manifest <yaml>                  translation-flow manifest (PR / pre-publish flow)
@@ -19,6 +20,7 @@ sibling. Exit code: 0 if the gate passes, 1 otherwise.
 from __future__ import annotations
 
 import argparse
+from copy import deepcopy
 import json
 import sys
 from pathlib import Path
@@ -29,6 +31,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 import yaml  # noqa: E402
 
 from checkers import (  # noqa: E402
+    check_blockers,
     check_content_structure,
     check_frontmatter,
     check_images,
@@ -36,10 +39,37 @@ from checkers import (  # noqa: E402
 )
 import report as report_mod  # noqa: E402
 import rubric as rubric_mod  # noqa: E402
+from policy import apply_policy, load_policy  # noqa: E402
+from signals import collect_signals  # noqa: E402
 
 # Severities that gate the result vs. those shown for information only.
 _GATED = "required"
-_ADVISORY = ("recommended", "optional", "info")
+_ADVISORY = ("review", "recommended", "optional", "info")
+
+
+def classify_status(
+    blockers_passed: bool,
+    gate_passed: bool,
+    required_checks: list[dict[str, Any]],
+    rubric_checks: list[dict[str, Any]] | None = None,
+) -> str:
+    """Map checker results onto the review states used by PR feedback.
+
+    PASS means the post can proceed to metadata generation. NEEDS_CHANGES is a
+    small, fixable quality gap. FAIL is broader body-quality failure. BLOCKED is
+    reserved for explicit publish-safety issues such as noindex or broken local
+    internal links.
+    """
+    if not blockers_passed:
+        return "BLOCKED"
+    if gate_passed:
+        return "PASS"
+    failed_required = [c for c in required_checks if not c.get("passed")]
+    failed_required += [
+        c for c in (rubric_checks or [])
+        if c.get("severity") == _GATED and not c.get("passed")
+    ]
+    return "NEEDS_CHANGES" if len(failed_required) == 1 else "FAIL"
 
 
 def _load_manifest(path: Path) -> dict[str, Any]:
@@ -105,6 +135,7 @@ def evaluate(
     *,
     benchmark_mode: str = "off",
     benchmark_url: Optional[str] = None,
+    rubric_judge=None,
 ) -> dict[str, Any]:
     """Run the body-only deterministic gate + rubric seam. Returns a fully
     deterministic, path-relative result dict (safe to snapshot as golden)."""
@@ -115,28 +146,54 @@ def evaluate(
     target_root = inp["target_root"]
     rel_post = inp["file_path"]
 
+    blockers_res = check_blockers(frontmatter, body, target_root, rel_post if target_root else None)
     content_res = check_content_structure(inp["content"], body, primary)
     keyword_res = check_keywords(body, primary, secondary)
     images_res = check_images(body, target_root, rel_post if target_root else None)
+    signals = collect_signals(
+        inp["content"],
+        body,
+        frontmatter,
+        target_root=target_root,
+        post_path=rel_post if target_root else None,
+    )
 
-    all_checks = content_res["checks"] + keyword_res["checks"] + images_res["checks"]
+    review_policy = load_policy(inp["manifest"])
+    all_checks = apply_policy(
+        content_res["checks"] + keyword_res["checks"] + images_res["checks"],
+        review_policy,
+    )
     required = [c for c in all_checks if c.get("severity") == _GATED]
     advisory = [c for c in all_checks if c.get("severity") in _ADVISORY]
     det_passed = all(c["passed"] for c in required)
 
-    rub = rubric_mod.evaluate(
-        body, frontmatter, inp["manifest"],
-        source_url=inp["source_url"], primary_keyword=primary,
-    )
+    if rubric_judge is None:
+        rub = rubric_mod.evaluate(
+            body, frontmatter, inp["manifest"],
+            source_url=inp["source_url"], primary_keyword=primary,
+        )
+    else:
+        rubric_manifest = deepcopy(inp["manifest"])
+        handoff = rubric_manifest.setdefault("handoff", {})
+        seo = handoff.setdefault("seo", {})
+        seo["policy"] = review_policy
+        rub = rubric_mod.evaluate_from_signals(
+            signals,
+            rubric_manifest,
+            judge=rubric_judge,
+        )
     rubric_passed = rub.passed  # None when the rubric did not run
 
     if rubric_passed is None:
         gate_passed = det_passed
-        reason = ("deterministic gate only (rubric is stage-1 skeleton)"
+        reason = ("deterministic gate only (rubric judge not configured)"
                   if det_passed else "deterministic REQUIRED checks failed")
     else:
         gate_passed = det_passed and rubric_passed
         reason = "deterministic AND rubric"
+
+    status = classify_status(blockers_res["passed"], gate_passed, required, rub.checks)
+    final_passed = status == "PASS"
 
     result: dict[str, Any] = {
         "input": {
@@ -154,11 +211,20 @@ def evaluate(
                 "images": _slim(images_res),
             },
         },
+        "blockers": blockers_res,
+        "policy": {
+            "name": review_policy.get("name", "default"),
+            "severities": review_policy.get("severities", {}),
+            "rubric_required": bool(review_policy.get("rubric_required", False)),
+        },
+        "signals": signals,
         "rubric": rub.to_dict(),
         "frontmatter_advisory": check_frontmatter(frontmatter),  # NOT gated
         "gate": {
-            "passed": gate_passed,
+            "passed": final_passed,
+            "status": status,
             "deterministic_passed": det_passed,
+            "blockers_passed": blockers_res["passed"],
             "rubric_passed": rubric_passed,
             "reason": reason,
         },
@@ -181,6 +247,7 @@ def evaluate_path(
     locale: str = "",
     benchmark_mode: str = "off",
     benchmark_url: Optional[str] = None,
+    rubric_judge=None,
 ) -> dict[str, Any]:
     """Evaluate a single post file directly (used by the published flow and
     tests). ``file_path`` in the result is repo-relative (or the basename when
@@ -211,7 +278,12 @@ def evaluate_path(
         "frontmatter": frontmatter,
         "body": body,
     }
-    return evaluate(inp, benchmark_mode=benchmark_mode, benchmark_url=benchmark_url)
+    return evaluate(
+        inp,
+        benchmark_mode=benchmark_mode,
+        benchmark_url=benchmark_url,
+        rubric_judge=rubric_judge,
+    )
 
 
 def _run_benchmark_safe(inp, body, frontmatter, mode, url) -> dict[str, Any]:

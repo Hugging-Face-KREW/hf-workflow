@@ -1,11 +1,4 @@
-"""Behavioral assertions for the synthetic negative ("mutated") fixtures.
-
-Each fixture mutates one thing on an otherwise-clean post. This pins what the
-**current v1 gate** does with each — distinct from the golden snapshot (which
-only verifies stability). Intended-but-not-yet-implemented outcomes (the BLOCKED
-tier: noindex / broken internal links) are asserted at their *current* behavior
-and flagged here so they re-baseline when that tier lands (see NOTES.md).
-"""
+"""Behavioral assertions for the synthetic negative ("mutated") fixtures."""
 import pytest
 
 from seo_eval import evaluate_path
@@ -49,18 +42,33 @@ def test_short_opening_not_caught_needs_calibration(fixtures_dir):
 
 
 @pytest.mark.parametrize("rel", ["mutated/noindex", "generated/blocked-post"])
-def test_noindex_not_yet_blocked(fixtures_dir, rel):
-    # INTENDED: BLOCKED. The v1 gate has no BLOCKED tier yet and does not gate on
-    # frontmatter, so `robots: noindex` currently passes the body gate. When the
-    # BLOCKED tier lands this assertion flips (see NOTES.md).
+def test_noindex_is_blocked(fixtures_dir, rel):
     fm, _ = parse_frontmatter((fixtures_dir / f"{rel}.md").read_text(encoding="utf-8"))
     assert fm.get("robots") == "noindex"  # the fixture really carries the blocker
     r = _eval(fixtures_dir, rel)
-    assert r["gate"]["passed"] is True  # TODO(BLOCKED tier): expect blocked
+    assert r["gate"]["passed"] is False
+    assert r["gate"]["status"] == "BLOCKED"
+    failed = {c["name"] for c in r["blockers"]["checks"] if not c["passed"]}
+    assert "robots_indexable" in failed
 
 
-def test_broken_internal_link_not_yet_blocked(fixtures_dir):
-    # INTENDED: BLOCKED when evaluated with a target_root (link must resolve to a
-    # real file/page). Link resolution isn't implemented yet, so it passes today.
+def test_broken_internal_link_requires_target_root_to_block(fixtures_dir, tmp_path):
     r = _eval(fixtures_dir, f"{MUTATED}/broken-internal-link")
-    assert r["gate"]["passed"] is True  # TODO(BLOCKED tier): expect blocked w/ target_root
+    assert r["gate"]["passed"] is True
+
+    target_root = tmp_path / "target"
+    post_dir = target_root / "_posts"
+    post_dir.mkdir(parents=True)
+    post_path = post_dir / "2026-01-01-broken-internal-link.md"
+    post_path.write_text(
+        (fixtures_dir / f"{MUTATED}/broken-internal-link.md").read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
+
+    blocked = evaluate_path(
+        post_path.relative_to(target_root),
+        target_root=target_root,
+    )
+    assert blocked["gate"]["status"] == "BLOCKED"
+    failed = {c["name"] for c in blocked["blockers"]["checks"] if not c["passed"]}
+    assert "internal_links_resolve" in failed

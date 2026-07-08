@@ -1,0 +1,33 @@
+version: 1
+name: default
+description: >
+  Default SEO review policy. Deterministic checkers emit evidence; this policy
+  decides which findings are gated, review-only, advisory, or informational.
+
+severities:
+  heading_hierarchy: required
+  primary_keyword: required
+  alt_text_coverage: required
+  descriptive_alt_text: required
+  image_files_exist: required
+
+  opening_summary: review
+  h1_count: review
+  citations: review
+
+  question_headings: recommended
+  internal_links: recommended
+  secondary_keywords: recommended
+
+  word_count: optional
+  webp_format: optional
+  lazy_loading: optional
+  no_images: info
+
+llm_judges:
+  semantic_metadata:
+    enabled: true
+    severity: required
+  alt_semantics:
+    enabled: true
+    severity: review

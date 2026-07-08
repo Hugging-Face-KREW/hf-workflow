@@ -12,9 +12,9 @@ description: >-
 # HF Blog SEO Skill
 
 SEO/GEO review for `Hugging-Face-KREW/hugging-face-krew.github.io` posts. The
-skill is two modules; **stage 1** ships Module 1's deterministic gate plus a
-rubric seam. The LLM rubric and Module 2 (metadata writer) are interface
-skeletons for now.
+skill is two modules: Module 1 runs the deterministic gate and optional semantic
+judge seam; Module 2 creates policy-aware metadata candidates and can write back
+an approved metadata plan.
 
 ## When to use
 - "SEO 평가/감사", "이 포스트 SEO 봐줘", "발행 전 PR SEO 체크", "메타데이터 작성".
@@ -27,19 +27,13 @@ skeletons for now.
 ## Workflow
 ```
 SEO eval (body only) ──fail──> return feedback (failing REQUIRED checks)
-                     └─pass──> write metadata (Module 2 — stage 2)
+                     └─pass──> build/apply approved metadata plan (Module 2)
 ```
 - Eval gates the **body** only (structure / keyword / images). Frontmatter is
   **not** gated — the metadata writer generates it after a pass (avoids deadlock).
-- Gate = `(all REQUIRED deterministic checks pass) AND (rubric mean ≥4 & min ≥3)`.
-  Stage 1: the rubric is a skeleton, so the gate runs on the deterministic part
-  alone and the report marks the rubric as not-run.
-- **v1 gate is conservative** (PR #8 review): only image alt/file checks (D6/D7)
-  and keyword-in-opening (D5, when a keyword is supplied) block. Structure checks
-  (D1 H1 / D2 hierarchy / D3 opening / D4 citations) are **advisory** — they
-  assume raw-markdown structure that clashes with the Jekyll layout (which renders
-  the frontmatter `title` as the H1), so they're reported but don't block until
-  re-based on the rendered output.
+- Gate = deterministic required checks plus optional rubric checks when a
+  schema-bound judge is injected. Without a judge function, the skill remains
+  fully offline and gates on deterministic checks alone.
 
 ## Inputs
 - PR / pre-publish: `--manifest <translation-flow manifest.yaml>`
@@ -49,7 +43,7 @@ SEO eval (body only) ──fail──> return feedback (failing REQUIRED checks)
 
 ## Run
 ```bash
-# PR flow — writes <output> and <output>.json; exit 0 (pass) / 1 (fail)
+# PR flow — writes <output> and <output>.json; exit 0 only for PASS
 python skills/seo/tools/seo_eval.py --manifest reports/pr-130/manifest.yaml \
   --target-root ../hugging-face-krew.github.io --output reports/pr-130/seo-report.md
 
@@ -62,17 +56,27 @@ python skills/seo/tools/seo_eval.py ... --benchmark heuristic
 ```
 
 ## Deterministic items (body only)
-- **REQUIRED (hard gate):** D5 primary keyword in opening (skipped if no keyword) ·
+- **REQUIRED (hard gate):** D1 H1 count == 1 · D2 heading hierarchy (no skips) ·
+  D3 opening length (KO ≥150 chars / EN ≥50 words) · D4 ≥1 citation ·
+  D5 primary keyword in H1 + opening (skipped if no keyword) ·
   D6 alt coverage 100% + descriptive · D7 image files exist (with `--target-root`).
-- **ADVISORY (reported, not gated):** D1 body H1 count (0 or 1 OK — layout renders
-  title as H1; only multiple H1s flag) · D2 heading hierarchy (no skips) ·
-  D3 opening length (KO ≥150 chars / EN ≥50 words, TOC/boilerplate skipped) ·
-  D4 ≥1 citation · D8 question-or-keyword subheading · D9 internal links 2–3 ·
-  D10 secondary keyword coverage · D11 body length · D12 WebP · D13 lazy.
+- **RECOMMENDED:** D8 question-or-keyword subheading · D9 internal links 2–3 ·
+  D10 secondary keyword coverage. **OPTIONAL:** D11 body length · D12 WebP · D13 lazy.
 
-## Rubric items (LLM — stage 2)
-R1 opening answerability · R2 heading search-intent · R3 alt accuracy ·
-R4 citation authority · R5 quotability · R6 keyword/term search integrity.
+## Statuses
+- `PASS`: deterministic gate passes; metadata writer may run next.
+- `NEEDS_CHANGES`: exactly one required quality check failed; return focused feedback.
+- `FAIL`: multiple required quality checks failed; return body improvement feedback.
+- `BLOCKED`: explicit publish-safety blocker such as `robots: noindex` or a broken local internal link.
+
+The fixtures intentionally cover these quality levels. They are not a benchmark
+that all existing blog posts must pass.
+
+## Rubric / semantic judge
+The legacy R1–R6 score contract is preserved for compatibility. New semantic
+review uses two narrow seams: `semantic_metadata` for title/description/H1/body
+meaning mismatch, and `alt_semantics` for non-empty but unhelpful alt text.
+`semantic_metadata` is required when enabled; `alt_semantics` defaults to review.
 
 ## Tests (repeatable, offline)
 ```bash
@@ -80,5 +84,6 @@ python -m pytest skills/seo/tests        # functional unit tests + golden regres
 UPDATE_GOLDEN=1 python -m pytest skills/seo/tests/test_golden_regression.py  # re-baseline
 ```
 Verifies tool behavior and stability (not output quality). Golden fixtures are
-drop-in and provisional. `tools/` holds the checkers; `tools/rubric.py` and
-`tools/metadata.py` are the stage-2 seams.
+drop-in and provisional. `tools/` holds the checkers; `tools/rubric.py` exposes
+provider-free judge seams, and `tools/metadata.py` returns `PARTIAL` until
+canonical/hreflang policy is supplied.

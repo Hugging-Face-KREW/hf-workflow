@@ -25,9 +25,6 @@ def test_file_mode_failing_post_returns_1(tmp_path, generated_dir):
 
 
 def test_file_mode_passing_post_returns_0(tmp_path, real_dir):
-    # A real KREW post that clears the v1 gate (structure is advisory; it has
-    # alt-covered images). rteb intentionally fails now — its `<figure><img>`
-    # images carry no alt (PR #8), so it's not a valid "passing" sample.
-    code = main(["--file", str(real_dir / "2025-12-15-ai-agents-are-here.md"),
+    code = main(["--file", str(real_dir / "2025-12-01-rteb.md"),
                  "--output", str(tmp_path / "r.md")])
     assert code == 0
