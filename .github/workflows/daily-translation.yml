@@ -14,10 +14,23 @@ on:
         required: false
         type: string
       dry_run:
-        description: "Find posts without creating translation PRs."
+        description: "Preview selected changes without pushing."
         required: false
         default: false
         type: boolean
+      rerun_mode:
+        description: "Optional rerun mode. Use none for normal translation creation."
+        required: false
+        default: none
+        type: choice
+        options:
+          - none
+          - refresh_translation_info
+          - rerun_translation
+      pr_numbers:
+        description: "Comma-separated translation PR numbers for refresh_translation_info, e.g. 154,163."
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -83,7 +96,27 @@ jobs:
             --color "D93F0B" \
             --force
 
+      - name: Validate rerun inputs
+        run: |
+          rerun_mode="${{ inputs.rerun_mode }}"
+          if [ -z "${rerun_mode}" ]; then
+            rerun_mode="none"
+          fi
+          if [ "${rerun_mode}" = "rerun_translation" ] && [ -z "${{ inputs.post_url }}" ]; then
+            echo "rerun_translation requires post_url so a scheduled batch cannot be overwritten accidentally."
+            exit 1
+          fi
+          if [ "${rerun_mode}" = "rerun_translation" ] && [ -n "${{ inputs.pr_numbers }}" ]; then
+            echo "pr_numbers is only supported by refresh_translation_info."
+            exit 1
+          fi
+          if [ "${rerun_mode}" = "none" ] && [ -n "${{ inputs.pr_numbers }}" ]; then
+            echo "pr_numbers requires refresh_translation_info."
+            exit 1
+          fi
+
       - name: Create translation PR
+        if: ${{ inputs.rerun_mode == '' || inputs.rerun_mode == 'none' || inputs.rerun_mode == 'rerun_translation' }}
         working-directory: translation-flow
         run: |
           args=(
@@ -92,10 +125,14 @@ jobs:
             --target-worktree "../target-repo"
             --target-repo "${KREW_REPO}"
             --translator "openai"
-            --skip-existing
             --allow-untracked
             --run-summary "../run-summary.json"
           )
+          if [ "${{ inputs.rerun_mode }}" = "rerun_translation" ]; then
+            args+=(--force)
+          else
+            args+=(--skip-existing)
+          fi
           if [ -n "${{ inputs.post_url }}" ]; then
             args+=(--post-url "${{ inputs.post_url }}")
           fi
@@ -104,12 +141,28 @@ jobs:
           fi
           python scripts/create_translation_pr.py "${args[@]}"
 
+      - name: Refresh translation info in open translation PRs
+        if: ${{ inputs.rerun_mode == 'refresh_translation_info' }}
+        run: |
+          args=(
+            --target-worktree "target-repo"
+            --target-repo "${KREW_REPO}"
+            --run-summary "run-summary.json"
+          )
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            args+=(--dry-run)
+          fi
+          if [ -n "${{ inputs.pr_numbers }}" ]; then
+            args+=(--pr-numbers "${{ inputs.pr_numbers }}")
+          fi
+          python scripts/refresh_translation_info.py "${args[@]}"
+
       - name: Notify Discord about translation PR
-        if: ${{ inputs.dry_run != true && env.DISCORD_WEBHOOK_URL != '' }}
+        if: ${{ inputs.dry_run != true && inputs.rerun_mode != 'refresh_translation_info' && env.DISCORD_WEBHOOK_URL != '' }}
         run: python scripts/notify_discord.py --summary run-summary.json
 
       - name: Generate SEO and quality reports
-        if: ${{ inputs.dry_run != true }}
+        if: ${{ inputs.dry_run != true && inputs.rerun_mode != 'refresh_translation_info' }}
         run: |
           python - <<'PY'
           import json
@@ -151,7 +204,7 @@ jobs:
           PY
 
       - name: Commit manifests and reports
-        if: ${{ inputs.dry_run != true }}
+        if: ${{ inputs.dry_run != true && inputs.rerun_mode != 'refresh_translation_info' }}
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"

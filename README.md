@@ -120,3 +120,18 @@ Hugging-Face-KREW/hugging-face-krew.github.io:
   Contents: read/write
   Pull requests: read/write
 ```
+
+Manual dispatch keeps the normal translation creation path as `rerun_mode:
+none`. It also supports two rerun modes for existing translation PRs:
+
+- `refresh_translation_info`: updates generated translation info in open,
+  same-repository `translate/*` PRs without calling the translator or changing
+  translation body content. Translation info includes frontmatter, source URL
+  display, and thumbnail fields. Use `pr_numbers` to limit the run to selected
+  PRs, for example `154,163`.
+- `rerun_translation`: requires `post_url` and regenerates the translation file
+  with the current generator. Existing edits in the translation file are
+  overwritten.
+
+Use `dry_run` first to preview selected changes. Scheduled runs continue to use
+the normal creation path with `--skip-existing`.
