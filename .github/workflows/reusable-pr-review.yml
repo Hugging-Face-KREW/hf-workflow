@@ -389,7 +389,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: gpt-5-nano
-      SEO_RUBRIC_OPENAI_REQUIRED: "1"
+      SEO_RUBRIC_OPENAI_REQUIRED: "0"
       PYTHONPATH: workflow/scripts
     steps:
       - name: Checkout workflow tools

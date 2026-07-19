@@ -165,3 +165,10 @@ def test_metadata_suggestion_is_applied_after_green_gates() -> None:
     assert "🔧 Update SEO metadata" in workflow
     assert "SEO_RUBRIC_OPENAI_REQUIRED" in workflow
     assert "SEO_OPENAI_REQUIRED" not in workflow
+
+
+def test_metadata_apply_does_not_rerun_openai_rubric_gate() -> None:
+    workflow = WORKFLOW.read_text()
+    metadata_section = workflow.split("metadata_apply:", 1)[1].split("finalize:", 1)[0]
+
+    assert 'SEO_RUBRIC_OPENAI_REQUIRED: "0"' in metadata_section
