@@ -18,7 +18,11 @@ def run_case(case: dict[str, object], tmp_path: Path) -> dict[str, object]:
         f"version: 1\nsource:\n  file_path: {source}\ntranslation:\n  file_path: {target}\n",
         encoding="utf-8",
     )
-    return build_report(manifest, Path("/"), source_path=source)
+    gates_config_path = None
+    if gates_config := case.get("gates_config"):
+        gates_config_path = tmp_path / f"{case['id']}-gates.yml"
+        gates_config_path.write_text(yaml.safe_dump({"version": 1, **gates_config}), encoding="utf-8")
+    return build_report(manifest, Path("/"), source_path=source, gates_config_path=gates_config_path)
 
 
 def test_challenge_set_contract_is_executed(tmp_path: Path) -> None:

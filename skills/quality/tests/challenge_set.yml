@@ -31,6 +31,15 @@ fixtures:
   - id: bad_frontmatter
     source: fixtures/translation_quality_harness/source.md
     target: fixtures/translation_quality_harness/target_bad_frontmatter.md
+    gates_config:
+      hard_gates:
+        front_matter:
+          status: reject
+          required_target_keys:
+            - title
+          preserved_source_keys:
+            - authors
+            - thumbnail
     expected_status: reject
     expected_categories:
       - formatting

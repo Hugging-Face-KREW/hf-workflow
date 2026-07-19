@@ -248,6 +248,29 @@ hard_gates:
     assert not any("thumbnail" in message for message in messages)
 
 
+def test_harness_allows_site_localized_frontmatter_by_default(tmp_path: Path) -> None:
+    source = tmp_path / "source.md"
+    target = tmp_path / "target.md"
+    manifest = tmp_path / "manifest.yaml"
+    source.write_text(
+        "---\ntitle: Source\nauthors:\n  - user: upstream\nthumbnail: /blog/assets/source.png\n---\n\nSource text.\n",
+        encoding="utf-8",
+    )
+    target.write_text(
+        "---\ntitle: 번역\nauthors:\n  - user: dailybot\nthumbnail: assets/images/local.png\n---\n\n번역문입니다.\n",
+        encoding="utf-8",
+    )
+    manifest.write_text(
+        "version: 1\nsource:\n  file_path: source.md\ntranslation:\n  file_path: target.md\n",
+        encoding="utf-8",
+    )
+
+    report = build_report(manifest, tmp_path)
+
+    assert not any("Front matter key `authors`" in issue["message"] for issue in report["issues"])
+    assert not any("Front matter key `thumbnail`" in issue["message"] for issue in report["issues"])
+
+
 def test_harness_respects_disabled_exact_match_gate_option(tmp_path: Path) -> None:
     source = tmp_path / "source.md"
     target = tmp_path / "target.md"
@@ -401,6 +424,48 @@ def test_markdown_doc_numbers_ignore_links_code_and_html_attributes() -> None:
     assert doc.numbers == ["30%"]
 
 
+def test_markdown_doc_ignores_hfkrew_translation_boilerplate() -> None:
+    doc = markdown_doc(
+        """---
+title: 번역 제목
+---
+
+* TOC
+{:toc}
+<!--toc-->
+_이 글은 Hugging Face 블로그의 [Source Title](https://huggingface.co/blog/source-title)를 한국어로 번역한 글입니다_.
+
+<!-- Source: https://huggingface.co/blog/source-title -->
+
+---
+
+<!--
+Review instructions:
+- Preserve technical meaning.
+-->
+
+# 번역 제목
+
+본문입니다.
+"""
+    )
+
+    assert [segment.text for segment in doc.segments] == ["번역 제목", "본문입니다."]
+    assert doc.urls == []
+
+
+def test_markdown_doc_strips_heading_anchors_before_segmenting() -> None:
+    doc = markdown_doc(
+        """
+## 섹션 제목 {#section-1}
+
+본문입니다.
+"""
+    )
+
+    assert [segment.text for segment in doc.segments] == ["섹션 제목", "본문입니다."]
+
+
 def test_markdown_doc_ignores_placeholder_markers_inside_code_blocks() -> None:
     doc = markdown_doc(
         """
@@ -428,8 +493,22 @@ def test_harness_rejects_link_and_image_mutation(tmp_path: Path) -> None:
 
 def test_harness_rejects_frontmatter_mutation(tmp_path: Path) -> None:
     manifest = manifest_for(tmp_path, "target_bad_frontmatter.md")
+    gates = tmp_path / "gates.yml"
+    gates.write_text(
+        """version: 1
+hard_gates:
+  front_matter:
+    status: reject
+    required_target_keys:
+      - title
+    preserved_source_keys:
+      - authors
+      - thumbnail
+""",
+        encoding="utf-8",
+    )
 
-    report = build_report(manifest, FIXTURES, source_path=FIXTURES / "source.md")
+    report = build_report(manifest, FIXTURES, source_path=FIXTURES / "source.md", gates_config_path=gates)
 
     assert report["status"] == "reject"
     assert any("Front matter key `authors`" in issue["message"] for issue in report["hard_failures"])
