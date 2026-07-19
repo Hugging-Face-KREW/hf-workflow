@@ -108,6 +108,7 @@ def test_ready_lifecycle_clears_stale_human_needed_label() -> None:
     workflow = WORKFLOW.read_text()
 
     assert "name: Clear stale human-needed label" in workflow
+    assert "GH_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}" in workflow
     assert 'grep -Fxq "hf-agent:needs-human"' in workflow
     assert 'gh pr edit "${{ inputs.pr_number }}"' in workflow
     assert '--remove-label "hf-agent:needs-human"' in workflow

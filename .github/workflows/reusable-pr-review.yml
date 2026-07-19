@@ -442,7 +442,7 @@ jobs:
 
       - name: Clear stale human-needed label
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
         run: |
           if gh issue view "${{ inputs.pr_number }}" --repo "${{ inputs.target_repo }}" --json labels --jq '.labels[].name' | grep -Fxq "hf-agent:needs-human"; then
             gh pr edit "${{ inputs.pr_number }}" --repo "${{ inputs.target_repo }}" --remove-label "hf-agent:needs-human"
