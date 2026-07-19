@@ -111,6 +111,12 @@ def run_skill(
         if _openai_required_enabled():
             command.extend(["--openai-required", "--openai-model", _openai_model()])
     elif skill == "quality":
+        quality_eval_path = report_path.with_name("quality-eval.json")
+        quality_comment_path = report_path.with_name("quality-pr-comment.md")
+        source_segments_path = report_path.with_name("quality-source-segments.jsonl")
+        target_segments_path = report_path.with_name("quality-target-segments.jsonl")
+        mqm_judge_path = report_path.with_name("quality-mqm-judge.jsonl")
+        metric_cache_path = report_path.with_name("quality-metric-cache.json")
         with tempfile.NamedTemporaryFile(
             mode="w",
             suffix=".yaml",
@@ -121,13 +127,32 @@ def run_skill(
             temporary_manifest = Path(handle.name)
         command = [
             "python3",
-            "skills/quality/tools/simple_quality_report.py",
+            "skills/quality/tools/translation_quality_harness.py",
             "--manifest",
             str(temporary_manifest),
             "--target-root",
             str(target_root),
-            "--output",
+            "--output-md",
             str(report_path),
+            "--output-json",
+            str(quality_eval_path),
+            "--output-pr-comment",
+            str(quality_comment_path),
+            "--output-source-segments",
+            str(source_segments_path),
+            "--output-target-segments",
+            str(target_segments_path),
+            "--output-mqm-judge-jsonl",
+            str(mqm_judge_path),
+            "--metric-cache",
+            str(metric_cache_path),
+            "--qe-metric",
+            os.environ.get("QUALITY_QE_METRIC", "heuristic"),
+            "--llm-judge-provider",
+            os.environ.get("QUALITY_LLM_JUDGE_PROVIDER", "off"),
+            "--llm-judge-max-segments",
+            os.environ.get("QUALITY_LLM_JUDGE_MAX_SEGMENTS", "0"),
+            "--fail-on-reject",
         ]
     else:
         raise ValueError(f"Unsupported skill: {skill}")
@@ -139,9 +164,6 @@ def run_skill(
             temporary_manifest.unlink(missing_ok=True)
 
     passed = completed.returncode == 0
-    if skill == "quality" and report_path.exists():
-        passed = passed and "- WARN:" not in report_path.read_text()
-
     if skill == "seo":
         suggestion_path = report_path.with_name("metadata-suggestion.json")
         if eval_json_path.exists():

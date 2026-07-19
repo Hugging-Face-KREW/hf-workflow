@@ -184,12 +184,14 @@ def test_seo_runner_requires_metadata_generation_when_openai_required(
     ]
 
 
-def test_quality_runner_treats_report_warnings_as_failure(tmp_path: Path) -> None:
+def test_quality_runner_uses_translation_quality_harness(tmp_path: Path) -> None:
     result_path = tmp_path / "result.json"
     report_path = tmp_path / "quality.md"
+    calls = []
 
-    def warn_quality(command, cwd, check):
-        report_path.write_text("# Quality Report\n\n- WARN: TODO marker remains\n")
+    def pass_quality(command, cwd, check):
+        calls.append((command, cwd, check))
+        report_path.write_text("# Quality Report\n\nStatus: review_required\n")
         return subprocess.CompletedProcess(command, 0)
 
     exit_code = run_skill(
@@ -198,25 +200,35 @@ def test_quality_runner_treats_report_warnings_as_failure(tmp_path: Path) -> Non
         target_root=tmp_path / "target",
         report_path=report_path,
         result_path=result_path,
-        runner=warn_quality,
+        runner=pass_quality,
     )
 
-    assert exit_code == 1
-    assert json.loads(result_path.read_text())["conclusion"] == "fail"
+    command = calls[0][0]
+    assert exit_code == 0
+    assert command[1] == "skills/quality/tools/translation_quality_harness.py"
+    assert "--output-md" in command
+    assert command[command.index("--output-md") + 1] == str(report_path)
+    assert "--output-json" in command
+    assert command[command.index("--output-json") + 1] == str(tmp_path / "quality-eval.json")
+    assert "--output-pr-comment" in command
+    assert "--fail-on-reject" in command
+    assert json.loads(result_path.read_text())["conclusion"] == "pass"
 
 
-def test_quality_runner_passes_a_clean_report(tmp_path: Path) -> None:
+def test_quality_runner_fails_when_harness_rejects(tmp_path: Path) -> None:
+    result_path = tmp_path / "result.json"
     report_path = tmp_path / "quality.md"
 
-    def pass_quality(command, cwd, check):
-        report_path.write_text("# Quality Report\n\n- PASS: source attribution exists\n")
-        return subprocess.CompletedProcess(command, 0)
+    def reject_quality(command, cwd, check):
+        report_path.write_text("# Quality Report\n\nStatus: reject\n")
+        return subprocess.CompletedProcess(command, 1)
 
     assert run_skill(
         skill="quality",
         file_path="_posts/example.md",
         target_root=tmp_path / "target",
         report_path=report_path,
-        result_path=tmp_path / "result.json",
-        runner=pass_quality,
-    ) == 0
+        result_path=result_path,
+        runner=reject_quality,
+    ) == 1
+    assert json.loads(result_path.read_text())["conclusion"] == "fail"
