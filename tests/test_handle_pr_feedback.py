@@ -301,6 +301,56 @@ def test_call_openai_requests_one_json_response() -> None:
     ]
 
 
+def test_feedback_cli_writes_metadata_intent(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    post = tmp_path / "_posts" / "post.md"
+    post.parent.mkdir()
+    post.write_text(
+        "---\ntitle: Old title\ncategories:\n  - Translation\n---\n# Old title\n\nBody.\n",
+        encoding="utf-8",
+    )
+    suggestion = tmp_path / "metadata-suggestion.json"
+    suggestion.write_text(
+        json.dumps(
+            {
+                "kind": "seo_metadata_suggestion",
+                "status": "PARTIAL",
+                "file_path": "_posts/post.md",
+                "candidate": {"description": "New description"},
+                "apply": {"allowed": False, "requires_human": True},
+                "needs_policy_decision": ["canonical_policy"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    result_json = tmp_path / "result.json"
+
+    from hf_agent import handle_pr_feedback
+
+    assert handle_pr_feedback.main.__module__ == "hf_agent.handle_pr_feedback"
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "handle_pr_feedback",
+            "--target-root",
+            str(tmp_path),
+            "--file",
+            "_posts/post.md",
+            "--feedback",
+            "metadata apply",
+            "--metadata-suggestion",
+            str(suggestion),
+            "--result-json",
+            str(result_json),
+        ],
+    )
+
+    assert handle_pr_feedback.main() == 0
+    payload = json.loads(result_json.read_text())
+    assert payload["changed"] is True
+    assert payload["intent"] == "metadata"
+
+
 def test_call_openai_strips_environment_api_key(monkeypatch: pytest.MonkeyPatch) -> None:
     captured = {}
 

@@ -148,9 +148,25 @@ jobs:
             --result-json "${{ runner.temp }}/feedback-result.json"
           echo "changed=$(jq -r .changed "${{ runner.temp }}/feedback-result.json")" >> "$GITHUB_OUTPUT"
           echo "disposition=$(jq -r .disposition "${{ runner.temp }}/feedback-result.json")" >> "$GITHUB_OUTPUT"
+          echo "intent=$(jq -r .intent "${{ runner.temp }}/feedback-result.json")" >> "$GITHUB_OUTPUT"
 
-      - name: Verify changed content
-        if: steps.apply.outputs.changed == 'true'
+      - name: Verify changed metadata content
+        if: ${{ steps.apply.outputs.changed == 'true' && steps.apply.outputs.intent == 'metadata' }}
+        working-directory: workflow
+        env:
+          SEO_RUBRIC_OPENAI_REQUIRED: "0"
+        run: |
+          for skill in seo quality; do
+            python scripts/hf_agent/run_skill_review.py \
+              --skill "$skill" \
+              --file "${{ inputs.file_path }}" \
+              --target-root ../target \
+              --report "${{ runner.temp }}/post-$skill.md" \
+              --result-json "${{ runner.temp }}/post-$skill.json"
+          done
+
+      - name: Verify changed feedback content
+        if: ${{ steps.apply.outputs.changed == 'true' && steps.apply.outputs.intent != 'metadata' }}
         working-directory: workflow
         run: |
           for skill in seo quality; do
@@ -170,7 +186,11 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
           git add -- "${{ inputs.file_path }}"
-          git commit -m "🐛 Address PR feedback"
+          if [ "${{ steps.apply.outputs.intent }}" = "metadata" ]; then
+            git commit -m "🔧 Apply SEO metadata suggestion"
+          else
+            git commit -m "🐛 Address PR feedback"
+          fi
           git push origin "HEAD:${{ inputs.branch }}"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 

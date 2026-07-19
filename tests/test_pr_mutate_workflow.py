@@ -28,6 +28,7 @@ def test_mutation_workflow_does_not_interpolate_feedback_as_code() -> None:
     assert "HF_FEEDBACK: ${{ inputs.feedback }}" in workflow
     assert '--feedback "$HF_FEEDBACK"' in workflow
     assert "--metadata-suggestion results/metadata-suggestion.json" in workflow
+    assert "steps.apply.outputs.intent == 'metadata'" in workflow
     assert "pull_request_target" not in workflow
 
 
@@ -71,3 +72,15 @@ def test_mutation_workflow_generates_metadata_suggestion_without_rerunning_rubri
     assert "--skill seo" in step
     assert 'SEO_RUBRIC_OPENAI_REQUIRED: "0"' in step
     assert "SEO_OPENAI_REQUIRED" not in workflow
+
+
+def test_mutation_workflow_verifies_metadata_changes_deterministically() -> None:
+    workflow = WORKFLOW.read_text()
+    step = workflow.split("name: Verify changed metadata content", 1)[1].split(
+        "name: Verify changed feedback content",
+        1,
+    )[0]
+
+    assert "steps.apply.outputs.intent == 'metadata'" in step
+    assert 'SEO_RUBRIC_OPENAI_REQUIRED: "0"' in step
+    assert "🔧 Apply SEO metadata suggestion" in workflow

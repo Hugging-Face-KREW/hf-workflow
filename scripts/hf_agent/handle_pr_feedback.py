@@ -335,6 +335,7 @@ def main() -> int:
     parser.add_argument("--model", default=os.getenv("OPENAI_MODEL", "gpt-5-nano"))
     parser.add_argument("--metadata-suggestion", type=Path)
     args = parser.parse_args()
+    intent = "metadata" if is_metadata_apply_request(args.feedback) else "feedback"
     result = apply_feedback(
         target_root=args.target_root,
         file_path=args.file,
@@ -349,6 +350,7 @@ def main() -> int:
             {
                 "changed": result.disposition == "actionable",
                 "disposition": result.disposition,
+                "intent": intent,
                 "reason": result.reason,
             },
             indent=2,
