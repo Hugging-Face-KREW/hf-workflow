@@ -4,6 +4,6 @@ title: "Testing small translation gates"
 
 # Testing small translation gates
 
-Hugging Face Spaces can host model demos for teams.
+A small review workflow can check translated blog posts.
 
-The workflow keeps the source URL, numbers like 3 models, and code names such as AutoTokenizer unchanged.
+The workflow keeps the source URL, the number 3, and the token DemoRunner unchanged.
