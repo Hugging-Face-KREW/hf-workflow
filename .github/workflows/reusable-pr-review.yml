@@ -213,7 +213,7 @@ jobs:
 
       - name: Publish marker report
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
           PYTHONPATH: workflow/scripts
         run: >-
           python -m hf_agent.publish_pr_comment
@@ -242,7 +242,7 @@ jobs:
       - name: Count unresolved review threads
         id: threads
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
           PYTHONPATH: workflow/scripts
         run: |
           python -m hf_agent.review_threads \
@@ -414,7 +414,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install metadata dependencies
-        run: python -m pip install openai pyyaml
+        run: python -m pip install openai pyyaml markdown beautifulsoup4
 
       - name: Generate SEO metadata suggestion
         working-directory: workflow
@@ -497,7 +497,7 @@ jobs:
 
       - name: Publish lifecycle status
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
           PYTHONPATH: workflow/scripts
         run: >-
           python -m hf_agent.finalize_pr

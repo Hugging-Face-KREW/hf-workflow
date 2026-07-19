@@ -144,6 +144,18 @@ def test_ready_lifecycle_clears_stale_human_needed_label() -> None:
     assert "Publish lifecycle status" in workflow
 
 
+def test_review_workflow_installs_seo_runtime_dependencies() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "markdown beautifulsoup4" in workflow
+
+
+def test_cross_repo_api_writes_use_the_bot_token() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "GITHUB_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}" in workflow
+
+
 def test_metadata_suggestion_is_applied_after_green_gates() -> None:
     workflow = WORKFLOW.read_text()
 
