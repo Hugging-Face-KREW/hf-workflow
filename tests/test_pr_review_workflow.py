@@ -49,7 +49,7 @@ def test_unresolved_review_threads_are_a_blocking_gate() -> None:
     assert "name: HF Agent / Review Threads" in workflow
     assert "python -m hf_agent.review_threads" in workflow
     assert "unresolved_threads:" in workflow
-    assert "needs: [review, verifier, report, review_threads, repair]" in workflow
+    assert "needs: [review, verifier, report, review_threads, repair, metadata_apply]" in workflow
 
 
 def test_discord_merge_request_runs_only_after_ready() -> None:
@@ -57,7 +57,8 @@ def test_discord_merge_request_runs_only_after_ready() -> None:
 
     assert "DISCORD_WEBHOOK_URL:" in workflow
     assert "notify_ready:" in workflow
-    assert "needs: finalize" in workflow
+    assert "needs: [finalize, metadata_apply]" in workflow
+    assert "needs.metadata_apply.outputs.changed != 'true'" in workflow
     assert "--ready-pr-url" in workflow
 
 
@@ -75,7 +76,7 @@ def test_failed_gates_trigger_a_bounded_repair() -> None:
 def test_private_workflow_checkout_uses_the_bot_token() -> None:
     workflow = WORKFLOW.read_text()
 
-    assert workflow.count("token: ${{ secrets.KREW_BOT_TOKEN }}") >= 5
+    assert workflow.count("token: ${{ secrets.KREW_BOT_TOKEN }}") >= 6
 
 
 def test_review_outputs_are_shared_as_head_bound_artifacts() -> None:
@@ -141,3 +142,14 @@ def test_ready_lifecycle_clears_stale_human_needed_label() -> None:
     assert 'gh pr edit "${{ inputs.pr_number }}"' in workflow
     assert '--remove-label "hf-agent:needs-human"' in workflow
     assert "Publish lifecycle status" in workflow
+
+
+def test_metadata_suggestion_is_applied_after_green_gates() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "metadata_apply:" in workflow
+    assert "HF Agent / Apply Metadata Suggestion" in workflow
+    assert "python -m hf_agent.apply_metadata_suggestion" in workflow
+    assert "🔧 Update SEO metadata" in workflow
+    assert "SEO_RUBRIC_OPENAI_REQUIRED" in workflow
+    assert "SEO_OPENAI_REQUIRED" not in workflow

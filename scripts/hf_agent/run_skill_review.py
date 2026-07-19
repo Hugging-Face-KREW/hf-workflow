@@ -14,13 +14,21 @@ Runner = Callable[..., subprocess.CompletedProcess]
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
-def _openai_required_enabled() -> bool:
-    return os.getenv("SEO_OPENAI_REQUIRED", "").strip().lower() in {
+def _enabled(name: str) -> bool:
+    return os.getenv(name, "").strip().lower() in {
         "1",
         "true",
         "yes",
         "on",
     }
+
+
+def _rubric_openai_required_enabled() -> bool:
+    return _enabled("SEO_RUBRIC_OPENAI_REQUIRED") or _enabled("SEO_OPENAI_REQUIRED")
+
+
+def _metadata_openai_required_enabled() -> bool:
+    return _enabled("SEO_METADATA_OPENAI_REQUIRED")
 
 
 def _openai_model() -> str:
@@ -112,7 +120,7 @@ def run_skill(
             "--json",
             str(eval_json_path),
         ]
-        if _openai_required_enabled():
+        if _rubric_openai_required_enabled():
             command.extend(["--openai-required", "--openai-model", _openai_model()])
     elif skill == "quality":
         quality_eval_path = report_path.with_name("quality-eval.json")
@@ -187,7 +195,7 @@ def run_skill(
                 "--report-path",
                 str(report_path),
             ]
-            if _openai_required_enabled():
+            if _metadata_openai_required_enabled():
                 metadata_command.extend(["--openai-required", "--openai-model", _openai_model()])
             metadata_completed = runner(
                 metadata_command,

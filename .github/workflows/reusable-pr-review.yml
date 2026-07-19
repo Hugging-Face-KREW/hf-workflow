@@ -79,7 +79,7 @@ jobs:
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: gpt-5-nano
-      SEO_OPENAI_REQUIRED: "1"
+      SEO_RUBRIC_OPENAI_REQUIRED: "1"
       QUALITY_LLM_JUDGE_PROVIDER: ${{ vars.QUALITY_LLM_JUDGE_PROVIDER || 'openai' }}
       LLM_JUDGE_MODEL: ${{ vars.LLM_JUDGE_MODEL || 'gpt-5.6-luna' }}
       QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}
@@ -265,7 +265,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: gpt-5-nano
-      SEO_OPENAI_REQUIRED: "1"
+      SEO_RUBRIC_OPENAI_REQUIRED: "1"
       QUALITY_LLM_JUDGE_PROVIDER: ${{ vars.QUALITY_LLM_JUDGE_PROVIDER || 'openai' }}
       LLM_JUDGE_MODEL: ${{ vars.LLM_JUDGE_MODEL || 'gpt-5.6-luna' }}
       QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}
@@ -376,10 +376,93 @@ jobs:
           git commit -m "🐛 Repair failed PR gates"
           git push origin "HEAD:${{ inputs.branch }}"
 
+  metadata_apply:
+    name: HF Agent / Apply Metadata Suggestion
+    if: ${{ needs.review.result == 'success' && needs.verifier.result == 'success' }}
+    needs: [review, verifier]
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.apply.outputs.changed }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: gpt-5-nano
+      SEO_RUBRIC_OPENAI_REQUIRED: "1"
+      PYTHONPATH: workflow/scripts
+    steps:
+      - name: Checkout workflow tools
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          repository: Hugging-Face-KREW/hf-workflow
+          ref: ${{ inputs.workflow_ref }}
+          token: ${{ secrets.KREW_BOT_TOKEN }}
+          path: workflow
+
+      - name: Checkout candidate
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          repository: ${{ inputs.target_repo }}
+          ref: ${{ inputs.head_sha }}
+          token: ${{ secrets.KREW_BOT_TOKEN }}
+          path: target
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+
+      - name: Install metadata dependencies
+        run: python -m pip install openai pyyaml
+
+      - name: Generate SEO metadata suggestion
+        working-directory: workflow
+        run: |
+          mkdir -p ../results
+          python scripts/hf_agent/run_skill_review.py \
+            --skill seo \
+            --file "${{ inputs.file_path }}" \
+            --target-root ../target \
+            --report "../results/seo.md" \
+            --result-json "../results/seo.json"
+
+      - name: Apply approved metadata suggestion
+        id: apply
+        run: |
+          python -m hf_agent.apply_metadata_suggestion \
+            --target-root target \
+            --suggestion results/metadata-suggestion.json \
+            --result-json "${{ runner.temp }}/metadata-apply.json"
+          echo "changed=$(jq -r .changed "${{ runner.temp }}/metadata-apply.json")" >> "$GITHUB_OUTPUT"
+
+      - name: Verify metadata update
+        if: steps.apply.outputs.changed == 'true'
+        working-directory: workflow
+        run: |
+          for skill in seo quality; do
+            python scripts/hf_agent/run_skill_review.py \
+              --skill "$skill" \
+              --file "${{ inputs.file_path }}" \
+              --target-root ../target \
+              --report "${{ runner.temp }}/metadata-$skill.md" \
+              --result-json "${{ runner.temp }}/metadata-$skill.json"
+          done
+
+      - name: Push metadata update
+        if: steps.apply.outputs.changed == 'true'
+        working-directory: target
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add -- "${{ inputs.file_path }}"
+          git commit -m "🔧 Update SEO metadata"
+          git push origin "HEAD:${{ inputs.branch }}"
+
   finalize:
     name: HF Agent / Finalize Lifecycle
     if: ${{ always() }}
-    needs: [review, verifier, report, review_threads, repair]
+    needs: [review, verifier, report, review_threads, repair, metadata_apply]
     permissions:
       contents: read
       issues: write
@@ -433,7 +516,8 @@ jobs:
 
   notify_ready:
     name: HF Agent / Request Human Merge
-    needs: finalize
+    needs: [finalize, metadata_apply]
+    if: ${{ always() && needs.finalize.result == 'success' && needs.metadata_apply.outputs.changed != 'true' }}
     permissions:
       contents: read
     runs-on: ubuntu-latest

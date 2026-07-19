@@ -54,6 +54,34 @@ def _source_eval(
     }
 
 
+def _candidate_fields(candidate: dict[str, Any]) -> list[str]:
+    fields: list[str] = []
+    for field in ("title", "description", "categories", "image", "canonical", "hreflang", "json_ld"):
+        value = candidate.get(field)
+        if value not in ("", None, [], {}):
+            fields.append(field)
+    return fields
+
+
+def _apply_contract(status: str, candidate: dict[str, Any], needs_policy_decision: list[str]) -> dict[str, Any]:
+    allowed = status == "READY" and not needs_policy_decision
+    contract: dict[str, Any] = {
+        "allowed": allowed,
+        "mode": "frontmatter_only",
+        "requires_human": not allowed,
+    }
+    if allowed:
+        contract["target_files"] = [
+            {
+                "path": "",
+                "operation": "update_frontmatter",
+                "fields": _candidate_fields(candidate),
+            }
+        ]
+        contract["commit_message"] = "🔧 Update SEO metadata"
+    return contract
+
+
 def build_suggestion(
     *,
     file_path: str,
@@ -115,19 +143,20 @@ def build_suggestion(
     openai_failed = has_openai_failure(warnings)
     if openai_required and openai_failed:
         status = "ERROR"
+    candidate = payload["candidate"]
+    needs_policy_decision = payload["needs_policy_decision"]
+    apply_contract = _apply_contract(status, candidate, needs_policy_decision)
+    if apply_contract.get("target_files"):
+        apply_contract["target_files"][0]["path"] = file_path
     return {
         "schema_version": 1,
         "kind": "seo_metadata_suggestion",
         "status": status,
         "file_path": file_path,
         "source_eval": source_eval,
-        "candidate": payload["candidate"],
-        "apply": {
-            "allowed": False,
-            "mode": "frontmatter_only",
-            "requires_human": True,
-        },
-        "needs_policy_decision": payload["needs_policy_decision"],
+        "candidate": candidate,
+        "apply": apply_contract,
+        "needs_policy_decision": needs_policy_decision,
         "warnings": warnings,
         "reason": payload["reason"],
     }

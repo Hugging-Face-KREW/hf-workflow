@@ -165,3 +165,50 @@ def test_metadata_suggestion_cli_writes_json(tmp_path: Path) -> None:
     payload = json.loads(output.read_text(encoding="utf-8"))
     assert payload["status"] == "SKIPPED"
     assert payload["kind"] == "seo_metadata_suggestion"
+
+
+def test_metadata_suggestion_marks_ready_candidate_as_applyable(tmp_path: Path) -> None:
+    post = tmp_path / "_posts" / "post.md"
+    post.parent.mkdir()
+    post.write_text(POST, encoding="utf-8")
+    manifest = tmp_path / "manifest.yml"
+    manifest.write_text(
+        """
+handoff:
+  seo:
+    metadata_policy:
+      target_url: https://hugging-face-krew.github.io/sample/
+      source_url: https://huggingface.co/blog/sample
+      canonical_policy: self
+      translation_indexing: independent
+      target_locale: ko
+      source_locale: en
+""",
+        encoding="utf-8",
+    )
+    eval_json = tmp_path / "seo-eval.json"
+    eval_json.write_text(json.dumps({
+        "gate": {"passed": True, "status": "PASS"},
+        "input": {
+            "source_url": "https://huggingface.co/blog/sample",
+            "primary_keyword": "검색 임베딩 벤치마크",
+        },
+    }))
+
+    suggestion = build_suggestion(
+        file_path="_posts/post.md",
+        target_root=tmp_path,
+        eval_json=eval_json,
+        manifest_path=manifest,
+    )
+
+    assert suggestion["status"] == "READY"
+    assert suggestion["apply"]["allowed"] is True
+    assert suggestion["apply"]["requires_human"] is False
+    assert suggestion["apply"]["target_files"] == [
+        {
+            "path": "_posts/post.md",
+            "operation": "update_frontmatter",
+            "fields": ["title", "description", "categories", "image", "canonical", "hreflang"],
+        }
+    ]

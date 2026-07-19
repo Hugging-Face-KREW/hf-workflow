@@ -132,11 +132,11 @@ def test_seo_runner_records_metadata_generation_error_without_changing_gate(
     assert suggestion["candidate"] == {}
 
 
-def test_seo_runner_keeps_metadata_generation_non_blocking_when_openai_required(
+def test_seo_runner_keeps_metadata_generation_advisory_when_rubric_openai_required(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
-    monkeypatch.setenv("SEO_OPENAI_REQUIRED", "1")
+    monkeypatch.setenv("SEO_RUBRIC_OPENAI_REQUIRED", "1")
     monkeypatch.setenv("OPENAI_MODEL", "gpt-test")
     result_path = tmp_path / "seo.json"
     report_path = tmp_path / "seo.md"
@@ -154,7 +154,7 @@ def test_seo_runner_keeps_metadata_generation_non_blocking_when_openai_required(
             )
             return subprocess.CompletedProcess(command, 0)
         if command[1] == "skills/seo/tools/metadata_suggestion.py":
-            assert "--openai-required" in command
+            assert "--openai-required" not in command
             output = Path(command[command.index("--output") + 1])
             output.write_text(
                 json.dumps({
@@ -182,6 +182,51 @@ def test_seo_runner_keeps_metadata_generation_non_blocking_when_openai_required(
         "skills/seo/tools/seo_eval.py",
         "skills/seo/tools/metadata_suggestion.py",
     ]
+
+
+def test_seo_runner_can_require_metadata_openai_without_gating_the_review(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    monkeypatch.setenv("SEO_METADATA_OPENAI_REQUIRED", "1")
+    monkeypatch.setenv("OPENAI_MODEL", "gpt-test")
+    result_path = tmp_path / "seo.json"
+    report_path = tmp_path / "seo.md"
+
+    def pass_seo_but_error_required_metadata(command, cwd, check):
+        if command[1] == "skills/seo/tools/seo_eval.py":
+            assert "--openai-required" not in command
+            report_path.write_text("# SEO Eval Report\n\nPass.\n")
+            eval_json = Path(command[command.index("--json") + 1])
+            eval_json.write_text(
+                json.dumps({"gate": {"passed": True, "status": "PASS"}, "input": {}})
+            )
+            return subprocess.CompletedProcess(command, 0)
+        if command[1] == "skills/seo/tools/metadata_suggestion.py":
+            assert "--openai-required" in command
+            output = Path(command[command.index("--output") + 1])
+            output.write_text(
+                json.dumps({
+                    "schema_version": 1,
+                    "kind": "seo_metadata_suggestion",
+                    "status": "ERROR",
+                    "candidate": {},
+                })
+            )
+            return subprocess.CompletedProcess(command, 0)
+        raise AssertionError(f"unexpected command: {command}")
+
+    exit_code = run_skill(
+        skill="seo",
+        file_path="_posts/example.md",
+        target_root=tmp_path / "target",
+        report_path=report_path,
+        result_path=result_path,
+        runner=pass_seo_but_error_required_metadata,
+    )
+
+    assert exit_code == 0
+    assert json.loads(result_path.read_text())["conclusion"] == "pass"
 
 
 def test_quality_runner_uses_translation_quality_harness(tmp_path: Path) -> None:
