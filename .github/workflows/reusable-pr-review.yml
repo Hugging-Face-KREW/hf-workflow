@@ -399,6 +399,7 @@ jobs:
     needs: [review, verifier, report, review_threads, repair]
     permissions:
       contents: read
+      issues: write
       statuses: write
     runs-on: ubuntu-latest
     steps:
@@ -438,6 +439,16 @@ jobs:
           --repository "${{ inputs.target_repo }}"
           --pr-number "${{ inputs.pr_number }}"
           --target-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      - name: Clear stale human-needed label
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh api
+          --method DELETE
+          "repos/${{ inputs.target_repo }}/issues/${{ inputs.pr_number }}/labels/hf-agent:needs-human"
+          --silent
+          || true
 
   notify_ready:
     name: HF Agent / Request Human Merge

@@ -39,6 +39,7 @@ def test_report_and_finalizer_run_after_failures() -> None:
     assert "name: HF Agent / Finalize Lifecycle" in workflow
     assert workflow.count("if: ${{ always() }}") >= 2
     assert "statuses: write" in workflow
+    assert "issues: write" in workflow
 
 
 def test_unresolved_review_threads_are_a_blocking_gate() -> None:
@@ -101,3 +102,11 @@ def test_review_workflow_enables_quality_llm_judge_by_default() -> None:
     assert workflow.count(
         "QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}"
     ) >= 4
+
+
+def test_ready_lifecycle_clears_stale_human_needed_label() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "name: Clear stale human-needed label" in workflow
+    assert "labels/hf-agent:needs-human" in workflow
+    assert "Publish lifecycle status" in workflow
