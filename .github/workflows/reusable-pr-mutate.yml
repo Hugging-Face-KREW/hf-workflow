@@ -76,7 +76,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install mutation dependencies
-        run: python -m pip install openai pyyaml
+        run: python -m pip install openai pyyaml markdown beautifulsoup4
 
       - name: Reject a stale candidate
         run: |

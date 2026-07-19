@@ -83,3 +83,9 @@ def test_reports_are_published_without_ephemeral_artifacts() -> None:
     assert "upload-artifact" not in workflow
     assert "download-artifact" not in workflow
     assert "Generate comment reports" in workflow
+
+
+def test_review_runtime_installs_seo_dependencies() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert workflow.count("markdown beautifulsoup4") >= 4

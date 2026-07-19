@@ -42,3 +42,9 @@ def test_private_workflow_checkout_uses_the_bot_token() -> None:
     workflow = WORKFLOW.read_text()
 
     assert "token: ${{ secrets.KREW_BOT_TOKEN }}" in workflow
+
+
+def test_mutation_runtime_installs_seo_dependencies() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "markdown beautifulsoup4" in workflow
