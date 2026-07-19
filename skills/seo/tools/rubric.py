@@ -112,18 +112,28 @@ def _judge_severity(config: dict[str, Any], name: str, default: str) -> str:
 def semantic_metadata_payload(signals: dict[str, Any]) -> dict[str, Any]:
     sem = signals.get("semantic_review", {}) or {}
     headings = signals.get("headings", {}) or {}
+    rendered_h1: list[str] = []
+    seen_h1: set[str] = set()
+    for value in sem.get("rendered_h1_texts", []) or []:
+        text = str(value).strip()
+        if not text or text in seen_h1:
+            continue
+        seen_h1.add(text)
+        rendered_h1.append(text)
     return {
         "frontmatter": {
             "title": sem.get("title_text", ""),
             "description": sem.get("description_text", ""),
         },
         "opening": sem.get("opening_text", ""),
-        "rendered_h1": sem.get("rendered_h1_texts", []) or [],
+        "rendered_h1": rendered_h1,
         "headings": headings.get("markdown_headings", [])[:12],
         "instruction": (
             "Compare only meaning among present title, description, rendered H1, "
-            "headings, and opening. Ignore missing fields, length, noindex, "
-            "canonical/hreflang, links, images, and alt text."
+            "headings, and opening. Ignore H1 count and duplicate H1 structure; "
+            "HFKREW layouts may render the frontmatter title as the page H1. "
+            "Ignore missing fields, length, noindex, canonical/hreflang, links, "
+            "images, and alt text."
         ),
     }
 

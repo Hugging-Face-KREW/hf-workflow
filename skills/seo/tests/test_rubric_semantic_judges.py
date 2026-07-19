@@ -4,6 +4,7 @@ These tests do not call an LLM. They inject fixed judge responses and verify
 that the harness maps semantic judge outputs into gate behavior correctly.
 """
 from seo_eval import evaluate_path
+from tools.rubric import semantic_metadata_payload
 
 
 def test_semantic_metadata_judge_can_fail_required_gate(fixtures_dir):
@@ -52,6 +53,28 @@ def test_openai_required_fails_gate_when_rubric_is_not_available(fixtures_dir):
     }
     assert result["gate"]["passed"] is False
     assert result["gate"]["reason"] == "OpenAI rubric required but not run"
+
+
+def test_semantic_metadata_payload_deduplicates_layout_h1() -> None:
+    payload = semantic_metadata_payload(
+        {
+            "semantic_review": {
+                "title_text": "작은 번역 게이트 테스트",
+                "description_text": "작은 번역 게이트 테스트 설명",
+                "opening_text": "본문 첫 문단입니다.",
+                "rendered_h1_texts": [
+                    "작은 번역 게이트 테스트",
+                    "작은 번역 게이트 테스트",
+                ],
+            },
+            "headings": {
+                "markdown_headings": ["# 작은 번역 게이트 테스트"],
+            },
+        }
+    )
+
+    assert payload["rendered_h1"] == ["작은 번역 게이트 테스트"]
+    assert "Ignore H1 count and duplicate H1 structure" in payload["instruction"]
 
 
 def test_alt_semantics_review_does_not_block_gate(fixtures_dir):
