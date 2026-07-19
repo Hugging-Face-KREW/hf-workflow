@@ -65,6 +65,8 @@ def test_render_report_uses_compact_skill_rows(tmp_path: Path) -> None:
     assert "<summary>Quality report — ❌ Fail</summary>" in report
     assert "- WARN: TODO remains" in report
     assert "<summary>SEO metadata suggestion — PARTIAL</summary>" in report
+    assert "SEO is applied only when the post frontmatter is updated." in report
+    assert "`metadata apply`" in report
     assert "`title`: Metadata candidate" in report
     assert "`description`: Suggested metadata description." in report
     assert "`target_url`" in report

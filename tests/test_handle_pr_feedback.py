@@ -14,6 +14,8 @@ from hf_agent.handle_pr_feedback import (
     apply_feedback,
     apply_model_response,
     call_openai,
+    is_metadata_apply_request,
+    parse_metadata_policy_overrides,
     parse_feedback_event,
     resolve_translation_path,
     route_feedback,
@@ -182,6 +184,99 @@ def test_apply_feedback_removes_todo_comment_for_gate_repair(tmp_path: Path) -> 
 
     assert result.disposition == "actionable"
     assert "TODO" not in post.read_text()
+
+
+def test_metadata_apply_request_detection() -> None:
+    assert is_metadata_apply_request("metadata apply")
+    assert is_metadata_apply_request("SEO metadata apply please")
+    assert is_metadata_apply_request("메타데이터 적용해줘")
+    assert not is_metadata_apply_request("Why is metadata partial?")
+
+
+def test_parse_metadata_policy_overrides() -> None:
+    policy = parse_metadata_policy_overrides(
+        """
+metadata apply
+target_url: https://hugging-face-krew.github.io/sample/
+source_url: https://huggingface.co/blog/sample
+canonical-policy: self
+translation_indexing: independent
+target_locale: ko
+source_locale: en
+ignored: value
+"""
+    )
+
+    assert policy == {
+        "target_url": "https://hugging-face-krew.github.io/sample/",
+        "source_url": "https://huggingface.co/blog/sample",
+        "canonical_policy": "self",
+        "translation_indexing": "independent",
+        "target_locale": "ko",
+        "source_locale": "en",
+    }
+
+
+def test_apply_feedback_applies_partial_metadata_safe_fields(tmp_path: Path) -> None:
+    post = tmp_path / "_posts" / "post.md"
+    post.parent.mkdir()
+    post.write_text(
+        "---\ntitle: Old title\ncategories:\n  - Translation\n---\n# Old title\n\nBody.\n",
+        encoding="utf-8",
+    )
+    suggestion = tmp_path / "metadata-suggestion.json"
+    suggestion.write_text(
+        json.dumps(
+            {
+                "kind": "seo_metadata_suggestion",
+                "status": "PARTIAL",
+                "file_path": "_posts/post.md",
+                "candidate": {
+                    "title": "New title",
+                    "description": "New description",
+                    "categories": ["Translation", "HuggingFace"],
+                    "image": "/assets/thumb.png",
+                    "canonical": "https://should-not-apply.example/",
+                },
+                "apply": {"allowed": False, "requires_human": True},
+                "needs_policy_decision": ["canonical_policy"],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = apply_feedback(
+        target_root=tmp_path,
+        file_path="_posts/post.md",
+        feedback="metadata apply",
+        max_changed_lines=20,
+        model_call=lambda prompt: pytest.fail("metadata apply should not call the model"),
+        metadata_suggestion_path=suggestion,
+    )
+
+    updated = post.read_text(encoding="utf-8")
+    assert result.disposition == "actionable"
+    assert "Applied fields: title, description, categories, image." in result.reason
+    assert "description: New description" in updated
+    assert "canonical:" not in updated
+
+
+def test_apply_feedback_requires_metadata_suggestion_for_metadata_apply(tmp_path: Path) -> None:
+    post = tmp_path / "_posts" / "post.md"
+    post.parent.mkdir()
+    post.write_text("Original\n", encoding="utf-8")
+
+    result = apply_feedback(
+        target_root=tmp_path,
+        file_path="_posts/post.md",
+        feedback="metadata apply",
+        max_changed_lines=20,
+        model_call=lambda prompt: pytest.fail("metadata apply should not call the model"),
+    )
+
+    assert result.disposition == "needs-human"
+    assert "no metadata suggestion" in result.reason
+    assert post.read_text(encoding="utf-8") == "Original\n"
 
 
 def test_call_openai_requests_one_json_response() -> None:

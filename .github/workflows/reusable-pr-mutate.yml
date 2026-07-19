@@ -51,7 +51,7 @@ jobs:
       GH_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: gpt-5-nano
-      SEO_OPENAI_REQUIRED: "1"
+      SEO_RUBRIC_OPENAI_REQUIRED: "1"
       QUALITY_LLM_JUDGE_PROVIDER: ${{ vars.QUALITY_LLM_JUDGE_PROVIDER || 'openai' }}
       LLM_JUDGE_MODEL: ${{ vars.LLM_JUDGE_MODEL || 'gpt-5.6-luna' }}
       QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}
@@ -86,6 +86,22 @@ jobs:
           current_sha=$(gh api "repos/${TARGET_REPO}/pulls/${{ inputs.pr_number }}" --jq .head.sha)
           test "$current_sha" = "${{ inputs.expected_head_sha }}"
 
+      - name: Generate metadata suggestion for feedback
+        working-directory: workflow
+        env:
+          SEO_RUBRIC_OPENAI_REQUIRED: "0"
+          SEO_METADATA_OPENAI_REQUIRED: "0"
+        run: |
+          mkdir -p ../results
+          set +e
+          python scripts/hf_agent/run_skill_review.py \
+            --skill seo \
+            --file "${{ inputs.file_path }}" \
+            --target-root ../target \
+            --report "../results/seo.md" \
+            --result-json "../results/seo.json"
+          exit 0
+
       - name: Apply feedback
         id: apply
         env:
@@ -96,6 +112,7 @@ jobs:
             --target-root target \
             --file "${{ inputs.file_path }}" \
             --feedback "$HF_FEEDBACK" \
+            --metadata-suggestion results/metadata-suggestion.json \
             --result-json "${{ runner.temp }}/feedback-result.json"
           echo "changed=$(jq -r .changed "${{ runner.temp }}/feedback-result.json")" >> "$GITHUB_OUTPUT"
           echo "disposition=$(jq -r .disposition "${{ runner.temp }}/feedback-result.json")" >> "$GITHUB_OUTPUT"

@@ -9,6 +9,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Literal
 
+from hf_agent.apply_metadata_suggestion import (
+    POLICY_FIELDS,
+    apply_suggestion as apply_metadata_suggestion,
+)
 from hf_agent.github_api import Requester, publish_commit_status, request_json
 
 
@@ -211,6 +215,59 @@ def apply_deterministic_gate_repair(original: str, feedback: str) -> ApplyResult
     )
 
 
+def is_metadata_apply_request(feedback: str) -> bool:
+    normalized = " ".join(feedback.lower().split())
+    return bool(
+        re.search(r"\b(?:seo\s+)?metadata\s+apply\b", normalized)
+        or "메타데이터 적용" in feedback
+        or "metadata suggestion 적용" in normalized
+    )
+
+
+def parse_metadata_policy_overrides(feedback: str) -> dict[str, str]:
+    policy: dict[str, str] = {}
+    for raw_line in feedback.splitlines():
+        match = re.match(r"\s*([A-Za-z_][A-Za-z0-9_-]*)\s*:\s*(.+?)\s*$", raw_line)
+        if not match:
+            continue
+        key = match.group(1).replace("-", "_")
+        if key not in POLICY_FIELDS:
+            continue
+        value = match.group(2).strip().strip("`")
+        if value:
+            policy[key] = value
+    return policy
+
+
+def apply_metadata_feedback(
+    *,
+    target_root: Path,
+    suggestion_path: Path,
+    feedback: str,
+) -> ApplyResult:
+    result = apply_metadata_suggestion(
+        target_root=target_root,
+        suggestion_path=suggestion_path,
+        allow_partial_safe_fields=True,
+        policy_overrides=parse_metadata_policy_overrides(feedback),
+    )
+    file_path = str(result.get("file_path") or "")
+    if result.get("changed") is True:
+        post_path = resolve_translation_path(target_root, file_path)
+        applied = ", ".join(result.get("applied_fields", []))
+        suffix = f" Applied fields: {applied}." if applied else ""
+        return ApplyResult(
+            disposition="actionable",
+            reason=f"{result['reason']}.{suffix}",
+            content=post_path.read_text(encoding="utf-8"),
+        )
+    return ApplyResult(
+        disposition="needs-human",
+        reason=str(result.get("reason") or "Metadata suggestion could not be applied safely."),
+        content="",
+    )
+
+
 def apply_feedback(
     *,
     target_root: Path,
@@ -218,10 +275,24 @@ def apply_feedback(
     feedback: str,
     max_changed_lines: int,
     model_call: ModelCall,
+    metadata_suggestion_path: Path | None = None,
 ) -> ApplyResult:
     post_path = resolve_translation_path(target_root, file_path)
     original = post_path.read_text()
-    result = apply_deterministic_gate_repair(original, feedback)
+    if is_metadata_apply_request(feedback):
+        if metadata_suggestion_path is None or not metadata_suggestion_path.exists():
+            return ApplyResult(
+                disposition="needs-human",
+                reason="Metadata apply was requested, but no metadata suggestion was available.",
+                content=original,
+            )
+        result = apply_metadata_feedback(
+            target_root=target_root,
+            suggestion_path=metadata_suggestion_path,
+            feedback=feedback,
+        )
+    else:
+        result = apply_deterministic_gate_repair(original, feedback)
     if result is None:
         response = model_call(build_feedback_prompt(original, feedback))
         result = apply_model_response(
@@ -262,6 +333,7 @@ def main() -> int:
     parser.add_argument("--result-json", type=Path, required=True)
     parser.add_argument("--max-changed-lines", type=int, default=200)
     parser.add_argument("--model", default=os.getenv("OPENAI_MODEL", "gpt-5-nano"))
+    parser.add_argument("--metadata-suggestion", type=Path)
     args = parser.parse_args()
     result = apply_feedback(
         target_root=args.target_root,
@@ -269,6 +341,7 @@ def main() -> int:
         feedback=args.feedback,
         max_changed_lines=args.max_changed_lines,
         model_call=lambda prompt: call_openai(prompt, model=args.model),
+        metadata_suggestion_path=args.metadata_suggestion,
     )
     args.result_json.parent.mkdir(parents=True, exist_ok=True)
     args.result_json.write_text(
