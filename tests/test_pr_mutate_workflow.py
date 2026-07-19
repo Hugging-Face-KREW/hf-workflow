@@ -48,3 +48,11 @@ def test_mutation_runtime_installs_seo_dependencies() -> None:
     workflow = WORKFLOW.read_text()
 
     assert "markdown beautifulsoup4" in workflow
+
+
+def test_mutation_workflow_enables_quality_llm_judge_by_default() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert "QUALITY_LLM_JUDGE_PROVIDER: ${{ vars.QUALITY_LLM_JUDGE_PROVIDER || 'openai' }}" in workflow
+    assert "LLM_JUDGE_MODEL: ${{ vars.LLM_JUDGE_MODEL || 'gpt-5.6-luna' }}" in workflow
+    assert "QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}" in workflow

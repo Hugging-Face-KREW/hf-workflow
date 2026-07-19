@@ -52,6 +52,9 @@ jobs:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: gpt-5-nano
       SEO_OPENAI_REQUIRED: "1"
+      QUALITY_LLM_JUDGE_PROVIDER: ${{ vars.QUALITY_LLM_JUDGE_PROVIDER || 'openai' }}
+      LLM_JUDGE_MODEL: ${{ vars.LLM_JUDGE_MODEL || 'gpt-5.6-luna' }}
+      QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}
       TARGET_REPO: ${{ inputs.target_repo }}
     steps:
       - name: Checkout workflow tools

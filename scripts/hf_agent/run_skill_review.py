@@ -27,6 +27,10 @@ def _openai_model() -> str:
     return os.getenv("OPENAI_MODEL", "")
 
 
+def _quality_llm_judge_model() -> str:
+    return os.getenv("LLM_JUDGE_MODEL", "gpt-5.6-luna")
+
+
 def _source_url(post_path: Path) -> str:
     if not post_path.exists():
         return ""
@@ -150,6 +154,8 @@ def run_skill(
             os.environ.get("QUALITY_QE_METRIC", "heuristic"),
             "--llm-judge-provider",
             os.environ.get("QUALITY_LLM_JUDGE_PROVIDER", "off"),
+            "--llm-judge-model",
+            _quality_llm_judge_model(),
             "--llm-judge-max-segments",
             os.environ.get("QUALITY_LLM_JUDGE_MAX_SEGMENTS", "0"),
             "--fail-on-reject",

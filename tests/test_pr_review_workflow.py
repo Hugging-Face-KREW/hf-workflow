@@ -89,3 +89,15 @@ def test_review_runtime_installs_seo_dependencies() -> None:
     workflow = WORKFLOW.read_text()
 
     assert workflow.count("markdown beautifulsoup4") >= 4
+
+
+def test_review_workflow_enables_quality_llm_judge_by_default() -> None:
+    workflow = WORKFLOW.read_text()
+
+    assert workflow.count(
+        "QUALITY_LLM_JUDGE_PROVIDER: ${{ vars.QUALITY_LLM_JUDGE_PROVIDER || 'openai' }}"
+    ) >= 4
+    assert workflow.count("LLM_JUDGE_MODEL: ${{ vars.LLM_JUDGE_MODEL || 'gpt-5.6-luna' }}") >= 4
+    assert workflow.count(
+        "QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}"
+    ) >= 4

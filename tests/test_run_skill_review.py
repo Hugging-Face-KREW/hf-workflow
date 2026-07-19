@@ -211,8 +211,33 @@ def test_quality_runner_uses_translation_quality_harness(tmp_path: Path) -> None
     assert "--output-json" in command
     assert command[command.index("--output-json") + 1] == str(tmp_path / "quality-eval.json")
     assert "--output-pr-comment" in command
+    assert "--llm-judge-model" in command
+    assert command[command.index("--llm-judge-model") + 1] == "gpt-5.6-luna"
     assert "--fail-on-reject" in command
     assert json.loads(result_path.read_text())["conclusion"] == "pass"
+
+
+def test_quality_runner_uses_explicit_llm_judge_model(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    monkeypatch.setenv("LLM_JUDGE_MODEL", "explicit-judge-model")
+    result_path = tmp_path / "result.json"
+    report_path = tmp_path / "quality.md"
+
+    def pass_quality(command, cwd, check):
+        assert command[command.index("--llm-judge-model") + 1] == "explicit-judge-model"
+        report_path.write_text("# Quality Report\n\nStatus: pass\n")
+        return subprocess.CompletedProcess(command, 0)
+
+    assert run_skill(
+        skill="quality",
+        file_path="_posts/example.md",
+        target_root=tmp_path / "target",
+        report_path=report_path,
+        result_path=result_path,
+        runner=pass_quality,
+    ) == 0
 
 
 def test_quality_runner_fails_when_harness_rejects(tmp_path: Path) -> None:
