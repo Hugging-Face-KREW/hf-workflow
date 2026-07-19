@@ -9,6 +9,7 @@ WORKFLOW = Path(__file__).resolve().parents[1] / ".github/workflows/reusable-pr-
 def test_mutation_workflow_serializes_each_pull_request() -> None:
     workflow = WORKFLOW.read_text()
 
+    assert "workflow_dispatch:" in workflow
     assert "group: hf-agent-mutate-${{ inputs.target_repo }}-${{ inputs.pr_number }}" in workflow
     assert "cancel-in-progress: false" in workflow
 

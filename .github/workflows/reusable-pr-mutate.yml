@@ -37,6 +37,38 @@ on:
         required: true
       OPENAI_API_KEY:
         required: true
+  workflow_dispatch:
+    inputs:
+      target_repo:
+        required: true
+        type: string
+      pr_number:
+        required: true
+        type: string
+      branch:
+        required: true
+        type: string
+      expected_head_sha:
+        required: true
+        type: string
+      file_path:
+        required: true
+        type: string
+      feedback:
+        required: true
+        type: string
+      workflow_ref:
+        required: true
+        default: main
+        type: string
+      review_workflow:
+        required: false
+        default: hf-agent-review.yml
+        type: string
+      review_comment_id:
+        required: false
+        default: ""
+        type: string
 
 concurrency:
   group: hf-agent-mutate-${{ inputs.target_repo }}-${{ inputs.pr_number }}
