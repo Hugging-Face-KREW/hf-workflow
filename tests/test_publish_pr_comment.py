@@ -8,7 +8,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from hf_agent.github_api import upsert_issue_comment
-from hf_agent.publish_pr_comment import REPORT_MARKER, load_results, render_report
+from hf_agent.publish_pr_comment import (
+    REPORT_MARKER,
+    load_metadata_suggestion,
+    load_results,
+    render_report,
+)
 
 
 def test_render_report_uses_compact_skill_rows(tmp_path: Path) -> None:
@@ -24,16 +29,32 @@ def test_render_report_uses_compact_skill_rows(tmp_path: Path) -> None:
         json.dumps({
             "kind": "seo_metadata_suggestion",
             "status": "PARTIAL",
-            "candidate": {"title": "Metadata candidate"},
+            "candidate": {
+                "title": "Metadata candidate",
+                "description": "Suggested metadata description.",
+            },
+            "apply": {
+                "allowed": False,
+                "mode": "frontmatter_only",
+                "requires_human": True,
+            },
+            "needs_policy_decision": ["target_url"],
+            "warnings": ["missing_policy"],
+            "reason": "metadata candidate needs policy decisions",
         })
     )
     (tmp_path / "seo.md").write_text("# SEO Report\n\nAll required checks passed.")
     (quality.parent / "quality.md").write_text("# Quality Report\n\n- WARN: TODO remains")
 
     results = load_results(tmp_path)
-    report = render_report(results, head_sha="abc123")
+    report = render_report(
+        results,
+        head_sha="abc123",
+        metadata_suggestion=load_metadata_suggestion(tmp_path),
+    )
 
     assert {result["skill"] for result in results} == {"seo", "quality"}
+    assert load_metadata_suggestion(tmp_path)["status"] == "PARTIAL"
     assert report.startswith(REPORT_MARKER)
     assert "| SEO | ✅ Pass |" in report
     assert "| Quality | ❌ Fail |" in report
@@ -43,7 +64,11 @@ def test_render_report_uses_compact_skill_rows(tmp_path: Path) -> None:
     assert "All required checks passed." in report
     assert "<summary>Quality report — ❌ Fail</summary>" in report
     assert "- WARN: TODO remains" in report
-    assert "Metadata candidate" not in report
+    assert "<summary>SEO metadata suggestion — PARTIAL</summary>" in report
+    assert "`title`: Metadata candidate" in report
+    assert "`description`: Suggested metadata description." in report
+    assert "`target_url`" in report
+    assert "missing_policy" in report
 
 
 def test_upsert_issue_comment_updates_the_existing_marker() -> None:
