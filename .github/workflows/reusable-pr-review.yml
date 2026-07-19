@@ -443,12 +443,10 @@ jobs:
       - name: Clear stale human-needed label
         env:
           GH_TOKEN: ${{ github.token }}
-        run: >-
-          gh api
-          --method DELETE
-          "repos/${{ inputs.target_repo }}/issues/${{ inputs.pr_number }}/labels/hf-agent:needs-human"
-          --silent
-          || true
+        run: |
+          if gh issue view "${{ inputs.pr_number }}" --repo "${{ inputs.target_repo }}" --json labels --jq '.labels[].name' | grep -Fxq "hf-agent:needs-human"; then
+            gh issue edit "${{ inputs.pr_number }}" --repo "${{ inputs.target_repo }}" --remove-label "hf-agent:needs-human"
+          fi
 
   notify_ready:
     name: HF Agent / Request Human Merge

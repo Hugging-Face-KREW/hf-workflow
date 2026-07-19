@@ -108,5 +108,6 @@ def test_ready_lifecycle_clears_stale_human_needed_label() -> None:
     workflow = WORKFLOW.read_text()
 
     assert "name: Clear stale human-needed label" in workflow
-    assert "labels/hf-agent:needs-human" in workflow
+    assert 'grep -Fxq "hf-agent:needs-human"' in workflow
+    assert '--remove-label "hf-agent:needs-human"' in workflow
     assert "Publish lifecycle status" in workflow
