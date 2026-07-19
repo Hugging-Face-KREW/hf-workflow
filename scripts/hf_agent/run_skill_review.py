@@ -196,13 +196,6 @@ def run_skill(
                     report_path=report_path,
                     returncode=metadata_completed.returncode,
                 )
-            if _openai_required_enabled():
-                try:
-                    suggestion = json.loads(suggestion_path.read_text())
-                    passed = passed and suggestion.get("status") != "ERROR"
-                except Exception:  # noqa: BLE001
-                    passed = False
-
     result = {
         "conclusion": "pass" if passed else "fail",
         "report_path": str(report_path),

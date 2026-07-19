@@ -132,7 +132,7 @@ def test_seo_runner_records_metadata_generation_error_without_changing_gate(
     assert suggestion["candidate"] == {}
 
 
-def test_seo_runner_requires_metadata_generation_when_openai_required(
+def test_seo_runner_keeps_metadata_generation_non_blocking_when_openai_required(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
@@ -176,8 +176,8 @@ def test_seo_runner_requires_metadata_generation_when_openai_required(
         runner=pass_seo_but_error_metadata,
     )
 
-    assert exit_code == 1
-    assert json.loads(result_path.read_text())["conclusion"] == "fail"
+    assert exit_code == 0
+    assert json.loads(result_path.read_text())["conclusion"] == "pass"
     assert [call[1] for call in calls] == [
         "skills/seo/tools/seo_eval.py",
         "skills/seo/tools/metadata_suggestion.py",
