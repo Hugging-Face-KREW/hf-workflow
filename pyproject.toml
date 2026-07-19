@@ -1,0 +1,19 @@
+[project]
+name = "hf-workflow"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4>=4.12",
+    "markdown>=3.4",
+    "markdown-it-py>=3.0",
+    "pyyaml>=6.0",
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+    "skills/quality/tests",
+    "skills/seo/tests",
+    "translation-flow/tests",
+]

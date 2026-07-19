@@ -3,18 +3,26 @@ name: Quality Harness Tests
 on:
   pull_request:
     paths:
+      - "conftest.py"
+      - "pyproject.toml"
+      - "uv.lock"
       - ".github/workflows/**"
       - "scripts/**"
       - "skills/quality/**"
+      - "skills/seo/**"
       - "translation-flow/**"
       - "tests/**"
   push:
     branches:
       - main
     paths:
+      - "conftest.py"
+      - "pyproject.toml"
+      - "uv.lock"
       - ".github/workflows/**"
       - "scripts/**"
       - "skills/quality/**"
+      - "skills/seo/**"
       - "translation-flow/**"
       - "tests/**"
 
@@ -32,9 +40,7 @@ jobs:
       - name: Install test dependencies
         run: |
           python -m pip install -e "skills/quality[dev]"
+          python -m pip install -e "skills/seo[dev]"
           python -m pip install -e "translation-flow[dev]"
       - name: Run quality harness and workflow tests
-        run: |
-          python -m pytest -q skills/quality/tests
-          python -m pytest -q tests/test_enforce_quality_gate.py tests/test_generate_review_reports.py
-          python -m pytest -q translation-flow/tests
+        run: python -m pytest -q
