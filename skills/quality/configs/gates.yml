@@ -7,7 +7,11 @@ hard_gates:
     status: reject
     required_target_keys:
       - title
-    preserved_source_keys: []
+    preserved_source_keys:
+      - authors
+      - thumbnail
+      - tags
+      - blog
   code_blocks:
     status: reject
     compare_hashes: true

@@ -260,7 +260,7 @@ def strip_workflow_scaffold(body: str) -> str:
             while index < len(lines) and lines[index].strip() in {"{:toc}", "<!--toc-->", ""}:
                 index += 1
             continue
-        if re.match(r"^_이 글은 Hugging Face 블로그의 .*한국어로 번역한 글입니다_\.?$", stripped):
+        if re.match(r"^_이 글은 Hugging Face 블로그의 .*한국어로 번역한 글입니다(?:\._|_\.?)$", stripped):
             index += 1
             continue
         if re.match(r"^<!--\s*Source:\s*https?://[^>]+-->$", stripped):
@@ -2593,7 +2593,7 @@ def validate_documents(
             preserved_source_keys = gate_policy.list_option(
                 "front_matter",
                 "preserved_source_keys",
-                [],
+                ["authors", "thumbnail", "tags", "blog"],
             )
             for key in preserved_source_keys:
                 source_value = source.frontmatter.get(key)

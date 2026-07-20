@@ -248,16 +248,16 @@ hard_gates:
     assert not any("thumbnail" in message for message in messages)
 
 
-def test_harness_allows_site_localized_frontmatter_by_default(tmp_path: Path) -> None:
+def test_harness_preserves_source_frontmatter_by_default(tmp_path: Path) -> None:
     source = tmp_path / "source.md"
     target = tmp_path / "target.md"
     manifest = tmp_path / "manifest.yaml"
     source.write_text(
-        "---\ntitle: Source\nauthors:\n  - user: upstream\nthumbnail: /blog/assets/source.png\n---\n\nSource text.\n",
+        "---\ntitle: Source\nauthors:\n  - user: upstream\nthumbnail: /blog/assets/source.png\ntags:\n  - source-tag\nblog: source-blog\n---\n\nSource text.\n",
         encoding="utf-8",
     )
     target.write_text(
-        "---\ntitle: 번역\nauthors:\n  - user: dailybot\nthumbnail: assets/images/local.png\n---\n\n번역문입니다.\n",
+        "---\ntitle: 번역\nauthors:\n  - user: dailybot\nthumbnail: assets/images/local.png\ntags:\n  - target-tag\nblog: target-blog\n---\n\n번역문입니다.\n",
         encoding="utf-8",
     )
     manifest.write_text(
@@ -267,8 +267,9 @@ def test_harness_allows_site_localized_frontmatter_by_default(tmp_path: Path) ->
 
     report = build_report(manifest, tmp_path)
 
-    assert not any("Front matter key `authors`" in issue["message"] for issue in report["issues"])
-    assert not any("Front matter key `thumbnail`" in issue["message"] for issue in report["issues"])
+    messages = [issue["message"] for issue in report["hard_failures"]]
+    for key in ("authors", "thumbnail", "tags", "blog"):
+        assert any(f"Front matter key `{key}`" in message for message in messages)
 
 
 def test_harness_respects_disabled_exact_match_gate_option(tmp_path: Path) -> None:
@@ -424,16 +425,17 @@ def test_markdown_doc_numbers_ignore_links_code_and_html_attributes() -> None:
     assert doc.numbers == ["30%"]
 
 
-def test_markdown_doc_ignores_hfkrew_translation_boilerplate() -> None:
+@pytest.mark.parametrize("attribution_ending", ["글입니다._", "글입니다_."])
+def test_markdown_doc_ignores_hfkrew_translation_boilerplate(attribution_ending: str) -> None:
     doc = markdown_doc(
-        """---
+        f"""---
 title: 번역 제목
 ---
 
 * TOC
-{:toc}
+{{:toc}}
 <!--toc-->
-_이 글은 Hugging Face 블로그의 [Source Title](https://huggingface.co/blog/source-title)를 한국어로 번역한 글입니다_.
+_이 글은 Hugging Face 블로그의 [Source Title](https://huggingface.co/blog/source-title)를 한국어로 번역한 {attribution_ending}
 
 <!-- Source: https://huggingface.co/blog/source-title -->
 
