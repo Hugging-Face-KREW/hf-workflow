@@ -241,7 +241,7 @@ def build_translation_markdown(
     body = f"""---
 layout: post
 title: "{escape_yaml_string(title)}"
-author: dailybot
+author: KREW
 categories: [Translation, HuggingFace]
 {passthrough_block}slug: "{post.slug}"
 source_url: "{post.url}"
