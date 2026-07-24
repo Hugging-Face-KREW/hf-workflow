@@ -105,14 +105,14 @@ def test_verifier_and_report_reuse_the_authoritative_review() -> None:
 
 def test_repair_reuses_failed_reports_and_only_rechecks_changed_content() -> None:
     workflow = WORKFLOW.read_text()
-    repair = workflow.split("\n  repair:", 1)[1].split("\n  finalize:", 1)[0]
+    repair = workflow.split("\n  repair:", 1)[1].split("\n  metadata_apply:", 1)[0]
 
     assert "Download review artifacts" in repair
     assert "Generate failed gate reports" not in repair
     assert "Verify repaired content" in repair
     assert "needs.verifier.result == 'success'" in repair
     assert repair.count("run_skill_review.py") == 1
-    assert workflow.count("run_skill_review.py") == 2
+    assert workflow.count("run_skill_review.py") == 4
 
 
 def test_review_runtime_installs_seo_dependencies() -> None:
