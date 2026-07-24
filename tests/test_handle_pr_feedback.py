@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from hf_agent.handle_pr_feedback import (
     apply_feedback,
     apply_model_response,
+    build_feedback_prompt,
     call_openai,
     is_metadata_apply_request,
     parse_metadata_policy_overrides,
@@ -117,6 +118,57 @@ def test_apply_model_response_rejects_large_changes() -> None:
 
     with pytest.raises(ValueError, match="changed-line limit"):
         apply_model_response("one line\n", response, max_changed_lines=5)
+
+
+def test_apply_model_response_rejects_broad_sentence_punctuation_loss() -> None:
+    original = "\n".join(
+        [
+            "첫 번째 문장입니다.",
+            "두 번째 문장입니다。",
+            "세 번째 문장입니다!",
+            "**네 번째 문장입니다.**",
+        ]
+    )
+    response = json.dumps(
+        {
+            "disposition": "actionable",
+            "reason": "Apply feedback.",
+            "content": "\n".join(
+                [
+                    "첫 번째 문장입니다",
+                    "두 번째 문장입니다",
+                    "세 번째 문장입니다",
+                    "**네 번째 문장입니다**",
+                ]
+            ),
+        }
+    )
+
+    with pytest.raises(ValueError, match="sentence-final punctuation"):
+        apply_model_response(original, response, max_changed_lines=20)
+
+
+def test_apply_model_response_allows_japanese_period_normalization() -> None:
+    original = "문장입니다。\n"
+    response = json.dumps(
+        {
+            "disposition": "actionable",
+            "reason": "Normalize Korean sentence punctuation.",
+            "content": "문장입니다.\n",
+        }
+    )
+
+    result = apply_model_response(original, response, max_changed_lines=4)
+
+    assert result.content == "문장입니다.\n"
+
+
+def test_feedback_prompt_requires_preserving_sentence_punctuation() -> None:
+    prompt = build_feedback_prompt("문장입니다。\n", "Make the punctuation Korean.")
+
+    assert "Preserve Korean sentence-final punctuation" in prompt
+    assert 'replace it with "." instead of removing punctuation' in prompt
+    assert "Do not make broad style rewrites" in prompt
 
 
 def test_apply_feedback_writes_only_the_selected_post(tmp_path: Path) -> None:
