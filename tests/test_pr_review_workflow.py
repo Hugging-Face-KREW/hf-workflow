@@ -172,3 +172,12 @@ def test_metadata_apply_does_not_rerun_openai_rubric_gate() -> None:
     metadata_section = workflow.split("metadata_apply:", 1)[1].split("finalize:", 1)[0]
 
     assert 'SEO_RUBRIC_OPENAI_REQUIRED: "0"' in metadata_section
+
+
+def test_metadata_apply_is_deterministic_and_applies_safe_frontmatter() -> None:
+    workflow = WORKFLOW.read_text()
+    metadata_section = workflow.split("metadata_apply:", 1)[1].split("finalize:", 1)[0]
+
+    assert "OPENAI_API_KEY" not in metadata_section
+    assert "OPENAI_MODEL" not in metadata_section
+    assert "--allow-partial-safe-fields" in metadata_section

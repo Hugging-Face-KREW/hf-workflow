@@ -47,6 +47,22 @@ def test_apply_suggestion_skips_when_not_approved(tmp_path: Path) -> None:
     assert post.read_text(encoding="utf-8") == POST
 
 
+def test_apply_suggestion_skips_when_suggestion_file_is_missing(tmp_path: Path) -> None:
+    result = apply_suggestion(
+        target_root=tmp_path,
+        suggestion_path=tmp_path / "metadata-suggestion.json",
+    )
+
+    assert result == {
+        "kind": "seo_metadata_apply_result",
+        "status": "SKIPPED",
+        "changed": False,
+        "file_path": "",
+        "applied_fields": [],
+        "reason": "Metadata suggestion file was not produced",
+    }
+
+
 def test_apply_suggestion_can_apply_partial_safe_fields_with_explicit_approval(
     tmp_path: Path,
 ) -> None:
@@ -88,6 +104,50 @@ def test_apply_suggestion_can_apply_partial_safe_fields_with_explicit_approval(
     assert "description: New description" in updated
     assert "canonical:" not in updated
     assert "hreflang:" not in updated
+
+
+def test_apply_suggestion_is_idempotent_after_frontmatter_matches_candidate(
+    tmp_path: Path,
+) -> None:
+    post = tmp_path / "_posts" / "post.md"
+    post.parent.mkdir()
+    post.write_text(POST, encoding="utf-8")
+    suggestion = tmp_path / "metadata-suggestion.json"
+    suggestion.write_text(
+        json.dumps(
+            {
+                "kind": "seo_metadata_suggestion",
+                "status": "PARTIAL",
+                "file_path": "_posts/post.md",
+                "candidate": {
+                    "title": "New title",
+                    "description": "New description",
+                    "categories": ["Translation", "HuggingFace"],
+                    "image": "/blog/assets/example/thumbnail.png",
+                },
+                "apply": {"allowed": False, "requires_human": True},
+                "needs_policy_decision": ["canonical_policy"],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    first = apply_suggestion(
+        target_root=tmp_path,
+        suggestion_path=suggestion,
+        allow_partial_safe_fields=True,
+    )
+    second = apply_suggestion(
+        target_root=tmp_path,
+        suggestion_path=suggestion,
+        allow_partial_safe_fields=True,
+    )
+
+    assert first["status"] == "APPLIED"
+    assert first["changed"] is True
+    assert second["status"] == "NO_CHANGE"
+    assert second["changed"] is False
+    assert second["applied_fields"] == []
 
 
 def test_apply_suggestion_applies_policy_fields_when_comment_provides_policy(

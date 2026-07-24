@@ -13,7 +13,7 @@ SEO는 두 단계로 분리합니다.
 2. Metadata 생성 모듈
    - frontmatter 후보를 JSON으로 제안합니다.
    - 직접 파일을 수정하거나 commit/push하지 않습니다.
-   - 자동 적용이 안전한 경우에만 PR agent가 별도 job에서 적용하고 commit합니다.
+   - PR agent가 별도 job에서 안전한 frontmatter 필드를 적용하고 commit합니다.
 
 ## SEO 평가 모듈 output
 
@@ -181,11 +181,36 @@ results/metadata-suggestion.json
 | status | 의미 | PR agent 동작 |
 |---|---|---|
 | `SKIPPED` | SEO gate가 fail이어서 metadata 생성을 건너뜀 | 적용 안 함 |
-| `PARTIAL` | 후보는 있지만 정책 결정/필수 필드가 부족함 | 적용 안 함 |
+| `PARTIAL` | 후보는 있지만 정책 결정/필수 필드가 부족함 | safe frontmatter 필드만 적용 |
 | `READY` | 자동 적용 가능한 후보 | `apply.allowed`가 true이면 적용 가능 |
 | `ERROR` | metadata 생성 실패 | 적용 안 함, SEO gate fail로 바꾸지는 않음 |
 
-## 자동 commit을 요청하는 output
+## Frontmatter 자동 적용 정책
+
+PR agent는 SEO gate와 verifier가 모두 green이면 metadata apply job을 실행합니다.
+
+이 job은 deterministic/idempotent해야 하므로 OpenAI key를 주입하지 않습니다. 즉 자동 재발화 경로에서는 매 run마다 다른 title/description 후보가 나와 commit loop가 생기지 않아야 합니다.
+
+`PARTIAL` 상태에서도 아래 safe field는 자동 적용할 수 있습니다.
+
+```text
+title
+description
+categories
+image
+```
+
+아래 policy field는 정책값이 명확할 때만 적용합니다.
+
+```text
+canonical
+hreflang
+json_ld
+```
+
+`metadata-suggestion.json`이 생성되지 않은 경우 PR agent는 workflow를 실패시키지 않고 `SKIPPED`, `changed=false`로 처리합니다.
+
+## 정책 field까지 자동 commit을 요청하는 output
 
 metadata 생성 모듈이 PR agent에게 commit을 요청하려면 아래 조건을 모두 만족해야 합니다.
 
@@ -209,7 +234,7 @@ metadata 생성 모듈이 PR agent에게 commit을 요청하려면 아래 조건
 }
 ```
 
-PR agent는 아래 조건이 모두 맞을 때만 파일을 수정합니다.
+PR agent는 정책 field까지 포함해서 적용할 때 아래 조건을 확인합니다.
 
 - `kind == "seo_metadata_suggestion"`
 - `status == "READY"`
@@ -217,6 +242,8 @@ PR agent는 아래 조건이 모두 맞을 때만 파일을 수정합니다.
 - `apply.requires_human == false`
 - `needs_policy_decision == []`
 - `file_path`가 `_posts/*.md`
+
+`PARTIAL`인 경우에는 위 조건을 모두 만족하지 않아도 safe frontmatter 필드만 적용할 수 있습니다. 이 경우 `canonical`, `hreflang`, `json_ld`는 적용하지 않습니다.
 
 ## 담당자에게 요청할 사항
 
@@ -226,8 +253,8 @@ SEO 모듈 담당자는 다음 기준을 맞춰주면 됩니다.
 2. `seo.json`은 기존 shape을 유지하고, metadata 결과를 gate 실패로 반영하지 않습니다.
 3. `metadata-suggestion.json`은 `kind: seo_metadata_suggestion`으로 생성합니다.
 4. `metadata-suggestion.json`에는 `skill`, `conclusion`을 넣지 않습니다.
-5. 자동 적용이 안전하지 않으면 `apply.allowed: false`, `requires_human: true`로 둡니다.
-6. 자동 적용이 안전하면 `status: READY`, `apply.allowed: true`, `requires_human: false`, `target_files`를 채웁니다.
+5. `PARTIAL`이어도 `title`, `description`, `categories`, `image` 후보는 채워주세요. PR agent가 safe field만 자동 반영합니다.
+6. 정책 field까지 자동 적용이 안전하면 `status: READY`, `apply.allowed: true`, `requires_human: false`, `target_files`를 채웁니다.
 7. metadata 모듈은 직접 파일 수정, commit, push를 하지 않습니다.
 
 ## 담당자에게 보낼 짧은 요청문
@@ -236,6 +263,6 @@ SEO metadata 생성 모듈 output을 `results/metadata-suggestion.json`으로 �
 
 기존 `results/seo.md`, `results/seo.json`, `results/seo-eval.json`은 유지하고, `seo.json`은 SEO 평가/루브릭 gate 결과만 담아주세요. Metadata 생성 실패나 PARTIAL 상태가 `seo.json`의 fail로 번지면 안 됩니다.
 
-`metadata-suggestion.json`에는 `skill`, `conclusion`을 넣지 말고, 자동 적용 가능한 경우에만 `status: READY`, `apply.allowed: true`, `apply.requires_human: false`, `apply.target_files`를 채워주세요. 자동 적용이 애매하면 `apply.allowed: false`, `requires_human: true`로 남겨주세요.
+`metadata-suggestion.json`에는 `skill`, `conclusion`을 넣지 말고, `PARTIAL`이어도 `title`, `description`, `categories`, `image` 후보는 가능하면 채워주세요. PR agent가 safe frontmatter 필드는 자동 반영합니다. `canonical`, `hreflang`, `json_ld`처럼 정책 판단이 필요한 필드까지 자동 적용 가능한 경우에만 `status: READY`, `apply.allowed: true`, `apply.requires_human: false`, `apply.target_files`를 채워주세요.
 
 파일 수정/commit/push는 metadata 모듈이 하지 않고, PR agent가 `metadata-suggestion.json`을 읽어서 별도 job에서 처리합니다.

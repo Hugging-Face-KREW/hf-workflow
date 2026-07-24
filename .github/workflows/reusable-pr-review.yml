@@ -387,8 +387,6 @@ jobs:
       changed: ${{ steps.apply.outputs.changed }}
     env:
       GITHUB_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      OPENAI_MODEL: gpt-5-nano
       SEO_RUBRIC_OPENAI_REQUIRED: "0"
       PYTHONPATH: workflow/scripts
     steps:
@@ -433,7 +431,8 @@ jobs:
           python -m hf_agent.apply_metadata_suggestion \
             --target-root target \
             --suggestion results/metadata-suggestion.json \
-            --result-json "${{ runner.temp }}/metadata-apply.json"
+            --result-json "${{ runner.temp }}/metadata-apply.json" \
+            --allow-partial-safe-fields
           echo "changed=$(jq -r .changed "${{ runner.temp }}/metadata-apply.json")" >> "$GITHUB_OUTPUT"
 
       - name: Verify metadata update

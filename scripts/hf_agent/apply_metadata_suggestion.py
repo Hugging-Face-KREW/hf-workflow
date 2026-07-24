@@ -104,6 +104,16 @@ def apply_suggestion(
     allow_partial_safe_fields: bool = False,
     policy_overrides: dict[str, str] | None = None,
 ) -> dict[str, Any]:
+    if not suggestion_path.exists():
+        return {
+            "kind": "seo_metadata_apply_result",
+            "status": "SKIPPED",
+            "changed": False,
+            "file_path": "",
+            "applied_fields": [],
+            "reason": "Metadata suggestion file was not produced",
+        }
+
     suggestion = json.loads(suggestion_path.read_text(encoding="utf-8"))
     if suggestion.get("kind") != "seo_metadata_suggestion":
         raise ValueError("Unsupported metadata suggestion kind")
