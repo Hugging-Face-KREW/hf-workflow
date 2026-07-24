@@ -1064,9 +1064,14 @@ def load_evaluation_policy(
             setattr(policy, field_name, float(evaluation_values[key_path]))
 
     for key_path, value in read_yaml_scalars(gates_config_path).items():
-        if len(key_path) != 3 or key_path[0] not in {"hard_gates", "review_gates"}:
+        if len(key_path) not in {3, 4} or key_path[0] not in {"hard_gates", "review_gates"}:
             continue
         gate, option = key_path[1], key_path[2]
+        if len(key_path) == 4:
+            nested = policy.gate_options.setdefault(gate, {}).setdefault(option, {})
+            if isinstance(nested, dict):
+                nested[key_path[3]] = value
+            continue
         if option == "status":
             policy.gate_statuses[gate] = str(value)
         else:
@@ -2595,21 +2600,58 @@ def validate_documents(
                 "preserved_source_keys",
                 ["authors", "thumbnail", "tags", "blog"],
             )
+            raw_source_key_aliases = gate_policy.option(
+                "front_matter",
+                "localized_source_key_aliases",
+                {},
+            )
+            source_key_aliases = (
+                {
+                    str(source_key): str(target_key)
+                    for source_key, target_key in raw_source_key_aliases.items()
+                    if str(source_key) and str(target_key)
+                }
+                if isinstance(raw_source_key_aliases, dict)
+                else {}
+            )
             for key in preserved_source_keys:
                 source_value = source.frontmatter.get(key)
                 if source_value is None:
                     continue
                 target_value = target.frontmatter.get(key)
-                if source_value != target_value:
-                    issue(
-                        issues,
-                        "formatting",
-                        gate_policy.severity("front_matter", "critical"),
-                        f"Front matter key `{key}` changed or is missing.",
-                        source_span=source_value,
-                        target_span=target_value or "",
-                        suggested_fix=f"Preserve front matter `{key}` exactly.",
-                    )
+                if target_value is not None:
+                    if source_value != target_value:
+                        issue(
+                            issues,
+                            "formatting",
+                            gate_policy.severity("front_matter", "critical"),
+                            f"Front matter key `{key}` changed or is missing.",
+                            source_span=source_value,
+                            target_span=target_value or "",
+                            suggested_fix=f"Preserve front matter `{key}` exactly.",
+                        )
+                    continue
+                target_alias = source_key_aliases.get(key)
+                if target_alias:
+                    alias_value = target.frontmatter.get(target_alias)
+                    if alias_value is None or alias_value == "":
+                        issue(
+                            issues,
+                            "formatting",
+                            gate_policy.severity("front_matter", "critical"),
+                            f"Front matter key `{key}` must be represented by target key `{target_alias}`.",
+                            source_span=source_value,
+                            suggested_fix=f"Add target front matter `{target_alias}` for source `{key}`.",
+                        )
+                    continue
+                issue(
+                    issues,
+                    "formatting",
+                    gate_policy.severity("front_matter", "critical"),
+                    f"Front matter key `{key}` changed or is missing.",
+                    source_span=source_value,
+                    suggested_fix=f"Preserve front matter `{key}` exactly.",
+                )
 
             exact_match_checks = [
                 ("code_blocks", "compare_hashes", "formatting", "code block hash", code_hashes(source.code_blocks), code_hashes(target.code_blocks), "critical"),

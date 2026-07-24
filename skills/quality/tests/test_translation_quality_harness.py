@@ -272,6 +272,66 @@ def test_harness_preserves_source_frontmatter_by_default(tmp_path: Path) -> None
         assert any(f"Front matter key `{key}`" in message for message in messages)
 
 
+def test_default_gate_policy_accepts_localized_frontmatter_alias(tmp_path: Path) -> None:
+    source = tmp_path / "source.md"
+    target = tmp_path / "target.md"
+    manifest = tmp_path / "manifest.yaml"
+    source.write_text(
+        "---\ntitle: Source\nthumbnail: /blog/assets/post/thumbnail.png\n---\n\nSource text.\n",
+        encoding="utf-8",
+    )
+    target.write_text(
+        "---\ntitle: 번역\nimage: assets/images/blog/posts/post/thumbnail.png\n---\n\n번역문입니다.\n",
+        encoding="utf-8",
+    )
+    manifest.write_text(
+        "version: 1\nsource:\n  file_path: source.md\ntranslation:\n  file_path: target.md\n",
+        encoding="utf-8",
+    )
+
+    report = build_report(manifest, tmp_path)
+
+    assert not any(
+        "Front matter key `thumbnail`" in issue["message"] for issue in report["hard_failures"]
+    )
+
+
+def test_harness_rejects_missing_localized_frontmatter_alias_target(tmp_path: Path) -> None:
+    source = tmp_path / "source.md"
+    target = tmp_path / "target.md"
+    manifest = tmp_path / "manifest.yaml"
+    gates = tmp_path / "gates.yml"
+    source.write_text(
+        "---\ntitle: Source\nthumbnail: /blog/assets/post/thumbnail.png\n---\n\nSource text.\n",
+        encoding="utf-8",
+    )
+    target.write_text("---\ntitle: 번역\n---\n\n번역문입니다.\n", encoding="utf-8")
+    manifest.write_text(
+        "version: 1\nsource:\n  file_path: source.md\ntranslation:\n  file_path: target.md\n",
+        encoding="utf-8",
+    )
+    gates.write_text(
+        """version: 1
+hard_gates:
+  front_matter:
+    status: reject
+    preserved_source_keys:
+      - thumbnail
+    localized_source_key_aliases:
+      thumbnail: image
+""",
+        encoding="utf-8",
+    )
+
+    report = build_report(manifest, tmp_path, gates_config_path=gates)
+
+    assert any(
+        "Front matter key `thumbnail` must be represented by target key `image`."
+        in issue["message"]
+        for issue in report["hard_failures"]
+    )
+
+
 def test_harness_respects_disabled_exact_match_gate_option(tmp_path: Path) -> None:
     source = tmp_path / "source.md"
     target = tmp_path / "target.md"

@@ -12,6 +12,8 @@ hard_gates:
       - thumbnail
       - tags
       - blog
+    localized_source_key_aliases:
+      thumbnail: image
   code_blocks:
     status: reject
     compare_hashes: true
