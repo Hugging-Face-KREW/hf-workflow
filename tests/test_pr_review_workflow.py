@@ -78,18 +78,46 @@ def test_private_workflow_checkout_uses_the_bot_token() -> None:
     assert workflow.count("token: ${{ secrets.KREW_BOT_TOKEN }}") >= 5
 
 
-def test_reports_are_published_without_ephemeral_artifacts() -> None:
+def test_review_outputs_are_shared_as_head_bound_artifacts() -> None:
     workflow = WORKFLOW.read_text()
 
-    assert "upload-artifact" not in workflow
-    assert "download-artifact" not in workflow
-    assert "Generate comment reports" in workflow
+    assert "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02" in workflow
+    assert "actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0" in workflow
+    assert "name: ${{ matrix.skill }}-review-${{ inputs.head_sha }}" in workflow
+    assert "retention-days: 1" in workflow
+    assert "if-no-files-found: error" in workflow
+    assert "merge-multiple: true" in workflow
+
+
+def test_verifier_and_report_reuse_the_authoritative_review() -> None:
+    workflow = WORKFLOW.read_text()
+    verifier = workflow.split("\n  verifier:", 1)[1].split("\n  report:", 1)[0]
+    report = workflow.split("\n  report:", 1)[1].split("\n  review_threads:", 1)[0]
+
+    assert "python -m hf_agent.verify_review_artifacts" in verifier
+    assert "run_skill_review.py" not in verifier
+    assert "run_skill_review.py" not in report
+    assert "Generate comment reports" not in report
+    assert "Publish marker report" in report
+    assert "needs.verifier.result == 'success'" in report
+
+
+def test_repair_reuses_failed_reports_and_only_rechecks_changed_content() -> None:
+    workflow = WORKFLOW.read_text()
+    repair = workflow.split("\n  repair:", 1)[1].split("\n  finalize:", 1)[0]
+
+    assert "Download review artifacts" in repair
+    assert "Generate failed gate reports" not in repair
+    assert "Verify repaired content" in repair
+    assert "needs.verifier.result == 'success'" in repair
+    assert repair.count("run_skill_review.py") == 1
+    assert workflow.count("run_skill_review.py") == 2
 
 
 def test_review_runtime_installs_seo_dependencies() -> None:
     workflow = WORKFLOW.read_text()
 
-    assert workflow.count("markdown beautifulsoup4") >= 4
+    assert workflow.count("markdown beautifulsoup4") >= 2
 
 
 def test_review_workflow_enables_quality_llm_judge_by_default() -> None:
@@ -97,11 +125,11 @@ def test_review_workflow_enables_quality_llm_judge_by_default() -> None:
 
     assert workflow.count(
         "QUALITY_LLM_JUDGE_PROVIDER: ${{ vars.QUALITY_LLM_JUDGE_PROVIDER || 'openai' }}"
-    ) >= 4
-    assert workflow.count("LLM_JUDGE_MODEL: ${{ vars.LLM_JUDGE_MODEL || 'gpt-5.6-luna' }}") >= 4
+    ) >= 3
+    assert workflow.count("LLM_JUDGE_MODEL: ${{ vars.LLM_JUDGE_MODEL || 'gpt-5.6-luna' }}") >= 3
     assert workflow.count(
         "QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}"
-    ) >= 4
+    ) >= 2
 
 
 def test_ready_lifecycle_clears_stale_human_needed_label() -> None:
