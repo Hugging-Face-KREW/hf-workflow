@@ -23,6 +23,7 @@ from tools.translation_quality_harness import (
     mqm_cache_namespace,
     mqm_response_format,
     normalized_numbers,
+    normalize_link_targets_for_comparison,
     normalize_mqm_result,
     openai_mqm_task,
     parse_json_object,
@@ -380,6 +381,38 @@ hard_gates:
     assert any("unresolved placeholder" in issue["message"] for issue in report["hard_failures"])
 
 
+def test_harness_allows_todo_when_source_contains_same_marker(tmp_path: Path) -> None:
+    source = tmp_path / "source.md"
+    target = tmp_path / "target.md"
+    manifest = tmp_path / "manifest.yaml"
+    source.write_text("---\ntitle: S\n---\n\nThere is a TODO in the upstream PR.\n", encoding="utf-8")
+    target.write_text("---\ntitle: T\n---\n\n업스트림 PR에는 `TODO`가 있습니다.\n", encoding="utf-8")
+    manifest.write_text(
+        "version: 1\nsource:\n  file_path: source.md\ntranslation:\n  file_path: target.md\n",
+        encoding="utf-8",
+    )
+
+    report = build_report(manifest, tmp_path)
+
+    assert not any("unresolved placeholder" in issue["message"] for issue in report["hard_failures"])
+
+
+def test_harness_still_rejects_template_braces_even_when_source_contains_them(tmp_path: Path) -> None:
+    source = tmp_path / "source.md"
+    target = tmp_path / "target.md"
+    manifest = tmp_path / "manifest.yaml"
+    source.write_text("---\ntitle: S\n---\n\nTemplate {{value}}.\n", encoding="utf-8")
+    target.write_text("---\ntitle: T\n---\n\n템플릿 {{value}}.\n", encoding="utf-8")
+    manifest.write_text(
+        "version: 1\nsource:\n  file_path: source.md\ntranslation:\n  file_path: target.md\n",
+        encoding="utf-8",
+    )
+
+    report = build_report(manifest, tmp_path)
+
+    assert any("unresolved placeholder" in issue["message"] for issue in report["hard_failures"])
+
+
 def test_harness_applies_markdown_parse_policy_to_source_errors(tmp_path: Path) -> None:
     source = tmp_path / "source.md"
     target = tmp_path / "target.md"
@@ -551,6 +584,24 @@ def test_harness_rejects_link_and_image_mutation(tmp_path: Path) -> None:
     messages = "\n".join(issue["message"] for issue in report["hard_failures"])
     assert "link target mismatch" in messages
     assert "image target mismatch" in messages
+
+
+def test_normalizes_hf_profile_absolute_link_when_source_uses_relative_target() -> None:
+    source, target = normalize_link_targets_for_comparison(
+        ["ariG23498"],
+        ["https://huggingface.co/ariG23498"],
+    )
+
+    assert source == target == ["ariG23498"]
+
+
+def test_keeps_full_hf_url_when_source_uses_full_target() -> None:
+    source, target = normalize_link_targets_for_comparison(
+        ["https://huggingface.co/kernels"],
+        ["https://huggingface.co/kernels"],
+    )
+
+    assert source == target == ["https://huggingface.co/kernels"]
 
 
 def test_harness_rejects_frontmatter_mutation(tmp_path: Path) -> None:

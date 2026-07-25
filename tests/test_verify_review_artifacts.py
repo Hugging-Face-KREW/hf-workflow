@@ -90,6 +90,14 @@ def test_verifies_complete_review_artifacts(tmp_path: Path) -> None:
     verify(root, target_root)
 
 
+def test_accepts_review_required_with_incomplete_semantic_evaluation(tmp_path: Path) -> None:
+    root = tmp_path / "results"
+    target_root = tmp_path / "target"
+    write_review_results(root, target_root, quality_status="review_required")
+
+    verify(root, target_root)
+
+
 def test_accepts_runner_relative_target_path(tmp_path: Path) -> None:
     root = tmp_path / "results"
     target_root = tmp_path / "target"

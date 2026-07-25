@@ -728,6 +728,34 @@ def compare_counter(
     )
 
 
+def hf_profile_relative_alias(value: str) -> str:
+    parsed = urllib.parse.urlparse(value)
+    if parsed.scheme not in {"http", "https"} or parsed.netloc != "huggingface.co":
+        return ""
+    if parsed.params or parsed.query or parsed.fragment:
+        return ""
+    parts = [part for part in parsed.path.split("/") if part]
+    if len(parts) != 1:
+        return ""
+    return parts[0]
+
+
+def normalize_link_targets_for_comparison(
+    source_values: Iterable[str],
+    target_values: Iterable[str],
+) -> tuple[list[str], list[str]]:
+    source_list = list(source_values)
+    source_set = set(source_list)
+    target_list: list[str] = []
+    for value in target_values:
+        alias = hf_profile_relative_alias(value)
+        if alias and alias in source_set and value not in source_set:
+            target_list.append(alias)
+        else:
+            target_list.append(value)
+    return source_list, target_list
+
+
 def normalize_lookup_text(text: str) -> str:
     return re.sub(r"\s+", " ", text.casefold()).strip()
 
@@ -2475,18 +2503,27 @@ def english_ratio(text: str) -> float:
     return len(english_words) / len(tokens)
 
 
-def configured_todo_markers(target: MarkdownDoc, policy: EvaluationPolicy) -> list[str]:
+def configured_todo_markers(target: MarkdownDoc, policy: EvaluationPolicy, source: MarkdownDoc | None = None) -> list[str]:
     markers = policy.list_option("todo_markers", "markers", ["TODO", "FIXME", "TBD", "{{", "}}"])
     _, body_without_code, _ = parse_code_blocks(target.body)
+    source_body_without_code = ""
+    if source is not None:
+        _, source_body_without_code, _ = parse_code_blocks(source.body)
     found: list[str] = []
     for marker in markers:
         if not marker:
             continue
         if re.fullmatch(r"[A-Za-z0-9_]+", marker):
             present = re.search(rf"\b{re.escape(marker)}\b", body_without_code) is not None
+            present_in_source = re.search(rf"\b{re.escape(marker)}\b", source_body_without_code) is not None
         else:
             present = marker in body_without_code
+            present_in_source = marker in source_body_without_code
+        if marker in {"{{", "}}"}:
+            present_in_source = False
         if present:
+            if present_in_source:
+                continue
             found.append(marker)
     return found
 
@@ -2550,7 +2587,7 @@ def validate_documents(
                 suggested_fix=f"Add `{key}` to target front matter.",
             )
 
-    todo_markers = configured_todo_markers(target, gate_policy)
+    todo_markers = configured_todo_markers(target, gate_policy, source)
     if todo_markers:
         issue(
             issues,
@@ -2668,6 +2705,8 @@ def validate_documents(
             ]
             for gate, option, category, label, source_values, target_values, fallback_severity in exact_match_checks:
                 if gate_policy.enabled(gate, option):
+                    if gate == "links":
+                        source_values, target_values = normalize_link_targets_for_comparison(source_values, target_values)
                     compare_counter(
                         issues,
                         category,

@@ -75,7 +75,7 @@ def _verify_quality(
     if not mqm.get("prompt_hash"):
         raise ValueError("quality judge prompt hash is missing")
 
-    if expected_conclusion == "fail":
+    if expected_conclusion == "fail" or status == "review_required":
         return
     if not metadata.get("semantic_evaluation_complete"):
         raise ValueError("successful quality result has incomplete semantic evaluation")
