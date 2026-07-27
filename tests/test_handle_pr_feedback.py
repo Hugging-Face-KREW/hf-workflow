@@ -11,6 +11,8 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from hf_agent.handle_pr_feedback import (
+    MAX_REPAIR_OUTPUT_TOKENS,
+    REPAIR_RESPONSE_FORMAT,
     apply_feedback,
     apply_model_response,
     build_feedback_prompt,
@@ -347,8 +349,10 @@ def test_call_openai_requests_one_json_response() -> None:
     assert calls == [
         {
             "input": "prompt",
-            "instructions": "Return valid JSON only.",
+            "instructions": "Return the repair decision as structured JSON.",
+            "max_output_tokens": MAX_REPAIR_OUTPUT_TOKENS,
             "model": "gpt-test",
+            "text": {"format": REPAIR_RESPONSE_FORMAT},
         }
     ]
 

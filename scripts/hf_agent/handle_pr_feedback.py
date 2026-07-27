@@ -21,6 +21,25 @@ TRUSTED_PERMISSIONS = {"write", "maintain", "admin"}
 MAX_TERMINAL_PUNCTUATION_LOSSES = 2
 TERMINAL_PUNCTUATION = (".", "?", "!", "。")
 TRAILING_MARKDOWN_OR_QUOTES = ("**", "__", "*", "_", "`", "”", "’", '"', "'", ")", "]")
+REPAIR_RESPONSE_FORMAT = {
+    "type": "json_schema",
+    "name": "pr_feedback_repair",
+    "strict": True,
+    "schema": {
+        "type": "object",
+        "properties": {
+            "disposition": {
+                "type": "string",
+                "enum": ["actionable", "addressed", "no-change", "needs-human"],
+            },
+            "reason": {"type": "string"},
+            "content": {"type": "string"},
+        },
+        "required": ["disposition", "reason", "content"],
+        "additionalProperties": False,
+    },
+}
+MAX_REPAIR_OUTPUT_TOKENS = 65_536
 
 
 @dataclass(frozen=True)
@@ -200,7 +219,8 @@ def build_feedback_prompt(original: str, feedback: str) -> str:
 Return one JSON object with disposition, reason, and content. Disposition must
 be actionable, addressed, no-change, or needs-human. For actionable feedback,
 content must contain the complete updated Markdown. For every other
-disposition, omit content. Preserve code, links, product names, and Markdown.
+disposition, content must be an empty string. Preserve code, links, product
+names, and Markdown.
 Preserve Korean sentence-final punctuation. If a sentence currently ends with
 Japanese full stop "。", replace it with "." instead of removing punctuation.
 Do not make broad style rewrites or punctuation-only rewrites unrelated to the feedback.
@@ -346,8 +366,10 @@ def call_openai(prompt: str, *, model: str, client: Any | None = None) -> str:
         client = OpenAI(**client_kwargs)
     response = client.responses.create(
         input=prompt,
-        instructions="Return valid JSON only.",
+        instructions="Return the repair decision as structured JSON.",
+        max_output_tokens=MAX_REPAIR_OUTPUT_TOKENS,
         model=model,
+        text={"format": REPAIR_RESPONSE_FORMAT},
     )
     output = response.output_text.strip()
     if not output:
