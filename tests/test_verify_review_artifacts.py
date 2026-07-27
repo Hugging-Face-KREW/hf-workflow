@@ -98,6 +98,38 @@ def test_accepts_review_required_with_incomplete_semantic_evaluation(tmp_path: P
     verify(root, target_root)
 
 
+def test_accepts_review_required_when_mqm_judge_is_skipped(tmp_path: Path) -> None:
+    root = tmp_path / "results"
+    target_root = tmp_path / "target"
+    write_review_results(
+        root,
+        target_root,
+        quality_status="review_required",
+        mqm_segment_ids=(),
+    )
+    report_path = root / "quality-eval.json"
+    report = json.loads(report_path.read_text())
+    report["mqm_judge"]["prompt_hash"] = ""
+    report_path.write_text(json.dumps(report))
+
+    verify(root, target_root)
+
+
+def test_rejects_review_required_judge_results_without_prompt_hash(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "results"
+    target_root = tmp_path / "target"
+    write_review_results(root, target_root, quality_status="review_required")
+    report_path = root / "quality-eval.json"
+    report = json.loads(report_path.read_text())
+    report["mqm_judge"]["prompt_hash"] = ""
+    report_path.write_text(json.dumps(report))
+
+    with pytest.raises(ValueError, match="prompt hash"):
+        verify(root, target_root)
+
+
 def test_accepts_runner_relative_target_path(tmp_path: Path) -> None:
     root = tmp_path / "results"
     target_root = tmp_path / "target"

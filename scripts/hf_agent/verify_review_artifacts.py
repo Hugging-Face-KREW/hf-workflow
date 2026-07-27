@@ -72,11 +72,12 @@ def _verify_quality(
         raise ValueError("quality judge provider does not match workflow configuration")
     if mqm.get("model") != expected_model:
         raise ValueError("quality judge model does not match workflow configuration")
+    if expected_conclusion == "fail" or status == "review_required":
+        if int(mqm.get("segment_count", 0)) > 0 and not mqm.get("prompt_hash"):
+            raise ValueError("quality judge prompt hash is missing")
+        return
     if not mqm.get("prompt_hash"):
         raise ValueError("quality judge prompt hash is missing")
-
-    if expected_conclusion == "fail" or status == "review_required":
-        return
     if not metadata.get("semantic_evaluation_complete"):
         raise ValueError("successful quality result has incomplete semantic evaluation")
     if not mqm.get("enabled"):
