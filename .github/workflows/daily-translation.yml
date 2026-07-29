@@ -65,8 +65,8 @@ jobs:
             exit 1
           fi
           git clone "https://x-access-token:${BOT_TOKEN}@github.com/${KREW_REPO}.git" target-repo
-          git -C target-repo config user.email "github-actions[bot]@users.noreply.github.com"
-          git -C target-repo config user.name "github-actions[bot]"
+          git -C target-repo config user.email "293807401+huggingfacekrew@users.noreply.github.com"
+          git -C target-repo config user.name "Hugging Face KREW Translation Bot"
 
       - name: Ensure HF agent labels exist
         run: |

@@ -160,8 +160,10 @@ runtime glossary. Override the directory with `ECL_LOCAL_GLOSSARY_DIR`.
 Required repository secrets:
 
 - `OPENAI_API_KEY`: OpenAI API key used by the OpenAI translation adapter
-- `KREW_BOT_TOKEN`: fine-grained token mapped to `GITHUB_TOKEN` at runtime. It
-  can push branches, open PRs in
+- `KREW_BOT_TOKEN`: fine-grained token owned by the
+  [`huggingfacekrew`](https://github.com/huggingfacekrew) account and mapped to
+  `GITHUB_TOKEN` at runtime. The token owner is shown as the author of
+  translation PRs and automation comments. It can push branches, open PRs in
   `Hugging-Face-KREW/hugging-face-krew.github.io`, and dispatch workflows in
   `Hugging-Face-KREW/seo-skills` and `Hugging-Face-KREW/quality-skills`
 - `DISCORD_WEBHOOK_URL`: optional Discord webhook URL. When present, the

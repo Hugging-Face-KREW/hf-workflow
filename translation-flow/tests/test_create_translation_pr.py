@@ -190,6 +190,7 @@ def test_build_translation_markdown_preserves_source_metadata() -> None:
     )
 
     assert "layout: post" in markdown
+    assert "author: KREW" in markdown
     assert 'source_url: "https://huggingface.co/blog/hello-mlx"' in markdown
     assert "translation_status: \"draft\"" in markdown
     assert 'translator: "none"' in markdown

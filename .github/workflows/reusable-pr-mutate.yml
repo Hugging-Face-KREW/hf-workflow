@@ -183,8 +183,8 @@ jobs:
         if: steps.apply.outputs.changed == 'true'
         working-directory: target
         run: |
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git config user.name "github-actions[bot]"
+          git config user.email "293807401+huggingfacekrew@users.noreply.github.com"
+          git config user.name "Hugging Face KREW Translation Bot"
           git add -- "${{ inputs.file_path }}"
           if [ "${{ steps.apply.outputs.intent }}" = "metadata" ]; then
             git commit -m "🔧 Apply SEO metadata suggestion"
