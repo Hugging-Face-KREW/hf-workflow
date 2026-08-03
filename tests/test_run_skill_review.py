@@ -34,8 +34,11 @@ def test_seo_runner_preserves_the_existing_gate_exit_code(tmp_path: Path) -> Non
     assert calls[0][0][1:3] == ["skills/seo/tools/seo_eval.py", "--file"]
     assert json.loads(result_path.read_text()) == {
         "conclusion": "fail",
+        "file_path": "_posts/example.md",
+        "head_sha": "",
         "report_path": str(report_path),
         "skill": "seo",
+        "target_hash": "",
     }
 
 
@@ -79,8 +82,11 @@ def test_seo_runner_writes_eval_and_metadata_outputs_without_changing_wrapper(
     assert exit_code == 0
     assert json.loads(result_path.read_text()) == {
         "conclusion": "pass",
+        "file_path": "_posts/example.md",
+        "head_sha": "",
         "report_path": str(report_path),
         "skill": "seo",
+        "target_hash": "",
     }
     assert (tmp_path / "seo-eval.json").exists()
     suggestion = json.loads((tmp_path / "metadata-suggestion.json").read_text())
@@ -123,8 +129,11 @@ def test_seo_runner_records_metadata_generation_error_without_changing_gate(
     assert exit_code == 0
     assert json.loads(result_path.read_text()) == {
         "conclusion": "pass",
+        "file_path": "_posts/example.md",
+        "head_sha": "",
         "report_path": str(report_path),
         "skill": "seo",
+        "target_hash": "",
     }
     suggestion = json.loads((tmp_path / "metadata-suggestion.json").read_text())
     assert suggestion["status"] == "ERROR"
@@ -260,6 +269,34 @@ def test_quality_runner_uses_translation_quality_harness(tmp_path: Path) -> None
     assert command[command.index("--llm-judge-model") + 1] == "gpt-5.6-luna"
     assert "--fail-on-reject" in command
     assert json.loads(result_path.read_text())["conclusion"] == "pass"
+
+
+def test_runner_records_review_identity(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setenv("HF_AGENT_REVIEW_HEAD_SHA", "abc123")
+    target_root = tmp_path / "target"
+    target_file = target_root / "_posts/example.md"
+    target_file.parent.mkdir(parents=True)
+    target_file.write_text("# 번역\n")
+    result_path = tmp_path / "result.json"
+    report_path = tmp_path / "quality.md"
+
+    def pass_quality(command, cwd, check):
+        report_path.write_text("# Quality Report\n\nStatus: pass\n")
+        return subprocess.CompletedProcess(command, 0)
+
+    assert run_skill(
+        skill="quality",
+        file_path="_posts/example.md",
+        target_root=target_root,
+        report_path=report_path,
+        result_path=result_path,
+        runner=pass_quality,
+    ) == 0
+
+    result = json.loads(result_path.read_text())
+    assert result["file_path"] == "_posts/example.md"
+    assert result["head_sha"] == "abc123"
+    assert result["target_hash"]
 
 
 def test_quality_runner_uses_explicit_llm_judge_model(

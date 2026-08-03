@@ -35,6 +35,25 @@ def _require_artifacts(results_root: Path) -> None:
             raise ValueError(f"Missing review artifact: {name}")
 
 
+def _verify_wrapper_identity(
+    wrapper: dict[str, Any],
+    *,
+    skill: str,
+    expected_conclusion: str,
+    file_path: str,
+    target_hash: str,
+    expected_head_sha: str,
+) -> None:
+    if wrapper.get("skill") != skill or wrapper.get("conclusion") != expected_conclusion:
+        raise ValueError(f"{skill} wrapper conclusion does not match structured status")
+    if wrapper.get("file_path") != file_path:
+        raise ValueError(f"{skill} wrapper file path does not match requested file")
+    if wrapper.get("target_hash") != target_hash:
+        raise ValueError(f"{skill} wrapper target hash does not match reviewed content")
+    if expected_head_sha and wrapper.get("head_sha") != expected_head_sha:
+        raise ValueError(f"{skill} wrapper head SHA does not match requested revision")
+
+
 def _verify_quality(
     results_root: Path,
     target_root: Path,
@@ -42,13 +61,12 @@ def _verify_quality(
     *,
     expected_provider: str,
     expected_model: str,
+    expected_head_sha: str,
 ) -> None:
     wrapper = _load_json(results_root / "quality.json")
     report = _load_json(results_root / "quality-eval.json")
     status = str(report.get("status") or "")
     expected_conclusion = "pass" if status in PASSING_QUALITY_STATUSES else "fail"
-    if wrapper.get("skill") != "quality" or wrapper.get("conclusion") != expected_conclusion:
-        raise ValueError("quality wrapper conclusion does not match structured status")
 
     metadata = report.get("metadata")
     if not isinstance(metadata, dict):
@@ -62,6 +80,14 @@ def _verify_quality(
     if not target_path.is_file():
         raise ValueError(f"Reviewed target file is missing: {file_path}")
     target_hash = hashlib.sha256(target_path.read_bytes()).hexdigest()
+    _verify_wrapper_identity(
+        wrapper,
+        skill="quality",
+        expected_conclusion=expected_conclusion,
+        file_path=file_path,
+        target_hash=target_hash,
+        expected_head_sha=expected_head_sha,
+    )
     if metadata.get("target_hash") != target_hash:
         raise ValueError("quality target hash does not match reviewed content")
 
@@ -102,15 +128,31 @@ def _verify_quality(
         raise ValueError("successful quality result has invalid MQM segment coverage")
 
 
-def _verify_seo(results_root: Path) -> None:
+def _verify_seo(
+    results_root: Path,
+    target_root: Path,
+    file_path: str,
+    *,
+    expected_head_sha: str,
+) -> None:
     wrapper = _load_json(results_root / "seo.json")
     report = _load_json(results_root / "seo-eval.json")
     gate = report.get("gate")
     if not isinstance(gate, dict) or not isinstance(gate.get("passed"), bool):
         raise ValueError("SEO structured gate result is missing")
     expected_conclusion = "pass" if gate["passed"] else "fail"
-    if wrapper.get("skill") != "seo" or wrapper.get("conclusion") != expected_conclusion:
-        raise ValueError("SEO wrapper conclusion does not match structured gate result")
+    target_path = target_root / file_path
+    if not target_path.is_file():
+        raise ValueError(f"Reviewed target file is missing: {file_path}")
+    target_hash = hashlib.sha256(target_path.read_bytes()).hexdigest()
+    _verify_wrapper_identity(
+        wrapper,
+        skill="seo",
+        expected_conclusion=expected_conclusion,
+        file_path=file_path,
+        target_hash=target_hash,
+        expected_head_sha=expected_head_sha,
+    )
 
 
 def verify_review_artifacts(
@@ -120,6 +162,7 @@ def verify_review_artifacts(
     *,
     expected_provider: str,
     expected_model: str,
+    expected_head_sha: str = "",
 ) -> None:
     _require_artifacts(results_root)
     _verify_quality(
@@ -128,8 +171,14 @@ def verify_review_artifacts(
         file_path,
         expected_provider=expected_provider,
         expected_model=expected_model,
+        expected_head_sha=expected_head_sha,
     )
-    _verify_seo(results_root)
+    _verify_seo(
+        results_root,
+        target_root,
+        file_path,
+        expected_head_sha=expected_head_sha,
+    )
 
 
 def verify_checkout_head(target_root: Path, expected_head_sha: str) -> None:
@@ -157,6 +206,7 @@ def main() -> int:
         args.file,
         expected_provider=args.expected_provider,
         expected_model=args.expected_model,
+        expected_head_sha=args.expected_head_sha,
     )
     print("Review artifacts verified.")
     return 0

@@ -83,6 +83,7 @@ jobs:
       QUALITY_LLM_JUDGE_PROVIDER: ${{ vars.QUALITY_LLM_JUDGE_PROVIDER || 'openai' }}
       LLM_JUDGE_MODEL: ${{ vars.LLM_JUDGE_MODEL || 'gpt-5.6-luna' }}
       QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}
+      HF_AGENT_REVIEW_HEAD_SHA: ${{ inputs.head_sha }}
     steps:
       - name: Checkout workflow tools
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
@@ -107,6 +108,29 @@ jobs:
       - name: Install review dependencies
         run: python -m pip install openai pyyaml markdown beautifulsoup4
 
+      - name: Compute review content identity
+        id: review_identity
+        env:
+          FILE_PATH: ${{ inputs.file_path }}
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import hashlib
+          import os
+          from pathlib import Path
+
+          path = Path("target") / os.environ["FILE_PATH"]
+          print(f"target_hash={hashlib.sha256(path.read_bytes()).hexdigest()}")
+          PY
+
+      - name: Restore MQM judge cache
+        id: mqm_cache
+        if: ${{ matrix.skill == 'quality' }}
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ${{ runner.temp }}/quality-metric-cache.json
+          key: >-
+            quality-mqm-${{ inputs.target_repo }}-${{ inputs.file_path }}-${{ steps.review_identity.outputs.target_hash }}-${{ env.QUALITY_LLM_JUDGE_PROVIDER }}-${{ env.LLM_JUDGE_MODEL }}-${{ env.QUALITY_LLM_JUDGE_MAX_SEGMENTS }}-${{ hashFiles('workflow/skills/quality/judges/mqm_prompt.md', 'workflow/skills/quality/style/hf-blog-ko-translation-guide.md', 'workflow/skills/quality/schemas/mqm_judge.schema.json') }}
+
       - name: Run review skill
         working-directory: workflow
         run: >-
@@ -129,6 +153,19 @@ jobs:
             ${{ runner.temp }}/metadata-suggestion.json
           if-no-files-found: error
           retention-days: 1
+
+      - name: Ensure MQM judge cache file exists
+        if: ${{ always() && matrix.skill == 'quality' && steps.mqm_cache.outputs.cache-hit != 'true' }}
+        run: |
+          test -f "${{ runner.temp }}/quality-metric-cache.json" || echo "{}" > "${{ runner.temp }}/quality-metric-cache.json"
+
+      - name: Save MQM judge cache
+        if: ${{ always() && matrix.skill == 'quality' && steps.mqm_cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ${{ runner.temp }}/quality-metric-cache.json
+          key: >-
+            quality-mqm-${{ inputs.target_repo }}-${{ inputs.file_path }}-${{ steps.review_identity.outputs.target_hash }}-${{ env.QUALITY_LLM_JUDGE_PROVIDER }}-${{ env.LLM_JUDGE_MODEL }}-${{ env.QUALITY_LLM_JUDGE_MAX_SEGMENTS }}-${{ hashFiles('workflow/skills/quality/judges/mqm_prompt.md', 'workflow/skills/quality/style/hf-blog-ko-translation-guide.md', 'workflow/skills/quality/schemas/mqm_judge.schema.json') }}
 
   verifier:
     name: HF Agent / Independent Verifier
