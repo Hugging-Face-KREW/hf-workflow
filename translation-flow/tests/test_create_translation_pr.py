@@ -347,7 +347,7 @@ Body
     monkeypatch.setattr(
         create_translation_pr,
         "extract_source_markdown",
-        lambda _post_url, _source_html, allow_html_fallback=False, feed_url=create_translation_pr.DEFAULT_FEED_URL: source_markdown,
+        lambda _post_url, _source_html, **_kwargs: source_markdown,
     )
 
     post = create_translation_pr.resolve_post_from_source(
@@ -371,7 +371,7 @@ thumbnail: /blog/assets/example/thumb.png
     monkeypatch.setattr(
         create_translation_pr,
         "extract_source_markdown",
-        lambda _post_url, _source_html, allow_html_fallback=False, feed_url=create_translation_pr.DEFAULT_FEED_URL: source_markdown,
+        lambda _post_url, _source_html, **_kwargs: source_markdown,
     )
 
     with pytest.raises(RuntimeError, match="Missing `title`"):
@@ -393,7 +393,7 @@ thumbnail: /blog/assets/example/thumb.png
     monkeypatch.setattr(
         create_translation_pr,
         "extract_source_markdown",
-        lambda _post_url, _source_html, allow_html_fallback=False, feed_url=create_translation_pr.DEFAULT_FEED_URL: source_markdown,
+        lambda _post_url, _source_html, **_kwargs: source_markdown,
     )
     fallback_dt = datetime(2026, 5, 11, 12, 0, tzinfo=timezone.utc)
     monkeypatch.setattr(
@@ -422,7 +422,7 @@ title: "From Source"
     monkeypatch.setattr(
         create_translation_pr,
         "extract_source_markdown",
-        lambda _post_url, _source_html, allow_html_fallback=False, feed_url=create_translation_pr.DEFAULT_FEED_URL: source_markdown,
+        lambda _post_url, _source_html, **_kwargs: source_markdown,
     )
     monkeypatch.setattr(create_translation_pr, "resolve_published_at_from_feed", lambda *_: None)
 
@@ -478,7 +478,7 @@ def test_main_post_url_skips_when_raw_markdown_missing_by_policy(
     summary_path = tmp_path / "run-summary.json"
     post_url = "https://huggingface.co/blog/lablab-ai-amd-developer-hackathon/machinacheck"
 
-    def fail_resolve(_post_url: str, allow_html_fallback: bool, feed_url: str):
+    def fail_resolve(_post_url: str, **_kwargs):
         raise create_translation_pr.SourceMarkdownSkipError(
             "enterprise_article",
             [
@@ -511,7 +511,7 @@ def test_main_post_url_raises_when_frontmatter_metadata_missing(
     summary_path = tmp_path / "run-summary.json"
     post_url = "https://huggingface.co/blog/community/example"
 
-    def fail_resolve(_post_url: str, allow_html_fallback: bool, feed_url: str):
+    def fail_resolve(_post_url: str, **_kwargs):
         raise RuntimeError(
             "Missing `title` in source markdown frontmatter for --post-url mode: "
             f"{post_url}"
@@ -595,6 +595,7 @@ def test_daily_workflow_publishes_reports_before_enforcing_target_pr_quality_gat
 
     assert upload_index < enforce_index
     assert "python scripts/enforce_quality_gate.py" in workflow
+    assert '--enterprise-source "html"' in workflow
     assert "LLM_JUDGE_MODEL: gpt-5.6-luna" in workflow
     gate_script = (Path(__file__).resolve().parents[2] / "scripts" / "enforce_quality_gate.py").read_text(
         encoding="utf-8"
