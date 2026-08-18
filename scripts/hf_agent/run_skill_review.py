@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -44,6 +45,14 @@ def _source_url(post_path: Path) -> str:
         return ""
     match = re.search(r'^source_url:\s*["\']?([^"\'\n]+)', post_path.read_text(), re.MULTILINE)
     return match.group(1).strip() if match else ""
+
+
+def _target_hash(target_root: Path, file_path: str) -> str:
+    target_path = target_root / file_path
+    if not target_path.is_file():
+        return ""
+
+    return hashlib.sha256(target_path.read_bytes()).hexdigest()
 
 
 def _quality_manifest(file_path: str, target_root: Path) -> str:
@@ -212,8 +221,11 @@ def run_skill(
                 )
     result = {
         "conclusion": "pass" if passed else "fail",
+        "file_path": file_path,
+        "head_sha": os.getenv("HF_AGENT_REVIEW_HEAD_SHA", ""),
         "report_path": str(report_path),
         "skill": skill,
+        "target_hash": _target_hash(target_root, file_path),
     }
     result_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
     return 0 if passed else 1

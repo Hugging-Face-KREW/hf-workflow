@@ -88,6 +88,8 @@ def test_review_outputs_are_shared_as_head_bound_artifacts() -> None:
     assert "retention-days: 1" in workflow
     assert "if-no-files-found: error" in workflow
     assert "merge-multiple: true" in workflow
+    assert "HF_AGENT_REVIEW_HEAD_SHA: ${{ inputs.head_sha }}" in workflow
+    assert "Compute review content identity" in workflow
 
 
 def test_verifier_and_report_reuse_the_authoritative_review() -> None:
@@ -101,6 +103,23 @@ def test_verifier_and_report_reuse_the_authoritative_review() -> None:
     assert "Generate comment reports" not in report
     assert "Publish marker report" in report
     assert "needs.verifier.result == 'success'" in report
+
+
+def test_quality_mqm_judge_cache_is_keyed_by_document_identity() -> None:
+    workflow = WORKFLOW.read_text()
+    review = workflow.split("\n  review:", 1)[1].split("\n  verifier:", 1)[0]
+
+    assert "Restore MQM judge cache" in review
+    assert "Save MQM judge cache" in review
+    assert "actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830" in review
+    assert "actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830" in review
+    assert "steps.review_identity.outputs.target_hash" in review
+    assert "env.QUALITY_LLM_JUDGE_PROVIDER" in review
+    assert "env.LLM_JUDGE_MODEL" in review
+    assert "env.QUALITY_LLM_JUDGE_MAX_SEGMENTS" in review
+    assert "workflow/skills/quality/judges/mqm_prompt.md" in review
+    assert "workflow/skills/quality/style/hf-blog-ko-translation-guide.md" in review
+    assert "workflow/skills/quality/schemas/mqm_judge.schema.json" in review
 
 
 def test_repair_reuses_failed_reports_and_only_rechecks_changed_content() -> None:

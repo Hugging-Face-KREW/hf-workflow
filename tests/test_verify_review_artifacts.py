@@ -14,6 +14,7 @@ from hf_agent.verify_review_artifacts import verify_review_artifacts
 
 
 POST_PATH = "_posts/example.md"
+HEAD_SHA = "abc123"
 
 
 def write_review_results(
@@ -33,7 +34,15 @@ def write_review_results(
     target_hash = hashlib.sha256(target.read_bytes()).hexdigest()
 
     (root / "quality.json").write_text(
-        json.dumps({"skill": "quality", "conclusion": quality_conclusion})
+        json.dumps(
+            {
+                "skill": "quality",
+                "conclusion": quality_conclusion,
+                "file_path": POST_PATH,
+                "head_sha": HEAD_SHA,
+                "target_hash": target_hash,
+            }
+        )
     )
     (root / "quality.md").write_text("# Quality Report\n")
     (root / "quality-eval.json").write_text(
@@ -65,7 +74,17 @@ def write_review_results(
         )
     )
 
-    (root / "seo.json").write_text(json.dumps({"skill": "seo", "conclusion": "pass"}))
+    (root / "seo.json").write_text(
+        json.dumps(
+            {
+                "skill": "seo",
+                "conclusion": "pass",
+                "file_path": POST_PATH,
+                "head_sha": HEAD_SHA,
+                "target_hash": target_hash,
+            }
+        )
+    )
     (root / "seo.md").write_text("# SEO Report\n")
     (root / "seo-eval.json").write_text(
         json.dumps({"gate": {"passed": True, "status": "PASS"}})
@@ -79,6 +98,7 @@ def verify(root: Path, target_root: Path) -> None:
         POST_PATH,
         expected_provider="openai",
         expected_model="gpt-5.6-luna",
+        expected_head_sha=HEAD_SHA,
     )
 
 
@@ -183,6 +203,45 @@ def test_rejects_wrapper_status_mismatch(tmp_path: Path) -> None:
     write_review_results(root, target_root, quality_conclusion="fail")
 
     with pytest.raises(ValueError, match="quality wrapper conclusion"):
+        verify(root, target_root)
+
+
+def test_rejects_wrapper_file_path_mismatch(tmp_path: Path) -> None:
+    root = tmp_path / "results"
+    target_root = tmp_path / "target"
+    write_review_results(root, target_root)
+    wrapper_path = root / "quality.json"
+    wrapper = json.loads(wrapper_path.read_text())
+    wrapper["file_path"] = "_posts/other.md"
+    wrapper_path.write_text(json.dumps(wrapper))
+
+    with pytest.raises(ValueError, match="quality wrapper file path"):
+        verify(root, target_root)
+
+
+def test_rejects_wrapper_head_sha_mismatch(tmp_path: Path) -> None:
+    root = tmp_path / "results"
+    target_root = tmp_path / "target"
+    write_review_results(root, target_root)
+    wrapper_path = root / "quality.json"
+    wrapper = json.loads(wrapper_path.read_text())
+    wrapper["head_sha"] = "old-sha"
+    wrapper_path.write_text(json.dumps(wrapper))
+
+    with pytest.raises(ValueError, match="quality wrapper head SHA"):
+        verify(root, target_root)
+
+
+def test_rejects_wrapper_target_hash_mismatch(tmp_path: Path) -> None:
+    root = tmp_path / "results"
+    target_root = tmp_path / "target"
+    write_review_results(root, target_root)
+    wrapper_path = root / "seo.json"
+    wrapper = json.loads(wrapper_path.read_text())
+    wrapper["target_hash"] = "old-hash"
+    wrapper_path.write_text(json.dumps(wrapper))
+
+    with pytest.raises(ValueError, match="seo wrapper target hash"):
         verify(root, target_root)
 
 
