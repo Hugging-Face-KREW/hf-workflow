@@ -1,7 +1,7 @@
 # HF 에이전트 워크플로 아키텍처
 
-상태: 제안  
-대상 저장소: `Hugging-Face-KREW/hf-workflow`, `Hugging-Face-KREW/hugging-face-krew.github.io`  
+상태: 제안
+대상 저장소: `Hugging-Face-KREW/hf-workflow`, `Hugging-Face-KREW/hugging-face-krew.github.io`
 범위: 번역 PR 생성, 리뷰 게이트, 피드백 반영, 독립 검증, 머지 준비 판정
 
 ## 1. 개요

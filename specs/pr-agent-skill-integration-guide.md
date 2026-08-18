@@ -1,7 +1,7 @@
 # HF Agent Skill 연동 가이드
 
-작성일: 2026-07-05  
-대상 저장소: `Hugging-Face-KREW/hf-workflow`  
+작성일: 2026-07-05
+대상 저장소: `Hugging-Face-KREW/hf-workflow`
 대상 독자: SEO / Quality / 기타 review skill 개발자와 리뷰어
 
 ## 0. 바로 해야 할 일

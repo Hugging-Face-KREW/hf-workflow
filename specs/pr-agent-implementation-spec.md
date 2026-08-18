@@ -1,7 +1,7 @@
 # HF PR Agent 구현 스펙
 
-상태: 구현 제안  
-기준 문서: `specs/agent-workflow-design.md`  
+상태: 구현 제안
+기준 문서: `specs/agent-workflow-design.md`
 구현 원칙: GitHub native 기능 우선, 기존 코드 재사용, 안전 invariant 유지,
 범용 프레임워크는 실제 필요가 생길 때까지 만들지 않는다.
 
