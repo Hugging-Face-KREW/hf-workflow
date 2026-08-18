@@ -77,7 +77,8 @@ hard-gate comparison while the raw target hash is still recorded in metadata.
 
 Phase 2 also adds block-level text segments, source hash stale detection,
 glossary validation from `glossary/*.tsv`, language/length/duplicate checks,
-and an optional translation memory lookup via `--translation-memory`.
+an optional translation memory lookup via `--translation-memory`, and a hard
+locale gate for Japanese punctuation such as `。` and `、` outside code.
 
 Phase 3 adds automatic metric triage:
 
@@ -100,6 +101,10 @@ failure because fidelity checks cannot run without it.
 MQM completion also requires an exact one-to-one match between aligned target
 segment IDs and judge result IDs. Missing, duplicate, or unknown IDs keep the
 report in `review_required` and are recorded as judge warnings.
+Each MQM result must also include a structured review of technical terms that
+are not in the registered glossary. Failed terms require a linked terminology
+error, and multiple Korean renderings of the same source term produce a
+deterministic consistency issue.
 
 Runtime thresholds are loaded from `configs/eval_config.yml`, and hard/review
 gate routing is loaded from `configs/gates.yml`. Use `--evaluation-config` and

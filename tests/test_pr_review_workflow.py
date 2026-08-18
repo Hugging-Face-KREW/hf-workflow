@@ -5,6 +5,7 @@ from pathlib import Path
 import yaml
 
 WORKFLOW = Path(__file__).resolve().parents[1] / ".github/workflows/reusable-pr-review.yml"
+DAILY_WORKFLOW = Path(__file__).resolve().parents[1] / ".github/workflows/daily-translation.yml"
 
 
 def test_review_workflow_runs_existing_skills_without_fail_fast() -> None:
@@ -145,6 +146,12 @@ def test_review_workflow_enables_quality_llm_judge_by_default() -> None:
     assert workflow.count(
         "QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}"
     ) >= 2
+
+
+def test_daily_workflow_enables_quality_llm_judge_by_default() -> None:
+    workflow = DAILY_WORKFLOW.read_text()
+
+    assert "QUALITY_LLM_JUDGE_PROVIDER: ${{ vars.QUALITY_LLM_JUDGE_PROVIDER || 'openai' }}" in workflow
 
 
 def test_ready_lifecycle_clears_stale_human_needed_label() -> None:
