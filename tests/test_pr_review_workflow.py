@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import yaml
+
 
 WORKFLOW = Path(__file__).resolve().parents[1] / ".github/workflows/reusable-pr-review.yml"
 
@@ -13,6 +15,19 @@ def test_review_workflow_runs_existing_skills_without_fail_fast() -> None:
     assert "fail-fast: false" in workflow
     assert "skill: [seo, quality]" in workflow
     assert workflow.count("contents: read") >= 2
+
+
+def test_review_workflow_does_not_interpolate_inputs_in_shell_scripts() -> None:
+    workflow = yaml.safe_load(WORKFLOW.read_text())
+    run_blocks = "\n".join(
+        str(step.get("run", ""))
+        for job in workflow["jobs"].values()
+        for step in job.get("steps", [])
+    )
+
+    assert "${{ inputs." not in run_blocks
+    assert '--file "$HF_INPUT_FILE_PATH"' in run_blocks
+    assert 'git push origin "HEAD:$HF_INPUT_BRANCH"' in run_blocks
 
 
 def test_review_workflow_checks_out_the_exact_candidate() -> None:
@@ -120,6 +135,7 @@ def test_quality_mqm_judge_cache_is_keyed_by_document_identity() -> None:
     assert "workflow/skills/quality/judges/mqm_prompt.md" in review
     assert "workflow/skills/quality/style/hf-blog-ko-translation-guide.md" in review
     assert "workflow/skills/quality/schemas/mqm_judge.schema.json" in review
+    assert "workflow/skills/quality/glossary/*.tsv" in review
 
 
 def test_repair_reuses_failed_reports_and_only_rechecks_changed_content() -> None:
@@ -158,7 +174,7 @@ def test_ready_lifecycle_clears_stale_human_needed_label() -> None:
     assert "name: Clear stale human-needed label" in workflow
     assert "GH_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}" in workflow
     assert 'grep -Fxq "hf-agent:needs-human"' in workflow
-    assert 'gh pr edit "${{ inputs.pr_number }}"' in workflow
+    assert 'gh pr edit "$HF_INPUT_PR_NUMBER"' in workflow
     assert '--remove-label "hf-agent:needs-human"' in workflow
     assert "Publish lifecycle status" in workflow
 

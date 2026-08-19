@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import yaml
+
 
 WORKFLOW = Path(__file__).resolve().parents[1] / ".github/workflows/reusable-pr-mutate.yml"
 
@@ -19,7 +21,7 @@ def test_mutation_workflow_checks_the_expected_head_before_writing() -> None:
 
     assert "ref: ${{ inputs.expected_head_sha }}" in workflow
     assert "name: Reject a stale candidate" in workflow
-    assert '"${{ inputs.expected_head_sha }}"' in workflow
+    assert 'test "$current_sha" = "$HF_INPUT_EXPECTED_HEAD_SHA"' in workflow
 
 
 def test_mutation_workflow_does_not_interpolate_feedback_as_code() -> None:
@@ -30,6 +32,19 @@ def test_mutation_workflow_does_not_interpolate_feedback_as_code() -> None:
     assert "--metadata-suggestion results/metadata-suggestion.json" in workflow
     assert "steps.apply.outputs.intent == 'metadata'" in workflow
     assert "pull_request_target" not in workflow
+
+
+def test_mutation_workflow_does_not_interpolate_inputs_in_shell_scripts() -> None:
+    workflow = yaml.safe_load(WORKFLOW.read_text())
+    run_blocks = "\n".join(
+        str(step.get("run", ""))
+        for job in workflow["jobs"].values()
+        for step in job.get("steps", [])
+    )
+
+    assert "${{ inputs." not in run_blocks
+    assert '--file "$HF_INPUT_FILE_PATH"' in run_blocks
+    assert 'git push origin "HEAD:$HF_INPUT_BRANCH"' in run_blocks
 
 
 def test_mutation_workflow_resolves_handled_inline_threads() -> None:
