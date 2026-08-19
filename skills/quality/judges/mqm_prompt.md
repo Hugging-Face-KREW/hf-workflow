@@ -53,6 +53,15 @@ Judge each source/target segment against these guide rules:
 - Follow the glossary and first-mention bilingual rules for searchable terms.
   Only report a first-mention issue when a required bilingual term is missing
   or the source term becomes hard to search.
+- Audit technical terms that are not in the registered project glossary. For
+  every such term in the source segment, record the exact source and target
+  terms in `terminology_review.unregistered_terms`, even when the translation
+  is acceptable. Mark invented, misleading, or inconsistent Korean renderings
+  as `mistranslated` or `inconsistent` and emit a matching `terminology` error.
+- Use `terminology_review.status=not_applicable` only when the source segment
+  contains no unregistered technical term. Use `pass` when all recorded terms
+  are acceptable and `fail` when any recorded term is mistranslated or
+  inconsistent.
 - Keep the author's voice and article tone, but rewrite English structures into
   natural Korean.
 - Avoid translationese such as "에 의해", "사용되어질 수 있습니다", "후드 아래에서",
@@ -97,6 +106,17 @@ Return strict JSON only:
   "adequacy_score": 0.88,
   "fluency_score": 0.82,
   "technical_score": 1.0,
+  "terminology_review": {
+    "status": "pass",
+    "unregistered_terms": [
+      {
+        "source_term": "speculative decoding",
+        "target_term": "추측 디코딩",
+        "assessment": "acceptable",
+        "explanation": "문맥에 맞고 의미를 보존하는 기술 용어 번역입니다."
+      }
+    ]
+  },
   "errors": [
     {
       "guide_rule": "modal_strength",

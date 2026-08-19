@@ -149,12 +149,40 @@
     },
     "mqm_result": {
       "type": "object",
-      "required": ["segment_id", "adequacy_score", "fluency_score", "technical_score", "errors"],
+      "required": ["segment_id", "adequacy_score", "fluency_score", "technical_score", "terminology_review", "errors"],
       "properties": {
         "segment_id": { "type": "string" },
         "adequacy_score": { "type": "number", "minimum": 0, "maximum": 1 },
         "fluency_score": { "type": "number", "minimum": 0, "maximum": 1 },
         "technical_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "terminology_review": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "unregistered_terms"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["not_applicable", "pass", "fail"]
+            },
+            "unregistered_terms": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["source_term", "target_term", "assessment", "explanation"],
+                "properties": {
+                  "source_term": { "type": "string" },
+                  "target_term": { "type": "string" },
+                  "assessment": {
+                    "type": "string",
+                    "enum": ["acceptable", "mistranslated", "inconsistent"]
+                  },
+                  "explanation": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
         "errors": {
           "type": "array",
           "items": {
