@@ -257,11 +257,19 @@ review job이 만든 artifact bundle만 신뢰 가능한지 검증한다.
 - downstream report와 repair는 review를 다시 실행하지 않고 이 artifact를
   다운로드해 사용한다.
 
-PR #29는 quality MQM judge artifact cache를 추가했다. cache key는 target
-repository, post path, candidate content SHA-256, MQM provider/model/max-segments,
-그리고 MQM prompt·style guide·schema의 digest를 묶는다. 따라서 같은 콘텐츠와
-동일한 judge contract만 결과를 재사용하며, source policy나 prompt가 바뀌면 cache
-key도 바뀐다.
+PR #29는 quality matrix job의 MQM judge metric cache를 추가했다. 실제 캐시 파일은
+`quality-metric-cache.json`이며, SEO job은 이 캐시를 사용하지 않고 최종 review
+report artifact 자체도 캐시하지 않는다. cache key는 target repository, post path,
+candidate content SHA-256, MQM provider/model/max-segments, 그리고 MQM
+prompt·style guide·schema의 digest를 묶는다. 따라서 같은 콘텐츠와 동일한 judge
+contract에서만 metric 결과를 재사용하며, 이 key 구성 요소가 바뀌면 자동으로
+cache가 분리된다.
+
+quality job은 judge 실행 전에 cache를 restore한다. cache hit이면 복원된 파일을
+사용하고, miss이면 파일이 없을 때 `{}`로 초기화한 뒤 review 종료 시 cache를
+저장한다. source policy나 기타 설정 변경은 key에 직접 포함되지 않으므로,
+그 변경이 cache를 무효화해야 한다면 key 구성 요소 또는 content identity에
+명시적으로 반영해야 한다.
 
 artifact는 runner temporary directory에서 upload되고, 이름에는 skill과 head SHA가
 포함된다. retention은 1일이다. report job은 verifier success일 때만 PR marker
