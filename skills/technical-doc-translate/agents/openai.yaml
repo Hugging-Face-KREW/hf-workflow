@@ -1,0 +1,4 @@
+interface:
+  display_name: "Technical Document Translator"
+  short_description: "Translate Markdown and MDX technical documentation safely"
+  default_prompt: "Use $technical-doc-translate to translate this technical Markdown document into Korean while preserving executable and structural syntax."

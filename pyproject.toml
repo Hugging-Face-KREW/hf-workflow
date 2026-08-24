@@ -15,5 +15,6 @@ testpaths = [
     "tests",
     "skills/quality/tests",
     "skills/seo/tests",
+    "skills/technical-doc-translate/tests",
     "translation-flow/tests",
 ]
