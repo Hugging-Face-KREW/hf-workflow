@@ -80,10 +80,11 @@ python3 skills/<skill>/tools/<entrypoint>.py \
   --output-json result.json
 ```
 
-현재 구현 일부는 아직 과도기 상태입니다.
+현재 구현은 skill별 호환 CLI를 유지합니다.
 
 - SEO는 `seo_eval.py --file <path> --target-root <target-root> --output <report.md>`도 지원합니다.
-- Quality는 현재 `simple_quality_report.py`를 사용하며, [hf-workflow #3](https://github.com/Hugging-Face-KREW/hf-workflow/pull/3)의 full harness는 아직 연결하지 않았습니다.
+- Quality PR runner는 PR #23부터 `translation_quality_harness.py`를 사용합니다.
+  `simple_quality_report.py`는 baseline 도구로 남아 있지만 PR runner를 대체하지 않습니다.
 
 장기적으로는 모든 skill이 `manifest + target-root + output-md + output-json` 형태를
 지원하는 것이 좋습니다.
@@ -438,8 +439,10 @@ Done 기준:
 
 ### 11.3 [hf-workflow #3 — Add translation quality evaluation harness](https://github.com/Hugging-Face-KREW/hf-workflow/pull/3)
 
-이 PR은 full quality harness 후보입니다. 현재 loop는 아직 이 harness를 사용하지 않고
-`simple_quality_report.py`를 사용합니다.
+아래 내용은 full quality harness 연결 전 작성된 역사적 acceptance criteria입니다.
+현재 PR runner에는 PR #23을 통해 이 harness가 연결되어 있습니다. 현재 lifecycle
+status와 artifact 계약은 `hf-blog-workflow-spec.md`를 따르며, 특히 `auto_pass`와
+`review_required`는 wrapper상 pass로 유지합니다.
 
 Must:
 
@@ -484,7 +487,7 @@ Do not:
 - heavy model dependency를 default CI gate의 필수 dependency로 만들지 않습니다.
 - quality harness가 직접 commit/push하지 않습니다.
 
-권장 연결 순서:
+완료된 연결 순서:
 
 1. 현재 `simple_quality_report.py` 유지
 2. [hf-workflow #3](https://github.com/Hugging-Face-KREW/hf-workflow/pull/3)에 PR runner adapter 추가
@@ -524,7 +527,7 @@ Done 기준:
 
 - [hf-workflow #16](https://github.com/Hugging-Face-KREW/hf-workflow/pull/16)은 fixture corpus로 유용합니다. 다만 loop 연동 검증용 metadata를 추가하면 더 좋습니다.
 - [hf-workflow #17](https://github.com/Hugging-Face-KREW/hf-workflow/pull/17)은 SEO gate의 장기 방향과 잘 맞습니다. status/manifest/provider-missing 동작을 명확히 해야 합니다.
-- [hf-workflow #3](https://github.com/Hugging-Face-KREW/hf-workflow/pull/3)은 quality gate 본체 후보입니다. 현재 loop에 바로 교체하기 전 adapter와 degrade behavior가 필요합니다.
+- [hf-workflow #3](https://github.com/Hugging-Face-KREW/hf-workflow/pull/3)의 full quality harness는 PR #23에서 현재 loop에 연결됐습니다. 이후 변경은 adapter, degrade behavior, artifact identity를 보존해야 합니다.
 
 ## 14. PR별 담당자 확인 항목
 

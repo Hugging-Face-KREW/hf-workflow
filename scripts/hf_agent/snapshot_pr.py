@@ -14,6 +14,26 @@ TRUSTED_PERMISSIONS = {"admin", "maintain", "write"}
 MANAGED_LABEL = "hf-agent:managed"
 PAUSED_LABEL = "hf-agent:paused"
 MARKER_PREFIX = "<!-- hf-agent-"
+PAGE_SIZE = 100
+
+
+def _load_all_pages(
+    *,
+    path: str,
+    token: str,
+    requester: Requester,
+) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    page = 1
+    while True:
+        page_path = path if page == 1 else f"{path}&page={page}"
+        batch = requester("GET", page_path, token, None)
+        if not isinstance(batch, list):
+            raise TypeError(f"Expected a paginated list from GitHub: {page_path}")
+        items.extend(batch)
+        if len(batch) < PAGE_SIZE:
+            return items
+        page += 1
 
 
 def _trusted_feedback(
@@ -61,8 +81,10 @@ def load_pr_snapshot(
     requester: Requester = request_json,
 ) -> dict[str, Any]:
     pull = requester("GET", f"/repos/{repository}/pulls/{pr_number}", token, None)
-    files = requester(
-        "GET", f"/repos/{repository}/pulls/{pr_number}/files?per_page=100", token, None
+    files = _load_all_pages(
+        path=f"/repos/{repository}/pulls/{pr_number}/files?per_page={PAGE_SIZE}",
+        token=token,
+        requester=requester,
     )
     labels = {str(label["name"]) for label in pull.get("labels", [])}
     head = pull.get("head") or {}
@@ -96,7 +118,7 @@ def load_pr_snapshot(
     permission_cache: dict[str, str] = {}
     feedback: list[Feedback] = []
     for kind, path in sources:
-        items = requester("GET", path, token, None)
+        items = _load_all_pages(path=path, token=token, requester=requester)
         feedback.extend(
             _trusted_feedback(
                 repository=repository,

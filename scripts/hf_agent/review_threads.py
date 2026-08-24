@@ -3,24 +3,42 @@ from __future__ import annotations
 import argparse
 import json
 import os
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from hf_agent.github_api import Requester, request_json
 
 
 THREADS_QUERY = """
-query ReviewThreads($owner: String!, $name: String!, $number: Int!) {
+query ReviewThreads($owner: String!, $name: String!, $number: Int!, $cursor: String) {
   repository(owner: $owner, name: $name) {
     pullRequest(number: $number) {
-      reviewThreads(first: 100) {
+      reviewThreads(first: 100, after: $cursor) {
+        pageInfo { hasNextPage endCursor }
         nodes {
           id
           isResolved
           path
           line
-          comments(first: 100) { nodes { databaseId } }
+          comments(first: 100) {
+            pageInfo { hasNextPage endCursor }
+            nodes { databaseId }
+          }
         }
+      }
+    }
+  }
+}
+"""
+
+THREAD_COMMENTS_QUERY = """
+query ReviewThreadComments($threadId: ID!, $cursor: String) {
+  node(id: $threadId) {
+    ... on PullRequestReviewThread {
+      comments(first: 100, after: $cursor) {
+        pageInfo { hasNextPage endCursor }
+        nodes { databaseId }
       }
     }
   }
@@ -70,14 +88,43 @@ def list_unresolved_threads(
     requester: Requester = request_json,
 ) -> list[dict[str, Any]]:
     owner, name = repository.split("/", 1)
-    result = _graphql(
-        THREADS_QUERY,
-        {"owner": owner, "name": name, "number": pr_number},
-        token=token,
-        requester=requester,
-    )
-    nodes = result["data"]["repository"]["pullRequest"]["reviewThreads"]["nodes"]
-    return [thread for thread in nodes if not thread["isResolved"]]
+    threads: list[dict[str, Any]] = []
+    cursor: str | None = None
+    while True:
+        result = _graphql(
+            THREADS_QUERY,
+            {"owner": owner, "name": name, "number": pr_number, "cursor": cursor},
+            token=token,
+            requester=requester,
+        )
+        connection = result["data"]["repository"]["pullRequest"]["reviewThreads"]
+        threads.extend(connection["nodes"])
+        page_info = connection.get("pageInfo") or {}
+        if not page_info.get("hasNextPage"):
+            break
+        cursor = str(page_info.get("endCursor") or "")
+        if not cursor:
+            raise RuntimeError("GitHub omitted the next review-thread cursor")
+
+    unresolved = [thread for thread in threads if not thread["isResolved"]]
+    for thread in unresolved:
+        comments = thread.get("comments") or {}
+        page_info = comments.get("pageInfo") or {}
+        cursor = str(page_info.get("endCursor") or "")
+        while page_info.get("hasNextPage"):
+            if not cursor:
+                raise RuntimeError("GitHub omitted the next review-comment cursor")
+            result = _graphql(
+                THREAD_COMMENTS_QUERY,
+                {"threadId": thread["id"], "cursor": cursor},
+                token=token,
+                requester=requester,
+            )
+            next_comments = result["data"]["node"]["comments"]
+            comments.setdefault("nodes", []).extend(next_comments["nodes"])
+            page_info = next_comments.get("pageInfo") or {}
+            cursor = str(page_info.get("endCursor") or "")
+    return unresolved
 
 
 def reply_and_resolve(

@@ -66,6 +66,15 @@ on:
         default: 3
         type: number
 
+env:
+  HF_INPUT_TARGET_REPO: ${{ inputs.target_repo }}
+  HF_INPUT_PR_NUMBER: ${{ inputs.pr_number }}
+  HF_INPUT_HEAD_SHA: ${{ inputs.head_sha }}
+  HF_INPUT_FILE_PATH: ${{ inputs.file_path }}
+  HF_INPUT_BRANCH: ${{ inputs.branch }}
+  HF_INPUT_FEEDBACK_REVISION: ${{ inputs.feedback_revision }}
+  HF_INPUT_MAX_REPAIR_ATTEMPTS: ${{ inputs.max_repair_attempts }}
+
 jobs:
   review:
     name: HF Agent / ${{ matrix.skill }}
@@ -129,14 +138,14 @@ jobs:
         with:
           path: ${{ runner.temp }}/quality-metric-cache.json
           key: >-
-            quality-mqm-${{ inputs.target_repo }}-${{ inputs.file_path }}-${{ steps.review_identity.outputs.target_hash }}-${{ env.QUALITY_LLM_JUDGE_PROVIDER }}-${{ env.LLM_JUDGE_MODEL }}-${{ env.QUALITY_LLM_JUDGE_MAX_SEGMENTS }}-${{ hashFiles('workflow/skills/quality/judges/mqm_prompt.md', 'workflow/skills/quality/style/hf-blog-ko-translation-guide.md', 'workflow/skills/quality/schemas/mqm_judge.schema.json') }}
+            quality-mqm-${{ inputs.target_repo }}-${{ inputs.file_path }}-${{ steps.review_identity.outputs.target_hash }}-${{ env.QUALITY_LLM_JUDGE_PROVIDER }}-${{ env.LLM_JUDGE_MODEL }}-${{ env.QUALITY_LLM_JUDGE_MAX_SEGMENTS }}-${{ hashFiles('workflow/skills/quality/judges/mqm_prompt.md', 'workflow/skills/quality/style/hf-blog-ko-translation-guide.md', 'workflow/skills/quality/schemas/mqm_judge.schema.json', 'workflow/skills/quality/glossary/*.tsv') }}
 
       - name: Run review skill
         working-directory: workflow
         run: >-
           python scripts/hf_agent/run_skill_review.py
           --skill "${{ matrix.skill }}"
-          --file "${{ inputs.file_path }}"
+          --file "$HF_INPUT_FILE_PATH"
           --target-root ../target
           --report "${{ runner.temp }}/${{ matrix.skill }}.md"
           --result-json "${{ runner.temp }}/${{ matrix.skill }}.json"
@@ -165,7 +174,7 @@ jobs:
         with:
           path: ${{ runner.temp }}/quality-metric-cache.json
           key: >-
-            quality-mqm-${{ inputs.target_repo }}-${{ inputs.file_path }}-${{ steps.review_identity.outputs.target_hash }}-${{ env.QUALITY_LLM_JUDGE_PROVIDER }}-${{ env.LLM_JUDGE_MODEL }}-${{ env.QUALITY_LLM_JUDGE_MAX_SEGMENTS }}-${{ hashFiles('workflow/skills/quality/judges/mqm_prompt.md', 'workflow/skills/quality/style/hf-blog-ko-translation-guide.md', 'workflow/skills/quality/schemas/mqm_judge.schema.json') }}
+            quality-mqm-${{ inputs.target_repo }}-${{ inputs.file_path }}-${{ steps.review_identity.outputs.target_hash }}-${{ env.QUALITY_LLM_JUDGE_PROVIDER }}-${{ env.LLM_JUDGE_MODEL }}-${{ env.QUALITY_LLM_JUDGE_MAX_SEGMENTS }}-${{ hashFiles('workflow/skills/quality/judges/mqm_prompt.md', 'workflow/skills/quality/style/hf-blog-ko-translation-guide.md', 'workflow/skills/quality/schemas/mqm_judge.schema.json', 'workflow/skills/quality/glossary/*.tsv') }}
 
   verifier:
     name: HF Agent / Independent Verifier
@@ -213,8 +222,8 @@ jobs:
           python -m hf_agent.verify_review_artifacts
           --results results
           --target-root target
-          --file "${{ inputs.file_path }}"
-          --expected-head-sha "${{ inputs.head_sha }}"
+          --file "$HF_INPUT_FILE_PATH"
+          --expected-head-sha "$HF_INPUT_HEAD_SHA"
           --expected-provider "$QUALITY_LLM_JUDGE_PROVIDER"
           --expected-model "$LLM_JUDGE_MODEL"
 
@@ -255,9 +264,9 @@ jobs:
         run: >-
           python -m hf_agent.publish_pr_comment
           --results results
-          --repository "${{ inputs.target_repo }}"
-          --pr-number "${{ inputs.pr_number }}"
-          --head-sha "${{ inputs.head_sha }}"
+          --repository "$HF_INPUT_TARGET_REPO"
+          --pr-number "$HF_INPUT_PR_NUMBER"
+          --head-sha "$HF_INPUT_HEAD_SHA"
 
   review_threads:
     name: HF Agent / Review Threads
@@ -283,8 +292,8 @@ jobs:
           PYTHONPATH: workflow/scripts
         run: |
           python -m hf_agent.review_threads \
-            --repository "${{ inputs.target_repo }}" \
-            --pr-number "${{ inputs.pr_number }}" \
+            --repository "$HF_INPUT_TARGET_REPO" \
+            --pr-number "$HF_INPUT_PR_NUMBER" \
             --result-json "${{ runner.temp }}/threads.json"
           count=$(jq -r .unresolved_threads "${{ runner.temp }}/threads.json")
           echo "count=$count" >> "$GITHUB_OUTPUT"
@@ -344,9 +353,9 @@ jobs:
         run: |
           python -m hf_agent.repair_gates \
             --results results \
-            --repository "${{ inputs.target_repo }}" \
-            --pr-number "${{ inputs.pr_number }}" \
-            --max-attempts "${{ inputs.max_repair_attempts }}" \
+            --repository "$HF_INPUT_TARGET_REPO" \
+            --pr-number "$HF_INPUT_PR_NUMBER" \
+            --max-attempts "$HF_INPUT_MAX_REPAIR_ATTEMPTS" \
             --feedback-file "${{ runner.temp }}/gate-feedback.txt" \
             --result-json "${{ runner.temp }}/repair.json"
           echo "allowed=$(jq -r .allowed "${{ runner.temp }}/repair.json")" >> "$GITHUB_OUTPUT"
@@ -354,7 +363,7 @@ jobs:
       - name: Stop exhausted autopilot
         if: steps.prepare.outputs.allowed != 'true'
         run: |
-          gh pr edit "${{ inputs.pr_number }}" --repo "${{ inputs.target_repo }}" \
+          gh pr edit "$HF_INPUT_PR_NUMBER" --repo "$HF_INPUT_TARGET_REPO" \
             --add-label "hf-agent:needs-human"
           exit 1
 
@@ -369,7 +378,7 @@ jobs:
           feedback=$(<"${{ runner.temp }}/gate-feedback.txt")
           python -m hf_agent.handle_pr_feedback \
             --target-root target \
-            --file "${{ inputs.file_path }}" \
+            --file "$HF_INPUT_FILE_PATH" \
             --feedback "$feedback" \
             --result-json "${{ runner.temp }}/repair-result.json"
           echo "changed=$(jq -r .changed "${{ runner.temp }}/repair-result.json")" >> "$GITHUB_OUTPUT"
@@ -378,7 +387,7 @@ jobs:
       - name: Stop non-actionable repair
         if: ${{ steps.prepare.outputs.allowed == 'true' && steps.apply.outputs.changed != 'true' }}
         run: |
-          gh pr edit "${{ inputs.pr_number }}" --repo "${{ inputs.target_repo }}" \
+          gh pr edit "$HF_INPUT_PR_NUMBER" --repo "$HF_INPUT_TARGET_REPO" \
             --add-label "hf-agent:needs-human"
           exit 1
 
@@ -390,7 +399,7 @@ jobs:
           for skill in seo quality; do
             python scripts/hf_agent/run_skill_review.py \
               --skill "$skill" \
-              --file "${{ inputs.file_path }}" \
+              --file "$HF_INPUT_FILE_PATH" \
               --target-root ../target \
               --report "${{ runner.temp }}/repair-$skill.md" \
               --result-json "${{ runner.temp }}/repair-$skill.json"
@@ -399,7 +408,7 @@ jobs:
       - name: Stop rejected repair
         if: ${{ always() && steps.verify.outcome == 'failure' }}
         run: |
-          gh pr edit "${{ inputs.pr_number }}" --repo "${{ inputs.target_repo }}" \
+          gh pr edit "$HF_INPUT_PR_NUMBER" --repo "$HF_INPUT_TARGET_REPO" \
             --add-label "hf-agent:needs-human"
           exit 1
 
@@ -409,9 +418,9 @@ jobs:
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add -- "${{ inputs.file_path }}"
+          git add -- "$HF_INPUT_FILE_PATH"
           git commit -m "🐛 Repair failed PR gates"
-          git push origin "HEAD:${{ inputs.branch }}"
+          git push origin "HEAD:$HF_INPUT_BRANCH"
 
   metadata_apply:
     name: HF Agent / Apply Metadata Suggestion
@@ -457,7 +466,7 @@ jobs:
           mkdir -p ../results
           python scripts/hf_agent/run_skill_review.py \
             --skill seo \
-            --file "${{ inputs.file_path }}" \
+            --file "$HF_INPUT_FILE_PATH" \
             --target-root ../target \
             --report "../results/seo.md" \
             --result-json "../results/seo.json"
@@ -479,7 +488,7 @@ jobs:
           for skill in seo quality; do
             python scripts/hf_agent/run_skill_review.py \
               --skill "$skill" \
-              --file "${{ inputs.file_path }}" \
+              --file "$HF_INPUT_FILE_PATH" \
               --target-root ../target \
               --report "${{ runner.temp }}/metadata-$skill.md" \
               --result-json "${{ runner.temp }}/metadata-$skill.json"
@@ -491,9 +500,9 @@ jobs:
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add -- "${{ inputs.file_path }}"
+          git add -- "$HF_INPUT_FILE_PATH"
           git commit -m "🔧 Update SEO metadata"
-          git push origin "HEAD:${{ inputs.branch }}"
+          git push origin "HEAD:$HF_INPUT_BRANCH"
 
   finalize:
     name: HF Agent / Finalize Lifecycle
@@ -516,10 +525,10 @@ jobs:
       - name: Build reviewed snapshot
         run: >-
           jq -n
-          --arg head_sha "${{ inputs.head_sha }}"
-          --arg feedback_revision "${{ inputs.feedback_revision }}"
-          --arg expected_head_sha "${{ inputs.head_sha }}"
-          --arg expected_feedback_revision "${{ inputs.feedback_revision }}"
+          --arg head_sha "$HF_INPUT_HEAD_SHA"
+          --arg feedback_revision "$HF_INPUT_FEEDBACK_REVISION"
+          --arg expected_head_sha "$HF_INPUT_HEAD_SHA"
+          --arg expected_feedback_revision "$HF_INPUT_FEEDBACK_REVISION"
           --argjson gates_passed "${{ needs.review.result == 'success' }}"
           --argjson verifier_passed "${{ needs.verifier.result == 'success' }}"
           --argjson report_published "${{ needs.report.result == 'success' }}"
@@ -538,16 +547,16 @@ jobs:
         run: >-
           python -m hf_agent.finalize_pr
           --snapshot "${{ runner.temp }}/snapshot.json"
-          --repository "${{ inputs.target_repo }}"
-          --pr-number "${{ inputs.pr_number }}"
+          --repository "$HF_INPUT_TARGET_REPO"
+          --pr-number "$HF_INPUT_PR_NUMBER"
           --target-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
       - name: Clear stale human-needed label
         env:
           GH_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
         run: |
-          if gh issue view "${{ inputs.pr_number }}" --repo "${{ inputs.target_repo }}" --json labels --jq '.labels[].name' | grep -Fxq "hf-agent:needs-human"; then
-            gh pr edit "${{ inputs.pr_number }}" --repo "${{ inputs.target_repo }}" --remove-label "hf-agent:needs-human"
+          if gh issue view "$HF_INPUT_PR_NUMBER" --repo "$HF_INPUT_TARGET_REPO" --json labels --jq '.labels[].name' | grep -Fxq "hf-agent:needs-human"; then
+            gh pr edit "$HF_INPUT_PR_NUMBER" --repo "$HF_INPUT_TARGET_REPO" --remove-label "hf-agent:needs-human"
           fi
 
   notify_ready:
@@ -572,5 +581,5 @@ jobs:
         if: ${{ env.DISCORD_WEBHOOK_URL != '' }}
         run: >-
           python workflow/scripts/notify_discord.py
-          --ready-pr-url "${{ github.server_url }}/${{ inputs.target_repo }}/pull/${{ inputs.pr_number }}"
-          --head-sha "${{ inputs.head_sha }}"
+          --ready-pr-url "${{ github.server_url }}/$HF_INPUT_TARGET_REPO/pull/$HF_INPUT_PR_NUMBER"
+          --head-sha "$HF_INPUT_HEAD_SHA"

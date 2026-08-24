@@ -14,6 +14,11 @@ hard_gates:
       - blog
     localized_source_key_aliases:
       thumbnail: image
+  locale_punctuation:
+    status: reject
+    forbidden:
+      - "。"
+      - "、"
   code_blocks:
     status: reject
     compare_hashes: true
