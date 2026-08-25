@@ -45,6 +45,21 @@ def count_trailing_repairs(commits: list[dict[str, Any]]) -> int:
     return count
 
 
+def has_incomplete_quality_evaluation(results_root: Path) -> bool:
+    for result_path in sorted(results_root.glob("**/quality-eval.json")):
+        result = json.loads(result_path.read_text())
+        metadata = result.get("metadata")
+        mqm_judge = result.get("mqm_judge")
+        if isinstance(metadata, dict) and metadata.get("semantic_evaluation_complete") is False:
+            return True
+        if (
+            isinstance(mqm_judge, dict)
+            and int(mqm_judge.get("contract_incomplete_segment_count", 0)) > 0
+        ):
+            return True
+    return False
+
+
 def prepare_repair(
     *,
     results_root: Path,
@@ -53,7 +68,10 @@ def prepare_repair(
     max_attempts: int,
     token: str,
     requester: Requester = request_json,
-) -> tuple[bool, int, str]:
+) -> tuple[bool, int, str, str]:
+    feedback = build_gate_feedback(results_root)
+    if has_incomplete_quality_evaluation(results_root):
+        return False, 0, feedback, "incomplete_quality_evaluation"
     commits = requester(
         "GET",
         f"/repos/{repository}/pulls/{pr_number}/commits?per_page=100",
@@ -61,7 +79,9 @@ def prepare_repair(
         None,
     )
     attempts = count_trailing_repairs(commits)
-    return attempts < max_attempts, attempts, build_gate_feedback(results_root)
+    allowed = attempts < max_attempts
+    reason = "allowed" if allowed else "max_repair_attempts_reached"
+    return allowed, attempts, feedback, reason
 
 
 def main() -> int:
@@ -73,7 +93,7 @@ def main() -> int:
     parser.add_argument("--feedback-file", required=True, type=Path)
     parser.add_argument("--result-json", required=True, type=Path)
     args = parser.parse_args()
-    allowed, attempts, feedback = prepare_repair(
+    allowed, attempts, feedback, reason = prepare_repair(
         results_root=args.results,
         repository=args.repository,
         pr_number=args.pr_number,
@@ -82,9 +102,9 @@ def main() -> int:
     )
     args.feedback_file.write_text(feedback)
     args.result_json.write_text(
-        json.dumps({"allowed": allowed, "attempts": attempts}, sort_keys=True) + "\n"
+        json.dumps({"allowed": allowed, "attempts": attempts, "reason": reason}, sort_keys=True) + "\n"
     )
-    print(f"Repair attempts: {attempts}/{args.max_attempts}")
+    print(f"Repair attempts: {attempts}/{args.max_attempts} ({reason})")
     return 0
 
 

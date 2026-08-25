@@ -13,7 +13,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from collections import Counter
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -67,6 +67,7 @@ MQM_TERMINOLOGY_REVIEW_FIELDS = {"status", "unregistered_terms"}
 MQM_UNREGISTERED_TERM_FIELDS = {"source_term", "target_term", "assessment", "explanation"}
 MQM_TERMINOLOGY_STATUSES = {"not_applicable", "pass", "fail"}
 MQM_TERM_ASSESSMENTS = {"acceptable", "mistranslated", "inconsistent"}
+MQM_CACHE_FORMAT_VERSION = 2
 MQM_ERROR_FIELDS = {
     "guide_rule",
     "guide_section",
@@ -2426,7 +2427,7 @@ def run_openai_mqm_judge(
     config: MetricConfig,
     warnings: list[str],
     glossary: list[GlossaryEntry] | None = None,
-) -> tuple[list[dict[str, object]], int, int]:
+) -> tuple[list[dict[str, object]], int, int, list[str]]:
     prompt = load_mqm_prompt(config.llm_judge_prompt_path, config.style_guide_path, glossary)
     prompt_hash = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
     schema_hash = hashlib.sha256(DEFAULT_MQM_SCHEMA_PATH.read_bytes()).hexdigest()
@@ -2434,6 +2435,7 @@ def run_openai_mqm_judge(
     cache = load_metric_cache(config.metric_cache_path)
     cache_hits = 0
     cache_misses = 0
+    contract_incomplete_segment_ids: set[str] = set()
     results: list[dict[str, object]] = []
     pending: list[tuple[dict[str, str], str, str]] = []
     for item in selected_judge_alignments(alignment, config.llm_judge_max_segments):
@@ -2445,6 +2447,18 @@ def run_openai_mqm_judge(
         )
         cached = cache.get(cache_key)
         if isinstance(cached, dict):
+            if cached.get("cache_format_version") == MQM_CACHE_FORMAT_VERSION:
+                if cached.get("contract_complete") is False:
+                    cached_warnings = cached.get("validation_warnings")
+                    if isinstance(cached_warnings, list):
+                        warnings.extend(str(item) for item in cached_warnings)
+                    warnings.append(
+                        f"OpenAI MQM judge reused a quarantined contract-invalid response for segment {target_id}."
+                    )
+                    contract_incomplete_segment_ids.add(target_id)
+                    cache_hits += 1
+                    continue
+                cached = cached.get("result")
             normalized = normalize_mqm_result(
                 cached,
                 target_id,
@@ -2460,17 +2474,17 @@ def run_openai_mqm_judge(
         cache_misses += 1
         pending.append((item, target_id, cache_key))
     if not pending:
-        return results, cache_hits, cache_misses
+        return results, cache_hits, cache_misses, sorted(contract_incomplete_segment_ids)
 
     api_key = os.environ.get(config.llm_judge_api_key_env, "").strip()
     if not api_key:
         warnings.append(f"OpenAI MQM judge skipped: env var {config.llm_judge_api_key_env} is not set.")
-        return results, cache_hits, cache_misses
+        return results, cache_hits, cache_misses, sorted(contract_incomplete_segment_ids)
     try:
         from openai import OpenAI
     except ImportError:
         warnings.append("OpenAI MQM judge skipped: `openai` package is not installed.")
-        return results, cache_hits, cache_misses
+        return results, cache_hits, cache_misses, sorted(contract_incomplete_segment_ids)
 
     client_kwargs: dict[str, object] = {"api_key": api_key}
     if config.llm_judge_base_url:
@@ -2479,7 +2493,7 @@ def run_openai_mqm_judge(
 
     def evaluate_pending(
         entry: tuple[dict[str, str], str, str],
-    ) -> tuple[dict[str, object] | None, list[str]]:
+    ) -> tuple[dict[str, object] | None, list[str], bool]:
         item, target_id, _ = entry
         item_warnings: list[str] = []
         try:
@@ -2500,15 +2514,15 @@ def run_openai_mqm_judge(
                 item_warnings.append(
                     f"OpenAI MQM judge incomplete for segment {target_id}: status={status}, details={details}"
                 )
-                return None, item_warnings
+                return None, item_warnings, False
             output_text = str(getattr(response, "output_text", "") or "")
             if not output_text.strip():
                 item_warnings.append(f"OpenAI MQM judge returned empty output for segment {target_id}.")
-                return None, item_warnings
+                return None, item_warnings, False
             raw = parse_json_object(output_text)
         except Exception as exc:
             item_warnings.append(f"OpenAI MQM judge failed for segment {target_id}: {exc}")
-            return None, item_warnings
+            return None, item_warnings, False
         normalized = normalize_mqm_result(
             raw,
             target_id,
@@ -2516,22 +2530,51 @@ def run_openai_mqm_judge(
             source_text=str(item.get("source_text") or ""),
             target_text=str(item.get("target_text") or ""),
         )
-        return normalized, item_warnings
+        return normalized, item_warnings, normalized is None
 
     worker_count = min(len(pending), max(1, config.llm_judge_max_concurrency))
+    evaluated: list[tuple[dict[str, object] | None, list[str], bool] | None] = [None] * len(pending)
     with ThreadPoolExecutor(max_workers=worker_count, thread_name_prefix="mqm-judge") as executor:
-        evaluated = list(executor.map(evaluate_pending, pending))
+        futures = {
+            executor.submit(evaluate_pending, entry): index
+            for index, entry in enumerate(pending)
+        }
+        completed = 0
+        for future in as_completed(futures):
+            evaluated[futures[future]] = future.result()
+            completed += 1
+            if completed == len(pending) or completed % 25 == 0:
+                print(
+                    f"[mqm-judge] completed={completed}/{len(pending)} "
+                    f"cache_hits={cache_hits} workers={worker_count}",
+                    flush=True,
+                )
 
     cache_dirty = False
-    for (_, _, cache_key), (normalized, item_warnings) in zip(pending, evaluated, strict=True):
+    for (_, target_id, cache_key), evaluation in zip(pending, evaluated, strict=True):
+        if evaluation is None:
+            raise RuntimeError(f"MQM judge worker produced no result for segment {target_id}")
+        normalized, item_warnings, contract_invalid = evaluation
         warnings.extend(item_warnings)
         if normalized is not None:
             results.append(normalized)
-            cache[cache_key] = normalized
+            cache[cache_key] = {
+                "cache_format_version": MQM_CACHE_FORMAT_VERSION,
+                "contract_complete": True,
+                "result": normalized,
+            }
+            cache_dirty = True
+        elif contract_invalid:
+            contract_incomplete_segment_ids.add(target_id)
+            cache[cache_key] = {
+                "cache_format_version": MQM_CACHE_FORMAT_VERSION,
+                "contract_complete": False,
+                "validation_warnings": item_warnings,
+            }
             cache_dirty = True
     if cache_dirty:
         save_metric_cache(config.metric_cache_path, cache)
-    return results, cache_hits, cache_misses
+    return results, cache_hits, cache_misses, sorted(contract_incomplete_segment_ids)
 
 
 def summarize_mqm_judge(
@@ -2550,7 +2593,9 @@ def summarize_mqm_judge(
     cache_hits: int = 0,
     cache_misses: int = 0,
     max_concurrency: int = 1,
+    contract_incomplete_segment_ids: list[str] | None = None,
 ) -> dict[str, object]:
+    incomplete_ids = sorted(set(contract_incomplete_segment_ids or []))
     severity_counts: Counter[str] = Counter()
     for result in results:
         for error in result.get("errors", []):
@@ -2573,6 +2618,9 @@ def summarize_mqm_judge(
         "cache_hits": cache_hits,
         "cache_misses": cache_misses,
         "max_concurrency": max_concurrency if provider == "openai" else 1,
+        "contract_complete": not incomplete_ids,
+        "contract_incomplete_segment_count": len(incomplete_ids),
+        "contract_incomplete_segment_ids": incomplete_ids,
         "warnings": warnings,
         "segments": results,
     }
@@ -2595,6 +2643,7 @@ def evaluate_mqm_judge(
     results: list[dict[str, object]] = []
     cache_hits = 0
     cache_misses = 0
+    contract_incomplete_segment_ids: list[str] = []
     prompt_hash = ""
     style_guide_hash = ""
     if not enabled:
@@ -2617,7 +2666,12 @@ def evaluate_mqm_judge(
         prompt_text = load_mqm_prompt(config.llm_judge_prompt_path, config.style_guide_path, glossary)
         prompt_hash = hashlib.sha256(prompt_text.encode("utf-8")).hexdigest()
         style_guide_hash = style_guide_digest(config.style_guide_path)[1]
-        results, cache_hits, cache_misses = run_openai_mqm_judge(alignment, config, warnings, glossary)
+        results, cache_hits, cache_misses, contract_incomplete_segment_ids = run_openai_mqm_judge(
+            alignment,
+            config,
+            warnings,
+            glossary,
+        )
     else:
         warnings.append(f"MQM judge skipped: unknown provider `{provider}`.")
     return summarize_mqm_judge(
@@ -2635,16 +2689,20 @@ def evaluate_mqm_judge(
         cache_hits=cache_hits,
         cache_misses=cache_misses,
         max_concurrency=max(1, config.llm_judge_max_concurrency),
+        contract_incomplete_segment_ids=contract_incomplete_segment_ids,
     )
 
 
 def apply_mqm_judge_issues(issues: list[Issue], mqm_judge: dict[str, object], review_threshold: float) -> None:
     if not mqm_judge.get("enabled"):
         return
+    incomplete_ids = set(mqm_judge.get("contract_incomplete_segment_ids", []))
     for result in mqm_judge.get("segments", []):
         if not isinstance(result, dict):
             continue
         segment_id = str(result.get("segment_id") or "")
+        if segment_id in incomplete_ids:
+            continue
         categories_with_errors: set[str] = set()
         for error in result.get("errors", []):
             if not isinstance(error, dict):
@@ -2695,8 +2753,11 @@ def apply_unregistered_terminology_consistency_issues(
     mqm_judge: dict[str, object],
 ) -> None:
     observed: dict[str, dict[str, object]] = {}
+    incomplete_ids = set(mqm_judge.get("contract_incomplete_segment_ids", []))
     for result in mqm_judge.get("segments", []):
         if not isinstance(result, dict):
+            continue
+        if str(result.get("segment_id") or "") in incomplete_ids:
             continue
         review = result.get("terminology_review")
         if not isinstance(review, dict):
@@ -3041,6 +3102,7 @@ def validate_documents(
         and mqm_judge.get("enabled")
         and int(mqm_judge.get("segment_count", 0)) == len(segment_alignment)
         and int(mqm_judge.get("skipped_segment_count", 0)) == 0
+        and int(mqm_judge.get("contract_incomplete_segment_count", 0)) == 0
         and mqm_segment_ids_complete
     )
     if source is not None and not semantic_evaluation_complete:
@@ -3175,7 +3237,7 @@ def validate_documents(
             "evaluation_config_path": str(gate_policy.evaluation_config_path or ""),
             "gates_config_path": str(gate_policy.gates_config_path or ""),
             "tool": "translation_quality_harness",
-            "tool_version": "0.6.0",
+            "tool_version": "0.7.0",
         },
     }
 
@@ -3244,6 +3306,10 @@ def markdown_report(report: dict[str, object]) -> str:
         lines.append(f"- Style guide hash: `{mqm_summary.get('style_guide_hash')}`")
     lines.append(f"- Requested segments: {mqm_summary.get('requested_segment_count', 0)}")
     lines.append(f"- Evaluated segments: {mqm_summary.get('segment_count', 0)}")
+    lines.append(f"- Contract complete: {mqm_summary.get('contract_complete', True)}")
+    lines.append(
+        f"- Contract-incomplete segments: {mqm_summary.get('contract_incomplete_segment_count', 0)}"
+    )
     lines.append(f"- MQM errors: {mqm_summary.get('error_count', 0)}")
     lines.append(f"- Cache hits: {mqm_summary.get('cache_hits', 0)}")
     lines.append(f"- Cache misses: {mqm_summary.get('cache_misses', 0)}")

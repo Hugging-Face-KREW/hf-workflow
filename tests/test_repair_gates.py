@@ -7,7 +7,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from hf_agent.repair_gates import build_gate_feedback, count_trailing_repairs
+from hf_agent.repair_gates import (
+    build_gate_feedback,
+    count_trailing_repairs,
+    has_incomplete_quality_evaluation,
+    prepare_repair,
+)
 
 
 def test_build_gate_feedback_includes_only_failed_reports(tmp_path: Path) -> None:
@@ -48,3 +53,42 @@ def test_count_trailing_repairs_stops_at_non_repair_commit() -> None:
     ]
 
     assert count_trailing_repairs(commits) == 2
+
+
+def test_incomplete_quality_evaluation_blocks_automatic_repair(tmp_path: Path) -> None:
+    quality = tmp_path / "quality"
+    quality.mkdir()
+    (quality / "quality.json").write_text(
+        json.dumps({"skill": "quality", "conclusion": "fail"})
+    )
+    (quality / "quality.md").write_text("Semantic adequacy evaluation is incomplete.")
+    (quality / "quality-eval.json").write_text(
+        json.dumps(
+            {
+                "metadata": {"semantic_evaluation_complete": False},
+                "mqm_judge": {"contract_incomplete_segment_count": 2},
+            }
+        )
+    )
+    requester_called = False
+
+    def requester(*_: object) -> list[dict[str, object]]:
+        nonlocal requester_called
+        requester_called = True
+        return []
+
+    allowed, attempts, feedback, reason = prepare_repair(
+        results_root=tmp_path,
+        repository="owner/repo",
+        pr_number=1,
+        max_attempts=3,
+        token="token",
+        requester=requester,
+    )
+
+    assert has_incomplete_quality_evaluation(tmp_path) is True
+    assert allowed is False
+    assert attempts == 0
+    assert reason == "incomplete_quality_evaluation"
+    assert "QUALITY gate failed" in feedback
+    assert requester_called is False

@@ -29,6 +29,10 @@ on:
         required: false
         default: 3
         type: number
+      repair_enabled:
+        required: false
+        default: true
+        type: boolean
     secrets:
       DISCORD_WEBHOOK_URL:
         required: false
@@ -65,6 +69,11 @@ on:
         required: false
         default: 3
         type: number
+      repair_enabled:
+        description: Allow the workflow to modify and push the PR branch after a failed gate
+        required: false
+        default: true
+        type: boolean
 
 env:
   HF_INPUT_TARGET_REPO: ${{ inputs.target_repo }}
@@ -139,7 +148,7 @@ jobs:
         with:
           path: ${{ runner.temp }}/quality-metric-cache.json
           key: >-
-            quality-mqm-${{ inputs.target_repo }}-${{ inputs.file_path }}-${{ steps.review_identity.outputs.target_hash }}-${{ env.QUALITY_LLM_JUDGE_PROVIDER }}-${{ env.LLM_JUDGE_MODEL }}-${{ env.QUALITY_LLM_JUDGE_MAX_SEGMENTS }}-${{ hashFiles('workflow/skills/quality/judges/mqm_prompt.md', 'workflow/skills/quality/style/hf-blog-ko-translation-guide.md', 'workflow/skills/quality/schemas/mqm_judge.schema.json', 'workflow/skills/quality/glossary/*.tsv') }}
+            quality-mqm-v2-${{ inputs.target_repo }}-${{ inputs.file_path }}-${{ steps.review_identity.outputs.target_hash }}-${{ env.QUALITY_LLM_JUDGE_PROVIDER }}-${{ env.LLM_JUDGE_MODEL }}-${{ env.QUALITY_LLM_JUDGE_MAX_SEGMENTS }}-${{ hashFiles('workflow/skills/quality/judges/mqm_prompt.md', 'workflow/skills/quality/style/hf-blog-ko-translation-guide.md', 'workflow/skills/quality/schemas/mqm_judge.schema.json', 'workflow/skills/quality/glossary/*.tsv') }}
 
       - name: Run review skill
         working-directory: workflow
@@ -175,7 +184,7 @@ jobs:
         with:
           path: ${{ runner.temp }}/quality-metric-cache.json
           key: >-
-            quality-mqm-${{ inputs.target_repo }}-${{ inputs.file_path }}-${{ steps.review_identity.outputs.target_hash }}-${{ env.QUALITY_LLM_JUDGE_PROVIDER }}-${{ env.LLM_JUDGE_MODEL }}-${{ env.QUALITY_LLM_JUDGE_MAX_SEGMENTS }}-${{ hashFiles('workflow/skills/quality/judges/mqm_prompt.md', 'workflow/skills/quality/style/hf-blog-ko-translation-guide.md', 'workflow/skills/quality/schemas/mqm_judge.schema.json', 'workflow/skills/quality/glossary/*.tsv') }}
+            quality-mqm-v2-${{ inputs.target_repo }}-${{ inputs.file_path }}-${{ steps.review_identity.outputs.target_hash }}-${{ env.QUALITY_LLM_JUDGE_PROVIDER }}-${{ env.LLM_JUDGE_MODEL }}-${{ env.QUALITY_LLM_JUDGE_MAX_SEGMENTS }}-${{ hashFiles('workflow/skills/quality/judges/mqm_prompt.md', 'workflow/skills/quality/style/hf-blog-ko-translation-guide.md', 'workflow/skills/quality/schemas/mqm_judge.schema.json', 'workflow/skills/quality/glossary/*.tsv') }}
 
   verifier:
     name: HF Agent / Independent Verifier
@@ -302,7 +311,7 @@ jobs:
 
   repair:
     name: HF Agent / Repair Failed Gates
-    if: ${{ always() && needs.review.result == 'failure' && needs.verifier.result == 'success' }}
+    if: ${{ always() && inputs.repair_enabled && needs.review.result == 'failure' && needs.verifier.result == 'success' }}
     needs: [review, verifier, report]
     permissions:
       actions: read
@@ -554,6 +563,7 @@ jobs:
           --target-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
       - name: Clear stale human-needed label
+        if: ${{ needs.review.result == 'success' && needs.verifier.result == 'success' }}
         env:
           GH_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
         run: |

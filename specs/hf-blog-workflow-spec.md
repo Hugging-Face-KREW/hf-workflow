@@ -228,8 +228,8 @@ sequenceDiagram
   검사한다.
 - MQM LLM judge를 사용할 수 있으며 provider/model은 workflow 변수
   `QUALITY_LLM_JUDGE_PROVIDER`, `LLM_JUDGE_MODEL`,
-  `QUALITY_LLM_JUDGE_MAX_SEGMENTS`로 정한다. 병합 기준 기본 모델은
-  `gpt-5.6-luna`다.
+  `QUALITY_LLM_JUDGE_MAX_SEGMENTS`, `QUALITY_LLM_JUDGE_MAX_CONCURRENCY`로
+  정한다. 병합 기준 기본 모델은 `gpt-5.6-luna`, 기본 동시성은 4다.
 - 출력: `quality.md`, `quality.json`, `quality-eval.json`, PR comment, source/
   target segments, MQM JSONL, metric cache.
 - quality structured status `auto_pass`와 `review_required`는 wrapper상 pass로
@@ -270,6 +270,12 @@ quality job은 judge 실행 전에 cache를 restore한다. cache hit이면 복�
 저장한다. source policy나 기타 설정 변경은 key에 직접 포함되지 않으므로,
 그 변경이 cache를 무효화해야 한다면 key 구성 요소 또는 content identity에
 명시적으로 반영해야 한다.
+
+cache v2는 JSON schema 이후의 교차 필드 계약(원문/번역문 verbatim span,
+terminology status, 실패 term과 error 연결)을 위반한 응답도 격리 상태로 저장한다.
+격리된 응답은 finding이나 repair 근거로 사용하지 않고 semantic evaluation을
+incomplete로 유지하지만, 동일 segment 재실행에서 같은 모델 호출을 반복하지
+않는다. API timeout처럼 일시적인 실패는 격리 cache에 넣지 않는다.
 
 artifact는 runner temporary directory에서 upload되고, 이름에는 skill과 head SHA가
 포함된다. retention은 1일이다. report job은 verifier success일 때만 PR marker
@@ -320,6 +326,9 @@ feedback event는 issue comment, submitted/edited review, inline review comment�
   65,536 tokens다.
 - 실패 gate repair: report를 feedback으로 변환하고 trailing repair commit 수가
   3 미만일 때만 수정한다.
+- semantic evaluation이 incomplete이거나 contract-invalid MQM segment가 있으면
+  자동 repair를 금지하고 `needs-human`으로 보낸다. 수동 `workflow_dispatch`와
+  reusable caller는 `repair_enabled=false`로 모든 branch mutation을 끌 수 있다.
 - changed content는 SEO와 quality가 다시 통과해야 push한다.
 - inline review comment는 처리 근거로 reply를 남긴 뒤, `needs-human`이 아닌
   경우에만 GraphQL로 thread를 resolve한다.

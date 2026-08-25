@@ -71,6 +71,20 @@ Judge each source/target segment against these guide rules:
 - Preserve Markdown structure. Translate link text, image alt text, captions,
   and prose when appropriate, but preserve URL targets and image paths.
 
+Before returning JSON, perform this mechanical contract check:
+
+- Every `source_span` and `source_term` must be a literal substring of the
+  supplied `source_text`. Every `target_span` and `target_term` must be a
+  literal substring of the supplied `target_text`. If an exact counterpart
+  cannot be found, do not invent or paraphrase one.
+- Derive `terminology_review.status` from `unregistered_terms`: use
+  `not_applicable` for an empty array, `fail` when any assessment is
+  `mistranslated` or `inconsistent`, and `pass` otherwise.
+- For every failed unregistered term, include a `terminology` error whose exact
+  spans contain that term's exact `source_term` and `target_term`.
+- Recheck that the returned `segment_id` is identical to the input ID and that
+  no fields outside the output schema are present.
+
 Severity and score calibration:
 
 - Use `critical` only for clear publishing blockers, severe factual inversion,
