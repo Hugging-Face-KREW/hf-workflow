@@ -132,6 +132,7 @@ def test_quality_mqm_judge_cache_is_keyed_by_document_identity() -> None:
     assert "env.QUALITY_LLM_JUDGE_PROVIDER" in review
     assert "env.LLM_JUDGE_MODEL" in review
     assert "env.QUALITY_LLM_JUDGE_MAX_SEGMENTS" in review
+    assert "QUALITY_LLM_JUDGE_MAX_CONCURRENCY" in review
     assert "workflow/skills/quality/judges/mqm_prompt.md" in review
     assert "workflow/skills/quality/style/hf-blog-ko-translation-guide.md" in review
     assert "workflow/skills/quality/schemas/mqm_judge.schema.json" in review
@@ -165,6 +166,9 @@ def test_review_workflow_enables_quality_llm_judge_by_default() -> None:
     assert workflow.count("LLM_JUDGE_MODEL: ${{ vars.LLM_JUDGE_MODEL || 'gpt-5.6-luna' }}") >= 3
     assert workflow.count(
         "QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}"
+    ) >= 2
+    assert workflow.count(
+        "QUALITY_LLM_JUDGE_MAX_CONCURRENCY: ${{ vars.QUALITY_LLM_JUDGE_MAX_CONCURRENCY || '4' }}"
     ) >= 2
 
 

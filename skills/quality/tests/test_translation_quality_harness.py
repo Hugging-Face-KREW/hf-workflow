@@ -2,6 +2,10 @@ from __future__ import annotations
 
 import json
 import hashlib
+import sys
+import threading
+import time
+import types
 from pathlib import Path
 
 import pytest
@@ -28,6 +32,7 @@ from tools.translation_quality_harness import (
     normalize_mqm_result,
     openai_mqm_task,
     parse_json_object,
+    run_openai_mqm_judge,
     style_guide_digest,
 )
 
@@ -1598,6 +1603,62 @@ def test_llm_judge_model_does_not_fall_back_to_translation_model(monkeypatch: py
 
     monkeypatch.setenv("LLM_JUDGE_MODEL", "explicit-judge-model")
     assert llm_judge_model_from_env() == "explicit-judge-model"
+
+
+def test_openai_mqm_judge_runs_cache_misses_with_bounded_concurrency(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    source = markdown_doc((FIXTURES / "source.md").read_text(encoding="utf-8"))
+    target = markdown_doc((FIXTURES / "target_good.md").read_text(encoding="utf-8"))
+    alignment = align_segments(source, target)[:4]
+    active = 0
+    peak_active = 0
+    lock = threading.Lock()
+
+    class FakeResponses:
+        def create(self, **kwargs: object) -> object:
+            nonlocal active, peak_active
+            with lock:
+                active += 1
+                peak_active = max(peak_active, active)
+            try:
+                time.sleep(0.02)
+                task = json.loads(str(kwargs["input"]))
+                output = {
+                    "segment_id": task["segment_id"],
+                    "adequacy_score": 1.0,
+                    "fluency_score": 1.0,
+                    "technical_score": 1.0,
+                    "terminology_review": no_unregistered_terms(),
+                    "errors": [],
+                }
+                return types.SimpleNamespace(status="completed", output_text=json.dumps(output))
+            finally:
+                with lock:
+                    active -= 1
+
+    class FakeOpenAI:
+        def __init__(self, **_: object) -> None:
+            self.responses = FakeResponses()
+
+    monkeypatch.setitem(sys.modules, "openai", types.SimpleNamespace(OpenAI=FakeOpenAI))
+    monkeypatch.setenv("HF_WORKFLOW_TEST_OPENAI_KEY", "test-key")
+    warnings: list[str] = []
+    config = MetricConfig(
+        metric_cache_path=tmp_path / "metric-cache.json",
+        llm_judge_provider="openai",
+        llm_judge_api_key_env="HF_WORKFLOW_TEST_OPENAI_KEY",
+        llm_judge_max_concurrency=2,
+    )
+
+    results, cache_hits, cache_misses = run_openai_mqm_judge(alignment, config, warnings)
+
+    assert peak_active == 2
+    assert [result["segment_id"] for result in results] == [item["target_id"] for item in alignment]
+    assert cache_hits == 0
+    assert cache_misses == len(alignment)
+    assert warnings == []
 
 
 def test_scoring_deduplicates_deterministic_issue_already_supported_by_mqm_span() -> None:
