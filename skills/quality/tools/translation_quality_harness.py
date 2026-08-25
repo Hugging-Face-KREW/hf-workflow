@@ -13,6 +13,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -126,6 +127,7 @@ class MetricConfig:
     llm_judge_prompt_path: Path | None = DEFAULT_MQM_PROMPT_PATH
     llm_judge_fixture_path: Path | None = None
     llm_judge_max_segments: int = 0
+    llm_judge_max_concurrency: int = 4
     llm_judge_review_threshold: float = 0.75
     llm_judge_api_key_env: str = "OPENAI_API_KEY"
     llm_judge_base_url: str = ""
@@ -2474,8 +2476,12 @@ def run_openai_mqm_judge(
     if config.llm_judge_base_url:
         client_kwargs["base_url"] = config.llm_judge_base_url
     client = OpenAI(**client_kwargs)
-    cache_dirty = False
-    for item, target_id, cache_key in pending:
+
+    def evaluate_pending(
+        entry: tuple[dict[str, str], str, str],
+    ) -> tuple[dict[str, object] | None, list[str]]:
+        item, target_id, _ = entry
+        item_warnings: list[str] = []
         try:
             request_kwargs: dict[str, Any] = {
                 "model": config.llm_judge_model,
@@ -2491,23 +2497,34 @@ def run_openai_mqm_judge(
             status = str(getattr(response, "status", "") or "")
             if status and status != "completed":
                 details = getattr(response, "incomplete_details", None)
-                warnings.append(f"OpenAI MQM judge incomplete for segment {target_id}: status={status}, details={details}")
-                continue
+                item_warnings.append(
+                    f"OpenAI MQM judge incomplete for segment {target_id}: status={status}, details={details}"
+                )
+                return None, item_warnings
             output_text = str(getattr(response, "output_text", "") or "")
             if not output_text.strip():
-                warnings.append(f"OpenAI MQM judge returned empty output for segment {target_id}.")
-                continue
+                item_warnings.append(f"OpenAI MQM judge returned empty output for segment {target_id}.")
+                return None, item_warnings
             raw = parse_json_object(output_text)
         except Exception as exc:
-            warnings.append(f"OpenAI MQM judge failed for segment {target_id}: {exc}")
-            continue
+            item_warnings.append(f"OpenAI MQM judge failed for segment {target_id}: {exc}")
+            return None, item_warnings
         normalized = normalize_mqm_result(
             raw,
             target_id,
-            warnings,
+            item_warnings,
             source_text=str(item.get("source_text") or ""),
             target_text=str(item.get("target_text") or ""),
         )
+        return normalized, item_warnings
+
+    worker_count = min(len(pending), max(1, config.llm_judge_max_concurrency))
+    with ThreadPoolExecutor(max_workers=worker_count, thread_name_prefix="mqm-judge") as executor:
+        evaluated = list(executor.map(evaluate_pending, pending))
+
+    cache_dirty = False
+    for (_, _, cache_key), (normalized, item_warnings) in zip(pending, evaluated, strict=True):
+        warnings.extend(item_warnings)
         if normalized is not None:
             results.append(normalized)
             cache[cache_key] = normalized
@@ -2532,6 +2549,7 @@ def summarize_mqm_judge(
     reasoning_effort: str = "",
     cache_hits: int = 0,
     cache_misses: int = 0,
+    max_concurrency: int = 1,
 ) -> dict[str, object]:
     severity_counts: Counter[str] = Counter()
     for result in results:
@@ -2554,6 +2572,7 @@ def summarize_mqm_judge(
         "severity_counts": dict(sorted(severity_counts.items())),
         "cache_hits": cache_hits,
         "cache_misses": cache_misses,
+        "max_concurrency": max_concurrency if provider == "openai" else 1,
         "warnings": warnings,
         "segments": results,
     }
@@ -2615,6 +2634,7 @@ def evaluate_mqm_judge(
         style_guide_hash=style_guide_hash,
         cache_hits=cache_hits,
         cache_misses=cache_misses,
+        max_concurrency=max(1, config.llm_judge_max_concurrency),
     )
 
 
@@ -3227,6 +3247,8 @@ def markdown_report(report: dict[str, object]) -> str:
     lines.append(f"- MQM errors: {mqm_summary.get('error_count', 0)}")
     lines.append(f"- Cache hits: {mqm_summary.get('cache_hits', 0)}")
     lines.append(f"- Cache misses: {mqm_summary.get('cache_misses', 0)}")
+    if mqm_summary.get("provider") == "openai":
+        lines.append(f"- Max concurrency: {mqm_summary.get('max_concurrency', 1)}")
     if mqm_summary.get("severity_counts"):
         lines.append(f"- Severity counts: {mqm_summary.get('severity_counts')}")
     for key in ["adequacy_average", "technical_average", "fluency_average"]:
@@ -3446,6 +3468,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--llm-judge-prompt", help="Optional MQM judge prompt path.")
     parser.add_argument("--llm-judge-fixture", help="Optional JSON/JSONL MQM judge fixture path.")
     parser.add_argument("--llm-judge-max-segments", type=int, default=0, help="Maximum aligned segments to send to the MQM judge. 0 means all.")
+    parser.add_argument(
+        "--llm-judge-max-concurrency",
+        type=int,
+        default=4,
+        help="Maximum concurrent MQM judge API calls. Values below 1 are clamped to 1.",
+    )
     parser.add_argument("--llm-judge-review-threshold", type=float, default=0.75, help="Review threshold for low MQM segment scores.")
     parser.add_argument("--llm-judge-api-key-env", default="OPENAI_API_KEY", help="Environment variable that holds the OpenAI API key.")
     parser.add_argument("--llm-judge-base-url", default=os.environ.get("OPENAI_BASE_URL", ""), help="Optional OpenAI-compatible base URL.")
@@ -3481,6 +3509,7 @@ def main(argv: list[str] | None = None) -> int:
         llm_judge_prompt_path=Path(args.llm_judge_prompt).resolve() if args.llm_judge_prompt else DEFAULT_MQM_PROMPT_PATH,
         llm_judge_fixture_path=Path(args.llm_judge_fixture).resolve() if args.llm_judge_fixture else None,
         llm_judge_max_segments=args.llm_judge_max_segments,
+        llm_judge_max_concurrency=args.llm_judge_max_concurrency,
         llm_judge_review_threshold=args.llm_judge_review_threshold,
         llm_judge_api_key_env=args.llm_judge_api_key_env,
         llm_judge_base_url=args.llm_judge_base_url,

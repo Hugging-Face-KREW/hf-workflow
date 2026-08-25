@@ -175,6 +175,8 @@ def run_skill(
             _quality_llm_judge_model(),
             "--llm-judge-max-segments",
             os.environ.get("QUALITY_LLM_JUDGE_MAX_SEGMENTS", "0"),
+            "--llm-judge-max-concurrency",
+            os.environ.get("QUALITY_LLM_JUDGE_MAX_CONCURRENCY", "4"),
             "--fail-on-reject",
         ]
     else:

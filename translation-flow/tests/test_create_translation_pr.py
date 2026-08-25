@@ -25,6 +25,7 @@ from scripts.create_translation_pr import (
     stabilize_manual_toc,
 )
 from scripts.translation_adapters import (
+    OpenAITranslationAdapter,
     PlaceholderTranslationAdapter,
     TranslationRequest,
     default_prompt_path,
@@ -596,11 +597,19 @@ def test_daily_workflow_publishes_reports_before_enforcing_target_pr_quality_gat
     assert upload_index < enforce_index
     assert "python scripts/enforce_quality_gate.py" in workflow
     assert "LLM_JUDGE_MODEL: gpt-5.6-luna" in workflow
+    assert "OPENAI_MODEL: gpt-5.6-luna" in workflow
+    assert "QUALITY_LLM_JUDGE_MAX_CONCURRENCY: ${{ vars.QUALITY_LLM_JUDGE_MAX_CONCURRENCY || '4' }}" in workflow
     gate_script = (Path(__file__).resolve().parents[2] / "scripts" / "enforce_quality_gate.py").read_text(
         encoding="utf-8"
     )
     assert "source_changed" in gate_script
     assert "repos/{repo}/statuses/{head_sha}" in gate_script
+
+
+def test_openai_translation_adapter_defaults_to_luna(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("OPENAI_MODEL", raising=False)
+
+    assert OpenAITranslationAdapter().model == "gpt-5.6-luna"
 
 
 def init_git_repo(path: Path) -> None:

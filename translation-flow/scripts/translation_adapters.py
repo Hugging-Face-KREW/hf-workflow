@@ -38,7 +38,7 @@ class OpenAITranslationAdapter:
     name = "openai"
 
     def __init__(self, model: Optional[str] = None, prompt_path: Optional[Path] = None) -> None:
-        self.model = model or os.getenv("OPENAI_MODEL", "gpt-5-nano")
+        self.model = model or os.getenv("OPENAI_MODEL", "gpt-5.6-luna")
         self.prompt_path = prompt_path or default_prompt_path()
 
     def translate(self, request: TranslationRequest) -> str:
