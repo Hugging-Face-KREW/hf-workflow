@@ -70,6 +70,14 @@ on:
         default: ""
         type: string
 
+env:
+  HF_INPUT_PR_NUMBER: ${{ inputs.pr_number }}
+  HF_INPUT_EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+  HF_INPUT_FILE_PATH: ${{ inputs.file_path }}
+  HF_INPUT_BRANCH: ${{ inputs.branch }}
+  HF_INPUT_REVIEW_COMMENT_ID: ${{ inputs.review_comment_id }}
+  HF_INPUT_REVIEW_WORKFLOW: ${{ inputs.review_workflow }}
+
 concurrency:
   group: hf-agent-mutate-${{ inputs.target_repo }}-${{ inputs.pr_number }}
   cancel-in-progress: false
@@ -87,6 +95,7 @@ jobs:
       QUALITY_LLM_JUDGE_PROVIDER: ${{ vars.QUALITY_LLM_JUDGE_PROVIDER || 'openai' }}
       LLM_JUDGE_MODEL: ${{ vars.LLM_JUDGE_MODEL || 'gpt-5.6-luna' }}
       QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}
+      QUALITY_LLM_JUDGE_MAX_CONCURRENCY: ${{ vars.QUALITY_LLM_JUDGE_MAX_CONCURRENCY || '4' }}
       TARGET_REPO: ${{ inputs.target_repo }}
     steps:
       - name: Checkout workflow tools
@@ -115,8 +124,8 @@ jobs:
 
       - name: Reject a stale candidate
         run: |
-          current_sha=$(gh api "repos/${TARGET_REPO}/pulls/${{ inputs.pr_number }}" --jq .head.sha)
-          test "$current_sha" = "${{ inputs.expected_head_sha }}"
+          current_sha=$(gh api "repos/${TARGET_REPO}/pulls/$HF_INPUT_PR_NUMBER" --jq .head.sha)
+          test "$current_sha" = "$HF_INPUT_EXPECTED_HEAD_SHA"
 
       - name: Generate metadata suggestion for feedback
         working-directory: workflow
@@ -128,7 +137,7 @@ jobs:
           set +e
           python scripts/hf_agent/run_skill_review.py \
             --skill seo \
-            --file "${{ inputs.file_path }}" \
+            --file "$HF_INPUT_FILE_PATH" \
             --target-root ../target \
             --report "../results/seo.md" \
             --result-json "../results/seo.json"
@@ -142,13 +151,15 @@ jobs:
         run: |
           python -m hf_agent.handle_pr_feedback \
             --target-root target \
-            --file "${{ inputs.file_path }}" \
+            --file "$HF_INPUT_FILE_PATH" \
             --feedback "$HF_FEEDBACK" \
             --metadata-suggestion results/metadata-suggestion.json \
             --result-json "${{ runner.temp }}/feedback-result.json"
-          echo "changed=$(jq -r .changed "${{ runner.temp }}/feedback-result.json")" >> "$GITHUB_OUTPUT"
-          echo "disposition=$(jq -r .disposition "${{ runner.temp }}/feedback-result.json")" >> "$GITHUB_OUTPUT"
-          echo "intent=$(jq -r .intent "${{ runner.temp }}/feedback-result.json")" >> "$GITHUB_OUTPUT"
+          {
+            echo "changed=$(jq -r .changed "${{ runner.temp }}/feedback-result.json")"
+            echo "disposition=$(jq -r .disposition "${{ runner.temp }}/feedback-result.json")"
+            echo "intent=$(jq -r .intent "${{ runner.temp }}/feedback-result.json")"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Verify changed metadata content
         if: ${{ steps.apply.outputs.changed == 'true' && steps.apply.outputs.intent == 'metadata' }}
@@ -159,7 +170,7 @@ jobs:
           for skill in seo quality; do
             python scripts/hf_agent/run_skill_review.py \
               --skill "$skill" \
-              --file "${{ inputs.file_path }}" \
+              --file "$HF_INPUT_FILE_PATH" \
               --target-root ../target \
               --report "${{ runner.temp }}/post-$skill.md" \
               --result-json "${{ runner.temp }}/post-$skill.json"
@@ -172,7 +183,7 @@ jobs:
           for skill in seo quality; do
             python scripts/hf_agent/run_skill_review.py \
               --skill "$skill" \
-              --file "${{ inputs.file_path }}" \
+              --file "$HF_INPUT_FILE_PATH" \
               --target-root ../target \
               --report "${{ runner.temp }}/post-$skill.md" \
               --result-json "${{ runner.temp }}/post-$skill.json"
@@ -185,13 +196,13 @@ jobs:
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add -- "${{ inputs.file_path }}"
+          git add -- "$HF_INPUT_FILE_PATH"
           if [ "${{ steps.apply.outputs.intent }}" = "metadata" ]; then
             git commit -m "🔧 Apply SEO metadata suggestion"
           else
             git commit -m "🐛 Address PR feedback"
           fi
-          git push origin "HEAD:${{ inputs.branch }}"
+          git push origin "HEAD:$HF_INPUT_BRANCH"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Report the disposition
@@ -204,7 +215,7 @@ jobs:
           else
             body="<!-- hf-agent-response --> No code change was made. $reason"
           fi
-          gh pr comment "${{ inputs.pr_number }}" --repo "$TARGET_REPO" --body "$body"
+          gh pr comment "$HF_INPUT_PR_NUMBER" --repo "$TARGET_REPO" --body "$body"
 
       - name: Resolve the handled review thread
         if: ${{ inputs.review_comment_id != '' && steps.apply.outputs.disposition != 'needs-human' }}
@@ -221,15 +232,15 @@ jobs:
           fi
           python -m hf_agent.review_threads \
             --repository "$TARGET_REPO" \
-            --pr-number "${{ inputs.pr_number }}" \
-            --resolve-comment-id "${{ inputs.review_comment_id }}" \
+            --pr-number "$HF_INPUT_PR_NUMBER" \
+            --resolve-comment-id "$HF_INPUT_REVIEW_COMMENT_ID" \
             --body "$body"
 
       - name: Mark human decision required
         if: steps.apply.outputs.disposition == 'needs-human'
         run: |
-          gh pr edit "${{ inputs.pr_number }}" --repo "$TARGET_REPO" --add-label "hf-agent:needs-human"
-          gh api "repos/${TARGET_REPO}/statuses/${{ inputs.expected_head_sha }}" \
+          gh pr edit "$HF_INPUT_PR_NUMBER" --repo "$TARGET_REPO" --add-label "hf-agent:needs-human"
+          gh api "repos/${TARGET_REPO}/statuses/$HF_INPUT_EXPECTED_HEAD_SHA" \
             -f state=failure \
             -f context="HF Agent / Lifecycle Gate" \
             -f description="Human decision required"
@@ -237,6 +248,6 @@ jobs:
       - name: Recheck an unchanged candidate
         if: steps.apply.outputs.changed != 'true' && steps.apply.outputs.disposition != 'needs-human'
         run: >-
-          gh workflow run "${{ inputs.review_workflow }}"
+          gh workflow run "$HF_INPUT_REVIEW_WORKFLOW"
           --repo "$TARGET_REPO"
-          -f pr_number="${{ inputs.pr_number }}"
+          -f pr_number="$HF_INPUT_PR_NUMBER"

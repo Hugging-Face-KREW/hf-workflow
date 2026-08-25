@@ -267,6 +267,7 @@ def test_quality_runner_uses_translation_quality_harness(tmp_path: Path) -> None
     assert "--output-pr-comment" in command
     assert "--llm-judge-model" in command
     assert command[command.index("--llm-judge-model") + 1] == "gpt-5.6-luna"
+    assert command[command.index("--llm-judge-max-concurrency") + 1] == "4"
     assert "--fail-on-reject" in command
     assert json.loads(result_path.read_text())["conclusion"] == "pass"
 

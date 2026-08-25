@@ -2,6 +2,10 @@ from __future__ import annotations
 
 import json
 import hashlib
+import sys
+import threading
+import time
+import types
 from pathlib import Path
 
 import pytest
@@ -13,6 +17,7 @@ from tools.translation_quality_harness import (
     Issue,
     MetricConfig,
     align_segments,
+    apply_unregistered_terminology_consistency_issues,
     build_report,
     deduplicate_detector_issues,
     llm_judge_model_from_env,
@@ -27,11 +32,16 @@ from tools.translation_quality_harness import (
     normalize_mqm_result,
     openai_mqm_task,
     parse_json_object,
+    run_openai_mqm_judge,
     style_guide_digest,
 )
 
 
 FIXTURES = Path(__file__).parent / "fixtures" / "translation_quality_harness"
+
+
+def no_unregistered_terms() -> dict[str, object]:
+    return {"status": "not_applicable", "unregistered_terms": []}
 
 
 def manifest_for(tmp_path: Path, target_name: str) -> Path:
@@ -720,6 +730,55 @@ def test_harness_reports_glossary_violation_as_terminology(tmp_path: Path) -> No
     assert report["dimension_scores"]["terminology"] < 100.0
 
 
+def test_harness_rejects_japanese_punctuation_in_korean_prose(tmp_path: Path) -> None:
+    source = tmp_path / "source.md"
+    target = tmp_path / "target.md"
+    manifest = tmp_path / "manifest.yaml"
+    source.write_text(
+        "---\ntitle: Source\n---\n\nThis sentence uses punctuation.\n\n```text\ncode。、\n```\n",
+        encoding="utf-8",
+    )
+    target.write_text(
+        "---\ntitle: 번역\n---\n\n이 문장에는 일본어 온점。그리고 쉼표、가 있습니다.\n\n```text\ncode。、\n```\n",
+        encoding="utf-8",
+    )
+    manifest.write_text(
+        "version: 1\nsource:\n  file_path: source.md\ntranslation:\n  file_path: target.md\n",
+        encoding="utf-8",
+    )
+
+    report = build_report(manifest, tmp_path)
+
+    locale_failures = [
+        item
+        for item in report["hard_failures"]
+        if item["message"] == "Japanese punctuation found in Korean prose."
+    ]
+    assert report["status"] == "reject"
+    assert {item["reason"].split("`")[1] for item in locale_failures} == {"。", "、"}
+    assert all("code。、" not in item["target_span"] for item in locale_failures)
+
+
+def test_harness_allows_japanese_punctuation_inside_protected_code(tmp_path: Path) -> None:
+    source = tmp_path / "source.md"
+    target = tmp_path / "target.md"
+    manifest = tmp_path / "manifest.yaml"
+    markdown = "---\ntitle: Example\n---\n\n문장입니다. `inline。、` [링크](https://example.com/。、)\n\n```text\ncode。、\n```\n"
+    source.write_text(markdown, encoding="utf-8")
+    target.write_text(markdown.replace("Example", "예시"), encoding="utf-8")
+    manifest.write_text(
+        "version: 1\nsource:\n  file_path: source.md\ntranslation:\n  file_path: target.md\n",
+        encoding="utf-8",
+    )
+
+    report = build_report(manifest, tmp_path)
+
+    assert not any(
+        item["message"] == "Japanese punctuation found in Korean prose."
+        for item in report["issues"]
+    )
+
+
 def test_harness_detects_additional_and_duplicate_segments(tmp_path: Path) -> None:
     manifest = manifest_for(tmp_path, "target_bad_addition_duplicate.md")
 
@@ -938,6 +997,7 @@ def write_mqm_fixture(tmp_path: Path) -> Path:
                 "adequacy_score": 0.41,
                 "fluency_score": 0.90,
                 "technical_score": 0.80,
+                "terminology_review": no_unregistered_terms(),
                 "errors": [
                     {
                         "guide_rule": "modal_strength",
@@ -996,6 +1056,7 @@ def test_complete_clean_mqm_evaluation_allows_auto_pass(tmp_path: Path) -> None:
                     "adequacy_score": 1.0,
                     "fluency_score": 1.0,
                     "technical_score": 1.0,
+                    "terminology_review": no_unregistered_terms(),
                     "errors": [],
                 },
                 ensure_ascii=False,
@@ -1038,6 +1099,7 @@ def test_duplicate_or_unknown_mqm_segment_ids_cannot_auto_pass(tmp_path: Path, m
                 "adequacy_score": 1.0,
                 "fluency_score": 1.0,
                 "technical_score": 1.0,
+                "terminology_review": no_unregistered_terms(),
                 "errors": [],
             }
             for _ in range(alignment_count)
@@ -1067,6 +1129,7 @@ def test_mqm_judge_downgrades_wording_only_accuracy_major(tmp_path: Path) -> Non
                 "adequacy_score": 0.92,
                 "fluency_score": 0.88,
                 "technical_score": 0.95,
+                "terminology_review": no_unregistered_terms(),
                 "errors": [
                     {
                         "guide_rule": "preserve_meaning",
@@ -1112,6 +1175,7 @@ def test_mqm_judge_keeps_modal_strength_accuracy_major() -> None:
             "adequacy_score": 0.92,
             "fluency_score": 0.88,
             "technical_score": 1.0,
+            "terminology_review": no_unregistered_terms(),
             "errors": [
                 {
                     "guide_rule": "modal_strength",
@@ -1145,6 +1209,7 @@ def test_mqm_judge_never_downgrades_critical_accuracy_error() -> None:
             "adequacy_score": 0.99,
             "fluency_score": 0.99,
             "technical_score": 0.99,
+            "terminology_review": no_unregistered_terms(),
             "errors": [
                 {
                     "guide_rule": "preserve_meaning",
@@ -1167,6 +1232,178 @@ def test_mqm_judge_never_downgrades_critical_accuracy_error() -> None:
     assert result["errors"][0]["category"] == "accuracy"
 
 
+def test_mqm_judge_requires_structured_unregistered_terminology_review() -> None:
+    warnings: list[str] = []
+
+    result = normalize_mqm_result(
+        {
+            "segment_id": "p_001",
+            "adequacy_score": 1.0,
+            "fluency_score": 1.0,
+            "technical_score": 1.0,
+            "errors": [],
+        },
+        "p_001",
+        warnings,
+    )
+
+    assert result is None
+    assert any("terminology_review" in warning for warning in warnings)
+
+
+def test_mqm_judge_accepts_audited_unregistered_technical_term() -> None:
+    warnings: list[str] = []
+    source = "Speculative decoding improves generation speed."
+    target = "추측 디코딩은 생성 속도를 높입니다."
+
+    result = normalize_mqm_result(
+        {
+            "segment_id": "p_001",
+            "adequacy_score": 1.0,
+            "fluency_score": 1.0,
+            "technical_score": 1.0,
+            "terminology_review": {
+                "status": "pass",
+                "unregistered_terms": [
+                    {
+                        "source_term": "Speculative decoding",
+                        "target_term": "추측 디코딩",
+                        "assessment": "acceptable",
+                        "explanation": "문맥에 맞고 원문의 기술적 의미를 보존합니다.",
+                    }
+                ],
+            },
+            "errors": [],
+        },
+        "p_001",
+        warnings,
+        source_text=source,
+        target_text=target,
+    )
+
+    assert result is not None
+    assert result["terminology_review"]["status"] == "pass"
+    assert not warnings
+
+
+def test_mqm_judge_rejects_failed_term_without_linked_terminology_error() -> None:
+    warnings: list[str] = []
+
+    result = normalize_mqm_result(
+        {
+            "segment_id": "p_001",
+            "adequacy_score": 0.8,
+            "fluency_score": 0.8,
+            "technical_score": 0.7,
+            "terminology_review": {
+                "status": "fail",
+                "unregistered_terms": [
+                    {
+                        "source_term": "speculative decoding",
+                        "target_term": "사색 해독",
+                        "assessment": "mistranslated",
+                        "explanation": "기술적 의미와 다른 한국어 표현으로 번역되었습니다.",
+                    }
+                ],
+            },
+            "errors": [],
+        },
+        "p_001",
+        warnings,
+        source_text="Use speculative decoding for generation.",
+        target_text="생성에 사색 해독을 사용합니다.",
+    )
+
+    assert result is None
+    assert any("linked terminology error" in warning for warning in warnings)
+
+
+def test_mqm_judge_accepts_failed_term_with_actionable_terminology_error() -> None:
+    warnings: list[str] = []
+
+    result = normalize_mqm_result(
+        {
+            "segment_id": "p_001",
+            "adequacy_score": 0.8,
+            "fluency_score": 0.9,
+            "technical_score": 0.6,
+            "terminology_review": {
+                "status": "fail",
+                "unregistered_terms": [
+                    {
+                        "source_term": "speculative decoding",
+                        "target_term": "사색 해독",
+                        "assessment": "mistranslated",
+                        "explanation": "생성 기법의 의미를 전달하지 못하는 잘못된 번역입니다.",
+                    }
+                ],
+            },
+            "errors": [
+                {
+                    "guide_rule": "unregistered_technical_term",
+                    "guide_section": "Technical terminology",
+                    "category": "terminology",
+                    "severity": "major",
+                    "source_span": "speculative decoding",
+                    "target_span": "사색 해독",
+                    "explanation": "생성 기법을 일반적인 사색 행위처럼 잘못 번역했습니다.",
+                    "suggested_fix": "문맥에 맞는 기술 용어인 추측 디코딩으로 통일합니다.",
+                }
+            ],
+        },
+        "p_001",
+        warnings,
+        source_text="Use speculative decoding for generation.",
+        target_text="생성에 사색 해독을 사용합니다.",
+    )
+
+    assert result is not None
+    assert result["terminology_review"]["status"] == "fail"
+    assert result["errors"][0]["category"] == "terminology"
+    assert not warnings
+
+
+def test_harness_reports_inconsistent_unregistered_term_renderings() -> None:
+    issues: list[Issue] = []
+    mqm_judge = {
+        "segments": [
+            {
+                "terminology_review": {
+                    "status": "pass",
+                    "unregistered_terms": [
+                        {
+                            "source_term": "speculative decoding",
+                            "target_term": "추측 디코딩",
+                            "assessment": "acceptable",
+                            "explanation": "문맥에 맞는 기술 용어 번역입니다.",
+                        }
+                    ],
+                }
+            },
+            {
+                "terminology_review": {
+                    "status": "pass",
+                    "unregistered_terms": [
+                        {
+                            "source_term": "Speculative Decoding",
+                            "target_term": "예측 디코딩",
+                            "assessment": "acceptable",
+                            "explanation": "문맥에 맞는 기술 용어 번역입니다.",
+                        }
+                    ],
+                }
+            },
+        ]
+    }
+
+    apply_unregistered_terminology_consistency_issues(issues, mqm_judge)
+
+    assert len(issues) == 1
+    assert issues[0].category == "terminology"
+    assert issues[0].severity == "major"
+    assert issues[0].message == "Unregistered technical term is translated inconsistently."
+
+
 @pytest.mark.parametrize(
     "payload",
     [
@@ -1176,6 +1413,7 @@ def test_mqm_judge_never_downgrades_critical_accuracy_error() -> None:
             "adequacy_score": 9,
             "fluency_score": 1,
             "technical_score": 1,
+            "terminology_review": no_unregistered_terms(),
             "errors": [],
         },
         {
@@ -1183,6 +1421,7 @@ def test_mqm_judge_never_downgrades_critical_accuracy_error() -> None:
             "adequacy_score": 1,
             "fluency_score": 1,
             "technical_score": 1,
+            "terminology_review": no_unregistered_terms(),
             "errors": "not-an-array",
         },
     ],
@@ -1202,6 +1441,7 @@ def test_mqm_judge_rejects_malformed_result_instead_of_defaulting_to_perfect(pay
             "adequacy_score": 1,
             "fluency_score": 1,
             "technical_score": 1,
+            "terminology_review": no_unregistered_terms(),
             "errors": [],
             "unexpected": True,
         },
@@ -1210,6 +1450,7 @@ def test_mqm_judge_rejects_malformed_result_instead_of_defaulting_to_perfect(pay
             "adequacy_score": 0.8,
             "fluency_score": 0.9,
             "technical_score": 1.0,
+            "terminology_review": no_unregistered_terms(),
             "errors": [
                 {
                     "guide_rule": "modal_strength",
@@ -1256,6 +1497,7 @@ def test_mqm_judge_rejects_error_with_hallucinated_span() -> None:
             "adequacy_score": 0.8,
             "fluency_score": 0.9,
             "technical_score": 1.0,
+            "terminology_review": no_unregistered_terms(),
             "errors": [
                 {
                     "guide_rule": "modal_strength",
@@ -1288,6 +1530,7 @@ def test_mqm_judge_rejects_error_without_substantive_explanation() -> None:
             "adequacy_score": 0.8,
             "fluency_score": 0.9,
             "technical_score": 1.0,
+            "terminology_review": no_unregistered_terms(),
             "errors": [
                 {
                     "guide_rule": "modal_strength",
@@ -1320,6 +1563,7 @@ def test_mqm_response_format_uses_strict_json_schema() -> None:
         "adequacy_score",
         "fluency_score",
         "technical_score",
+        "terminology_review",
         "errors",
     }
 
@@ -1359,6 +1603,62 @@ def test_llm_judge_model_does_not_fall_back_to_translation_model(monkeypatch: py
 
     monkeypatch.setenv("LLM_JUDGE_MODEL", "explicit-judge-model")
     assert llm_judge_model_from_env() == "explicit-judge-model"
+
+
+def test_openai_mqm_judge_runs_cache_misses_with_bounded_concurrency(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    source = markdown_doc((FIXTURES / "source.md").read_text(encoding="utf-8"))
+    target = markdown_doc((FIXTURES / "target_good.md").read_text(encoding="utf-8"))
+    alignment = align_segments(source, target)[:4]
+    active = 0
+    peak_active = 0
+    lock = threading.Lock()
+
+    class FakeResponses:
+        def create(self, **kwargs: object) -> object:
+            nonlocal active, peak_active
+            with lock:
+                active += 1
+                peak_active = max(peak_active, active)
+            try:
+                time.sleep(0.02)
+                task = json.loads(str(kwargs["input"]))
+                output = {
+                    "segment_id": task["segment_id"],
+                    "adequacy_score": 1.0,
+                    "fluency_score": 1.0,
+                    "technical_score": 1.0,
+                    "terminology_review": no_unregistered_terms(),
+                    "errors": [],
+                }
+                return types.SimpleNamespace(status="completed", output_text=json.dumps(output))
+            finally:
+                with lock:
+                    active -= 1
+
+    class FakeOpenAI:
+        def __init__(self, **_: object) -> None:
+            self.responses = FakeResponses()
+
+    monkeypatch.setitem(sys.modules, "openai", types.SimpleNamespace(OpenAI=FakeOpenAI))
+    monkeypatch.setenv("HF_WORKFLOW_TEST_OPENAI_KEY", "test-key")
+    warnings: list[str] = []
+    config = MetricConfig(
+        metric_cache_path=tmp_path / "metric-cache.json",
+        llm_judge_provider="openai",
+        llm_judge_api_key_env="HF_WORKFLOW_TEST_OPENAI_KEY",
+        llm_judge_max_concurrency=2,
+    )
+
+    results, cache_hits, cache_misses = run_openai_mqm_judge(alignment, config, warnings)
+
+    assert peak_active == 2
+    assert [result["segment_id"] for result in results] == [item["target_id"] for item in alignment]
+    assert cache_hits == 0
+    assert cache_misses == len(alignment)
+    assert warnings == []
 
 
 def test_scoring_deduplicates_deterministic_issue_already_supported_by_mqm_span() -> None:
@@ -1480,6 +1780,7 @@ def test_openai_mqm_task_requests_json_object() -> None:
 
     assert "JSON object" in task
     assert "output_contract" in task
+    assert "terminology_review" in task
 
 
 def test_mqm_prompt_embeds_translation_guide_digest() -> None:
@@ -1491,6 +1792,9 @@ def test_mqm_prompt_embeds_translation_guide_digest() -> None:
     assert "의미·조건·확신의 강도" in prompt
     assert "Hugging Face Space" in prompt
     assert "copied verbatim" in prompt
+    assert "Registered Project Glossary" in prompt
+    assert "model card\t모델 카드\trequired" in prompt
+    assert "terminology_review.unregistered_terms" in prompt
     assert "Return strict JSON only" in prompt
     assert digest
 
@@ -1524,6 +1828,7 @@ def test_openai_mqm_judge_reuses_cached_segments_without_api_key(tmp_path: Path)
                     "adequacy_score": 1.0,
                     "fluency_score": 1.0,
                     "technical_score": 1.0,
+                    "terminology_review": no_unregistered_terms(),
                     "errors": [],
                 }
             },

@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      OPENAI_MODEL: gpt-5-nano
+      OPENAI_MODEL: gpt-5.6-luna
       LLM_JUDGE_MODEL: gpt-5.6-luna
       SEO_OPENAI_REQUIRED: "1"
       BOT_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
@@ -36,6 +36,7 @@ jobs:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
       QUALITY_LLM_JUDGE_PROVIDER: ${{ vars.QUALITY_LLM_JUDGE_PROVIDER || 'off' }}
       QUALITY_LLM_JUDGE_MAX_SEGMENTS: ${{ vars.QUALITY_LLM_JUDGE_MAX_SEGMENTS || '0' }}
+      QUALITY_LLM_JUDGE_MAX_CONCURRENCY: ${{ vars.QUALITY_LLM_JUDGE_MAX_CONCURRENCY || '4' }}
 
     steps:
       - name: Checkout hf workflow

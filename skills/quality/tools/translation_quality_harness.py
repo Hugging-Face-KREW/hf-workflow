@@ -13,6 +13,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -54,7 +55,18 @@ DEFAULT_EVALUATION_CONFIG_PATH = QUALITY_ROOT / "configs" / "eval_config.yml"
 DEFAULT_GATES_CONFIG_PATH = QUALITY_ROOT / "configs" / "gates.yml"
 MQM_CATEGORIES = {"accuracy", "terminology", "technical", "fluency", "style_locale", "formatting"}
 SEVERITIES = {"neutral", "minor", "major", "critical"}
-MQM_RESULT_FIELDS = {"segment_id", "adequacy_score", "fluency_score", "technical_score", "errors"}
+MQM_RESULT_FIELDS = {
+    "segment_id",
+    "adequacy_score",
+    "fluency_score",
+    "technical_score",
+    "terminology_review",
+    "errors",
+}
+MQM_TERMINOLOGY_REVIEW_FIELDS = {"status", "unregistered_terms"}
+MQM_UNREGISTERED_TERM_FIELDS = {"source_term", "target_term", "assessment", "explanation"}
+MQM_TERMINOLOGY_STATUSES = {"not_applicable", "pass", "fail"}
+MQM_TERM_ASSESSMENTS = {"acceptable", "mistranslated", "inconsistent"}
 MQM_ERROR_FIELDS = {
     "guide_rule",
     "guide_section",
@@ -115,6 +127,7 @@ class MetricConfig:
     llm_judge_prompt_path: Path | None = DEFAULT_MQM_PROMPT_PATH
     llm_judge_fixture_path: Path | None = None
     llm_judge_max_segments: int = 0
+    llm_judge_max_concurrency: int = 4
     llm_judge_review_threshold: float = 0.75
     llm_judge_api_key_env: str = "OPENAI_API_KEY"
     llm_judge_base_url: str = ""
@@ -1504,6 +1517,31 @@ def validate_first_mention_terms(
         )
 
 
+def validate_locale_punctuation(
+    issues: list[Issue],
+    target: MarkdownDoc,
+    policy: EvaluationPolicy,
+) -> None:
+    forbidden = policy.list_option("locale_punctuation", "forbidden", ["。", "、"])
+    _, prose, _ = parse_code_blocks(target.body)
+    prose = INLINE_CODE_RE.sub("", strip_markdown_targets(prose))
+    for marker in forbidden:
+        if not marker or marker not in prose:
+            continue
+        spans = [line.strip() for line in prose.splitlines() if marker in line]
+        issue(
+            issues,
+            "style_locale",
+            policy.severity("locale_punctuation", "critical"),
+            "Japanese punctuation found in Korean prose.",
+            target_span=" | ".join(spans[:5]),
+            suggested_fix=f"Replace `{marker}` with Korean-compatible punctuation outside protected code.",
+            reason=f"The locale punctuation gate forbids `{marker}` in Korean prose.",
+            guide_rule="locale_punctuation",
+            guide_section="Korean locale punctuation",
+        )
+
+
 def validate_style_guide(
     issues: list[Issue],
     source: MarkdownDoc | None,
@@ -1539,6 +1577,7 @@ def style_penalty(issues: list[Issue]) -> float:
         "link_text_translation": 2.0,
         "first_mention_bilingual": 2.0,
         "information_addition": 8.0,
+        "locale_punctuation": 8.0,
     }
     penalty = 0.0
     for item in issues:
@@ -1915,7 +1954,11 @@ def style_guide_digest(path: Path | None, max_chars: int = 24000) -> tuple[str, 
     return digest, hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def load_mqm_prompt(path: Path | None, style_guide_path: Path | None = DEFAULT_STYLE_GUIDE_PATH) -> str:
+def load_mqm_prompt(
+    path: Path | None,
+    style_guide_path: Path | None = DEFAULT_STYLE_GUIDE_PATH,
+    glossary: list[GlossaryEntry] | None = None,
+) -> str:
     prompt_path = path or DEFAULT_MQM_PROMPT_PATH
     if prompt_path.exists():
         prompt = prompt_path.read_text(encoding="utf-8")
@@ -1925,20 +1968,31 @@ def load_mqm_prompt(path: Path | None, style_guide_path: Path | None = DEFAULT_S
             "Return strict JSON with segment_id, adequacy_score, fluency_score, technical_score, and errors."
         )
     digest, digest_hash = style_guide_digest(style_guide_path)
-    if not digest:
-        return prompt
-    return (
-        prompt.rstrip()
-        + "\n\n## Embedded Korean Translation Guide Digest\n\n"
-        + "The following digest is extracted from the project Korean translation guide. "
-        + "Use it as the authoritative style and localization rubric for this MQM review.\n\n"
-        + f"- guide_path: {style_guide_path}\n"
-        + f"- guide_sha256: {digest_hash}\n\n"
-        + "```text\n"
-        + digest
-        + "\n```\n\n"
-        + "Remember: return strict JSON only, using the guide digest above as the review rubric.\n"
+    sections = [prompt.rstrip()]
+    if digest:
+        sections.append(
+            "## Embedded Korean Translation Guide Digest\n\n"
+            "The following digest is extracted from the project Korean translation guide. "
+            "Use it as the authoritative style and localization rubric for this MQM review.\n\n"
+            f"- guide_path: {style_guide_path}\n"
+            f"- guide_sha256: {digest_hash}\n\n"
+            "```text\n"
+            f"{digest}\n"
+            "```"
+        )
+    glossary_entries = load_glossary() if glossary is None else glossary
+    glossary_lines = [
+        f"- {entry.source_term}\t{entry.ko_term}\t{entry.policy}"
+        for entry in glossary_entries
+    ]
+    sections.append(
+        "## Registered Project Glossary\n\n"
+        "Terms in this list are handled by deterministic glossary checks. "
+        "Use the structured terminology review for technical terms not listed here.\n\n"
+        + ("\n".join(glossary_lines) if glossary_lines else "- No registered terms")
     )
+    sections.append("Remember: return strict JSON only, using the guide and glossary above as the review rubric.")
+    return "\n\n".join(sections) + "\n"
 
 
 def parse_json_object(text: str) -> dict[str, object]:
@@ -2080,6 +2134,96 @@ def calibrate_mqm_error(
     return error
 
 
+def normalize_mqm_terminology_review(
+    raw: object,
+    warnings: list[str],
+    segment_id: str,
+    *,
+    source_text: str = "",
+    target_text: str = "",
+) -> dict[str, object] | None:
+    if not isinstance(raw, dict):
+        warnings.append(f"Skipped MQM result for segment {segment_id}: terminology_review must be an object.")
+        return None
+    unexpected_fields = sorted(set(raw) - MQM_TERMINOLOGY_REVIEW_FIELDS)
+    if unexpected_fields:
+        warnings.append(
+            f"Skipped MQM result for segment {segment_id}: terminology_review has unexpected fields {unexpected_fields}."
+        )
+        return None
+    status = str(raw.get("status") or "").strip()
+    if status not in MQM_TERMINOLOGY_STATUSES:
+        warnings.append(f"Skipped MQM result for segment {segment_id}: invalid terminology_review status.")
+        return None
+    raw_terms = raw.get("unregistered_terms")
+    if not isinstance(raw_terms, list):
+        warnings.append(
+            f"Skipped MQM result for segment {segment_id}: terminology_review.unregistered_terms must be an array."
+        )
+        return None
+
+    terms: list[dict[str, str]] = []
+    for raw_term in raw_terms:
+        if not isinstance(raw_term, dict):
+            warnings.append(f"Skipped MQM result for segment {segment_id}: invalid unregistered term object.")
+            return None
+        unexpected_term_fields = sorted(set(raw_term) - MQM_UNREGISTERED_TERM_FIELDS)
+        if unexpected_term_fields:
+            warnings.append(
+                f"Skipped MQM result for segment {segment_id}: unregistered term has unexpected fields "
+                f"{unexpected_term_fields}."
+            )
+            return None
+        source_term = str(raw_term.get("source_term") or "").strip()
+        target_term = str(raw_term.get("target_term") or "").strip()
+        assessment = str(raw_term.get("assessment") or "").strip()
+        explanation = str(raw_term.get("explanation") or "").strip()
+        if not source_term or (source_text and source_term not in source_text):
+            warnings.append(
+                f"Skipped MQM result for segment {segment_id}: unregistered source_term is not verbatim source text."
+            )
+            return None
+        if not target_term or (target_text and target_term not in target_text):
+            warnings.append(
+                f"Skipped MQM result for segment {segment_id}: unregistered target_term is not verbatim target text."
+            )
+            return None
+        if assessment not in MQM_TERM_ASSESSMENTS:
+            warnings.append(f"Skipped MQM result for segment {segment_id}: invalid term assessment.")
+            return None
+        if len(explanation) < 8:
+            warnings.append(
+                f"Skipped MQM result for segment {segment_id}: term explanation must be substantive."
+            )
+            return None
+        terms.append(
+            {
+                "source_term": source_term,
+                "target_term": target_term,
+                "assessment": assessment,
+                "explanation": explanation,
+            }
+        )
+
+    failed = any(term["assessment"] != "acceptable" for term in terms)
+    if not terms and status != "not_applicable":
+        warnings.append(
+            f"Skipped MQM result for segment {segment_id}: empty terminology review must be not_applicable."
+        )
+        return None
+    if terms and status == "not_applicable":
+        warnings.append(
+            f"Skipped MQM result for segment {segment_id}: non-empty terminology review cannot be not_applicable."
+        )
+        return None
+    if failed != (status == "fail"):
+        warnings.append(
+            f"Skipped MQM result for segment {segment_id}: terminology_review status does not match assessments."
+        )
+        return None
+    return {"status": status, "unregistered_terms": terms}
+
+
 def normalize_mqm_result(
     raw: object,
     expected_segment_id: str,
@@ -2104,7 +2248,13 @@ def normalize_mqm_result(
             f"Skipped MQM result for expected segment {expected_segment_id}: response segment_id was {segment_id}."
         )
         return None
-    required_fields = {"adequacy_score", "fluency_score", "technical_score", "errors"}
+    required_fields = {
+        "adequacy_score",
+        "fluency_score",
+        "technical_score",
+        "terminology_review",
+        "errors",
+    }
     missing_fields = sorted(required_fields - raw.keys())
     if missing_fields:
         warnings.append(f"Skipped MQM result for segment {segment_id}: missing fields {missing_fields}.")
@@ -2141,11 +2291,38 @@ def normalize_mqm_result(
         )
         for error in errors
     ]
+    terminology_review = normalize_mqm_terminology_review(
+        raw.get("terminology_review"),
+        warnings,
+        segment_id,
+        source_text=source_text,
+        target_text=target_text,
+    )
+    if terminology_review is None:
+        return None
+    failed_terms = [
+        term
+        for term in terminology_review["unregistered_terms"]
+        if term["assessment"] != "acceptable"
+    ]
+    for term in failed_terms:
+        linked = any(
+            error["category"] == "terminology"
+            and term["source_term"] in error["source_span"]
+            and term["target_term"] in error["target_span"]
+            for error in errors
+        )
+        if not linked:
+            warnings.append(
+                f"Skipped MQM result for segment {segment_id}: failed unregistered term lacks a linked terminology error."
+            )
+            return None
     return {
         "segment_id": segment_id,
         "adequacy_score": adequacy_score,
         "fluency_score": fluency_score,
         "technical_score": technical_score,
+        "terminology_review": terminology_review,
         "errors": errors,
     }
 
@@ -2231,6 +2408,9 @@ def openai_mqm_task(item: dict[str, str]) -> str:
             "adequacy_score": "0.0 to 1.0",
             "fluency_score": "0.0 to 1.0",
             "technical_score": "0.0 to 1.0",
+            "terminology_review": (
+                "required object with status and every unregistered technical source/target term in this segment"
+            ),
             "errors": "array of MQM errors; empty array if no actionable issue",
         },
     }
@@ -2245,8 +2425,9 @@ def run_openai_mqm_judge(
     alignment: list[dict[str, str]],
     config: MetricConfig,
     warnings: list[str],
+    glossary: list[GlossaryEntry] | None = None,
 ) -> tuple[list[dict[str, object]], int, int]:
-    prompt = load_mqm_prompt(config.llm_judge_prompt_path, config.style_guide_path)
+    prompt = load_mqm_prompt(config.llm_judge_prompt_path, config.style_guide_path, glossary)
     prompt_hash = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
     schema_hash = hashlib.sha256(DEFAULT_MQM_SCHEMA_PATH.read_bytes()).hexdigest()
     cache_namespace = mqm_cache_namespace(config, prompt_hash, schema_hash)
@@ -2295,8 +2476,12 @@ def run_openai_mqm_judge(
     if config.llm_judge_base_url:
         client_kwargs["base_url"] = config.llm_judge_base_url
     client = OpenAI(**client_kwargs)
-    cache_dirty = False
-    for item, target_id, cache_key in pending:
+
+    def evaluate_pending(
+        entry: tuple[dict[str, str], str, str],
+    ) -> tuple[dict[str, object] | None, list[str]]:
+        item, target_id, _ = entry
+        item_warnings: list[str] = []
         try:
             request_kwargs: dict[str, Any] = {
                 "model": config.llm_judge_model,
@@ -2312,23 +2497,34 @@ def run_openai_mqm_judge(
             status = str(getattr(response, "status", "") or "")
             if status and status != "completed":
                 details = getattr(response, "incomplete_details", None)
-                warnings.append(f"OpenAI MQM judge incomplete for segment {target_id}: status={status}, details={details}")
-                continue
+                item_warnings.append(
+                    f"OpenAI MQM judge incomplete for segment {target_id}: status={status}, details={details}"
+                )
+                return None, item_warnings
             output_text = str(getattr(response, "output_text", "") or "")
             if not output_text.strip():
-                warnings.append(f"OpenAI MQM judge returned empty output for segment {target_id}.")
-                continue
+                item_warnings.append(f"OpenAI MQM judge returned empty output for segment {target_id}.")
+                return None, item_warnings
             raw = parse_json_object(output_text)
         except Exception as exc:
-            warnings.append(f"OpenAI MQM judge failed for segment {target_id}: {exc}")
-            continue
+            item_warnings.append(f"OpenAI MQM judge failed for segment {target_id}: {exc}")
+            return None, item_warnings
         normalized = normalize_mqm_result(
             raw,
             target_id,
-            warnings,
+            item_warnings,
             source_text=str(item.get("source_text") or ""),
             target_text=str(item.get("target_text") or ""),
         )
+        return normalized, item_warnings
+
+    worker_count = min(len(pending), max(1, config.llm_judge_max_concurrency))
+    with ThreadPoolExecutor(max_workers=worker_count, thread_name_prefix="mqm-judge") as executor:
+        evaluated = list(executor.map(evaluate_pending, pending))
+
+    cache_dirty = False
+    for (_, _, cache_key), (normalized, item_warnings) in zip(pending, evaluated, strict=True):
+        warnings.extend(item_warnings)
         if normalized is not None:
             results.append(normalized)
             cache[cache_key] = normalized
@@ -2353,6 +2549,7 @@ def summarize_mqm_judge(
     reasoning_effort: str = "",
     cache_hits: int = 0,
     cache_misses: int = 0,
+    max_concurrency: int = 1,
 ) -> dict[str, object]:
     severity_counts: Counter[str] = Counter()
     for result in results:
@@ -2375,6 +2572,7 @@ def summarize_mqm_judge(
         "severity_counts": dict(sorted(severity_counts.items())),
         "cache_hits": cache_hits,
         "cache_misses": cache_misses,
+        "max_concurrency": max_concurrency if provider == "openai" else 1,
         "warnings": warnings,
         "segments": results,
     }
@@ -2385,7 +2583,11 @@ def summarize_mqm_judge(
     return summary
 
 
-def evaluate_mqm_judge(alignment: list[dict[str, str]], config: MetricConfig) -> dict[str, object]:
+def evaluate_mqm_judge(
+    alignment: list[dict[str, str]],
+    config: MetricConfig,
+    glossary: list[GlossaryEntry] | None = None,
+) -> dict[str, object]:
     provider = config.llm_judge_provider
     enabled = provider != "off"
     requested = len(selected_judge_alignments(alignment, config.llm_judge_max_segments)) if enabled else 0
@@ -2412,10 +2614,10 @@ def evaluate_mqm_judge(alignment: list[dict[str, str]], config: MetricConfig) ->
     elif provider == "fixture":
         results = run_fixture_mqm_judge(alignment, config, warnings)
     elif provider == "openai":
-        prompt_text = load_mqm_prompt(config.llm_judge_prompt_path, config.style_guide_path)
+        prompt_text = load_mqm_prompt(config.llm_judge_prompt_path, config.style_guide_path, glossary)
         prompt_hash = hashlib.sha256(prompt_text.encode("utf-8")).hexdigest()
         style_guide_hash = style_guide_digest(config.style_guide_path)[1]
-        results, cache_hits, cache_misses = run_openai_mqm_judge(alignment, config, warnings)
+        results, cache_hits, cache_misses = run_openai_mqm_judge(alignment, config, warnings, glossary)
     else:
         warnings.append(f"MQM judge skipped: unknown provider `{provider}`.")
     return summarize_mqm_judge(
@@ -2432,6 +2634,7 @@ def evaluate_mqm_judge(alignment: list[dict[str, str]], config: MetricConfig) ->
         style_guide_hash=style_guide_hash,
         cache_hits=cache_hits,
         cache_misses=cache_misses,
+        max_concurrency=max(1, config.llm_judge_max_concurrency),
     )
 
 
@@ -2485,6 +2688,50 @@ def apply_mqm_judge_issues(issues: list[Issue], mqm_judge: dict[str, object], re
                     guide_rule="mqm_score",
                     guide_section="MQM judge score threshold",
                 )
+
+
+def apply_unregistered_terminology_consistency_issues(
+    issues: list[Issue],
+    mqm_judge: dict[str, object],
+) -> None:
+    observed: dict[str, dict[str, object]] = {}
+    for result in mqm_judge.get("segments", []):
+        if not isinstance(result, dict):
+            continue
+        review = result.get("terminology_review")
+        if not isinstance(review, dict):
+            continue
+        for term in review.get("unregistered_terms", []):
+            if not isinstance(term, dict):
+                continue
+            source_term = str(term.get("source_term") or "").strip()
+            target_term = str(term.get("target_term") or "").strip()
+            if not source_term or not target_term:
+                continue
+            key = normalize_lookup_text(source_term)
+            record = observed.setdefault(key, {"source_term": source_term, "target_terms": set()})
+            target_terms = record["target_terms"]
+            if isinstance(target_terms, set):
+                target_terms.add(target_term)
+
+    for record in observed.values():
+        target_terms = record["target_terms"]
+        if not isinstance(target_terms, set) or len(target_terms) < 2:
+            continue
+        source_term = str(record["source_term"])
+        rendered_targets = ", ".join(sorted(str(value) for value in target_terms))
+        issue(
+            issues,
+            "terminology",
+            "major",
+            "Unregistered technical term is translated inconsistently.",
+            source_span=source_term,
+            target_span=rendered_targets,
+            suggested_fix=f"Choose one accurate Korean rendering for `{source_term}` and use it consistently.",
+            reason="Structured MQM terminology reviews reported multiple target terms for the same source term.",
+            guide_rule="unregistered_terminology_consistency",
+            guide_section="Technical terminology consistency",
+        )
 
 
 def korean_ratio(text: str) -> float:
@@ -2563,7 +2810,7 @@ def validate_documents(
         },
         "segments": [],
     }
-    mqm_judge: dict[str, object] = evaluate_mqm_judge([], metric_settings)
+    mqm_judge: dict[str, object] = evaluate_mqm_judge([], metric_settings, glossary_entries)
     segment_alignment: list[dict[str, str]] = []
     source_is_structural = source is not None and source_format in {"", "markdown", "url_markdown"}
 
@@ -2575,6 +2822,8 @@ def validate_documents(
             error,
             reason="Target Markdown parse failed.",
         )
+
+    validate_locale_punctuation(issues, target, gate_policy)
 
     required_target_keys = gate_policy.list_option("front_matter", "required_target_keys", ["title"])
     for key in required_target_keys:
@@ -2730,14 +2979,15 @@ def validate_documents(
             validate_segment_coverage(issues, source, target, gate_policy)
             metrics = evaluate_metrics(source, target, metric_settings)
             validate_metric_thresholds(issues, metrics, metric_settings)
-            mqm_judge = evaluate_mqm_judge(segment_alignment, metric_settings)
+            mqm_judge = evaluate_mqm_judge(segment_alignment, metric_settings, glossary_entries)
             apply_mqm_judge_issues(issues, mqm_judge, metric_settings.llm_judge_review_threshold)
+            apply_unregistered_terminology_consistency_issues(issues, mqm_judge)
         else:
             metrics["summary"]["warnings"].append(
                 "Source was fetched as HTML text; structural hard gates, segment coverage, and segment metrics were skipped."
             )
             if metric_settings.llm_judge_provider != "off":
-                mqm_judge = evaluate_mqm_judge([], metric_settings)
+                mqm_judge = evaluate_mqm_judge([], metric_settings, glossary_entries)
                 mqm_judge["warnings"] = list(mqm_judge.get("warnings", [])) + [
                     "MQM judge skipped: source was fetched as HTML text, not comparable Markdown segments."
                 ]
@@ -2925,7 +3175,7 @@ def validate_documents(
             "evaluation_config_path": str(gate_policy.evaluation_config_path or ""),
             "gates_config_path": str(gate_policy.gates_config_path or ""),
             "tool": "translation_quality_harness",
-            "tool_version": "0.5.0",
+            "tool_version": "0.6.0",
         },
     }
 
@@ -2997,6 +3247,8 @@ def markdown_report(report: dict[str, object]) -> str:
     lines.append(f"- MQM errors: {mqm_summary.get('error_count', 0)}")
     lines.append(f"- Cache hits: {mqm_summary.get('cache_hits', 0)}")
     lines.append(f"- Cache misses: {mqm_summary.get('cache_misses', 0)}")
+    if mqm_summary.get("provider") == "openai":
+        lines.append(f"- Max concurrency: {mqm_summary.get('max_concurrency', 1)}")
     if mqm_summary.get("severity_counts"):
         lines.append(f"- Severity counts: {mqm_summary.get('severity_counts')}")
     for key in ["adequacy_average", "technical_average", "fluency_average"]:
@@ -3216,6 +3468,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--llm-judge-prompt", help="Optional MQM judge prompt path.")
     parser.add_argument("--llm-judge-fixture", help="Optional JSON/JSONL MQM judge fixture path.")
     parser.add_argument("--llm-judge-max-segments", type=int, default=0, help="Maximum aligned segments to send to the MQM judge. 0 means all.")
+    parser.add_argument(
+        "--llm-judge-max-concurrency",
+        type=int,
+        default=4,
+        help="Maximum concurrent MQM judge API calls. Values below 1 are clamped to 1.",
+    )
     parser.add_argument("--llm-judge-review-threshold", type=float, default=0.75, help="Review threshold for low MQM segment scores.")
     parser.add_argument("--llm-judge-api-key-env", default="OPENAI_API_KEY", help="Environment variable that holds the OpenAI API key.")
     parser.add_argument("--llm-judge-base-url", default=os.environ.get("OPENAI_BASE_URL", ""), help="Optional OpenAI-compatible base URL.")
@@ -3251,6 +3509,7 @@ def main(argv: list[str] | None = None) -> int:
         llm_judge_prompt_path=Path(args.llm_judge_prompt).resolve() if args.llm_judge_prompt else DEFAULT_MQM_PROMPT_PATH,
         llm_judge_fixture_path=Path(args.llm_judge_fixture).resolve() if args.llm_judge_fixture else None,
         llm_judge_max_segments=args.llm_judge_max_segments,
+        llm_judge_max_concurrency=args.llm_judge_max_concurrency,
         llm_judge_review_threshold=args.llm_judge_review_threshold,
         llm_judge_api_key_env=args.llm_judge_api_key_env,
         llm_judge_base_url=args.llm_judge_base_url,
