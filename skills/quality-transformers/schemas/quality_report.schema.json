@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HF Blog Korean Translation Quality Report",
+  "type": "object",
+  "required": ["status", "quality_score", "hard_failures", "dimension_scores", "issues", "segments", "segment_alignment", "metrics", "mqm_judge", "style_guide", "metadata"],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["auto_pass", "review_required", "reject", "source_changed"]
+    },
+    "quality_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "hard_failures": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/issue" }
+    },
+    "dimension_scores": {
+      "type": "object",
+      "required": ["adequacy", "technical_accuracy", "completeness", "terminology", "fluency", "publishing_integrity", "style_locale"],
+      "properties": {
+        "adequacy": { "type": "number" },
+        "technical_accuracy": { "type": "number" },
+        "completeness": { "type": "number" },
+        "terminology": { "type": "number" },
+        "fluency": { "type": "number" },
+        "publishing_integrity": { "type": "number" },
+        "style_locale": { "type": "number" }
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/issue" }
+    },
+    "segments": {
+      "type": "object",
+      "required": ["source", "target"],
+      "properties": {
+        "source": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/segment" }
+        },
+        "target": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/segment" }
+        }
+      }
+    },
+    "segment_alignment": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "required": ["summary", "segments"],
+      "properties": {
+        "summary": {
+          "type": "object"
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "mqm_judge": {
+      "type": "object",
+      "required": ["enabled", "provider", "requested_segment_count", "segment_count", "error_count", "warnings", "segments"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "provider": { "type": "string", "enum": ["off", "openai", "fixture"] },
+        "model": { "type": "string" },
+        "prompt_path": { "type": "string" },
+        "fixture_path": { "type": "string" },
+        "prompt_hash": { "type": "string" },
+        "style_guide_hash": { "type": "string" },
+        "reasoning_effort": { "type": "string" },
+        "requested_segment_count": { "type": "integer" },
+        "segment_count": { "type": "integer" },
+        "skipped_segment_count": { "type": "integer" },
+        "error_count": { "type": "integer" },
+        "cache_hits": { "type": "integer" },
+        "cache_misses": { "type": "integer" },
+        "severity_counts": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "adequacy_average": { "type": "number" },
+        "fluency_average": { "type": "number" },
+        "technical_average": { "type": "number" },
+        "segments": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/mqm_result" }
+        }
+      }
+    },
+    "style_guide": {
+      "type": "object",
+      "required": ["enabled", "style_score", "issue_count", "rules"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "style_score": { "type": "number" },
+        "issue_count": { "type": "integer" },
+        "rules": { "type": "object" }
+      }
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "issue": {
+      "type": "object",
+      "required": ["id", "category", "severity", "message"],
+      "properties": {
+        "id": { "type": "string" },
+        "category": { "type": "string" },
+        "severity": { "type": "string", "enum": ["neutral", "minor", "major", "critical"] },
+        "segment_id": { "type": "string" },
+        "source_span": { "type": "string" },
+        "target_span": { "type": "string" },
+        "message": { "type": "string" },
+        "suggested_fix": { "type": "string" },
+        "reason": { "type": "string" },
+        "guide_rule": { "type": "string" },
+        "guide_section": { "type": "string" }
+      }
+    },
+    "segment": {
+      "type": "object",
+      "required": ["id", "kind", "text", "hash", "path"],
+      "properties": {
+        "id": { "type": "string" },
+        "kind": { "type": "string" },
+        "text": { "type": "string" },
+        "hash": { "type": "string" },
+        "path": { "type": "string" }
+      }
+    },
+    "mqm_result": {
+      "type": "object",
+      "required": ["segment_id", "adequacy_score", "fluency_score", "technical_score", "terminology_review", "errors"],
+      "properties": {
+        "segment_id": { "type": "string" },
+        "adequacy_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "fluency_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "technical_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "terminology_review": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "unregistered_terms"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["not_applicable", "pass", "fail"]
+            },
+            "unregistered_terms": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["source_term", "target_term", "assessment", "explanation"],
+                "properties": {
+                  "source_term": { "type": "string" },
+                  "target_term": { "type": "string" },
+                  "assessment": {
+                    "type": "string",
+                    "enum": ["acceptable", "mistranslated", "inconsistent"]
+                  },
+                  "explanation": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["guide_rule", "guide_section", "category", "severity", "source_span", "target_span", "explanation", "suggested_fix"],
+            "properties": {
+              "guide_rule": { "type": "string" },
+              "guide_section": { "type": "string" },
+              "category": {
+                "type": "string",
+                "enum": ["accuracy", "terminology", "technical", "fluency", "style_locale", "formatting"]
+              },
+              "severity": {
+                "type": "string",
+                "enum": ["neutral", "minor", "major", "critical"]
+              },
+              "source_span": { "type": "string" },
+              "target_span": { "type": "string" },
+              "explanation": { "type": "string" },
+              "suggested_fix": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

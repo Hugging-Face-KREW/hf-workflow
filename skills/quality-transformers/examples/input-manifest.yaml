@@ -1,0 +1,27 @@
+version: 1
+source:
+  # Always provide the English source explicitly for transformers docs — the
+  # harness only auto-fetches huggingface.co/blog/... URLs, not docs pages.
+  # Use the raw path in the transformers repo (or a local checkout).
+  url: https://raw.githubusercontent.com/huggingface/transformers/main/docs/source/en/tokenizer_summary.md
+  file_path: en/tokenizer_summary.md
+  hash: ""
+  title: Tokenizer summary
+translation:
+  # Path is relative to --target-root (a transformers checkout root, so the
+  # docs/source/ko/... path resolves).
+  file_path: docs/source/ko/tokenizer_summary.md
+  commit_sha: ""
+handoff:
+  quality:
+    enabled: true
+    checks:
+      - hard_gates
+      - anchor_preservation
+      - directive_preservation
+      - autodoc_reference_preservation
+      - mdx_component_preservation
+      - sentence_final_colon
+      - fidelity
+      - fluency
+      - terminology
