@@ -1,65 +1,68 @@
-# <새 문서 유형> 번역 품질 스킬 빌드 계획
+# <new document type> translation quality skill build plan
 
 <!--
-Phase 3 산출물. Phase 1(format-content-detail-comparison)과 Phase 2(harness
-아키텍처 문서)를 다 읽은 뒤에 작성한다. 이 문서는 Phase 4 구현의 유일한
-입력이어야 한다 — 여기 없는 변경은 Phase 4에서 즉흥적으로 추가하지 않는다.
+Phase 3 deliverable. Write this after reading Phase 1
+(format-content-detail-comparison) and Phase 2 (harness architecture doc) in
+full. This doc must be the sole input to Phase 4 implementation — don't
+improvise changes in Phase 4 that aren't recorded here.
 -->
 
-## 평가 항목별 유지/수정/신규 판단
+## Keep/modify/new decisions per evaluation item
 
 <!--
-분류는 SKILL.md Phase 3의 표를 그대로 쓴다:
-유지 / 자산만 재구성 / 완화·강화 / 비활성화 / 신규 파싱 필요 /
-신규 게이트·검증기 필요 / 구조적으로 불가능
+Use the classification from SKILL.md Phase 3 as-is:
+Keep / Reconfigure assets only / Soften-harden / Disable / New parsing needed /
+New gate-validator needed / Structurally impossible
 -->
 
-| 평가 항목 | 분류 | 무엇을 바꾸는가 | 근거(Phase 1/2 인용) |
+| Evaluation item | Class | What changes | Rationale (cite Phase 1/2) |
 |---|---|---|---|
-| front_matter 하드 게이트 | | | |
-| code_blocks 하드 게이트 | | | |
+| front_matter hard gate | | | |
+| code_blocks hard gate | | | |
 | inline_code / links / images / latex / tables / todo_markers | | | |
-| glossary 검증 | | | |
-| 스타일 가이드 검증기 11종 | | | |
-| 메트릭 트리아지(QE/임베딩/chrF) | | | |
-| MQM judge 프롬프트 | | | |
-| <이 문서 유형 특유의 새 항목> | | | |
+| glossary validation | | | |
+| 11 style-guide validators | | | |
+| Metric triage (QE/embedding/chrF) | | | |
+| MQM judge prompt | | | |
+| <new item unique to this document type> | | | |
 
-## 파싱 요건
+## Parsing requirements
 
-| 새로 뽑을 정보 | 추출 위치/방법 | 비교 방식(멀티셋 vs 순서·짝 기반) | 하드/리뷰 게이트 |
+| New info to extract | Extraction location/method | Comparison method (multiset vs. order/pair-based) | Hard or review gate |
 |---|---|---|---|
 
-## 구조적으로 불가능하다고 판단한 항목
+## Items judged structurally impossible
 
-<!-- 지금 아키텍처(단일 소스-파일 ↔ 단일 타깃-파일 비교)로는 자동화할 수
-없어서, 스킬 문서에 "수동 확인 필요"로만 남길 항목 -->
-
--
-
-## 변경할 자산 목록
-
-<!-- 실제로 손댈 파일 경로를 나열한다. 새로 만들 파일과 기존 파일 중 값만
-바꿀 파일을 구분한다. -->
-
-### 새로 만드는 파일
+<!-- Items that can't be automated with the current architecture (single
+source-file ↔ single target-file comparison), to be left as "requires manual
+check" in the skill docs -->
 
 -
 
-### 기존 파일에서 값/문구만 바꾸는 파일
+## Assets to change
+
+<!-- List the actual file paths to be touched. Separate new files from
+existing files where only a value changes. -->
+
+### New files
 
 -
 
-### 도구 코드(harness)에서 바꾸는 부분
-
-<!-- 없으면 "없음"이라고 명시한다. 있다면 정확히 어떤 함수/로직인지,
-왜 config만으로는 안 되는지 적는다. -->
+### Existing files where only a value/wording changes
 
 -
 
-## 사용자 승인 필요 항목
+### Tool code (harness) changes
 
-<!-- "신규 게이트/검증기 필요"와 "완화/강화"로 분류된 항목, 그리고 도구
-코드를 고치는 항목을 여기 모아서 승인 요청 시 빠짐없이 확인받는다. -->
+<!-- State "none" explicitly if there are none. If there are, specify exactly
+which function/logic, and why config alone isn't enough. -->
+
+-
+
+## Items requiring user approval
+
+<!-- Collect every item classified "new gate/validator needed" or
+"soften/harden," plus any tool-code change, here so none are missed when
+requesting approval. -->
 
 -

@@ -1,35 +1,38 @@
-# Phase 3 — 빌드 계획 수립: 유지/수정/신규 판단 + 파싱 요건
+# Phase 3 — Build plan: keep/modify/new decisions + parsing requirements
 
-Phase 1(무엇이 다른가)과 Phase 2(도구가 정확히 어떻게 동작하는가)를 합쳐서,
-파이프라인의 **각 평가 항목**마다 분류한다.
+Combine Phase 1 (what's different) and Phase 2 (exactly how the tool works)
+to classify **every evaluation item** in the pipeline:
 
-| 분류 | 의미 | 필요한 작업 |
+| Class | Meaning | Work needed |
 |---|---|---|
-| **유지** | 새 문서 유형에도 그대로 맞음 | 없음 |
-| **자산만 재구성** | 로직은 맞지만 값/문구가 안 맞음 | config 값·가이드 문구만 교체(임계값은 Phase 5로 미룸) |
-| **완화/강화** | 심각도(하드↔리뷰)를 바꿔야 함 | `gates.yml`의 `status`만 변경 — 로직 변경이 아니라 설정 변경 |
-| **비활성화** | 새 문서 유형에 아예 해당 없음 | 관련 옵션을 끄거나 빈 값으로 설정. **빈 값/끄기가 파서에서 실제로 지원되는 문법인지 코드로 검증** — 안 되면 최소한의 파서 수정이 필요 |
-| **신규 파싱 필요** | 새 구조 요소를 비교하려면 지금 안 뽑는 정보를 새로 뽑아야 함 | 아래 "파싱 요건" 참고 |
-| **신규 게이트/검증기 필요** | 비교 로직 자체가 새로 필요함 | 도구 코드에 새 비교 함수 추가(최소 범위) |
-| **구조적으로 불가능** | 지금 아키텍처(단일 소스-파일 ↔ 단일 타깃-파일 비교)로는 다룰 수 없음 | 자동화하지 않는다고 명시하고, 사람/에이전트의 수동 확인 항목으로 남긴다 |
+| **Keep** | Still correct for the new document type | None |
+| **Reconfigure assets only** | Logic is fine, values/wording aren't | Swap config values/guide text only (defer thresholds to Phase 5) |
+| **Soften/harden** | Severity (hard↔review) needs to change | Change `status` in `gates.yml` only — a config change, not a logic change |
+| **Disable** | Doesn't apply to the new document type at all | Turn off the option or set it empty. **Verify the parser actually supports empty/off syntax** — if not, a minimal parser fix is needed |
+| **New parsing needed** | Comparing a new structural element requires info not currently extracted | See "Parsing requirements" below |
+| **New gate/validator needed** | The comparison logic itself doesn't exist yet | Add a new comparison function to the tool (minimal scope) |
+| **Structurally impossible** | Can't be handled by the current architecture (single source-file ↔ single target-file comparison) | Declare it out of automation scope, leave as a manual human/agent check |
 
-## 파싱 요건을 별도로 정리한다
+## Spell out parsing requirements separately
 
-새로 뽑아야 하는 구조 요소마다 아래를 명시한다:
+For each new structural element to extract, specify:
 
-- **무엇을 뽑는가**
-- **어디서 뽑는가** — 지금 있는 세그먼트/문서 필드에서 파생 가능한가,
-  아니면 raw body를 새 정규식으로 다시 훑어야 하는가
-- **비교 방식** — 멀티셋(순서 무관, 개수만 비교)으로 충분한가, 아니면 순서/
-  위치가 고정된 짝(pair) 비교가 필요한가
-- **하드 게이트인가 리뷰 게이트인가** — "이게 깨지면 빌드/렌더링이 실제로
-  깨지는가"(하드) vs "번역 품질 문제이지만 사람이 판단해야 하는가"(리뷰)
+- **What to extract**
+- **Where from** — derivable from an existing segment/document field, or does
+  the raw body need a new regex pass
+- **Comparison method** — is a multiset (order-agnostic, count-only)
+  comparison enough, or is a fixed-position pair comparison needed
+- **Hard gate or review gate** — "does this breaking actually break the
+  build/render" (hard) vs. "translation-quality issue but needs human
+  judgment" (review)
 
-**산출물**: 빌드 계획 문서. Phase 1의 A/B/C 각 항목이 표의 한 행이 되고,
-"분류" 칼럼과 "왜"(Phase 1/2 근거 인용) 칼럼을 채운다. 파싱 요건은 별도 표.
-템플릿: `templates/build-plan.template.md`.
+**Deliverable**: the build plan doc. Each Phase 1 A/B/C item becomes a table
+row with a "class" column and a "why" column (citing Phase 1/2 evidence).
+Parsing requirements get their own table. Template:
+`templates/build-plan.template.md`.
 
-**체크포인트**: 계획 문서를 사용자에게 보여주고 승인받는다. 특히 "신규
-게이트/검증기 필요"와 "완화/강화" 항목은 도구 코드나 심각도 정책을 바꾸는
-것이므로 Phase 4로 넘어가기 전에 반드시 확인받는다. 애매하면
-`AskUserQuestion`으로 구체적인 선택지를 제시해서 묻는다.
+**Checkpoint**: show the plan to the user and get approval. "New
+gate/validator needed" and "soften/harden" items change tool code or severity
+policy, so they must be confirmed before moving to Phase 4. When ambiguous,
+use `AskUserQuestion` with concrete options rather than a vague "how should I
+proceed?"

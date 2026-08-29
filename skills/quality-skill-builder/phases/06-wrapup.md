@@ -1,18 +1,22 @@
-# Phase 6 — 마무리 체크리스트
+# Phase 6 — Wrap-up checklist
 
-- [ ] Phase 1 비교 문서가 있고, 사용자 피드백이 반영됐다.
-- [ ] Phase 2 아키텍처 문서가 있고(재사용했다면 최신 상태를 확인했고), 사용한
-      용어가 정확하다(직접 코드로 검증했다).
-- [ ] Phase 3 빌드 계획 문서가 있고 사용자 승인을 받았다.
-- [ ] Phase 4 구현이 계획 항목과 1:1로 대응되고, 계획에 없던 변경이 없다.
-- [ ] 파일 트리를 원본 스킬과 비교했고, 원본에만 있는 파일은 전부 "의도적
-      부재"로 문서화했거나 새로 만들었다.
-- [ ] "유지"로 분류한 파일들을 `diff`로 확인해 계획에 없는 차이가 없다.
-- [ ] 원본 스킬의 테스트 스위트가 여전히 통과한다.
-- [ ] 새 문서 유형용 최소 fixture로 harness를 직접 돌려 확인했다.
-- [ ] 임계값은 Phase 5 실증 없이 바꾸지 않았다(또는 Phase 5를 거쳐 근거와
-      함께 바꿨다).
-- [ ] 구조적으로 자동화 불가능하다고 판단한 항목들이 스킬 문서에 "수동 확인
-      필요"로 명시되어 있다.
-- [ ] 공유 도구 코드를 고쳤다면, 그 변경이 다른 스킬에 영향을 주지 않는다는
-      걸 테스트로 확인했고 사용자에게 보고했다.
+- [ ] The Phase 1 comparison doc exists and user feedback was incorporated.
+- [ ] The Phase 2 architecture doc exists (if reused, confirmed current), and
+      its terminology is accurate (verified against code directly).
+- [ ] The Phase 3 build plan doc exists and got user approval.
+- [ ] Phase 4 implementation maps 1:1 to plan items, with no unplanned
+      changes.
+- [ ] File trees were compared against the original skill; every file that
+      exists only in the original is either documented as intentionally
+      absent or was newly created.
+- [ ] Files classified "keep" were `diff`-checked with no unplanned
+      differences.
+- [ ] The original skill's test suite still passes.
+- [ ] The harness was actually run against a minimal fixture for the new
+      document type.
+- [ ] Thresholds were not changed without Phase 5 evidence (or were changed
+      through Phase 5, with evidence recorded).
+- [ ] Items judged structurally impossible to automate are documented in the
+      skill docs as "requires manual check."
+- [ ] If shared tool code was changed, its lack of impact on other skills was
+      verified by test and reported to the user.

@@ -1,27 +1,31 @@
-# Phase 5 — 임계값·산식 보정 (가장 마지막, 실증 기반)
+# Phase 5 — Threshold/formula calibration (last, evidence-based)
 
-**Phase 4가 기능적으로 검증된 뒤에만** 시작한다.
+Start this **only after Phase 4 is functionally verified**.
 
-1. **실제로 잘 번역된 샘플 문서를 여러 개(가능하면 3~5개 이상) 확보한다.**
-   가능하면 실제 PR을 통해 리뷰를 거친 것이 좋다 — 병합된 결과물만이 아니라
-   리뷰 과정(무엇을 지적받고 무엇을 고쳤는지)까지 보면 번역자/리뷰어가 실제로
-   중요하게 여긴 기준을 알 수 있고, 이게 임계값 조정의 근거가 된다.
-2. **원본 스킬의 기본 임계값 그대로** 이 샘플들에 harness를 돌린다.
-3. 알려진 좋은 번역이 부당하게 `review_required`/`reject`로 나오거나(false
-   positive), 나쁜 번역이 `auto_pass`로 나오는지(false negative) 확인한다.
-4. false positive/negative가 **실제로 관찰된** 임계값만 조정한다. 관찰되지
-   않은 임계값은 "문서 유형이 다르니 아마 다를 것"이라는 추측만으로 건드리지
-   않는다.
-5. 조정할 때는 **관찰을 설명하는 가장 작은 변경**을 택한다. 조정한 값 옆에
-   근거(어떤 샘플에서 어떤 점수가 나왔는지)를 config 파일 주석이나 별도
-   문서에 남긴다.
-6. 조정 후 다시 같은 샘플들로 재검증하고, 원본 스킬의 테스트 스위트도 다시
-   돌린다.
+1. **Gather several (ideally 3–5+) real, well-translated sample documents.**
+   Ones that went through an actual PR review are ideal — seeing the review
+   process (what was flagged, what got fixed), not just the merged result,
+   reveals what translators/reviewers actually treated as important, and
+   that becomes the basis for threshold adjustments.
+2. **Run the harness against these samples with the original skill's default
+   thresholds, unchanged.**
+3. Check whether a known-good translation is unfairly flagged
+   `review_required`/`reject` (false positive), or a bad translation comes
+   out `auto_pass` (false negative).
+4. Adjust **only** thresholds where a false positive/negative was actually
+   observed. Don't touch a threshold just because "this document type is
+   probably different" without evidence.
+5. When adjusting, pick the **smallest change that explains the
+   observation**. Record the rationale (which sample, what score) next to the
+   adjusted value, in a config comment or a separate doc.
+6. Re-verify with the same samples after adjusting, and re-run the original
+   skill's test suite too.
 
-**산출물**: 보정 기록 문서(무엇을, 왜, 어떤 근거로 바꿨는지). 템플릿:
-`templates/calibration-notes.template.md`.
+**Deliverable**: calibration notes (what changed, why, on what evidence).
+Template: `templates/calibration-notes.template.md`.
 
-**체크포인트**: 임계값을 하나라도 바꾸기 전에 반드시 사용자에게 관찰된
-false positive/negative 사례와 제안하는 변경을 보여주고 승인받는다. 이
-스킬 전체에서 사용자 확인 없이 진행하면 안 되는 가장 민감한 지점이다 —
-점수 산식은 다른 모든 판단(자동 승인/리젝)의 기준이 되기 때문이다.
+**Checkpoint**: before changing any threshold, show the user the observed
+false positive/negative cases and the proposed change, and get approval.
+This is the most sensitive point in the whole skill where nothing should
+proceed without user confirmation — the score formula is the basis for every
+other decision (auto-approve/reject).

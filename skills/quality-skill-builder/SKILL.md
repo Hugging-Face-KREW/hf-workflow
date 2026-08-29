@@ -1,61 +1,65 @@
-# 번역 품질 스킬을 새 문서 유형에 맞춰 다시 빌드하는 스킬
+# Quality Skill Builder
 
-이 파일은 **라우터**다. 각 Phase를 시작할 때 그 Phase의 `phases/0N-*.md`를
-그 시점에 다시 읽는다 — 지금 이 파일을 한 번 읽었다고 뒤 Phase의 세부 내용을
-기억에 의존하지 않는다. "왜 이 규칙이 있는가"(실제 사례, 배경 설명)는
-`RATIONALE.md`에 따로 있다 — 실행에는 필요 없고, 규칙에 의문이 들 때만 읽는다.
+This file is a **router**. Re-read the relevant `phases/0N-*.md` when you
+start that phase — don't rely on memory of having read this file once. "Why"
+(rationale, real incidents) lives separately in `RATIONALE.md` — not needed to
+execute the work, only when a rule seems arbitrary.
 
-## 언제 쓰는가
+## When to use
 
-`skills/quality`처럼 **하나의 문서 유형**을 대상으로 하는 번역 품질 검사
-스킬이 이미 있고, 이걸 **다른 문서 유형**(기술 문서, 코스 자료, README, 릴리즈
-노트 등)에 맞게 다시 만들어야 할 때. `skills/quality` → `skills/quality-docs`가
-실제 예제다 — 결과물(`skills/quality-docs/` 전체, 특히 `docs/`의 두 참조 문서)을
-참고할 수 있다.
+You already have a translation-quality-review skill for **one document
+type** (e.g. `skills/quality` for HF blog posts), and need to rebuild it for
+**another document type** (technical docs, course material, README, release
+notes, etc.). `skills/quality` → `skills/quality-docs` is the worked example —
+its results (`skills/quality-docs/`, especially the two reference docs under
+`docs/`) are available to consult.
 
-## 기본 원칙 (모든 Phase에 적용)
+## Core principles (apply to every phase)
 
-1. **전체 파이프라인은 유지한다.** 채점 도구의 구조(파싱 → 세그먼트 추출/정렬
-   → 하드/리뷰 게이트 → 용어집 검증 → 스타일 가이드 검증 → 메트릭 트리아지 →
-   MQM judge → 점수/상태 집계)를 재설계하지 않는다.
-2. **스킬·자산·도구 코드 모두 "필요한 만큼만" 고친다.** 모든 코드 변경은
-   Phase 1~3에서 나온 구체적 근거에 연결돼야 한다.
-3. **판단이 갈리는 지점에서는 사용자에게 확인한다** — 특히 공유 도구 코드를
-   고쳐야 할 때, 하드/리뷰 게이트 분류가 애매할 때, 임계값을 조정하려 할 때.
-   각 Phase 파일에 "여기서 물어라"가 명시돼 있다.
-4. **임계값·종합 점수 산식은 Phase 5 전까지 건드리지 않는다.**
-5. **공유 코드를 고치면 항상 원본 스킬의 테스트도 같이 돌린다.**
+1. **Keep the whole pipeline.** Don't redesign the scoring tool's structure
+   (parse → segment extraction/alignment → hard/review gates → glossary
+   validation → style-guide validation → metric triage → MQM judge →
+   score/status aggregation).
+2. **Change skill, assets, and tool code only as much as needed.** Every code
+   change must trace back to a concrete finding from Phase 1–3.
+3. **Ask the user at judgment-call points** — especially before touching
+   shared tool code, when a hard-vs-review classification is ambiguous, and
+   before adjusting thresholds. Each phase file marks "ask here."
+4. **Don't touch thresholds or the composite score formula before Phase 5.**
+5. **Whenever shared code changes, re-run the original skill's test suite.**
 
-## 실행 원칙
+## Execution principles
 
-- **스킬 하나로 유지한다** — 여러 스킬로 쪼개거나 Agent 서브타입으로 만들지
-  않는다. (이유: `RATIONALE.md#실행-형태`)
-- **Phase를 시작하기 전에 해당 산출물 파일이 이미 있는지 먼저 확인**한다.
-  있으면 처음부터 다시 하지 말고 이어서 검토·보완한다. 각 Phase의 산출물은
-  끝나는 즉시 디스크 파일로 저장한다.
-- **원본을 많이 소모하는 조사(리서치, 코드 추적)는 `Agent` 도구로 위임**하고
-  메인 스레드에는 결과(완성된 문서/표)만 남긴다.
-- 문서 유형이 여럿이라 병렬 조사가 필요하거나 사용자가 명시적으로
-  orchestration을 요청하면 `Workflow` 도구로 격상할 수 있다 — 기본값은 아니다.
+- **Stay one skill** — don't split into multiple skills or a dedicated Agent
+  subtype. (Why: `RATIONALE.md#execution-shape`.)
+- **Before starting a phase, check whether its output file already exists.**
+  If so, continue from it instead of redoing the phase. Save each phase's
+  output to disk as soon as it's ready.
+- **Delegate token-heavy research (deep dives, code tracing) to the `Agent`
+  tool** and keep only the distilled result (finished doc/table) on the main
+  thread.
+- Escalate to the `Workflow` tool only if the scope grows to multiple document
+  types researched in parallel, or the user explicitly asks for
+  orchestration — not the default.
 
-## Phase 목차
+## Phase index
 
-| Phase | 목표 | 체크포인트 | 파일 |
+| Phase | Goal | Checkpoint | File |
 |---|---|---|---|
-| 0 | 범위 확정 | 있음 | `phases/00-scope.md` |
-| 1 | 새 문서 유형 분석(형식/내용/디테일) | 있음 | `phases/01-document-analysis.md` |
-| 2 | 기존 harness 아키텍처를 코드로 확인 | 있음 | `phases/02-harness-architecture.md` |
-| 3 | 빌드 계획: 유지/수정/신규 판단 + 파싱 요건 | 있음 | `phases/03-build-plan.md` |
-| 4 | 구현 + 스캐폴딩 완전성 검증 | 있음(공유 코드 첫 수정 시) | `phases/04-implementation.md` |
-| 5 | 임계값·산식 보정(실증 기반, 가장 마지막) | 있음(값 변경 전 필수) | `phases/05-calibration.md` |
-| 6 | 마무리 체크리스트 | — | `phases/06-wrapup.md` |
+| 0 | Confirm scope | Yes | `phases/00-scope.md` |
+| 1 | Analyze the new document type (format/content/detail) | Yes | `phases/01-document-analysis.md` |
+| 2 | Trace the existing harness architecture from code | Yes | `phases/02-harness-architecture.md` |
+| 3 | Build plan: keep/modify/new decisions + parsing requirements | Yes | `phases/03-build-plan.md` |
+| 4 | Implementation + scaffolding-completeness check | Yes (first shared-code edit) | `phases/04-implementation.md` |
+| 5 | Threshold/formula calibration (evidence-based, last) | Yes (before any value change) | `phases/05-calibration.md` |
+| 6 | Wrap-up checklist | — | `phases/06-wrapup.md` |
 
-## 산출물 요약
+## Deliverables at a glance
 
-- Phase 1 → `docs/<원본>-vs-<신규>-differences.md` (템플릿:
+- Phase 1 → `docs/<original>-vs-<new>-differences.md` (template:
   `templates/format-content-detail-comparison.template.md`)
-- Phase 2 → `docs/<도구명>-architecture.md` (문서 유형별로 새로 안 만든다 —
-  도구 자체 문서라 재사용)
-- Phase 3 → 빌드 계획 문서 (템플릿: `templates/build-plan.template.md`)
-- Phase 4 → 실제 스킬 폴더 일체
-- Phase 5 → 보정 기록 문서 (템플릿: `templates/calibration-notes.template.md`)
+- Phase 2 → `docs/<tool>-architecture.md` (not remade per document type — it
+  documents the tool itself, so it's reused)
+- Phase 3 → build plan doc (template: `templates/build-plan.template.md`)
+- Phase 4 → the actual skill folder
+- Phase 5 → calibration notes (template: `templates/calibration-notes.template.md`)

@@ -1,15 +1,16 @@
-# Phase 0 — 범위 확정
+# Phase 0 — Confirm scope
 
-- 새로 지원할 문서 유형이 무엇인지, 어느 저장소/디렉터리의 파일들인지
-  명확히 한다.
-- 기존 스킬(원본)을 그대로 둘지, 원본도 같이 고칠지 정한다. 보통은 원본은
-  그대로 두고 새 스킬 폴더를 만드는 쪽이 안전하다(원본이 이미 검증된 다른
-  문서 유형에 쓰이고 있다면 특히).
-- 새 스킬 폴더 이름/위치를 정한다. 기존 스킬과 나란히 두는 걸 기본으로 한다
-  (예: `skills/quality` 옆에 `skills/quality-docs`).
-- 채점 도구(harness) 코드를 공유할지(원본 폴더의 스크립트를 CLI로 그대로
-  호출) 복제할지 정한다. 공유 쪽이 기본값이다 — 자산(config/가이드/glossary)만
-  갈아 끼우면 되는 경우가 많다.
+- Pin down exactly which new document type this covers, and which
+  repo/directory the files live in.
+- Decide whether to leave the original skill untouched or modify it too.
+  Leaving the original alone and adding a new skill folder is usually safer
+  (especially if the original is already validated for another document
+  type).
+- Decide the new skill folder's name/location. Default to placing it next to
+  the existing skill (e.g. `skills/quality-docs` next to `skills/quality`).
+- Decide whether to share the scoring tool (call the original folder's
+  script directly via CLI) or duplicate it. Sharing is the default — often
+  only the assets (config/guide/glossary) need to change.
 
-**체크포인트**: 이 네 가지 결정은 사용자가 정하는 게 낫다. 짐작해서 진행하지
-말고 물어본다.
+**Checkpoint**: these four decisions are better made by the user. Don't guess
+— ask.

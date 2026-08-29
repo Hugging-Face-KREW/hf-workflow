@@ -1,33 +1,37 @@
-# Phase 2 — 기존 도구(harness) 아키텍처를 코드로 직접 확인한다
+# Phase 2 — Trace the existing harness architecture from code
 
-Phase 1에서 "무엇이 다른가"를 알았다면, 이번엔 "기존 도구가 정확히 어떻게
-평가하는가"를 파악해야 Phase 3에서 제대로 된 keep/modify 판단을 할 수 있다.
-**README 요약이나 기억으로 짐작하지 말고, 채점 스크립트 코드를 직접 읽어서
-확인한다** — README와 실제 코드가 어긋나는 경우가 있다(`RATIONALE.md` 참고).
+Phase 1 established what's different. Now establish exactly how the existing
+tool evaluates a translation, so Phase 3's keep/modify decisions are sound.
+**Read the scoring script's code directly — don't guess from a README
+summary or memory.** README and code can disagree (see `RATIONALE.md`).
 
-## 확인해야 할 것
+## What to confirm
 
-1. **파이프라인 각 단계가 정확히 무엇을 비교하고, 어떤 알고리즘을 쓰는가.**
-   "코드블록을 검사한다" 수준이 아니라 "코드블록 전체를 sha256으로 해시해서
-   소스/타깃 해시 리스트를 멀티셋(Counter) 차집합으로 비교하고, 하나라도 안
-   맞으면 missing/extra로 이슈를 만든다" 수준까지 추적한다.
-2. **"하드 게이트"와 "리뷰 게이트"가 코드상 다른 두 메커니즘인지, 아니면
-   같은 로직에 설정값만 다르게 적용되는지** 확인한다.
-3. **config 파일의 특정 키가 실제로 코드에서 읽히는지** 하나하나 확인한다.
-   손으로 짠 미니 YAML 파서는 흔히 "정해진 고정 경로만" 인식하고 나머지 키는
-   에러 없이 조용히 무시한다. → **새 config 키를 추가하기 전에, 그 키를
-   실제로 읽는 코드가 있는지 먼저 확인**한다(파서 함수를 직접 읽어서). 없다면
-   Phase 3/4에서 "이 키는 문서화 전용이고 실행 로직이 없다"고 명시한다.
-4. **점수/상태 집계 공식을 정확한 수식으로 뽑아 적는다.** 실제 가중치
-   숫자와, 최종 상태를 가르는 조건문의 정확한 순서를 코드에서 그대로
-   옮겨 적는다.
-5. **세그먼트/정렬 메커니즘의 한계를 파악한다.** 정렬이 순서 기반 zip인지
-   의미 기반 매칭인지, 특정 구조 정보(예: 헤딩 레벨)가 파싱 중 버려지는지 —
-   이 한계가 Phase 3에서 "지금 구조로는 못 만든다" 판단에 직접 쓰인다.
+1. **Exactly what each pipeline stage compares, and with what algorithm.**
+   Not "the hard gate checks code blocks" — trace it to "the whole code block
+   is sha256-hashed, source/target hash lists are compared as a multiset
+   (Counter) difference, and any mismatch becomes a missing/extra issue."
+2. **Whether "hard gate" and "review gate" are actually two different
+   mechanisms in code, or the same logic with only a config value (e.g.
+   `status: reject` vs `review_required`) applied differently.**
+3. **Whether each specific config key is actually read by the code.** A
+   hand-rolled mini YAML parser commonly recognizes only a fixed set of paths
+   and silently ignores everything else. → **Before adding a new config key,
+   confirm code actually reads it** (read the parser function directly). If
+   not, mark it explicitly in Phase 3/4 as "documentation only, no execution
+   logic yet."
+4. **Write the exact score/status aggregation formula.** Pull the real
+   weight constants and the exact order of the conditional that decides the
+   final status straight from the code.
+5. **Understand the limits of the segment/alignment mechanism.** Is alignment
+   order-based zip or meaning-based matching? Is some structural info (e.g.
+   heading level) discarded during parsing? These limits directly determine
+   Phase 3's "can't build this with the current structure" calls.
 
-**산출물**: `docs/<도구명>-architecture.md`. **문서 유형별로 새로 만들지
-않는다** — 도구 자체에 대한 문서이므로 한 번 만들면 재사용한다. 이미 있으면
-최신 상태인지만 확인한다.
+**Deliverable**: `docs/<tool>-architecture.md`. **Don't remake this per
+document type** — it documents the tool itself, so reuse it once built. If it
+already exists, just confirm it's current.
 
-**체크포인트**: 문서를 다 쓴 뒤 사용한 용어가 정확한지 스스로 재검수한다
-(비유적 표현이 실제 메커니즘과 안 맞을 수 있다 — `RATIONALE.md` 참고).
+**Checkpoint**: after writing, re-check your own terminology for accuracy (a
+figurative description can drift from the real mechanism — see
+`RATIONALE.md`).

@@ -1,72 +1,84 @@
-# Phase 4 — 구현
+# Phase 4 — Implementation
 
-Phase 3 계획에 있는 항목만 구현한다(계획에 없던 걸 즉흥적으로 추가하지
-않는다). 권장 순서:
+Implement only what's in the Phase 3 plan (don't improvise items that aren't
+there). Recommended order:
 
-1. **파싱 확장** — 새 필드를 문서 파싱 단계에 추가. 기존 필드/정규식을
-   최대한 재사용한다.
-2. **비교/검증 로직 연결** — 새 게이트/검증기를 추가하거나, 기존 게이트를
-   설정으로 완화/강화한다.
-3. **config 자산 작성** — `gates.yml`/`style_policy.yml`/`eval_config.yml`.
-   **임계값(숫자)은 원본 스킬 기본값 그대로 둔다** — Phase 5 전까지 안 건드림.
-4. **가이드/프롬프트/용어집 작성** — Phase 1에서 모은 실제 사례(원문↔번역
-   diff, 실제 리뷰 코멘트)를 그대로 예시로 인용한다. 가상의 예시를 만들지
-   않는다.
-5. **SKILL.md/README.md/AGENTS.md 등 스킬 진입점 작성.**
-6. **스캐폴딩 완전성 + 불변 파일 검증** (아래) — 테스트를 돌리기 **전에**
-   반드시 한다.
+1. **Extend parsing** — add new fields to the document-parsing stage. Reuse
+   existing fields/regexes as much as possible.
+2. **Wire up comparison/validation logic** — add new gates/validators, or
+   soften/harden existing gates via config.
+3. **Write config assets** — `gates.yml`/`style_policy.yml`/`eval_config.yml`.
+   **Leave thresholds (numbers) at the original skill's defaults** — don't
+   touch them before Phase 5.
+4. **Write the guide/prompt/glossary** — quote real cases gathered in Phase 1
+   (source↔translation diffs, real review comments) as examples. Don't
+   invent hypothetical examples.
+5. **Write the skill entry points** — SKILL.md/README.md/AGENTS.md, etc.
+6. **Verify scaffolding completeness + unchanged files** (below) — do this
+   **before** running tests.
 
-## 파일을 어떻게 만들 것인가: 복사 vs 새로 쓰기
+## How to build each file: copy vs. write from scratch
 
-- **원본과 대부분 같고 일부만 다른 파일**(`pyproject.toml`,
-  `schemas/*.json`, glossary, 값 몇 개만 다른 config): `cp`로 원본을
-  복사한 뒤 `diff`로 확인하고 `Edit`으로 필요한 부분만 고친다. 처음부터
-  손으로 다시 타이핑하지 않는다. (`cp`+`diff`가 `Write`보다 신뢰성·비용 둘
-  다 낫다 — `RATIONALE.md` 참고.)
-- **원본과 완전히 다른 파일**(스타일 가이드 본문, SKILL.md, README, judge
-  프롬프트): `diff`가 의미 없으므로 `Write`로 새로 쓴다.
-- **아예 똑같이 유지할 파일**(glossary 등): 복사조차 하지 말고, 새 스킬의
-  README/CLI 예시에서 원본 경로를 그대로 참조한다. 파일이 두 곳에 있으면
-  그 자체로 드리프트 위험이 생긴다.
+- **Files that are mostly the same as the original, with a few differences**
+  (`pyproject.toml`, `schemas/*.json`, glossary, config with only a few
+  changed values): `cp` the original, `diff` to confirm, then `Edit` only
+  what needs to change. Don't retype from scratch. (`cp`+`diff` beats `Write`
+  on both reliability and cost — see `RATIONALE.md`.)
+- **Files that are entirely different from the original** (style guide body,
+  SKILL.md, README, judge prompt): `diff` isn't meaningful, so just `Write`
+  fresh.
+- **Files meant to stay exactly the same** (e.g. glossary): don't even copy —
+  reference the original's path from the new skill's README/CLI examples.
+  Having the file exist in two places is itself a drift risk.
 
-## 빌드/테스트 전 최종 점검 (필수, 생략 금지)
+## Final check before build/test (mandatory, don't skip)
 
-Phase 4 구현이 "끝났다"고 느껴져도, 테스트를 돌리기 전에 반드시 확인한다.
+Even once Phase 4 implementation feels "done," check the following before
+running tests.
 
-1. **파일 트리 비교**:
+1. **Compare file trees**:
    ```bash
-   diff <(cd skills/<원본> && find . -type f | sort) \
-        <(cd skills/<새 스킬> && find . -type f | sort)
+   diff <(cd skills/<original> && find . -type f | sort) \
+        <(cd skills/<new-skill> && find . -type f | sort)
    ```
-   (`.pytest_cache/` 같은 실행 중 생성 캐시는 무시)
-   - **원본에만 있는 파일**마다 "의도된 부재인가, 잊은 것인가"를 판단한다.
-     의도된 것이면 **왜 없는지를 README나 빌드 계획 문서에 한 문장으로
-     남긴다** — 단순히 비워두지 않는다.
-   - **새 스킬에만 있는 파일**은 Phase 3 빌드 계획에 없던 게 섞여 있지
-     않은지 확인한다.
-2. **"유지"로 분류한 파일이 정말 그대로인지 `diff`로 확인한다**:
+   (ignore runtime caches like `.pytest_cache/`)
+   - For **every file that exists only in the original**, decide: "is its
+     absence in the new skill intentional, or just forgotten?" If
+     intentional, **write down why in one sentence in the README or the
+     build plan doc** — don't just leave it empty. "Checked and it's
+     intentionally absent" and "never checked" look identical from the
+     outside, so record the check itself.
+   - For **files that exist only in the new skill**, confirm none of them
+     are missing from the Phase 3 build plan.
+2. **`diff` every file classified "keep" to confirm it's really unchanged**:
    ```bash
-   diff skills/<원본>/configs/eval_config.yml skills/<새 스킬>/configs/eval_config.yml
+   diff skills/<original>/configs/eval_config.yml skills/<new-skill>/configs/eval_config.yml
    ```
-   빌드 계획에 적힌 변경 **정확히 그만큼만** diff에 나오는지 확인한다.
-   계획에 없던 차이가 있으면 의도/실수를 판단해 계획이나 파일을 고친다.
-3. 스키마/문서 파일처럼 **원본과 구조가 100% 같고 메타데이터 한두 줄만
-   다른** 파일도 1번 단계의 "원본에만 있는 파일" 점검에서 걸러진다 —
-   1번을 건너뛰지 않는다.
+   Confirm the diff shows **exactly** the changes recorded in the build plan
+   (added comments, specific value changes) and nothing more. If there's any
+   unplanned difference, decide whether it's intentional or a mistake, and
+   fix the file or update the plan.
+3. Schema/doc files (`schemas/*.json`, etc.) that are **structurally
+   identical to the original with only a metadata line or two different**
+   are also caught by step 1's "files that exist only in the original"
+   check — don't skip step 1.
 
-**체크포인트**: 1번의 "의도적으로 없음" 판단과 2번의 계획 외 차이가 있었다면
-그 처리 내용을 사용자에게 짧게 보고한다.
+**Checkpoint**: report to the user, briefly, any "intentionally absent" calls
+from step 1 and any unplanned differences found in step 2.
 
-## 매 코드 변경마다
+## Every time you change code
 
-- **최소 변경** 원칙 — 한 줄로 되는 걸 리팩터링으로 확장하지 않는다.
-- 변경 전/후로 **원본 스킬의 기존 테스트 스위트**를 돌려 회귀가 없는지
-  확인한다. 공유 코드를 고쳤다면 특히 중요하다.
-- 새 문서 유형용 **최소 fixture 쌍**을 만들어 실제로 harness를 돌려본다.
-  의도한 게이트가 의도한 심각도로 잡히는지, 더 이상 거짓으로 안 걸리는지
-  **직접 실행해서 확인**한다.
-- 새 config 키를 추가했다면, "이 키가 실제로 파서에 읽히는가"를 다시 한번
-  코드로(`python -c`로 직접 로드해서) 확인한다.
+- **Minimal change** principle — don't expand a one-line fix into a
+  refactor.
+- **Run the original skill's existing test suite** before/after, to confirm
+  no regression. Especially important when shared code is touched.
+- Build a **minimal fixture pair** for the new document type and actually run
+  the harness against it. **Verify by execution** that the intended gate
+  fires at the intended severity, and that a previously-false gate no longer
+  fires.
+- If you added a new config key, re-confirm "does the parser actually read
+  this" in code (ideally by loading it directly via `python -c`).
 
-**체크포인트**: 공유 도구 코드를 고치는 첫 순간마다(계획에 있었더라도)
-변경 범위와 영향(다른 스킬에 영향 없음)을 사용자에게 짧게 보고한다.
+**Checkpoint**: the first moment shared tool code is touched (even if it was
+in the plan), report the change's scope and impact (no effect on other
+skills) to the user.

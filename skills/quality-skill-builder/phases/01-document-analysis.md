@@ -1,48 +1,55 @@
-# Phase 1 — 새 문서 유형 분석 (구조 · 내용 · 디테일)
+# Phase 1 — Analyze the new document type (structure · content · detail)
 
-목표: "이 문서 유형은 원본 문서 유형과 무엇이, 왜 다른가"를 **증거 기반으로**
-정리한 비교 문서를 만든다.
+Goal: produce an **evidence-based** comparison document answering "what, and
+why, is different between this document type and the original one."
 
-## 1-A. 저장소 안에 이미 있는 지식부터 찾는다
+## 1-A. Search the repo for existing knowledge first
 
-새로 조사를 시작하기 전에, 이 저장소 안에 해당 문서 유형의 번역 컨벤션·
-모범사례·PR 리서치 문서가 이미 있는지 `grep`/`find`로 먼저 찾는다. 있으면
-그걸 1차 소스로 재사용하고 처음부터 다시 리서치하지 않는다.
+Before starting new research, `grep`/`find` the repo for existing translation
+convention/best-practice/PR-research docs for this document type. If one
+exists, use it as the primary source instead of redoing research from
+scratch.
 
-## 1-B. 근거 자료를 모은다
+## 1-B. Gather evidence
 
-아래를 실제로 읽는다(요약이나 짐작이 아니라 원문을 직접 확인한다):
+Actually read the following (verify the original text directly, don't
+summarize from memory):
 
-- 해당 문서 유형의 **공식 기여/번역 가이드**가 있으면 원문 그대로.
-- **실제로 병합된 원문↔번역 파일 쌍**을 최소 1개 이상 나란히 비교한다.
-  가이드 문서는 낡았거나 이상적인 규칙만 적어놓을 수 있다 — 실제 파일이
-  진짜 컨벤션을 보여준다.
-- 가능하면 **실제 리뷰 코멘트/PR 대화**를 몇 개 확인한다. 리뷰어가 무엇을
-  지적했는지가 암묵적 규칙을 가장 정확히 드러낸다.
+- The document type's **official contribution/translation guide**, if one
+  exists, read verbatim.
+- **At least one real, merged source↔translation file pair**, side by side.
+  Guide documents can be stale or aspirational — real files show the actual
+  convention.
+- **Real review comments/PR discussion**, if available. What a reviewer
+  flagged reveals implicit rules most accurately.
 
-## 1-C. 세 갈래로 정리한다
+## 1-C. Organize into three buckets
 
-- **A. 파일 형식/구조**: 메타데이터 위치(frontmatter 유무), 목차 메커니즘
-  (수동/자동 생성, 앵커 문법, 헤딩 레벨이 의미를 갖는지), 특수 지시문,
-  임베디드 컴포넌트(MDX/JSX/HTML), 코드블록 관례, 저장 위치/파일 수명.
-- **B. 내용/문체/구조**: 어조 기준(장르별 조정 vs 통일), 제목 관례, 도입부/
-  마무리 관례, 정보 추가 금지의 범위·목적, 경고/제한 표현 강도 규칙, 최신성
-  동기화 필요 여부, 협업/리뷰 프로세스의 무게.
-- **C. 디테일**: 주석 번역 정책, 하이퍼링크 타깃 정책(과 예외), 목록/들여쓰기
-  구조 위험, 용어 우선순위(검색성 vs 일관성), 이미지/캡션 처리, 그 밖에 이
-  문서 유형 특유의 규칙.
+- **A. File format/structure**: metadata location (frontmatter or not), TOC
+  mechanism (manual vs. auto-generated, anchor syntax, whether heading level
+  is meaningful), special directives, embedded components (MDX/JSX/HTML),
+  code-block conventions, storage location/file lifespan.
+- **B. Content/tone/structure**: tone baseline (varies by genre vs. uniform),
+  title conventions, intro/closing conventions, scope and purpose of the
+  no-added-information rule, warning/limitation strength rules, whether
+  freshness sync is required, weight of the collaboration/review process.
+- **C. Detail**: comment-translation policy, hyperlink-target policy (and
+  exceptions), list/indentation structural risk, terminology priority
+  (searchability vs. consistency), image/caption handling, any other quirk
+  specific to this document type.
 
-각 항목을 **원본 문서 유형 vs 새 문서 유형** 표로 정리한다.
+Organize each item as an **original document type vs. new document type**
+table.
 
-**산출물**: `docs/<원본>-vs-<신규>-differences.md`. 템플릿:
+**Deliverable**: `docs/<original>-vs-<new>-differences.md`. Template:
 `templates/format-content-detail-comparison.template.md`.
 
-## 1-D. (선택) 시각 자료
+## 1-D. (Optional) Visual asset
 
-사용자가 "한눈에 보게" 요청하면, 비교 문서를 근거로 프레젠테이션 형식 HTML
-아티팩트를 만든다(`artifact-design` 스킬을 먼저 로드한다). 요청 없으면
-만들지 않는다.
+If the user asks for an at-a-glance view, build a presentation-style HTML
+artifact from the comparison doc (load the `artifact-design` skill first).
+Don't build one unprompted.
 
-**체크포인트**: 산출물을 사용자에게 보여주고, 아는 사실과 다르거나 빠진
-부분이 없는지 확인받는다. 피드백을 반영해 문서를 갱신한 뒤 다음 Phase로
-넘어간다.
+**Checkpoint**: show the deliverable to the user and confirm nothing they
+know is missing or wrong. Update the doc with their feedback before moving
+on.

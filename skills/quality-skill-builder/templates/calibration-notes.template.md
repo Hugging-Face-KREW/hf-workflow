@@ -1,41 +1,45 @@
-# <새 문서 유형> 임계값 보정 기록
+# <new document type> threshold calibration notes
 
 <!--
-Phase 5 산출물. Phase 4가 기능적으로 검증된 뒤에만 작성을 시작한다. 이
-문서에 없는 임계값 변경은 하지 않는다 — 관찰되지 않은 값을 추측으로
-바꾸지 않는다.
+Phase 5 deliverable. Start writing only after Phase 4 is functionally
+verified. Don't change a threshold that isn't recorded here — don't change an
+unobserved value based on a guess.
 -->
 
-## 사용한 샘플
+## Samples used
 
-<!-- 실제로 잘 번역된 문서 샘플. 가능하면 PR 링크와 리뷰 과정 요약을 포함한다. -->
+<!-- Real, well-translated document samples. Include PR links and a summary
+of the review process where possible. -->
 
-| 샘플 | 출처(PR/파일 경로) | 리뷰를 거쳤는가 | 비고 |
+| Sample | Source (PR/file path) | Went through review? | Notes |
 |---|---|---|---|
 
-## 원본 임계값으로 1차 실행 결과
+## First-pass results with original thresholds
 
-<!-- 각 샘플에 원본 스킬 기본 임계값 그대로 harness를 돌린 결과를 기록한다. -->
+<!-- Record the harness's results for each sample, using the original
+skill's default thresholds unchanged. -->
 
-| 샘플 | status | quality_score | 예상과 다른 점(false positive/negative) |
+| Sample | status | quality_score | What differed from expectation (false positive/negative) |
 |---|---|---|---|
 
-## 조정한 임계값
+## Thresholds adjusted
 
-<!-- 관찰된 false positive/negative를 설명하는 가장 작은 변경만 기록한다. -->
+<!-- Record only the smallest change that explains an observed false
+positive/negative. -->
 
-| 설정 파일 | 키 | 원래 값 | 새 값 | 근거(어떤 샘플, 어떤 관찰) |
+| Config file | Key | Original value | New value | Rationale (which sample, what was observed) |
 |---|---|---|---|---|
 
-## 재검증 결과
+## Re-verification results
 
-<!-- 조정 후 같은 샘플로 다시 돌린 결과 + 원본 스킬 테스트 스위트 재실행 결과 -->
+<!-- Results of re-running the same samples after adjustment + re-running the
+original skill's test suite -->
 
 -
 
-## 사용자 승인
+## User approval
 
-<!-- 임계값 변경은 SKILL.md Phase 5 체크포인트에 따라 반드시 승인받는다. -->
+<!-- Threshold changes must be approved per SKILL.md's Phase 5 checkpoint. -->
 
-- 승인 여부:
-- 승인 일자:
+- Approved:
+- Approval date:
