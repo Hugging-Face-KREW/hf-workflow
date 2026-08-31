@@ -32,24 +32,15 @@ itself, so it's split out into `RATIONALE.md`.
 `SKILL.md`'s phase-index table lists each phase's goal, whether it has a
 checkpoint, and its file path.
 
-## Worked example
-
-The actual work that built `skills/quality` → `skills/quality-docs` is this
-skill's evidence base. Its results can be consulted directly:
-
-- `skills/quality-docs/docs/blog-vs-technical-docs-differences.md` — Phase 1 deliverable example
-- `skills/quality-docs/docs/blog-quality-harness-architecture.md` — Phase 2 deliverable example (documents the tool itself, so it's reused across document types)
-- `skills/quality-docs/` as a whole — Phase 3–4 result
-
 This skill's own structure (the `SKILL.md`/`RATIONALE.md`/`phases/*.md`
-split) is itself a result of feedback gathered while doing that work (too
-long; by Phase 4 the early content had gone fuzzy) — the background is at the
-top of `RATIONALE.md`.
+split) is itself a result of feedback gathered while using an earlier,
+monolithic version of this playbook (too long; by Phase 4 the early content
+had gone fuzzy) — the background is at the top of `RATIONALE.md`.
 
 ## Templates
 
 `templates/` holds blank templates for the Phase 1/3/5 deliverables. Phase 2's
 deliverable has no template, because it isn't remade per document type — it
-documents the tool itself. Reuse it if it already exists; if not, model it
-directly on
-`skills/quality-docs/docs/blog-quality-harness-architecture.md`'s structure.
+documents the tool itself. Reuse it if a prior run of this skill already
+produced one for the harness in question; otherwise write it from scratch
+following the section structure in `SKILL.md`'s Phase 2 description.

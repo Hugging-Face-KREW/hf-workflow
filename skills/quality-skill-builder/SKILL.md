@@ -10,9 +10,7 @@ execute the work, only when a rule seems arbitrary.
 You already have a translation-quality-review skill for **one document
 type** (e.g. `skills/quality` for HF blog posts), and need to rebuild it for
 **another document type** (technical docs, course material, README, release
-notes, etc.). `skills/quality` → `skills/quality-docs` is the worked example —
-its results (`skills/quality-docs/`, especially the two reference docs under
-`docs/`) are available to consult.
+notes, etc.).
 
 ## Core principles (apply to every phase)
 

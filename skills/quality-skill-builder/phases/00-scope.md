@@ -7,7 +7,8 @@
   (especially if the original is already validated for another document
   type).
 - Decide the new skill folder's name/location. Default to placing it next to
-  the existing skill (e.g. `skills/quality-docs` next to `skills/quality`).
+  the existing skill (e.g. `skills/quality-<new-type>` next to
+  `skills/quality`).
 - Decide whether to share the scoring tool (call the original folder's
   script directly via CLI) or duplicate it. Sharing is the default — often
   only the assets (config/guide/glossary) need to change.

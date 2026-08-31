@@ -1,8 +1,9 @@
 # Quality Skill Builder Agent Guide
 
 Use this only when asked to build or rebuild a Korean-translation quality
-skill for a document type that `skills/quality`/`skills/quality-docs` don't
-already cover. This is a process skill, not a translation review skill.
+skill for a document type not already covered by an existing quality skill
+in this repo (e.g. `skills/quality`). This is a process skill, not a
+translation review skill.
 
 Expected workflow:
 
