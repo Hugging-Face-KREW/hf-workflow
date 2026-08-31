@@ -1,9 +1,8 @@
 # Quality — transformers Docs profile
 
 Korean translation quality review for **`github.com/huggingface/transformers`**
-`docs/source/ko/**/*.md` pages. See `skills/quality` for blog posts and
-`skills/quality-docs` for the repo-agnostic technical-docs profile
-(diffusers / smolagents / lerobot / huggingface_hub).
+`docs/source/ko/**/*.md` pages. Scoped to the `transformers` repo only; see
+`skills/quality` for Hugging Face blog posts.
 
 This skill does **not** duplicate the scoring engine. It reuses
 `skills/quality/tools/translation_quality_harness.py` and supplies its own
@@ -51,9 +50,11 @@ blog test suite (`skills/quality/tests/`) still passes at the same
    `preserve_product_name` false positive. All three are additive and
    blog-safe.
 
-Every new gate is opt-in with `fallback=False`, so the blog and
-`skills/quality-docs` profiles are byte-for-byte unaffected unless they add
-the keys to their own gates config.
+Every new gate is opt-in with `fallback=False`, so the `skills/quality` blog
+profile does not run them unless its own gates config adds the keys. The
+non-gate refinements (license-header strip, `[[slug]]` strip, glossary
+particle tolerance) run for every profile but are no-ops on blog content —
+`skills/quality/tests/` still passes at 85/86, unchanged from baseline.
 
 ## Tool command
 
@@ -128,9 +129,9 @@ transformers profile.
   documentation" criteria — anchors, directives, API refs, MDX, license
   header, sentence-final colon, warning-strength, re-sync, `model_doc`
   boilerplate. Blog title/emoji/hook/CTA rules removed.
-- **`--evaluation-config`** (`configs/eval_config.yml`): identical thresholds
-  to the blog profile — Phase 5 calibration against real merged `[i18n-KO]`
-  PRs has not run yet.
+- **`--evaluation-config`** (`configs/eval_config.yml`): blog-profile
+  thresholds except `language.min_korean_letter_ratio` 0.20 → 0.15 (Phase 5:
+  `model_doc/*.md` pages are class-name / `[[autodoc]]` / code dominated).
 
 ## Files intentionally NOT copied from `skills/quality`
 
@@ -138,16 +139,19 @@ Checked file-tree diff against `skills/quality`; these are deliberate omissions,
 not oversights:
 
 - `tools/`, `pyproject.toml` — the harness is shared and called by path; this
-  skill has no package of its own, so it needs no `pyproject.toml` (same as
-  `skills/quality-docs`).
-- `glossary/{ko,ml_terms,product_terms}.tsv` — passed by original path via
-  `--glossary`; a second copy here would be a drift risk. Only the additive
-  `glossary/transformers_terms.tsv` lives here.
+  skill has no package of its own, so it needs no `pyproject.toml`.
+- `schemas/*.json` — the shared harness reads
+  `skills/quality/schemas/mqm_judge.schema.json` unconditionally (no CLI
+  override) and the report-shape schema is documentation only, so a local
+  copy would just be a drift risk.
+- `glossary/{ko,ml_terms,product_terms}.tsv` — deliberately not passed on the
+  command line (Phase 5: the shared blog glossaries caused false positives on
+  dense technical Korean). Only `glossary/transformers_terms.tsv` is used.
 - `style/hf-blog-ko-translation-guide.md` — replaced by
   `style/hf-transformers-ko-translation-guide.md`.
 - `docs/*` blog artifacts (PRD, implementation plans, eval reports) — the
   harness was not redesigned here, so there was no PRD/impl-plan process. This
-  skill's `docs/` holds its own Phase 1/2/3 build evidence instead.
+  skill's `docs/` holds its own Phase 1/2/3/5 build evidence instead.
 - `tests/conftest.py`, `tests/*_set.yml`, `tests/test_*.py`,
   `tests/fixtures/translation_quality_harness/*` — see "Known gaps" below.
 

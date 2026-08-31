@@ -6,11 +6,10 @@
 Phase 1 참조 문서다. 새 스킬 자산이 "블로그 가정"을 빠짐없이 걷어냈는지 이
 문서를 기준으로 점검한다.
 
-**범위 한정**: 이 문서는 `huggingface/transformers` 저장소의 한국어 문서에만
-초점을 맞춘다. diffusers/smolagents/lerobot/huggingface_hub 등 형제 저장소는
-관례가 대체로 비슷하지만, 아래 표의 근거는 transformers PR·리뷰·이슈로
-좁혔다. (형제 저장소를 다루는 더 일반적인 버전은 `skills/quality-docs`가
-담당한다 — 이 스킬은 그보다 좁고 transformers 고유 관례에 더 깊게 들어간다.)
+**범위 한정**: 이 문서와 스킬은 `huggingface/transformers` 저장소의 한국어
+문서에만 초점을 맞춘다. diffusers/smolagents/lerobot/huggingface_hub 등 다른
+저장소는 관례가 대체로 비슷하지만 이 스킬의 범위 밖이고, 아래 표의 근거는
+transformers PR·리뷰·이슈로 좁혔다.
 
 ## 근거 자료
 
@@ -91,7 +90,7 @@ Phase 1 참조 문서다. 새 스킬 자산이 "블로그 가정"을 빠짐없�
 
 | 게이트/검증기 | 블로그 (`skills/quality/configs/*`) | transformers 문서에 필요한 값 | 근거 |
 |---|---|---|---|
-| `front_matter` 하드게이트 | `required_target_keys: [title]`, `preserved_source_keys: [authors, thumbnail, tags, blog]` — reject | `required_target_keys: []`, `preserved_source_keys: []` — frontmatter 없음. harness YAML 파서가 `key: []`를 인식하는지 Phase 2에서 확인 필요(과거 `skills/quality-docs` 작업에서 파서가 `[]`를 무시하고 기본값 `[title]`로 돌아가는 버그가 있었음 — main의 harness에도 같은 gap이 남아있을 가능성) | A: 메타데이터 위치 |
+| `front_matter` 하드게이트 | `required_target_keys: [title]`, `preserved_source_keys: [authors, thumbnail, tags, blog]` — reject | `required_target_keys: []`, `preserved_source_keys: []` — frontmatter 없음. harness YAML 파서가 `key: []`를 인식하는지 Phase 2에서 확인 필요(파서가 `[]`를 무시하고 기본값 `[title]`로 돌아가면 모든 문서가 항상 reject됨 — Phase 2에서 실제로 그 gap을 확인) | A: 메타데이터 위치 |
 | `code_blocks` 하드게이트 | `status: reject`, 해시 완전 일치 | `status: review_required`로 완화 — 주석/docstring 번역 허용, 사람이 검토 | C: 코드 주석 번역 |
 | `inline_code`/`environment_variables`/`cli_flags`/`links`/`images`/`latex`/`tables`/`todo_markers` | hard reject, exact match | 동일 유지 (실행 토큰·링크 보호는 장르 무관) | C: 제품명/링크/표 |
 | 라이선스 헤더 주석 블록 | 없음 | 원문 그대로 유지되는지, `⚠️ Note ...` 줄이 최신 원문과 일치하는지 확인. 기존 하드게이트로는 안 잡힘 | A: 메타데이터 위치 |
@@ -129,12 +128,11 @@ Phase 1 참조 문서다. 새 스킬 자산이 "블로그 가정"을 빠짐없�
 
 ---
 
-## F. 범위를 diffusers/smolagents/lerobot 등으로 넓힐 경우 달라질 부분
+## F. (참고) 범위를 diffusers/smolagents/lerobot 등으로 넓힐 경우 달라질 부분
 
-harness 게이트와 스타일 가이드 **핵심(문체·앵커·지시문·API참조·MDX·코드보존·
-콜론·번역투·리뷰 워크플로)은 그대로 재사용**된다. `skills/quality-docs`가 바로
-그 "여러 HF 저장소 공통" 버전이고, 이 스킬은 그것을 transformers로 좁힌 것이다.
-넓힐 때 조정이 필요한 지점만:
+향후 별도 스킬로 다른 저장소를 다루게 될 경우를 대비한 분석. harness 게이트와
+스타일 가이드 **핵심(문체·앵커·지시문·API참조·MDX·코드보존·콜론·번역투·리뷰
+워크플로)은 그대로 재사용 가능**하고, 저장소별로 조정이 필요한 지점만: 
 
 | 지점 | transformers 전용인가 | 넓힐 때 필요한 변경 |
 |---|---|---|
@@ -150,9 +148,9 @@ harness 게이트와 스타일 가이드 **핵심(문체·앵커·지시문·API
 
 결론: 넓히는 작업은 **새 harness 로직이 거의 필요 없고**, (1) glossary 파일 추가,
 (2) `.mdx` 확장자, (3) `links` 게이트의 저장소별 `/ko/` 예외, (4) judge 규칙의
-저장소 조건 분기(모델문서 정형 줄, 안전문서 가중치) 정도다. 그래서 두 스킬을
-합치기보다 `skills/quality-docs`(일반) / `skills/quality-transformers`(좁고 깊음)로
-나눠 두는 편이 유지보수에 유리하다.
+저장소 조건 분기(모델문서 정형 줄, 안전문서 가중치) 정도다. 저장소마다 관례
+차이가 뚜렷하므로 하나로 합치기보다 저장소별 프로파일로 나누는 편이
+유지보수에 유리하다.
 
 ---
 

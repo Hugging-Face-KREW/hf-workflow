@@ -1,9 +1,8 @@
 # Hugging Face transformers 한국어 문서 번역 스타일 가이드
 
 `github.com/huggingface/transformers` 저장소의 `docs/source/ko/**/*.md` 문서를
-한국어로 번역·검수할 때의 기준이다. 블로그 번역은 `skills/quality`,
-diffusers/smolagents/lerobot 등 형제 저장소를 포괄하는 일반 기술 문서 번역은
-`skills/quality-docs`를 쓴다.
+한국어로 번역·검수할 때의 기준이다. Hugging Face 블로그 번역은 `skills/quality`를
+쓴다. diffusers/smolagents/lerobot 등 다른 저장소는 이 스킬의 범위 밖이다.
 
 근거: 공식 [`docs/TRANSLATING.md`](https://github.com/huggingface/transformers/blob/main/docs/TRANSLATING.md),
 추적 이슈 [transformers#20179](https://github.com/huggingface/transformers/issues/20179),

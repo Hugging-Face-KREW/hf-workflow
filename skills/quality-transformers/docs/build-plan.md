@@ -186,10 +186,11 @@ len 3 → `gate_options["anchor_preservation"]["enabled"] = False`. `parse_yaml_
 
 ### 그대로 두고 경로만 참조 (복사 안 함)
 
-- `skills/quality/glossary/{ml_terms,product_terms,ko}.tsv` — README/CLI 예시에서
-  원본 경로 그대로 `--glossary`로 전달. 두 곳에 두면 drift 위험.
+- `skills/quality/glossary/{ml_terms,product_terms,ko}.tsv` — Phase 3 계획은
+  원본 경로 그대로 `--glossary`로 전달이었으나, **Phase 5에서 명령어에서 완전히
+  제거**함(밀도 높은 기술 한국어에서 오탐). `calibration-notes.md` 참고.
 - `skills/quality/tools/translation_quality_harness.py` — 공유. 이 스킬은 자체
-  `tools/`·`pyproject.toml`를 두지 않음 (`skills/quality-docs`와 동일 판단).
+  `tools/`·`pyproject.toml`·`schemas/`를 두지 않음.
 
 ### tool 코드 (harness) 변경
 
@@ -208,7 +209,7 @@ len 3 → `gate_options["anchor_preservation"]["enabled"] = False`. `parse_yaml_
 - [x] `validate_sentence_final_colon` 신규 검증기, `review_required` +
   `style_penalty` 8 (D3)
 - [x] transformers만 범위 한정, `skills/quality`·`skills/quality-skill-builder`
-  미변경, `skills/quality-docs`는 참조 전용
+  (후속 PR) 미변경
 
 ## 6. 구조적으로 불가능 → 스킬 문서에 "수동 확인"으로 명시
 

@@ -2,14 +2,10 @@
 
 `skills/quality/tools/translation_quality_harness.py`를 `main`(커밋 c63d680,
 `tool_version` `0.6.0`, 3568줄)에서 직접 읽어 정리한 Phase 2 참조 문서다.
-**도구 자체를 설명하므로 문서 유형(블로그/transformers 등)마다 다시 만들지
-않는다.** `skills/quality-transformers`는 이 harness를 그대로 호출하고 자산만
-바꾸므로, keep/modify 판단(Phase 3)의 근거로 이 문서를 쓴다.
-
-> 이전에 `skills/quality-docs`가 만든 `blog-quality-harness-architecture.md`가
-> 있으나, 그건 pr-24의 옛 harness(약 390줄 이전, MQM 캐싱·구조화 복구·PR
-> 리뷰 게이트 배선 없음)를 추적한 것이라 재사용하지 않고 `main` 기준으로 새로
-> 작성했다.
+도구 자체를 설명하므로, `skills/quality-transformers`가 이 harness를 그대로
+호출하고 자산만 바꾼다는 점을 근거로 keep/modify 판단(Phase 3)에 쓴다.
+`main` 기준으로 작성했다(pr-24의 harness는 약 390줄 이전이라 MQM 캐싱·구조화
+복구·PR 리뷰 게이트 배선이 없음).
 
 ---
 
@@ -160,10 +156,8 @@ issue를 만든다. **"다수결"이 아니라 다중집합(bag) 차집합**이�
 > `required_target_keys: []` 를 써도 파서가 `"[]"` 문자열로 읽어 `list_option`이
 > fallback `["title"]`로 돌아감 → **설정만으로는 끌 수 없음.** 여러 줄 빈
 > 리스트도 키가 안 생겨 같은 결과.
-> → Phase 3에서 harness 한 줄 수정(`"[]"` → 빈 리스트) 또는 다른 우회를
-> 사용자 승인 하에 결정. (과거 `skills/quality-docs` 작업에서 같은 버그를
-> 만나 한 줄 additive 패치로 해결했고 블로그 테스트 68개 통과 확인. main에는
-> 아직 그 패치가 없음.)
+> → Phase 3에서 harness 한 줄 수정(`"[]"` → 빈 리스트)을 사용자 승인 하에
+> 결정. (Phase 4에서 이 패치를 적용, 블로그 테스트 회귀 없음 확인.)
 
 ### 4-B. `load_style_policy()` (L1123) — `style_policy.yml`
 
@@ -179,10 +173,11 @@ issue를 만든다. **"다수결"이 아니라 다중집합(bag) 차집합**이�
 **그 외 키는 전부 조용히 무시된다.** `anchor_preservation`,
 `directive_preservation`, `autodoc_reference_preservation`,
 `mdx_component_preservation`, `style_score.max_penalty.*` 같은 키를
-`style_policy.yml`에 써도 **실행되지 않는다** (`skills/quality-docs`가 선언해
-둔 것들이 바로 이 상태 — 문서화만 됨). 새 스타일 규칙을 실제로 돌리려면
-`validate_style_guide`에 검증 함수를 추가하고 `style_penalty` weights와
-`StylePolicy`/`load_style_policy` 파서에 배선해야 함.
+`style_policy.yml`에 써도 **파서가 무시한다** — 선언만으로는 실행되지 않는다.
+새 스타일 규칙을 실제로 돌리려면 `validate_style_guide`에 검증 함수를 추가하고
+`style_penalty` weights와 `StylePolicy`/`load_style_policy` 파서에 배선해야 함.
+(이 스킬은 앵커·지시문·MDX·콜론 검증을 그렇게 harness에 직접 배선했다 — Phase
+4 참고.)
 
 ---
 

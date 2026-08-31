@@ -5,12 +5,13 @@ Use this skill when reviewing a Korean translation of a **Hugging Face
 `github.com/huggingface/transformers`) for quality. Applies to both new
 translations and stale-translation re-syncs.
 
-- Blog posts → use `skills/quality`.
-- diffusers / smolagents / lerobot / huggingface_hub docs → use
-  `skills/quality-docs` (the repo-agnostic technical-docs profile). This skill
-  is narrower and goes deeper on transformers-only conventions
-  (`[[autodoc]]` API-path anchors, ` ```cli ` fences, `model_doc` boilerplate,
-  the `[i18n-KO]` PR workflow).
+- Hugging Face blog posts → use `skills/quality`.
+- Other Hugging Face library docs (diffusers, smolagents, lerobot,
+  huggingface_hub) → out of scope for this skill.
+
+This skill is transformers-specific and goes deep on its conventions:
+`[[autodoc]]` API-path anchors, ` ```cli ` fences, the `model_doc`
+boilerplate line, the Apache license header, and the `[i18n-KO]` PR workflow.
 
 ## Inputs
 
