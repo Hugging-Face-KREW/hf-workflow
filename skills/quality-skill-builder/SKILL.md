@@ -5,6 +5,11 @@ start that phase — don't rely on memory of having read this file once. "Why"
 (rationale, real incidents) lives separately in `RATIONALE.md` — not needed to
 execute the work, only when a rule seems arbitrary.
 
+> **Read `REFACTORING.md` first.** These instructions are valid only until the
+> `skills/quality` profile refactoring lands, after which this skill becomes
+> profile-centric (no wholesale copying). Until then, follow this file as
+> written; don't restructure against the plan early.
+
 ## When to use
 
 You already have a translation-quality-review skill for **one document
