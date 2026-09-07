@@ -1,0 +1,60 @@
+name: 버그 제보
+description: 재현 가능한 오류나 예상과 다른 동작을 알려주세요.
+title: "[버그] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: 중복 이슈와 문서를 먼저 확인해 주세요. 비밀키와 개인정보는 입력하지 마세요.
+  - type: textarea
+    id: summary
+    attributes:
+      label: 문제 요약
+      description: 무엇이 잘못되었는지 한두 문장으로 설명해 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 재현 방법
+      description: 최소한의 입력과 실행 순서를 적어 주세요.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 기대한 결과
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 실제 결과와 로그
+      description: 관련 로그는 필요한 부분만 붙이고 secret을 제거해 주세요.
+    validations:
+      required: true
+  - type: input
+    id: run_url
+    attributes:
+      label: 관련 Workflow run 또는 PR
+      placeholder: https://github.com/...
+  - type: textarea
+    id: environment
+    attributes:
+      label: 실행 환경
+      description: branch/commit, 실행 방식, Python·도구 버전을 적어 주세요.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 확인 사항
+      options:
+        - label: 기존 이슈와 문서를 검색했습니다.
+          required: true
+        - label: 로그에서 secret과 개인정보를 제거했습니다.
+          required: true
