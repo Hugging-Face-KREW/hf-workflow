@@ -106,6 +106,12 @@ are not in the registered glossary. Failed terms require a linked terminology
 error, and multiple Korean renderings of the same source term produce a
 deterministic consistency issue.
 
+Responses that satisfy the JSON schema but violate these semantic constraints
+are quarantined. Their findings are never merged into issues or automatic
+repair feedback, they keep semantic evaluation incomplete, and the invalid
+contract result is cached so an unchanged segment is not billed and retried on
+every workflow rerun. Transient API failures are not cached.
+
 Runtime thresholds are loaded from `configs/eval_config.yml`, and hard/review
 gate routing is loaded from `configs/gates.yml`. Use `--evaluation-config` and
 `--gates-config` to supply an alternate tracked policy.
@@ -148,6 +154,8 @@ LLM MQM judge evaluation is optional and disabled by default:
 - `--llm-judge-prompt path.md`: uses `judges/mqm_prompt.md` by default.
 - `--llm-judge-max-segments N`: limits evaluated segments for cost control; `0`
   means all aligned segments.
+- `--llm-judge-max-concurrency 4`: bounds parallel judge requests and prints
+  progress every 25 completed cache misses.
 - `--llm-judge-review-threshold 0.75`: routes low MQM adequacy, fluency, or
   technical scores into review issues.
 - `--llm-judge-api-key-env OPENAI_API_KEY`: chooses the environment variable

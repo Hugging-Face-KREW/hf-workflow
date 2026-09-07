@@ -1652,13 +1652,69 @@ def test_openai_mqm_judge_runs_cache_misses_with_bounded_concurrency(
         llm_judge_max_concurrency=2,
     )
 
-    results, cache_hits, cache_misses = run_openai_mqm_judge(alignment, config, warnings)
+    results, cache_hits, cache_misses, incomplete_ids = run_openai_mqm_judge(
+        alignment,
+        config,
+        warnings,
+    )
 
     assert peak_active == 2
     assert [result["segment_id"] for result in results] == [item["target_id"] for item in alignment]
     assert cache_hits == 0
     assert cache_misses == len(alignment)
+    assert incomplete_ids == []
     assert warnings == []
+
+
+def test_openai_mqm_judge_quarantines_and_reuses_contract_invalid_responses(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    source = markdown_doc((FIXTURES / "source.md").read_text(encoding="utf-8"))
+    target = markdown_doc((FIXTURES / "target_good.md").read_text(encoding="utf-8"))
+    alignment = align_segments(source, target)[:1]
+    calls = 0
+
+    class FakeResponses:
+        def create(self, **kwargs: object) -> object:
+            nonlocal calls
+            calls += 1
+            task = json.loads(str(kwargs["input"]))
+            output = {
+                "segment_id": task["segment_id"],
+                "adequacy_score": 1.0,
+                "fluency_score": 1.0,
+                "technical_score": 1.0,
+                "terminology_review": {"status": "pass", "unregistered_terms": []},
+                "errors": [],
+            }
+            return types.SimpleNamespace(status="completed", output_text=json.dumps(output))
+
+    class FakeOpenAI:
+        def __init__(self, **_: object) -> None:
+            self.responses = FakeResponses()
+
+    monkeypatch.setitem(sys.modules, "openai", types.SimpleNamespace(OpenAI=FakeOpenAI))
+    monkeypatch.setenv("HF_WORKFLOW_TEST_OPENAI_KEY", "test-key")
+    config = MetricConfig(
+        metric_cache_path=tmp_path / "metric-cache.json",
+        llm_judge_provider="openai",
+        llm_judge_api_key_env="HF_WORKFLOW_TEST_OPENAI_KEY",
+    )
+
+    first_warnings: list[str] = []
+    first = run_openai_mqm_judge(alignment, config, first_warnings)
+    second_warnings: list[str] = []
+    second = run_openai_mqm_judge(alignment, config, second_warnings)
+
+    target_id = str(alignment[0]["target_id"])
+    assert first[:3] == ([], 0, 1)
+    assert first[3] == [target_id]
+    assert second[:3] == ([], 1, 0)
+    assert second[3] == [target_id]
+    assert calls == 1
+    assert any("empty terminology review" in warning for warning in second_warnings)
+    assert any("quarantined" in warning for warning in second_warnings)
 
 
 def test_scoring_deduplicates_deterministic_issue_already_supported_by_mqm_span() -> None:

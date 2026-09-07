@@ -86,6 +86,8 @@ def test_failed_gates_trigger_a_bounded_repair() -> None:
     assert "python -m hf_agent.repair_gates" in workflow
     assert "🐛 Repair failed PR gates" in workflow
     assert "steps.verify.outcome == 'failure'" in workflow
+    assert "repair_enabled:" in workflow
+    assert "always() && inputs.repair_enabled" in workflow
 
 
 def test_private_workflow_checkout_uses_the_bot_token() -> None:
@@ -137,6 +139,7 @@ def test_quality_mqm_judge_cache_is_keyed_by_document_identity() -> None:
     assert "workflow/skills/quality/style/hf-blog-ko-translation-guide.md" in review
     assert "workflow/skills/quality/schemas/mqm_judge.schema.json" in review
     assert "workflow/skills/quality/glossary/*.tsv" in review
+    assert "quality-mqm-v2-" in review
 
 
 def test_repair_reuses_failed_reports_and_only_rechecks_changed_content() -> None:
@@ -176,6 +179,9 @@ def test_ready_lifecycle_clears_stale_human_needed_label() -> None:
     workflow = WORKFLOW.read_text()
 
     assert "name: Clear stale human-needed label" in workflow
+    clear_label = workflow.split("- name: Clear stale human-needed label", 1)[1].split("\n\n", 1)[0]
+    assert "needs.review.result == 'success'" in clear_label
+    assert "needs.verifier.result == 'success'" in clear_label
     assert "GH_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}" in workflow
     assert 'grep -Fxq "hf-agent:needs-human"' in workflow
     assert 'gh pr edit "$HF_INPUT_PR_NUMBER"' in workflow
