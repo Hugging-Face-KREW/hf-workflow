@@ -42,6 +42,18 @@ TABLE_SEPARATOR_RE = re.compile(
 )
 TABLE_ROW_RE = re.compile(r"^\s*\|.*\|\s*$")
 IMAGE_RE = re.compile(r"!\[[^\]]*\]\([^)]+\)")
+META_TAG_RE = re.compile(r"(?is)<meta\b[^>]*>")
+HTML_ATTR_RE = re.compile(r'(?P<key>[A-Za-z:_-]+)\s*=\s*"(?P<value>[^"]*)"')
+H1_BLOCK_RE = re.compile(r"(?is)<h1[^>]*>(.*?)</h1>")
+IMG_TAG_RE = re.compile(r"(?is)<img\b[^>]*>")
+AVATAR_HOST = "cdn-avatars.huggingface.co"
+AVATAR_PATH_PREFIX = "/avatars/"
+
+ENTERPRISE_SOURCE_SKIP = "skip"
+ENTERPRISE_SOURCE_HTML = "html"
+DEFAULT_ENTERPRISE_SOURCE = ENTERPRISE_SOURCE_SKIP
+EXTRACTION_MARKDOWN = "markdown"
+EXTRACTION_HTML = "html"
 
 
 @dataclass(frozen=True)
@@ -64,6 +76,7 @@ class SourceFrontmatter:
     thumbnail: str = ""
     image: str = ""
     authors: tuple[str, ...] = ()
+    extraction: str = EXTRACTION_MARKDOWN
 
 
 class SourceMarkdownUnavailableError(RuntimeError):
@@ -286,16 +299,31 @@ def render_source_frontmatter_lines(source_frontmatter: Optional[SourceFrontmatt
     return lines
 
 
-def normalize_thumbnail_url(thumbnail: str) -> str:
-    value = unquote_yaml_scalar(thumbnail.strip())
+def absolutize_source_url(value: str) -> str:
+    value = value.strip()
     if not value:
         return value
     parsed = urlparse(value)
     if parsed.scheme and parsed.netloc:
         return value
+    if value.startswith("//"):
+        return f"https:{value}"
     if value.startswith("/"):
         return f"{DEFAULT_BLOG_ORIGIN}{value}"
     return value
+
+
+def normalize_thumbnail_url(thumbnail: str) -> str:
+    return absolutize_source_url(unquote_yaml_scalar(thumbnail.strip()))
+
+
+def is_avatar_src(src: str) -> bool:
+    lowered = src.strip().lower()
+    if not lowered:
+        return True
+    if AVATAR_HOST in lowered:
+        return True
+    return urlparse(lowered).path.startswith(AVATAR_PATH_PREFIX)
 
 
 def thumbnail_asset_extension(thumbnail_url: str) -> str:
@@ -340,6 +368,7 @@ def prepare_thumbnail_asset(
             thumbnail=source_frontmatter.thumbnail,
             image=repo_path,
             authors=source_frontmatter.authors,
+            extraction=source_frontmatter.extraction,
         ),
         repo_path,
     )
@@ -366,6 +395,7 @@ def split_source_frontmatter(markdown: str) -> tuple[SourceFrontmatter, str]:
     title = ""
     published_at: Optional[datetime] = None
     thumbnail = ""
+    extraction = EXTRACTION_MARKDOWN
     authors: list[str] = []
     lines = block.splitlines()
     i = 0
@@ -392,6 +422,10 @@ def split_source_frontmatter(markdown: str) -> tuple[SourceFrontmatter, str]:
             thumbnail = line.split(":", 1)[1].strip()
             i += 1
             continue
+        if line.startswith("source_extraction:"):
+            extraction = unquote_yaml_scalar(line.split(":", 1)[1].strip()) or EXTRACTION_MARKDOWN
+            i += 1
+            continue
         if stripped == "authors:":
             i += 1
             while i < len(lines):
@@ -413,6 +447,7 @@ def split_source_frontmatter(markdown: str) -> tuple[SourceFrontmatter, str]:
         published_at=published_at,
         thumbnail=thumbnail,
         authors=tuple(authors),
+        extraction=extraction,
     ), body
 
 
@@ -444,13 +479,19 @@ def classify_source_unavailable_reason(post_url: str, source_html: str, feed_url
     return None
 
 
-def resolve_post_from_source(post_url: str, allow_html_fallback: bool, feed_url: str = DEFAULT_FEED_URL) -> FeedPost:
+def resolve_post_from_source(
+    post_url: str,
+    allow_html_fallback: bool,
+    feed_url: str = DEFAULT_FEED_URL,
+    enterprise_source: str = DEFAULT_ENTERPRISE_SOURCE,
+) -> FeedPost:
     source_html = fetch_text(post_url)
     source_markdown_raw = extract_source_markdown(
         post_url,
         source_html,
         allow_html_fallback=allow_html_fallback,
         feed_url=feed_url,
+        enterprise_source=enterprise_source,
     )
     source_frontmatter, _ = split_source_frontmatter(source_markdown_raw)
     if not source_frontmatter.title:
@@ -704,10 +745,24 @@ def html_to_markdown_with_bs4(source_html: str) -> str:
         node.decompose()
 
     blocks: list[str] = []
-    for node in container.find_all(["h1", "h2", "h3", "h4", "p", "li", "pre"]):
+    for node in container.find_all(["h1", "h2", "h3", "h4", "p", "li", "pre", "table", "img"]):
         if not isinstance(node, Tag):
             continue
-        if any(parent.name in {"p", "li", "pre"} for parent in node.parents if parent is not container):
+        if any(
+            parent.name in {"p", "li", "pre", "table"}
+            for parent in node.parents
+            if parent is not container
+        ):
+            continue
+        if node.name == "img":
+            rendered_image = image_markdown(node)
+            if rendered_image:
+                blocks.append(rendered_image)
+            continue
+        if node.name == "table":
+            rendered_table = table_markdown(node)
+            if rendered_table:
+                blocks.append(rendered_table)
             continue
         if node.name == "pre":
             code_node = node.find("code")
@@ -730,6 +785,57 @@ def html_to_markdown_with_bs4(source_html: str) -> str:
     return "\n\n".join(blocks).strip()
 
 
+def image_markdown(node: object) -> str:
+    """Render an `<img>` as Markdown, dropping author avatars and UI chrome."""
+    from bs4.element import Tag
+
+    if not isinstance(node, Tag):
+        return ""
+    raw_src = node.get("src") or node.get("data-src") or ""
+    if not isinstance(raw_src, str):
+        return ""
+    src = absolutize_source_url(raw_src)
+    if not src or is_avatar_src(src):
+        return ""
+    alt = node.get("alt")
+    alt_text = alt.strip() if isinstance(alt, str) else ""
+    return f"![{alt_text}]({src})"
+
+
+def table_markdown(node: object) -> str:
+    from bs4.element import Tag
+
+    if not isinstance(node, Tag):
+        return ""
+
+    rows: list[list[str]] = []
+    for row in node.find_all("tr"):
+        if not isinstance(row, Tag):
+            continue
+        cells = [cell for cell in row.find_all(["th", "td"]) if isinstance(cell, Tag)]
+        if not cells:
+            continue
+        rows.append([normalize_table_cell(inline_markdown(cell)) for cell in cells])
+
+    if not rows:
+        return ""
+
+    width = max(len(row) for row in rows)
+    padded = [row + [""] * (width - len(row)) for row in rows]
+    header, body = padded[0], padded[1:]
+    lines = [
+        "| " + " | ".join(header) + " |",
+        "| " + " | ".join(["---"] * width) + " |",
+    ]
+    lines.extend("| " + " | ".join(row) + " |" for row in body)
+    return "\n".join(lines)
+
+
+def normalize_table_cell(value: str) -> str:
+    collapsed = re.sub(r"\s+", " ", value).strip()
+    return collapsed.replace("|", "\\|") or " "
+
+
 def inline_markdown(node: object) -> str:
     from bs4.element import NavigableString, Tag
 
@@ -737,6 +843,8 @@ def inline_markdown(node: object) -> str:
         return str(node)
     if not isinstance(node, Tag):
         return ""
+    if node.name == "img":
+        return image_markdown(node)
     if node.name == "code":
         return "`" + node.get_text().strip() + "`"
     if node.name == "a":
@@ -764,7 +872,19 @@ def select_article_html(source_html: str) -> str:
     return source_html
 
 
+def image_markdown_from_tag(tag_html: str) -> str:
+    attrs = {
+        match.group("key").lower(): html.unescape(match.group("value"))
+        for match in HTML_ATTR_RE.finditer(tag_html)
+    }
+    src = absolutize_source_url(attrs.get("src") or attrs.get("data-src") or "")
+    if not src or is_avatar_src(src):
+        return ""
+    return f"![{(attrs.get('alt') or '').strip()}]({src})"
+
+
 def clean_inline(value: str) -> str:
+    value = IMG_TAG_RE.sub(lambda m: image_markdown_from_tag(m.group(0)), value)
     value = re.sub(r"(?is)<code[^>]*>(.*?)</code>", lambda m: "`" + html.unescape(m.group(1).strip()) + "`", value)
     value = re.sub(
         r"(?is)<a[^>]*href=[\"']([^\"']+)[\"'][^>]*>(.*?)</a>",
@@ -779,6 +899,105 @@ def clean_inline(value: str) -> str:
 def code_block(match: re.Match[str]) -> str:
     code = html.unescape(re.sub(r"(?s)<[^>]+>", "", match.group(1))).strip("\n")
     return f"\n\n```\n{code}\n```\n\n"
+
+
+def parse_html_meta(source_html: str) -> dict[str, str]:
+    """Return `<meta>` values keyed by lowercased `property` or `name`."""
+    try:
+        return parse_html_meta_with_bs4(source_html)
+    except ImportError:
+        pass
+
+    meta: dict[str, str] = {}
+    for tag in META_TAG_RE.findall(source_html):
+        attrs = {
+            match.group("key").lower(): match.group("value")
+            for match in HTML_ATTR_RE.finditer(tag)
+        }
+        key = attrs.get("property") or attrs.get("name")
+        content = attrs.get("content")
+        if not key or not content:
+            continue
+        normalized_key = key.strip().lower()
+        value = html.unescape(content).strip()
+        if normalized_key and value and normalized_key not in meta:
+            meta[normalized_key] = value
+    return meta
+
+
+def parse_html_meta_with_bs4(source_html: str) -> dict[str, str]:
+    from bs4 import BeautifulSoup
+
+    soup = BeautifulSoup(source_html, "html.parser")
+    meta: dict[str, str] = {}
+    for tag in soup.find_all("meta"):
+        key = tag.get("property") or tag.get("name")
+        content = tag.get("content")
+        if not isinstance(key, str) or not isinstance(content, str):
+            continue
+        normalized_key = key.strip().lower()
+        value = content.strip()
+        if normalized_key and value and normalized_key not in meta:
+            meta[normalized_key] = value
+    return meta
+
+
+def first_html_heading(source_html: str) -> str:
+    match = H1_BLOCK_RE.search(source_html)
+    return clean_inline(match.group(1)) if match else ""
+
+
+def html_source_authors(post_url: str) -> tuple[str, ...]:
+    """Use the Hugging Face org namespace in `/blog/<org>/<slug>` as the author."""
+    path_parts = [part for part in urlparse(post_url).path.split("/") if part]
+    if path_parts[:1] != ["blog"] or len(path_parts) < 3:
+        return ()
+    return (f"user: {path_parts[-2]}",)
+
+
+def synthesize_markdown_from_html(post_url: str, source_html: str) -> str:
+    """Build source Markdown with frontmatter for posts that ship no raw Markdown.
+
+    The generated frontmatter reuses the same keys as the raw Hugging Face blog
+    sources, so downstream frontmatter parsing, thumbnail handling, and
+    `--post-url` metadata resolution all work without special cases.
+    """
+    meta = parse_html_meta(source_html)
+    title = meta.get("og:title") or meta.get("twitter:title") or first_html_heading(source_html)
+    if not title:
+        raise SourceMarkdownUnavailableError(
+            f"Could not resolve a title from the HTML source: {post_url}"
+        )
+
+    body = html_to_markdown(source_html).strip()
+    if not body:
+        raise SourceMarkdownUnavailableError(
+            f"HTML extraction produced an empty body: {post_url}"
+        )
+
+    lines = ["---", f'title: "{escape_yaml_string(title)}"']
+    # Rendered blog pages carry no publish date today: the `<time>` elements on
+    # the page belong to sidebar model cards and comments. Only trust explicit
+    # article metadata, and let the RSS feed fallback supply the date otherwise.
+    published = meta.get("article:published_time") or meta.get("article:modified_time")
+    if published:
+        lines.append(f"date: {published}")
+    thumbnail = meta.get("og:image") or meta.get("twitter:image")
+    if thumbnail:
+        lines.append(f"thumbnail: {absolutize_source_url(thumbnail)}")
+    authors = html_source_authors(post_url)
+    if authors:
+        lines.append("authors:")
+        lines.extend(f"  - {author}" for author in authors)
+    lines.append(f"source_extraction: {EXTRACTION_HTML}")
+    lines.append("---")
+
+    log(
+        "Synthesized source markdown from HTML: "
+        f"chars={len(body)}, thumbnail={'yes' if thumbnail else 'no'}, "
+        f"published={'yes' if published else 'no'}"
+    )
+    return "\n".join(lines) + "\n\n" + body + "\n"
 
 
 def github_blob_to_raw(url: str) -> Optional[str]:
@@ -837,6 +1056,7 @@ def extract_source_markdown(
     source_html: str,
     allow_html_fallback: bool = False,
     feed_url: str = DEFAULT_FEED_URL,
+    enterprise_source: str = DEFAULT_ENTERPRISE_SOURCE,
 ) -> str:
     attempted_urls: list[str] = []
     for url in discover_markdown_urls(post_url, source_html):
@@ -851,11 +1071,21 @@ def extract_source_markdown(
             return fetched.strip()
         log(f"Ignoring markdown candidate with unexpected shape: {url}")
 
+    # Classify before the generic fallback so Enterprise Articles can opt into
+    # HTML extraction without also un-skipping Community Articles.
+    skip_reason: Optional[str] = None
+    if enterprise_source == ENTERPRISE_SOURCE_HTML:
+        skip_reason = classify_source_unavailable_reason(post_url, source_html, feed_url)
+        if skip_reason == "enterprise_article":
+            log("Enterprise Article without raw markdown. Using HTML source extraction.")
+            return synthesize_markdown_from_html(post_url, source_html)
+
     if allow_html_fallback:
         log("Source markdown not found. Falling back to HTML extraction due to --allow-html-fallback.")
         return html_to_markdown(source_html)
 
-    skip_reason = classify_source_unavailable_reason(post_url, source_html, feed_url)
+    if skip_reason is None:
+        skip_reason = classify_source_unavailable_reason(post_url, source_html, feed_url)
     if skip_reason is not None:
         raise SourceMarkdownSkipError(skip_reason, attempted_urls)
 
@@ -992,6 +1222,7 @@ def create_manifest(
     source_file_path: str = "",
     source_hash: str = "",
     commit_sha: str = "",
+    extraction: str = EXTRACTION_MARKDOWN,
 ) -> None:
     created_at = datetime.now().astimezone().isoformat(timespec="seconds")
     content = f"""version: 1
@@ -1006,6 +1237,7 @@ source:
   url: {post.url}
   file_path: {source_file_path}
   hash: {source_hash}
+  extraction: {extraction}
   slug: {post.slug}
   title: "{escape_yaml_string(post.title)}"
   published_date: {post.published_date.isoformat()}
@@ -1199,6 +1431,16 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Allow HTML extraction only when raw markdown fetch fails.",
     )
+    parser.add_argument(
+        "--enterprise-source",
+        default=DEFAULT_ENTERPRISE_SOURCE,
+        choices=[ENTERPRISE_SOURCE_SKIP, ENTERPRISE_SOURCE_HTML],
+        help=(
+            "How to handle Enterprise Articles that ship no raw markdown. "
+            "`skip` keeps the current policy; `html` translates the rendered page. "
+            "Community Articles are always skipped."
+        ),
+    )
     return parser
 
 
@@ -1222,6 +1464,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                     args.post_url,
                     allow_html_fallback=args.allow_html_fallback,
                     feed_url=args.feed_url,
+                    enterprise_source=args.enterprise_source,
                 )
             ]
         except SourceMarkdownSkipError as exc:
@@ -1333,6 +1576,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 source_html,
                 allow_html_fallback=args.allow_html_fallback,
                 feed_url=args.feed_url,
+                enterprise_source=args.enterprise_source,
             )
         except SourceMarkdownSkipError as exc:
             status = "skipped_community" if exc.reason == "community_article" else "skipped_enterprise"
@@ -1360,6 +1604,11 @@ def main(argv: Optional[list[str]] = None) -> int:
         source_file_path = os.path.relpath(source_snapshot_path, manifest_path.parent)
         log(f"Wrote source snapshot: {source_snapshot_path}")
         source_frontmatter, source_markdown = split_source_frontmatter(source_markdown_raw)
+        if source_frontmatter.extraction == EXTRACTION_HTML:
+            log(
+                "Source was extracted from rendered HTML. "
+                "Structure fidelity is lower than a raw markdown source."
+            )
         if source_frontmatter.thumbnail or source_frontmatter.authors:
             log(
                 "Captured source frontmatter for passthrough: "
@@ -1464,6 +1713,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             source_file_path=source_file_path,
             source_hash=source_hash,
             commit_sha=commit_sha,
+            extraction=source_frontmatter.extraction,
         )
         log(f"Wrote manifest: {manifest_path}")
         run_results.append(
@@ -1475,6 +1725,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                 "manifest_path": str(manifest_path),
                 "pr_url": pr_url,
                 "commit_sha": commit_sha,
+                "extraction": source_frontmatter.extraction,
             }
         )
 

@@ -683,9 +683,13 @@ def translate_markdown_with_ecl(
     ecl_log(f"Received model response. response_chars={len(raw_output)}")
     parsed = parse_json_array(raw_output)
     if parsed is None:
-        ecl_log("JSON parse failed for model output. Falling back to source blocks.")
-        restored = restore_body(blocks, {})
-        return restore_fenced_code_blocks(restored, code_blocks)
+        # Falling back to the source blocks here would silently publish the
+        # untranslated English article, which downstream structure checks
+        # cannot detect. Fail instead.
+        raise RuntimeError(
+            "Could not parse the translation model output as a JSON array "
+            f"(response_chars={len(raw_output)}). Aborting instead of emitting untranslated text."
+        )
     ecl_log(f"Parsed translated rows={len(parsed)}")
 
     translated_by_id: dict[int, str] = {}
@@ -698,6 +702,15 @@ def translate_markdown_with_ecl(
             continue
         translated_by_id[block_id] = restore_inline(markdown, protections.get(block_id, {}))
     ecl_log(f"Restored translated blocks={len(translated_by_id)}")
+
+    missing_ids = [item["id"] for item in items if item["id"] not in translated_by_id]
+    if missing_ids:
+        # `restore_body` keeps the source text for any block the model dropped,
+        # so a partial response would leak English paragraphs into the output.
+        raise RuntimeError(
+            f"Translation model returned no output for {len(missing_ids)} of {len(items)} blocks "
+            f"(missing ids: {missing_ids[:10]}). Aborting instead of emitting untranslated text."
+        )
 
     restored = restore_body(blocks, translated_by_id)
     restored = restore_fenced_code_blocks(restored, code_blocks)

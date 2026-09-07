@@ -96,6 +96,7 @@ jobs:
             --target-worktree "../target-repo"
             --target-repo "${KREW_REPO}"
             --translator "openai"
+            --enterprise-source "html"
             --skip-existing
             --allow-untracked
             --run-summary "../run-summary.json"
