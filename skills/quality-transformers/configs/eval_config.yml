@@ -1,0 +1,23 @@
+version: 1
+
+# Reused from the blog profile (skills/quality/configs/eval_config.yml)
+# unchanged. Score / language / length-ratio thresholds are not yet backed by
+# transformers-specific evidence; Phase 5 calibration revisits them against
+# real merged [i18n-KO] PR samples. Do not hand-tune before then.
+
+score:
+  auto_pass_score: 90
+  review_required_min_score: 75
+  style_review_required_min_score: 60
+
+language:
+  max_untranslated_english_ratio: 0.60
+  # Phase 5: lowered from the blog default 0.20. model_doc/*.md pages are
+  # dominated by class names, [[autodoc]] blocks, and code, so a correctly
+  # merged model doc (e.g. transformers#40445 big_bird.md) legitimately sits
+  # near 0.15–0.18 Korean-letter ratio. 0.15 still catches an untranslated page.
+  min_korean_letter_ratio: 0.15
+
+length_ratio:
+  min_target_to_source: 0.35
+  max_target_to_source: 2.60

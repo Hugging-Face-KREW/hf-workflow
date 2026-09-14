@@ -1,0 +1,11 @@
+source_term	ko_term	policy
+PEFT	PEFT	preserve_product_name
+Accelerate	Accelerate	preserve_product_name
+Trainer	Trainer	preserve_product_name
+TrainingArguments	TrainingArguments	preserve_product_name
+doc-builder	doc-builder	preserve_product_name
+autodoc	autodoc	preserve_or_first_mention
+toctree	toctree	preserve_or_first_mention
+docstring	docstring	preserve_or_first_mention
+accelerator	가속기	preferred
+experimental API	실험적 API	required

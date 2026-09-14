@@ -1,0 +1,102 @@
+version: 1
+
+hard_gates:
+  markdown_parse:
+    status: reject
+  front_matter:
+    status: reject
+    # HF transformers docs (docs/source/ko/**.md) have NO YAML frontmatter.
+    # Metadata lives in the Apache license header comment block and in
+    # _toctree.yml (local/title). Both key lists are empty so this gate never
+    # fires on a frontmatter-less page. Requires the read_yaml_scalars `[]`
+    # patch (parses `key: []` as an empty list); the blog profile uses the
+    # multi-line `- item` list form and is unaffected.
+    required_target_keys: []
+    preserved_source_keys: []
+  locale_punctuation:
+    status: reject
+    forbidden:
+      - "。"
+      - "、"
+  code_blocks:
+    # Softened from the blog profile's hard reject. Real merged HF Korean doc
+    # PRs translate code comments / docstrings / `Args` descriptions, which
+    # changes the code-block hash. Execution tokens stay protected by the
+    # inline_code, environment_variables, and cli_flags hard gates below.
+    status: review_required
+    compare_hashes: true
+  anchor_preservation:
+    # `# heading[[slug]]` anchors must be byte-identical to the English source
+    # anchor (kebab slug OR fully-qualified [[autodoc]] API path), and the
+    # sequence of heading levels must match the source exactly. The in-page
+    # "on this page" nav is generated from this structure.
+    status: reject
+    enabled: true
+  directive_preservation:
+    # [[open-in-colab]] and [[autodoc]] <path> doc-builder directives must not
+    # be translated or altered.
+    status: reject
+    enabled: true
+  autodoc_reference_preservation:
+    # Bracketed API references [`Trainer`] / [`~data.processors.utils.Foo`]
+    # must keep the exact class/method path.
+    status: reject
+    enabled: true
+  mdx_component_preservation:
+    # MDX/JSX component tags + props (<Tip warning={true}>, <hfoptions id=...>,
+    # <frameworkcontent>, <pt>/<tf>) and GitHub-style alert markers
+    # (> [!WARNING] / > [!TIP] / ...) must be preserved; only inner prose is
+    # translated.
+    status: reject
+    enabled: true
+  inline_code:
+    status: reject
+    exact_match: true
+  environment_variables:
+    status: reject
+    exact_match: true
+  cli_flags:
+    status: reject
+    exact_match: true
+  links:
+    status: reject
+    exact_target_match: true
+  images:
+    status: reject
+    exact_target_match: true
+  latex:
+    status: reject
+    exact_match: true
+  tables:
+    status: reject
+    compare_shape: true
+  todo_markers:
+    status: reject
+    markers:
+      - TODO
+      - FIXME
+      - TBD
+      - "{{"
+      - "}}"
+
+review_gates:
+  numbers:
+    status: review_required
+    exact_match: true
+  protected_tokens:
+    status: review_required
+    exact_match: true
+  bare_urls:
+    status: review_required
+    exact_match: true
+  untranslated_english:
+    status: review_required
+  korean_ratio:
+    status: review_required
+  length_ratio:
+    status: review_required
+  sentence_final_colon:
+    # Korean does not use a sentence-final colon. Every `:` that ends a Korean
+    # sentence must become a period. Deterministic detector; opt-in.
+    status: review_required
+    enabled: true

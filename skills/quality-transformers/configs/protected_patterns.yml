@@ -1,0 +1,14 @@
+version: 1
+
+protected_patterns:
+  model_id: "\\b[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+\\b"
+  python_identifier: "\\b[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)+\\b"
+  url: "https?://[^\\s)]+"
+  markdown_image: "!\\[[^\\]]*\\]\\([^\\)]+\\)"
+  markdown_link: "\\[[^\\]]+\\]\\([^\\)]+\\)"
+  inline_code: "`[^`]+`"
+  percentage: "\\b\\d+(\\.\\d+)?%"
+  env_var: "\\b[A-Z][A-Z0-9_]{2,}\\b"
+  cli_flag: "(?<!\\w)--[a-zA-Z0-9][a-zA-Z0-9_-]*"
+  latex_inline: "\\$[^$]+\\$"
+  file_path: "(?:^|[\\s`])(?:[./~]?[A-Za-z0-9_.-]+/)+[A-Za-z0-9_.-]+"

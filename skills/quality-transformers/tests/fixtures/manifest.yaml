@@ -1,0 +1,11 @@
+version: 1
+source:
+  file_path: sample_source.md
+  title: Tokenizer
+translation:
+  file_path: sample_target.md
+handoff:
+  quality:
+    enabled: true
+    checks:
+      - hard_gates

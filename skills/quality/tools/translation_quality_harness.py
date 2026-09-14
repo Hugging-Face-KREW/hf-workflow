@@ -14,7 +14,7 @@ import urllib.parse
 import urllib.request
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -36,6 +36,17 @@ CLI_FLAG_RE = re.compile(r"(?<!\w)--[a-zA-Z0-9][a-zA-Z0-9_-]*")
 LATEX_INLINE_RE = re.compile(r"\$[^$\n]+\$")
 NUMBER_RE = re.compile(r"(?<![A-Za-z0-9_.-])\d+(?:\.\d+)*(?:%|ms|s|[kKmMgGtT]?[bB])?")
 TODO_RE = re.compile(r"\b(?:TODO|FIXME|TBD)\b|\{\{|\}\}")
+HEADING_RE = re.compile(r"^(#{1,6})\s+(.*\S)\s*$")
+HEADING_ANCHOR_RE = re.compile(r"\[\[([^\]\n]+)\]\]\s*$")
+DIRECTIVE_RE = re.compile(r"\[\[(open-in-colab|autodoc)\]\](?:[ \t]+(\S+))?")
+AUTODOC_REF_RE = re.compile(r"\[`([^`\n]+)`\]")
+MDX_TAG_RE = re.compile(
+    r"</?([A-Za-z][A-Za-z0-9]*)"
+    r"((?:\s+[A-Za-z_:][-A-Za-z0-9_:.]*(?:=(?:\"[^\"]*\"|'[^']*'|\{[^}]*\}))?)*)"
+    r"\s*/?>"
+)
+MDX_ALERT_RE = re.compile(r"^>\s*\[!(TIP|WARNING|NOTE|IMPORTANT|CAUTION)\]", re.MULTILINE)
+MDX_PROP_RE = re.compile(r"([A-Za-z_:][-A-Za-z0-9_:.]*)(?:=(\"[^\"]*\"|'[^']*'|\{[^}]*\}))?")
 KOREAN_RE = re.compile(r"[가-힣]")
 LETTER_RE = re.compile(r"[A-Za-z가-힣]")
 ENGLISH_WORD_RE = re.compile(r"\b[A-Za-z][A-Za-z'-]*\b")
@@ -207,6 +218,11 @@ class MarkdownDoc:
     todo_markers: list[str]
     segments: list[Segment]
     source_hash: str
+    heading_anchors: list[str] = field(default_factory=list)
+    heading_levels: list[int] = field(default_factory=list)
+    directives: list[str] = field(default_factory=list)
+    autodoc_refs: list[str] = field(default_factory=list)
+    mdx_components: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -279,6 +295,16 @@ def strip_workflow_scaffold(body: str) -> str:
         if re.match(r"^<!--\s*Source:\s*https?://[^>]+-->$", stripped):
             index += 1
             continue
+        if stripped.startswith("<!--") and "Copyright" in stripped and "-->" not in stripped:
+            # HF doc-builder license header (`<!--Copyright <year> The HuggingFace
+            # Team ... -->`). It is boilerplate that translators keep verbatim;
+            # dropping it keeps it out of prose segment comparison and style
+            # validation. Blog posts do not carry this header.
+            index += 1
+            while index < len(lines) and "-->" not in lines[index]:
+                index += 1
+            index += 1
+            continue
         if stripped == "<!--":
             comment_lines = [stripped]
             index += 1
@@ -309,6 +335,18 @@ def strip_workflow_scaffold(body: str) -> str:
 
 def strip_heading_anchors(body: str) -> str:
     return re.sub(r"(?m)^(#{1,6}\s+.+?)\s+\{#[A-Za-z0-9_-]+}$", r"\1", body)
+
+
+def strip_bracket_heading_anchors(body: str) -> str:
+    """Remove doc-builder `[[slug]]` anchors from the end of heading lines.
+
+    Only heading lines are touched, so `[[autodoc]] X` / `[[open-in-colab]]`
+    directive lines are left intact. Extract heading anchors BEFORE calling
+    this; downstream identifier/segment extraction should not see the slug
+    (an `[[transformers.Foo]]` autodoc-path anchor otherwise leaks into
+    `python_identifiers`).
+    """
+    return re.sub(r"(?m)^(#{1,6}\s+\S.*?)\s*\[\[[^\]\n]+\]\]\s*$", r"\1", body)
 
 
 def parse_code_blocks(body: str) -> tuple[list[str], str, list[str]]:
@@ -635,9 +673,73 @@ def fetch_source_document(source_url: str, manifest: dict[str, str]) -> FetchedS
     return FetchedSource(text=extract_html_main_text(text), source_format="url_html_text", source_path=source_url)
 
 
+def extract_heading_lines(body_without_code: str) -> list[tuple[int, str]]:
+    headings: list[tuple[int, str]] = []
+    for line in body_without_code.splitlines():
+        match = HEADING_RE.match(line)
+        if match:
+            headings.append((len(match.group(1)), match.group(2)))
+    return headings
+
+
+def extract_heading_anchors(body_without_code: str) -> list[str]:
+    anchors: list[str] = []
+    for _level, text in extract_heading_lines(body_without_code):
+        match = HEADING_ANCHOR_RE.search(text)
+        if match:
+            anchors.append(match.group(1).strip())
+    return anchors
+
+
+def extract_heading_levels(body_without_code: str) -> list[int]:
+    return [level for level, _text in extract_heading_lines(body_without_code)]
+
+
+def extract_directives(body_without_code: str) -> list[str]:
+    directives: list[str] = []
+    for name, target in DIRECTIVE_RE.findall(body_without_code):
+        directives.append(f"[[{name}]] {target}".strip() if target else f"[[{name}]]")
+    return directives
+
+
+def extract_autodoc_refs(body_without_code: str) -> list[str]:
+    return [ref.strip() for ref in AUTODOC_REF_RE.findall(body_without_code)]
+
+
+def normalize_mdx_tag(raw: str) -> str:
+    match = MDX_TAG_RE.match(raw)
+    if not match:
+        return raw.strip()
+    name = match.group(1)
+    closing = raw.lstrip().startswith("</")
+    props = sorted(
+        f"{key}={value}" if value else key
+        for key, value in MDX_PROP_RE.findall(match.group(2) or "")
+        if key
+    )
+    prefix = "/" if closing else ""
+    return f"<{prefix}{name}{(' ' + ' '.join(props)) if props else ''}>"
+
+
+def extract_mdx_components(body_without_code: str) -> list[str]:
+    components = [normalize_mdx_tag(match.group(0)) for match in MDX_TAG_RE.finditer(body_without_code)]
+    components.extend(f"[!{marker}]" for marker in MDX_ALERT_RE.findall(body_without_code))
+    return components
+
+
 def markdown_doc(markdown: str) -> MarkdownDoc:
     frontmatter, body = strip_frontmatter(markdown)
     body = strip_heading_anchors(strip_workflow_scaffold(body))
+    # Capture doc-builder structure while `[[slug]]` heading anchors are still
+    # present, then strip them so the slug does not leak into identifier /
+    # segment / hash comparison.
+    _, structure_text, _ = parse_code_blocks(body)
+    heading_anchors = extract_heading_anchors(structure_text)
+    heading_levels = extract_heading_levels(structure_text)
+    directives = extract_directives(structure_text)
+    autodoc_refs = extract_autodoc_refs(structure_text)
+    mdx_components = extract_mdx_components(structure_text)
+    body = strip_bracket_heading_anchors(body)
     code_blocks, body_without_code, parse_errors = parse_code_blocks(body)
     link_targets = LINK_RE.findall(body_without_code)
     image_targets = IMAGE_RE.findall(body_without_code)
@@ -665,6 +767,11 @@ def markdown_doc(markdown: str) -> MarkdownDoc:
         todo_markers=TODO_RE.findall(body_without_code),
         segments=extract_segments(body_without_code),
         source_hash=hashlib.sha256(markdown.encode("utf-8")).hexdigest(),
+        heading_anchors=heading_anchors,
+        heading_levels=heading_levels,
+        directives=directives,
+        autodoc_refs=autodoc_refs,
+        mdx_components=mdx_components,
     )
 
 
@@ -779,6 +886,21 @@ def term_present(text: str, term: str) -> bool:
     if not normalized_term:
         return False
     pattern = rf"(?<![0-9a-zA-Z가-힣_/-]){re.escape(normalized_term)}(?![0-9a-zA-Z가-힣_/-])"
+    return re.search(pattern, normalized_text) is not None
+
+
+def preserved_name_present(text: str, term: str) -> bool:
+    """Like term_present, but tolerates a trailing Korean particle.
+
+    `Transformers에서`, `Spaces에`, `Accelerate나` still count as the English
+    name being preserved — a Korean josa attached to a kept English token is
+    expected, not a translation of the name.
+    """
+    normalized_text = normalize_lookup_text(text)
+    normalized_term = normalize_lookup_text(term)
+    if not normalized_term:
+        return False
+    pattern = rf"(?<![0-9a-zA-Z가-힣_/-]){re.escape(normalized_term)}(?![0-9a-zA-Z_/-])"
     return re.search(pattern, normalized_text) is not None
 
 
@@ -916,7 +1038,10 @@ def validate_glossary(issues: list[Issue], source: MarkdownDoc, target: Markdown
         if not term_present(source_text, entry.source_term):
             continue
 
-        source_term_in_target = term_present(target_text, entry.source_term)
+        source_term_in_target = term_present(target_text, entry.source_term) or (
+            entry.policy in {"preserve_product_name", "preserve_or_first_mention"}
+            and preserved_name_present(target_text, entry.source_term)
+        )
         ko_term_in_target = normalize_lookup_text(entry.ko_term) in normalize_lookup_text(target_text)
         policy = entry.policy
 
@@ -1076,7 +1201,7 @@ def read_yaml_scalars(path: Path | None) -> dict[tuple[str, ...], object]:
         path_by_level[level] = key.strip()
         if raw_value.strip():
             key_path = tuple(path_by_level[index] for index in sorted(path_by_level))
-            values[key_path] = parse_yaml_scalar(raw_value)
+            values[key_path] = [] if raw_value.strip() == "[]" else parse_yaml_scalar(raw_value)
     return values
 
 
@@ -1542,6 +1667,43 @@ def validate_locale_punctuation(
         )
 
 
+def validate_sentence_final_colon(
+    issues: list[Issue],
+    target: MarkdownDoc,
+    policy: EvaluationPolicy,
+) -> None:
+    """Flag Korean prose sentences that end with a colon.
+
+    Opt-in via ``sentence_final_colon.enabled`` in the gates config. Korean does
+    not use a colon as sentence-final punctuation, so the HF technical-docs
+    profile treats it as an exception-free rule (see the style guide).
+    """
+    if not policy.enabled("sentence_final_colon", "enabled", False):
+        return
+    _, prose, _ = parse_code_blocks(target.body)
+    prose = URL_RE.sub("", INLINE_CODE_RE.sub("", strip_markdown_targets(prose)))
+    offenders: list[str] = []
+    for line in prose.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped[0] in "#|>" or set(stripped) <= {"-", ":", " "}:
+            continue
+        if (stripped.endswith(":") or stripped.endswith("：")) and has_korean(stripped):
+            offenders.append(stripped)
+    if not offenders:
+        return
+    issue(
+        issues,
+        "style_locale",
+        policy.severity("sentence_final_colon", "major"),
+        "Korean sentence ends with a colon.",
+        target_span=" | ".join(offenders[:5]),
+        suggested_fix="End the Korean sentence with a period; Korean does not use a sentence-final colon.",
+        reason="The HF technical-docs style guide converts every sentence-final colon to a period.",
+        guide_rule="sentence_final_colon",
+        guide_section="문장 종결 부호: 콜론을 쓰지 않습니다",
+    )
+
+
 def validate_style_guide(
     issues: list[Issue],
     source: MarkdownDoc | None,
@@ -1578,6 +1740,7 @@ def style_penalty(issues: list[Issue]) -> float:
         "first_mention_bilingual": 2.0,
         "information_addition": 8.0,
         "locale_punctuation": 8.0,
+        "sentence_final_colon": 8.0,
     }
     penalty = 0.0
     for item in issues:
@@ -2824,6 +2987,7 @@ def validate_documents(
         )
 
     validate_locale_punctuation(issues, target, gate_policy)
+    validate_sentence_final_colon(issues, target, gate_policy)
 
     required_target_keys = gate_policy.list_option("front_matter", "required_target_keys", ["title"])
     for key in required_target_keys:
@@ -2974,6 +3138,54 @@ def validate_documents(
                     source_span=str(source.table_shapes),
                     target_span=str(target.table_shapes),
                     suggested_fix="Preserve source table row and column counts.",
+                )
+
+            # Doc-builder structure gates. Opt-in (fallback=False) so profiles
+            # that do not set them in gates.yml — e.g. the blog profile — are
+            # unaffected. The HF technical-docs profile enables them explicitly.
+            docbuilder_checks = [
+                ("directive_preservation", "formatting", "doc-builder directive", source.directives, target.directives),
+                ("autodoc_reference_preservation", "technical", "autodoc reference", source.autodoc_refs, target.autodoc_refs),
+                ("mdx_component_preservation", "formatting", "MDX component", source.mdx_components, target.mdx_components),
+            ]
+            for gate, category, label, source_values, target_values in docbuilder_checks:
+                if not gate_policy.enabled(gate, "enabled", False):
+                    continue
+                compare_counter(
+                    issues,
+                    category,
+                    label,
+                    source_values,
+                    target_values,
+                    severity=gate_policy.severity(gate, "critical"),
+                )
+            if gate_policy.enabled("anchor_preservation", "enabled", False):
+                # Only a byte-for-byte comparison when the SOURCE carries
+                # explicit `[[...]]` anchors. Modern transformers English
+                # sources omit them and rely on doc-builder auto-slugging, so
+                # the Korean file's hand-added anchors cannot be verified
+                # deterministically (the autodoc-path form is not reproducible
+                # from heading text) — that check moves to the MQM judge and
+                # the human "Check Inline TOC" review step.
+                if source.heading_anchors:
+                    compare_counter(
+                        issues,
+                        "formatting",
+                        "heading anchor",
+                        source.heading_anchors,
+                        target.heading_anchors,
+                        severity=gate_policy.severity("anchor_preservation", "critical"),
+                    )
+            if gate_policy.enabled("anchor_preservation", "enabled", False) and source.heading_levels != target.heading_levels:
+                issue(
+                    issues,
+                    "formatting",
+                    gate_policy.severity("anchor_preservation", "critical"),
+                    "Heading level structure changed from the source document.",
+                    source_span=str(source.heading_levels),
+                    target_span=str(target.heading_levels),
+                    suggested_fix="Keep the same heading levels (number of # characters) as the source; only translate the heading text.",
+                    reason="In-page navigation is generated from the heading/anchor structure, so a level mismatch breaks the generated hierarchy.",
                 )
 
             validate_segment_coverage(issues, source, target, gate_policy)
