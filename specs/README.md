@@ -10,6 +10,7 @@
 | [Agent Workflow Design](agent-workflow-design.md) | 장기 아키텍처와 설계 근거. 구현 전 가정이 있으므로 기준 문서를 대체하지는 않음 |
 | [Skill Integration Guide](pr-agent-skill-integration-guide.md) | SEO/quality skill 입력·출력 및 repair-friendly finding 계약 |
 | [SEO Metadata I/O](seo-metadata-module-io.md) | SEO gate와 metadata suggestion/apply를 분리하는 JSON 및 frontmatter 계약 |
+| [Quality Skill Refactoring Plan](quality-skill-refactoring-plan.md) | `skills/quality`에서 core를 분리하고 문서 유형·repo별 부분을 profile로 빼는 리팩토링 계획. `quality-skill-builder` 스킬의 방향 전환 근거 |
 
 다음 자료는 구현 Spec이 아니거나 현재 contract와 중복·불일치할 수 있어 포함하지
 않는다: 발표 초안, HTML workflow 개요, E2E 스크린샷 중심 팀 리뷰 문서, 그리고
