@@ -41,6 +41,9 @@ reports/                 # stored run outputs, grouped by PR
 
 ## Discord merge approval notifications
 
+For fixed-input experiments with Draft PRs and per-commit result records, see
+[the experiment preparation guide](examples/translation-experiment/README.md).
+
 The reusable PR review workflow skips the human merge approval notification if
 the PR title contains `[실험]`, `[테스트]`, `[experiment]`, or `[test]`, or if the
 PR has the `hf-agent:experiment` or `hf-agent:test` label. Matching is case
