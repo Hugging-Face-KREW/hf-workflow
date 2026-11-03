@@ -75,6 +75,9 @@ def test_discord_merge_request_runs_only_after_ready() -> None:
     assert "needs: [finalize, metadata_apply]" in workflow
     assert "needs.metadata_apply.outputs.changed != 'true'" in workflow
     assert "--ready-pr-url" in workflow
+    assert 'gh pr view "$HF_INPUT_PR_NUMBER" --repo "$HF_INPUT_TARGET_REPO"' in workflow
+    assert "--json title,labels" in workflow
+    assert '--pr-metadata "${{ runner.temp }}/notification-pr.json"' in workflow
 
 
 def test_failed_gates_trigger_a_bounded_repair() -> None:

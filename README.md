@@ -39,6 +39,15 @@ reports/                 # stored run outputs, grouped by PR
     seo-report.md  seo-report.json  quality-report.md
 ```
 
+## Discord merge approval notifications
+
+The reusable PR review workflow skips the human merge approval notification if
+the PR title contains `[실험]`, `[테스트]`, `[experiment]`, or `[test]`, or if the
+PR has the `hf-agent:experiment` or `hf-agent:test` label. Matching is case
+insensitive. The workflow reads the current title and labels immediately before
+notifying. PR creation notifications and review gates are unchanged; no separate
+experiment notification is sent.
+
 ## Harness note
 
 A replayable PR-gate verification harness (stored run results per PR) is not
