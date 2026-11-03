@@ -581,7 +581,12 @@ jobs:
 
       - name: Request human merge approval
         if: ${{ env.DISCORD_WEBHOOK_URL != '' }}
-        run: >-
-          python workflow/scripts/notify_discord.py
-          --ready-pr-url "${{ github.server_url }}/$HF_INPUT_TARGET_REPO/pull/$HF_INPUT_PR_NUMBER"
-          --head-sha "$HF_INPUT_HEAD_SHA"
+        env:
+          GH_TOKEN: ${{ secrets.KREW_BOT_TOKEN }}
+        run: |
+          gh pr view "$HF_INPUT_PR_NUMBER" --repo "$HF_INPUT_TARGET_REPO" \
+            --json title,labels > "${{ runner.temp }}/notification-pr.json"
+          python workflow/scripts/notify_discord.py \
+            --ready-pr-url "${{ github.server_url }}/$HF_INPUT_TARGET_REPO/pull/$HF_INPUT_PR_NUMBER" \
+            --head-sha "$HF_INPUT_HEAD_SHA" \
+            --pr-metadata "${{ runner.temp }}/notification-pr.json"

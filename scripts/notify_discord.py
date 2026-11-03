@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -10,6 +11,14 @@ from typing import Any
 
 
 DISCORD_USER_AGENT = "DiscordBot (https://github.com/Hugging-Face-KREW/hf-workflow, 1.0)"
+TEST_PR_TITLE_MARKER = re.compile(r"\[(?:실험|테스트|experiment|test)\]", re.IGNORECASE)
+TEST_PR_LABELS = {"hf-agent:experiment", "hf-agent:test"}
+
+
+def is_test_pr(pr: dict[str, Any]) -> bool:
+    return bool(TEST_PR_TITLE_MARKER.search(pr["title"])) or any(
+        label["name"].casefold() in TEST_PR_LABELS for label in pr["labels"]
+    )
 
 
 def build_discord_payload(summary: dict[str, Any]) -> dict[str, str] | None:
@@ -90,10 +99,17 @@ def main() -> int:
     parser.add_argument("--summary", default="run-summary.json")
     parser.add_argument("--ready-pr-url")
     parser.add_argument("--head-sha")
+    parser.add_argument("--pr-metadata", help="PR JSON from gh pr view --json title,labels")
     args = parser.parse_args()
     if args.ready_pr_url:
         if not args.head_sha:
             parser.error("--head-sha is required with --ready-pr-url")
+        if not args.pr_metadata:
+            parser.error("--pr-metadata is required with --ready-pr-url")
+        pr = json.loads(Path(args.pr_metadata).read_text())
+        if is_test_pr(pr):
+            print("Test PR detected; skipping human merge approval notification.")
+            return 0
         return notify_payload(
             os.environ.get("DISCORD_WEBHOOK_URL", ""),
             build_ready_payload(pr_url=args.ready_pr_url, head_sha=args.head_sha),
