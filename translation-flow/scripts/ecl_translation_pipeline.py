@@ -5,12 +5,17 @@ import csv
 import json
 import os
 import re
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Optional
 import urllib.request
 
 from markdown_it import MarkdownIt
+from markdown_it.rules_inline.backticks import backtick
+from markdown_it.rules_inline.image import image as parse_inline_image
+from markdown_it.rules_inline.link import link as parse_inline_link
+from markdown_it.rules_inline.state_inline import StateInline
 
 
 PARSER = MarkdownIt("js-default", {"html": True})
@@ -53,7 +58,8 @@ IMPERATIVE_VERBS = {
     "stop",
 }
 
-KEEP_RE = re.compile(r"(`[^`\n]+`|!?\[[^\]]*\]\([^)]+\)|https?://[^\s)>\]]+)")
+KEEP_TOKEN_RE = re.compile(r"\{\{KEEP_\d+\}\}")
+BARE_URL_RE = re.compile(r"https?://[^\s)>\]]+")
 TOKEN_NORMALIZE_RE = re.compile(r"[^0-9a-zA-Z.+/#_-]+")
 PLURAL_SUFFIXES = ["s", "es"]
 FENCE_START_RE = re.compile(r"^(?P<indent>[ \t]*)(?P<fence>`{3,}|~{3,})(?P<info>.*)$")
@@ -356,7 +362,8 @@ def glossary_candidates(
 
 def parse_markdown_blocks(body_text: str) -> list[Block]:
     lines = body_text.splitlines(keepends=True)
-    tokens = PARSER.parse(body_text)
+    env: dict[str, Any] = {}
+    tokens = PARSER.parse(body_text, env)
     blocks: list[Block] = []
     seen: set[tuple[int, int]] = set()
     block_id = 0
@@ -384,6 +391,19 @@ def parse_markdown_blocks(body_text: str) -> list[Block]:
             )
         )
         block_id += 1
+    # Reference definitions emit no Markdown tokens. Retain definitions outside
+    # existing blocks so reconstruction does not silently discard their targets.
+    for ref in env.get("references", {}).values():
+        start, end = ref["map"]
+        if any(block.start_line <= start < block.end_line for block in blocks):
+            continue
+        blocks.append(
+            Block(id=0, kind="reference_definition", raw="".join(lines[start:end]),
+                  start_line=start, end_line=end, translatable=False)
+        )
+    blocks.sort(key=lambda block: block.start_line)
+    for index, block in enumerate(blocks):
+        block.id = index
     return blocks
 
 
@@ -420,18 +440,86 @@ def label_blocks(blocks: list[Block]) -> dict[int, str]:
     return labels
 
 
-def protect_inline(markdown: str) -> tuple[str, dict[str, str]]:
-    saved: dict[str, str] = {}
+def protect_inline(
+    markdown: str, references: Optional[dict[str, Any]] = None,
+) -> tuple[str, dict[str, str]]:
+    """Expose link labels while preserving exact destinations, titles and code.
 
-    def replacer(match: re.Match[str]) -> str:
+    Images and implicit references stay opaque: translating their labels would
+    change reference lookup. Use the Markdown parser's rules to handle nested
+    brackets, balanced URL parentheses, escaped punctuation and code spans.
+    """
+    if KEEP_TOKEN_RE.search(markdown):
+        raise ValueError("Source contains a reserved KEEP placeholder")
+    saved: dict[str, str] = {}
+    env: dict[str, Any] = {}
+    PARSER.parse(markdown, env)
+    local_references = env.get("references", {})
+    env["references"] = {**(references or {}), **local_references}
+
+    def keep(value: str) -> str:
         key = f"{{{{KEEP_{len(saved)}}}}}"
-        saved[key] = match.group(0)
+        saved[key] = value
         return key
 
-    return KEEP_RE.sub(replacer, markdown), saved
+    # Also support direct calls on text containing its own reference definitions.
+    lines = markdown.splitlines(keepends=True)
+    for start, end in sorted({tuple(ref["map"]) for ref in local_references.values()}, reverse=True):
+        lines[start:end] = [keep("".join(lines[start:end]))]
+    markdown = "".join(lines)
+
+    def scan(text: str) -> str:
+        state = StateInline(text, PARSER, env, [])
+        parts: list[str] = []
+        while state.pos < len(text):
+            start = state.pos
+            if text[start] == "\\" and start + 1 < len(text):
+                parts.append(text[start:start + 2])
+                state.pos += 2
+                continue
+            if text[start] == "`":
+                count = len(state.tokens)
+                backtick(state, False)
+                raw = text[start:state.pos]
+                is_code = any(token.type == "code_inline" for token in state.tokens[count:])
+                parts.append(keep(raw) if is_code else raw)
+                continue
+            is_image = text.startswith("![", start)
+            if is_image or text[start] == "[":
+                label_start = start + (1 if is_image else 0)
+                label_end = PARSER.helpers.parseLinkLabel(state, label_start, not is_image)
+                rule = parse_inline_image if is_image else parse_inline_link
+                if label_end >= 0 and rule(state, True):
+                    raw = text[start:state.pos]
+                    suffix = text[label_end + 1:state.pos]
+                    if is_image or suffix in ("", "[]"):
+                        parts.append(keep(raw))
+                    else:
+                        label = scan(text[label_start + 1:label_end])
+                        parts.append("[" + label + "]" + keep(suffix))
+                    continue
+                state.pos = start
+            if text[start] == "<":
+                end = text.find(">", start + 1)
+                if end >= 0:
+                    parts.append(keep(text[start:end + 1]))
+                    state.pos = end + 1
+                    continue
+            url = BARE_URL_RE.match(text, start)
+            if url:
+                parts.append(keep(url.group()))
+                state.pos = url.end()
+                continue
+            parts.append(text[start])
+            state.pos += 1
+        return "".join(parts)
+
+    return scan(markdown), saved
 
 
 def restore_inline(markdown: str, saved: dict[str, str]) -> str:
+    if Counter(KEEP_TOKEN_RE.findall(markdown)) != Counter({key: 1 for key in saved}):
+        raise ValueError("Missing, duplicated, or unknown KEEP placeholder in translation")
     for key, value in saved.items():
         markdown = markdown.replace(key, value)
     return markdown
@@ -583,6 +671,8 @@ Translate the following Markdown blocks into {target_language}.
 - Output schema for each item: {{"id": number, "markdown": "translated markdown"}}
 - Preserve Markdown structure and placeholders like {{{{KEEP_0}}}} or {{{{CODE_BLOCK_0}}}} exactly.
 - Do not alter URLs, link targets, inline code, fenced code, commands, model names, API names, parameter names, or file paths.
+- Translate descriptive link labels together with the surrounding paragraph. A placeholder immediately after [label] restores its link target; preserve both brackets and the placeholder.
+- Preserve names and code within mixed link labels, translate their descriptive words, and choose Korean particles and sentence endings to fit the whole sentence.
 - Do not add explanations, notes, or summaries.
 
 [Input JSON]
@@ -604,6 +694,8 @@ def translate_markdown_with_ecl(
     if code_blocks:
         ecl_log(f"Protected fenced code blocks={len(code_blocks)}")
 
+    reference_env: dict[str, Any] = {}
+    PARSER.parse(protected_markdown, reference_env)
     blocks = parse_markdown_blocks(protected_markdown)
     if not blocks:
         ecl_log("No blocks parsed from source markdown. Returning source as-is.")
@@ -651,7 +743,7 @@ def translate_markdown_with_ecl(
     for block in blocks:
         if not block.translatable or not block.raw.strip():
             continue
-        protected, saved = protect_inline(block.raw)
+        protected, saved = protect_inline(block.raw, reference_env.get("references"))
         protections[block.id] = saved
         item: dict[str, Any] = {"id": block.id, "kind": block.kind, "markdown": protected}
         label = labels.get(block.id)

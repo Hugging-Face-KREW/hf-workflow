@@ -119,6 +119,15 @@ Broader reviewer guidance lives in `docs/hf_ko_translation_best_practice.md`.
 The ECL runtime does not inject that full guide into each prompt; it keeps the
 prompt context focused on source structure, glossary hits, and block labels.
 
+Inline link labels remain visible to the translation model and are translated
+with the surrounding paragraph. Link destination/title syntax and inline code
+are protected and restored exactly. Images and implicit reference links
+(`[label]` or `[label][]`) remain opaque so reference lookup is preserved;
+explicit reference labels (`[description][id]`) can be translated. Reference
+definitions are retained during document reconstruction. Missing, duplicated,
+or unknown inline protection tokens abort translation rather than emitting a
+partially restored document.
+
 Guide compression is enabled by default for the OpenAI adapter. It splits the
 Markdown guidance docs into sections, selects source-relevant guide sections,
 and compresses them into a short article-specific guide capsule before
