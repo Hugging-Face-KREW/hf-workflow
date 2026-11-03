@@ -1,0 +1,126 @@
+{
+  "L02": {
+    "requests": 4,
+    "estimated_usd": "0.00212325",
+    "reserved_usd": "0.02192500",
+    "provider_reported_partial_usd": "0.00000000",
+    "provider_reported_entries": 0,
+    "missing_estimate": 0,
+    "actual_total_usd": null,
+    "fees_status": "unreconciled",
+    "period": "historical, not all tonight"
+  },
+  "L03": {
+    "requests": 112,
+    "estimated_usd": "0.11165375",
+    "reserved_usd": "0.75130600",
+    "provider_reported_partial_usd": "0.00000000",
+    "provider_reported_entries": 0,
+    "missing_estimate": 0,
+    "actual_total_usd": null,
+    "fees_status": "unreconciled",
+    "period": "historical, not all tonight"
+  },
+  "L04": {
+    "requests": 150,
+    "estimated_usd": "0.18169025",
+    "reserved_usd": "1.02500275",
+    "provider_reported_partial_usd": "0.00000000",
+    "provider_reported_entries": 0,
+    "missing_estimate": 0,
+    "actual_total_usd": null,
+    "fees_status": "unreconciled",
+    "period": "historical, not all tonight"
+  },
+  "L05": {
+    "requests": 313,
+    "estimated_usd": "0.14658775",
+    "reserved_usd": "1.77909800",
+    "provider_reported_partial_usd": "0.00000000",
+    "provider_reported_entries": 0,
+    "missing_estimate": 0,
+    "actual_total_usd": null,
+    "fees_status": "unreconciled",
+    "period": "historical, not all tonight"
+  },
+  "SHARED": {
+    "requests": 24,
+    "estimated_usd": "0.04055865",
+    "reserved_usd": "0.25256335",
+    "provider_reported_partial_usd": "0.00030023",
+    "provider_reported_entries": 2,
+    "missing_estimate": 0,
+    "actual_total_usd": null,
+    "fees_status": "unreconciled",
+    "period": "historical, not all tonight"
+  },
+  "L06": {
+    "requests": 20,
+    "estimated_usd": "0.11605740",
+    "reserved_usd": "0.37270200",
+    "provider_reported_partial_usd": "0.00720098",
+    "provider_reported_entries": 5,
+    "missing_estimate": 0,
+    "actual_total_usd": null,
+    "fees_status": "unreconciled",
+    "period": "historical, not all tonight"
+  },
+  "L07": {
+    "requests": 13,
+    "estimated_usd": "0.01820080",
+    "reserved_usd": "0.06134120",
+    "provider_reported_partial_usd": "0.00232253",
+    "provider_reported_entries": 5,
+    "missing_estimate": 0,
+    "actual_total_usd": null,
+    "fees_status": "unreconciled",
+    "period": "historical, not all tonight"
+  },
+  "L08": {
+    "requests": 30,
+    "estimated_usd": "0.02015600",
+    "reserved_usd": "0.11983540",
+    "provider_reported_partial_usd": "0.00181666",
+    "provider_reported_entries": 10,
+    "missing_estimate": 0,
+    "actual_total_usd": null,
+    "fees_status": "unreconciled",
+    "period": "historical, not all tonight"
+  },
+  "L09": {
+    "requests": 16,
+    "estimated_usd": "0.00873760",
+    "reserved_usd": "0.06532120",
+    "provider_reported_partial_usd": "0.00064864",
+    "provider_reported_entries": 4,
+    "missing_estimate": 0,
+    "actual_total_usd": null,
+    "fees_status": "unreconciled",
+    "period": "historical, not all tonight"
+  },
+  "L10": {
+    "requests": 48,
+    "estimated_usd": "0.05331675",
+    "reserved_usd": "0.26004325",
+    "provider_reported_partial_usd": "0.00000000",
+    "provider_reported_entries": 0,
+    "missing_estimate": 0,
+    "actual_total_usd": null,
+    "fees_status": "unreconciled",
+    "period": "historical, not all tonight"
+  },
+  "L01": {
+    "requests": 0,
+    "estimated_usd": "0.00000000",
+    "actual_total_usd": "0",
+    "scope": "Offline replay only; billable generation allocated to L02/L03"
+  },
+  "L11": {
+    "requests_local": 2,
+    "estimated_usd": "0.00330220",
+    "actual_total_usd": null,
+    "remote_usd": null,
+    "fees_status": "unreconciled",
+    "scope": "Local compression+generation only; five remote review runs and side calls unknown"
+  }
+}

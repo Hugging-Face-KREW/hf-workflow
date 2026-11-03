@@ -98,7 +98,10 @@ def _verify_quality(
         raise ValueError("quality judge provider does not match workflow configuration")
     if mqm.get("model") != expected_model:
         raise ValueError("quality judge model does not match workflow configuration")
-    if expected_conclusion == "fail" or status == "review_required":
+    # review_required is mapped to a passing wrapper by the runner. It must
+    # satisfy the same semantic coverage contract as auto_pass before any
+    # mutation or green lifecycle can use it. Failed reports remain inspectable.
+    if expected_conclusion == "fail":
         if int(mqm.get("segment_count", 0)) > 0 and not mqm.get("prompt_hash"):
             raise ValueError("quality judge prompt hash is missing")
         return

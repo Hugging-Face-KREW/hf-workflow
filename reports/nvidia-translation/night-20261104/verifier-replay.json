@@ -1,0 +1,37 @@
+[
+  {
+    "run_id": 41670309598,
+    "sha": "39f2b174bc2dd4fe6825521016414ab7f5671a65",
+    "semantic_complete": false,
+    "before": "pass",
+    "after": "successful quality result has incomplete semantic evaluation"
+  },
+  {
+    "run_id": 41670317634,
+    "sha": "39f2b174bc2dd4fe6825521016414ab7f5671a65",
+    "semantic_complete": false,
+    "before": "pass",
+    "after": "successful quality result has incomplete semantic evaluation"
+  },
+  {
+    "run_id": 41670353774,
+    "sha": "39f2b174bc2dd4fe6825521016414ab7f5671a65",
+    "semantic_complete": true,
+    "before": "pass",
+    "after": "pass"
+  },
+  {
+    "run_id": 41670356554,
+    "sha": "39f2b174bc2dd4fe6825521016414ab7f5671a65",
+    "semantic_complete": false,
+    "before": "pass",
+    "after": "successful quality result has incomplete semantic evaluation"
+  },
+  {
+    "run_id": 41670728736,
+    "sha": "a66c7fb09cb6d4cdc236f1e9e5f0ac1de731dfd5",
+    "semantic_complete": false,
+    "before": "pass",
+    "after": "successful quality result has incomplete semantic evaluation"
+  }
+]

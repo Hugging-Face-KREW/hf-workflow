@@ -110,6 +110,36 @@ python3 scripts/translation_experiment.py bundle \
 
 ## 무료 검증
 
+### 실험 전체 예산 원장
+
+`scripts/experiment_budget.py`는 모든 로컬 worker가 같은 파일을 사용하는 경우
+잠금·원자적 저장으로 선예약을 직렬화한다. `init --prior`로 기존 지출을 가져오며,
+추정값만 있고 청구·사용량 비용을 정산하지 못한 항목은 새 예약을 차단한다.
+미확인 비용은 0으로 처리하지 않고 `remaining_usd: null`로 표시한다.
+
+```bash
+python3 scripts/experiment_budget.py --ledger /tmp/night-budget.json init \
+  --limit-usd 10 --prior /tmp/prior-costs.json
+python3 scripts/experiment_budget.py --ledger /tmp/night-budget.json status
+```
+
+개별 유료 시도 전에 `reserve --id ID --worst-case-usd AMOUNT --evidence BASIS`로
+입력·출력 상한, SDK 재시도·fallback·라우터·검사 호출 및 파악 가능한 수수료를 포함한
+최악비용을 예약해야 한다. 네트워크 실패·중단 시 예약을 해제하지 않는다.
+`settle --id ID --actual-usd AMOUNT --evidence RECEIPT`는 실제 비용 증거로만 정산한다.
+실제 비용이 예약 상한을 넘으면 일일 한도 이내여도 추가 예약을 차단한다.
+
+이 파일 잠금은 GitHub Actions runner 간 분산 잠금이 아니다. 기존 workflow의
+모든 모델 호출을 자동으로 가로채거나 과거 비용을 복구하지도 않는다.
+공유된 비용 조정자와 각 호출의 계측·선예약이 연결되지 않은 원격 루프는
+이 원장만으로 안전하게 재개할 수 없다. 특히 기존 원격 평가 비용이 미확인이면
+`publish --enable-loop`나 수동 리뷰 dispatch를 실행하지 않는다.
+
+prior 항목 형식은 `id`, `status`(`settled`, `prior_unreconciled`, `unknown`),
+`evidence`와 선택적 `actual_usd`, `estimated_usd`, `worst_case_usd`다.
+금액은 USD 문자열이며 actual은 파악 가능한 수수료를 포함한다.
+과거 항목과 새 호출을 중복 집계하지 않고 출처·기간을 명시해야 한다.
+
 ```bash
 python3 -m pytest tests/test_translation_experiment.py -q
 ```
