@@ -1,0 +1,24 @@
+{
+  "run_id": "smoke-001",
+  "document_id": "first-article",
+  "target_repo": "Hugging-Face-KREW/hugging-face-krew.github.io",
+  "blog_base_sha": "REPLACE_WITH_FULL_BLOG_COMMIT_SHA",
+  "workflow_sha": "REPLACE_AFTER_LINK_PROTECTION_AND_NOTIFICATION_CHANGES_ARE_DEPLOYED",
+  "source_url": "https://huggingface.co/blog/REPLACE_WITH_ARTICLE",
+  "title": "REPLACE_WITH_ARTICLE_TITLE",
+  "post_path": "_posts/2026-11-03-REPLACE_WITH_SLUG.md",
+  "budget_usd": 1.0,
+  "arms": [
+    {
+      "id": "baseline",
+      "settings": {
+        "translation_strategy": "whole",
+        "model": "REPLACE_WITH_AVAILABLE_MODEL",
+        "backend": "fixed",
+        "source_snapshot": "source.md",
+        "review_and_repair": "existing-managed-loop",
+        "purpose": "First verify one complete PR lifecycle; add comparison arms afterwards"
+      }
+    }
+  ]
+}
