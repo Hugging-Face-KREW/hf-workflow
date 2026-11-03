@@ -1,0 +1,58 @@
+[
+  {
+    "id": "historical-ledger-aggregate",
+    "status": "prior_unreconciled",
+    "actual_usd": null,
+    "estimated_usd": "0.6990822",
+    "worst_case_usd": "4.70913815",
+    "evidence": "legacy-budget-snapshot.json; historical date attribution and fees not fully reconciled; conservative inclusion, not an assertion all costs occurred tonight"
+  },
+  {
+    "id": "smoke-generation",
+    "status": "prior_unreconciled",
+    "actual_usd": null,
+    "estimated_usd": "0.0033022",
+    "worst_case_usd": "0.0178398",
+    "evidence": "../pr-lab/20261104-smoke01/generation-ledger.json; frozen pilot rate estimate only"
+  },
+  {
+    "id": "github-review-41670309598",
+    "status": "prior_unreconciled",
+    "actual_usd": null,
+    "estimated_usd": null,
+    "worst_case_usd": null,
+    "evidence": "../pr-lab/20261104-smoke01/actions/41670309598; evaluated results exist but token/billing usage and fees were not emitted"
+  },
+  {
+    "id": "github-review-41670317634",
+    "status": "prior_unreconciled",
+    "actual_usd": null,
+    "estimated_usd": null,
+    "worst_case_usd": null,
+    "evidence": "../pr-lab/20261104-smoke01/actions/41670317634; evaluated results exist but token/billing usage and fees were not emitted"
+  },
+  {
+    "id": "github-review-41670353774",
+    "status": "prior_unreconciled",
+    "actual_usd": null,
+    "estimated_usd": null,
+    "worst_case_usd": null,
+    "evidence": "../pr-lab/20261104-smoke01/actions/41670353774; evaluated results exist but token/billing usage and fees were not emitted"
+  },
+  {
+    "id": "github-review-41670356554",
+    "status": "prior_unreconciled",
+    "actual_usd": null,
+    "estimated_usd": null,
+    "worst_case_usd": null,
+    "evidence": "../pr-lab/20261104-smoke01/actions/41670356554; evaluated results exist but token/billing usage and fees were not emitted"
+  },
+  {
+    "id": "github-review-41670728736",
+    "status": "prior_unreconciled",
+    "actual_usd": null,
+    "estimated_usd": null,
+    "worst_case_usd": null,
+    "evidence": "../pr-lab/20261104-smoke01/actions/41670728736; evaluated results exist but token/billing usage and fees were not emitted"
+  }
+]

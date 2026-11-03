@@ -110,15 +110,16 @@ def test_verifies_complete_review_artifacts(tmp_path: Path) -> None:
     verify(root, target_root)
 
 
-def test_accepts_review_required_with_incomplete_semantic_evaluation(tmp_path: Path) -> None:
+def test_rejects_review_required_with_incomplete_semantic_evaluation(tmp_path: Path) -> None:
     root = tmp_path / "results"
     target_root = tmp_path / "target"
     write_review_results(root, target_root, quality_status="review_required")
 
-    verify(root, target_root)
+    with pytest.raises(ValueError, match="incomplete semantic evaluation"):
+        verify(root, target_root)
 
 
-def test_accepts_review_required_when_mqm_judge_is_skipped(tmp_path: Path) -> None:
+def test_rejects_review_required_when_mqm_judge_is_skipped(tmp_path: Path) -> None:
     root = tmp_path / "results"
     target_root = tmp_path / "target"
     write_review_results(
@@ -132,7 +133,29 @@ def test_accepts_review_required_when_mqm_judge_is_skipped(tmp_path: Path) -> No
     report["mqm_judge"]["prompt_hash"] = ""
     report_path.write_text(json.dumps(report))
 
+    with pytest.raises(ValueError, match="prompt hash"):
+        verify(root, target_root)
+
+
+def test_accepts_review_required_with_complete_semantic_evaluation(tmp_path: Path) -> None:
+    root, target_root = tmp_path / "results", tmp_path / "target"
+    write_review_results(root, target_root, quality_status="review_required")
+    path = root / "quality-eval.json"
+    report = json.loads(path.read_text())
+    report["metadata"]["semantic_evaluation_complete"] = True
+    path.write_text(json.dumps(report))
     verify(root, target_root)
+
+
+def test_review_required_cannot_claim_complete_with_missing_segment(tmp_path: Path) -> None:
+    root, target_root = tmp_path / "results", tmp_path / "target"
+    write_review_results(root, target_root, quality_status="review_required", mqm_segment_ids=("target-001",))
+    path = root / "quality-eval.json"
+    report = json.loads(path.read_text())
+    report["metadata"]["semantic_evaluation_complete"] = True
+    path.write_text(json.dumps(report))
+    with pytest.raises(ValueError, match="invalid MQM segment coverage"):
+        verify(root, target_root)
 
 
 def test_rejects_review_required_judge_results_without_prompt_hash(

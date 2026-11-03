@@ -1,0 +1,17 @@
+{
+  "limit_usd": "10",
+  "committed_or_bounded_usd": "4.72697795",
+  "unreconciled_ids": [
+    "github-review-41670309598",
+    "github-review-41670317634",
+    "github-review-41670353774",
+    "github-review-41670356554",
+    "github-review-41670728736",
+    "historical-ledger-aggregate",
+    "smoke-generation"
+  ],
+  "remaining_usd": null,
+  "paid_execution_allowed": false,
+  "overrun": false,
+  "reservation_overrun_ids": []
+}

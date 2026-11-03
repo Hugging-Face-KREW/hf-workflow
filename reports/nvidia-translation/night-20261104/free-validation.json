@@ -1,0 +1,34 @@
+{
+  "model_calls_since_night_delegation": 0,
+  "network_blocked_for_tests": true,
+  "runtime": "Python 3.12; API credential env removed from test subprocesses",
+  "suites": [
+    {
+      "name": "hf-workflow patched full suite",
+      "passed": 404
+    },
+    {
+      "name": "existing NVIDIA experiment fixtures",
+      "passed": 45
+    },
+    {
+      "name": "native Guardrails fake-judge contracts",
+      "passed": 11
+    },
+    {
+      "name": "native Switchyard fake-judge and transport contracts",
+      "passed": 11
+    },
+    {
+      "name": "blog actual event-expression regression",
+      "passed": 6
+    }
+  ],
+  "artifact_replay": {
+    "real_evaluations": 5,
+    "baseline_verifier_accepted": 5,
+    "patched_verifier_accepted": 1,
+    "patched_incomplete_rejected": 4
+  },
+  "limits": "Fake/offline checks verify wiring and failure contracts, not translation efficacy or real billing."
+}
