@@ -1,0 +1,35 @@
+{
+  "controlled_edit_not_real_source_history": true,
+  "sources": [
+    {
+      "id": "pr238_shared",
+      "source": "Local and hosted inference each have their strengths,\nand both have a role in building this new generation of intelligent apps.\nA shared API makes it easier to choose the right model for each task.\nIn this hypothetical example, hosted inference requires a network connection."
+    },
+    {
+      "id": "pr238_releases",
+      "source": "A year and dozens of releases later,\n[AnyLanguageModel 1.0](https://github.com/huggingface/AnyLanguageModel/releases/tag/1.0.0) is out,\nalong with [swift-huggingface 1.0](https://github.com/huggingface/swift-huggingface/releases/tag/1.0.0)\nand [swift-xet 1.0](https://github.com/huggingface/swift-xet/releases/tag/1.0.0)."
+    },
+    {
+      "id": "pr238_linux",
+      "source": "AnyLanguageModel also runs on Linux,\nso the same code can work on a server."
+    }
+  ],
+  "old": [
+    {
+      "id": "pr238_shared",
+      "source": "Local and hosted inference each have their strengths,\nand both have a role in building this new generation of intelligent apps.\nA shared API makes it easier to choose the right model for each task.",
+      "target": "로컬 추론과 호스팅 추론은 각각 장점이 있으며,\n이 새로운 세대의 지능형 앱을 구축하는 데 모두 중요한 역할을 합니다.\n공유 API를 사용하면 각 작업에 적합한 모델을 더 쉽게 선택할 수 있습니다."
+    },
+    {
+      "id": "pr238_releases",
+      "source": "A year and dozens of releases later,\n[AnyLanguageModel 1.0](https://github.com/huggingface/AnyLanguageModel/releases/tag/1.0.0) is out,\nalong with [swift-huggingface 1.0](https://github.com/huggingface/swift-huggingface/releases/tag/1.0.0)\nand [swift-xet 1.0](https://github.com/huggingface/swift-xet/releases/tag/1.0.0).",
+      "target": "1년 동안 수십 차례의 릴리스를 거쳐\n[AnyLanguageModel 1.0](https://github.com/huggingface/AnyLanguageModel/releases/tag/1.0.0)이 출시되었고,\n[swift-huggingface 1.0](https://github.com/huggingface/swift-huggingface/releases/tag/1.0.0) 및\n[swift-xet 1.0](https://github.com/huggingface/swift-xet/releases/tag/1.0.0)도 함께 제공됩니다."
+    },
+    {
+      "id": "pr238_linux",
+      "source": "AnyLanguageModel also runs on Linux,\nso the same code can work on a server.",
+      "target": "AnyLanguageModel은 Linux에서도 실행되므로,\n동일한 코드가 서버에서도 작동할 수 있습니다."
+    }
+  ],
+  "changed_id": "pr238_shared"
+}

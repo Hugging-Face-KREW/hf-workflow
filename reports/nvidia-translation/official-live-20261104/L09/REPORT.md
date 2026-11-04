@@ -1,3 +1,5 @@
+> 후속 실행 완료: 이 문서는 이전 OpenAI 단계의 기록입니다. [L09 Qwen 실제 실행·평가 결과](../../openrouter-token5-live-20261104/L09/REPORT.md).
+
 # 증분 갱신 D 실제 실행 결과
 
 **최신 예산 지시: 공식 OpenAI 직접 청구는 한도 제외. 비OpenAI는 총 $10 한도와 미정산 arm 차단 유지.**

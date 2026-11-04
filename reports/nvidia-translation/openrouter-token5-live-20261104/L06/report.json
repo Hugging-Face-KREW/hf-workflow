@@ -1,0 +1,401 @@
+{
+  "family": "L06",
+  "actual_new_outputs": 6,
+  "status_counts": {
+    "completed": 6
+  },
+  "coverage_failures": {},
+  "response_reported_cost_usd": "0.003838182",
+  "new_quality": {
+    "n": 6,
+    "model_declared_usable": 6,
+    "major_error_free_and_invariant_clean": 2,
+    "major_errors": 5,
+    "minor_errors": 28,
+    "code_changed": 1,
+    "url_targets_changed": 1
+  },
+  "by_arm": {
+    "L06-pr238-cheap": {
+      "cost_usd": 0.00032044,
+      "prompt_tokens": 1902,
+      "completion_tokens": 2026,
+      "quality": {
+        "n": 1,
+        "model_declared_usable": 1,
+        "major_error_free_and_invariant_clean": 1,
+        "major_errors": 0,
+        "minor_errors": 3,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    },
+    "L06-pr238-switchyard": {
+      "cost_usd": 0.000280716,
+      "prompt_tokens": 1902,
+      "completion_tokens": 2004,
+      "quality": {
+        "n": 1,
+        "model_declared_usable": 1,
+        "major_error_free_and_invariant_clean": 0,
+        "major_errors": 1,
+        "minor_errors": 3,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    },
+    "L06-pr239-cheap": {
+      "cost_usd": 0.00098847,
+      "prompt_tokens": 5480,
+      "completion_tokens": 6339,
+      "quality": {
+        "n": 1,
+        "model_declared_usable": 1,
+        "major_error_free_and_invariant_clean": 0,
+        "major_errors": 2,
+        "minor_errors": 5,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    },
+    "L06-pr239-switchyard": {
+      "cost_usd": 0.000845276,
+      "prompt_tokens": 5480,
+      "completion_tokens": 6230,
+      "quality": {
+        "n": 1,
+        "model_declared_usable": 1,
+        "major_error_free_and_invariant_clean": 1,
+        "major_errors": 0,
+        "minor_errors": 8,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    },
+    "L06-pr251-cheap": {
+      "cost_usd": 0.0004749,
+      "prompt_tokens": 2674,
+      "completion_tokens": 3036,
+      "quality": {
+        "n": 1,
+        "model_declared_usable": 1,
+        "major_error_free_and_invariant_clean": 0,
+        "major_errors": 2,
+        "minor_errors": 5,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    },
+    "L06-pr252-cheap": {
+      "cost_usd": 0.00092838,
+      "prompt_tokens": 5336,
+      "completion_tokens": 5910,
+      "quality": {
+        "n": 1,
+        "model_declared_usable": 1,
+        "major_error_free_and_invariant_clean": 0,
+        "major_errors": 0,
+        "minor_errors": 4,
+        "code_changed": 1,
+        "url_targets_changed": 1
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    }
+  },
+  "new_proposals_executed": false,
+  "human_gold": 0,
+  "combined_four_arms": {
+    "luna": {
+      "n": 4,
+      "major_free_and_invariant_clean": 4,
+      "code_changed": 0,
+      "url_targets_changed": 0,
+      "generation_and_router_cost_usd": "0.0244777499999999975",
+      "includes_classifier_estimate": false
+    },
+    "cheap": {
+      "n": 4,
+      "major_free_and_invariant_clean": 1,
+      "code_changed": 1,
+      "url_targets_changed": 1,
+      "generation_and_router_cost_usd": "0.00271219",
+      "includes_classifier_estimate": false
+    },
+    "rule": {
+      "n": 4,
+      "major_free_and_invariant_clean": 3,
+      "code_changed": 0,
+      "url_targets_changed": 0,
+      "generation_and_router_cost_usd": "0.0213134999999999993",
+      "includes_classifier_estimate": false
+    },
+    "switchyard": {
+      "n": 4,
+      "major_free_and_invariant_clean": 2,
+      "code_changed": 0,
+      "url_targets_changed": 1,
+      "generation_and_router_cost_usd": "0.0182212419999999998",
+      "includes_classifier_estimate": true
+    }
+  },
+  "combined_rows": [
+    {
+      "document": "pr252",
+      "arm": "luna",
+      "major_errors": 0,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.008344049999999999",
+      "cost_basis": "OpenAI usage estimate"
+    },
+    {
+      "document": "pr252",
+      "arm": "cheap",
+      "major_errors": 0,
+      "model_usable": true,
+      "code_changed": true,
+      "url_targets_changed": true,
+      "generation_cost_usd": "0.00092838",
+      "cost_basis": "OpenRouter reported"
+    },
+    {
+      "document": "pr252",
+      "arm": "rule",
+      "major_errors": 0,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.00713262",
+      "cost_basis": "OpenAI usage estimate"
+    },
+    {
+      "document": "pr252",
+      "arm": "switchyard",
+      "major_errors": 0,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": true,
+      "generation_cost_usd": "0.00720582",
+      "cost_basis": "OpenAI usage estimate"
+    },
+    {
+      "document": "pr251",
+      "arm": "luna",
+      "major_errors": 0,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.0047924000000000005",
+      "cost_basis": "OpenAI usage estimate"
+    },
+    {
+      "document": "pr251",
+      "arm": "cheap",
+      "major_errors": 2,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.0004749",
+      "cost_basis": "OpenRouter reported"
+    },
+    {
+      "document": "pr251",
+      "arm": "rule",
+      "major_errors": 1,
+      "model_usable": false,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.00414508",
+      "cost_basis": "OpenAI usage estimate"
+    },
+    {
+      "document": "pr251",
+      "arm": "switchyard",
+      "major_errors": 0,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.00411028",
+      "cost_basis": "OpenAI usage estimate"
+    },
+    {
+      "document": "pr239",
+      "arm": "luna",
+      "major_errors": 0,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.008419199999999998",
+      "cost_basis": "OpenAI usage estimate"
+    },
+    {
+      "document": "pr239",
+      "arm": "cheap",
+      "major_errors": 2,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.00098847",
+      "cost_basis": "OpenRouter reported"
+    },
+    {
+      "document": "pr239",
+      "arm": "rule",
+      "major_errors": 0,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.0074372399999999995",
+      "cost_basis": "OpenAI usage estimate"
+    },
+    {
+      "document": "pr239",
+      "arm": "switchyard",
+      "major_errors": 0,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.000845276",
+      "cost_basis": "OpenRouter reported"
+    },
+    {
+      "document": "pr238",
+      "arm": "luna",
+      "major_errors": 0,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.0029221",
+      "cost_basis": "OpenAI usage estimate"
+    },
+    {
+      "document": "pr238",
+      "arm": "cheap",
+      "major_errors": 0,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.00032044",
+      "cost_basis": "OpenRouter reported"
+    },
+    {
+      "document": "pr238",
+      "arm": "rule",
+      "major_errors": 0,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.0025985599999999998",
+      "cost_basis": "OpenAI usage estimate"
+    },
+    {
+      "document": "pr238",
+      "arm": "switchyard",
+      "major_errors": 1,
+      "model_usable": true,
+      "code_changed": false,
+      "url_targets_changed": false,
+      "generation_cost_usd": "0.000280716",
+      "cost_basis": "OpenRouter reported"
+    }
+  ],
+  "earlier_openai_results_separate_evaluation": {
+    "luna": {
+      "n": 4,
+      "model_declared_usable": 4,
+      "major_error_free_and_invariant_clean": 4,
+      "major_errors": 0,
+      "minor_errors": 4,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    },
+    "rule": {
+      "n": 4,
+      "model_declared_usable": 3,
+      "major_error_free_and_invariant_clean": 3,
+      "major_errors": 1,
+      "minor_errors": 4,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    },
+    "switchyard": {
+      "n": 2,
+      "model_declared_usable": 2,
+      "major_error_free_and_invariant_clean": 2,
+      "major_errors": 0,
+      "minor_errors": 3,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    }
+  },
+  "representative_observations": [
+    {
+      "id": "L06-pr252-cheap:pr252",
+      "issues": [
+        "부자연스럽고 혼합 문자가 들어간 표현이 있습니다: “사용자의 통제下に 둡니다”는 한국어 문장 안에 일본어/한자 표현이 섞여 있으며, “사용자의 통제하에 둡니다”가 자연스럽습니다.",
+        "기술 용어가 번역되지 않은 채 어색하게 남아 있습니다: “메모리_footprint_가 작고”는 “메모리 풋프린트가 작고” 또는 “메모리 사용량이 적고”가 적절합니다.",
+        "문장에 중국어 문자가 삽입되어 자연스럽지 않습니다: “프리필吞吐量(prefill throughput)는”은 “프리필 처리량(prefill throughput)은”으로 고쳐야 합니다.",
+        "일부 기술 표현이 부분적으로만 번역되어 일관성이 떨어집니다. 예를 들어 “hands-on 보안 문제”는 “실무형 보안 문제” 또는 “직접 수행하는 보안 문제”가 자연스럽고, “day-0 지원”도 문맥에 따라 “출시 당일부터 지원”으로 옮길 수 있습니다. 의미 자체의 누락이나 수치 오류는 보이지 않습니다."
+      ],
+      "major_errors": 0,
+      "minor_errors": 4
+    },
+    {
+      "id": "L06-pr238-switchyard:pr238",
+      "issues": [
+        "중대한 미번역/오역이 있습니다. “또한它们是 개발자들이 활용할 수 있는 다양한 모델 유형 중 하나입니다.”에 중국어 문자와 한국어가 혼입되어 문장이 손상되었습니다. 원문의 “They're also one of many kinds of models developers can put to work.”는 “또한 개발자가 활용할 수 있는 여러 종류의 모델 중 하나이기도 합니다.”처럼 번역해야 합니다.",
+        "“Foundation Models API를 사용하여 앱에 맞는 모델로 사용합니다.”는 문법적으로 부자연스럽고 의미 관계가 불명확합니다. 원문의 의미인 “Foundation Models API를 사용하면서 앱에 맞는 모델을 선택합니다”가 더 정확합니다.",
+        "Open Responses 항목의 “호환 가능한 엔드포인트가 있는 모든 제공자에게”는 문장이 완결되지 않고 의미가 어색합니다. “호환 가능한 엔드포인트를 제공하는 모든 제공자에서 사용할 수 있습니다”처럼 번역해야 합니다.",
+        "“가이드 생성, 스트리밍과 함께 하는 도구 호출”은 의미는 전달되지만 한국어 기술 문체로 부자연스럽습니다. “가이드 생성, 스트리밍을 지원하는 도구 호출”이 자연스럽습니다."
+      ],
+      "major_errors": 1,
+      "minor_errors": 3
+    },
+    {
+      "id": "L06-pr239-cheap:pr239",
+      "issues": [
+        "중대한 기술 용어 오역: 원문의 표는 “Convolutions, padding, and training” 및 “Constant padding”과 “Out-of-place dropout”을 구분하지만, 번역은 TL;DR에서 “합성곱(convolutions), 패딩(dropout)”이라고 하여 padding을 dropout으로 잘못 표기했습니다.",
+        "중대한 기술 용어 오역: “Out-of-place dropout”을 “[위치 비동기 dropout]”으로 번역했습니다. ‘out-of-place’는 입력을 변경하지 않고 별도 출력을 생성한다는 의미이지 ‘위치 비동기’가 아닙니다. “인플레이스가 아닌 드롭아웃” 또는 “비제자리 드롭아웃” 등이 적절합니다.",
+        "자연스럽지 않고 의미가 불명확합니다. “eligible bias additions fused in”을 “자격 있는(bias) 편향 추가가 융합(fused)됩니다”로 옮겼는데, ‘eligible’은 ‘조건을 충족하는/지원되는’이라는 뜻입니다. 예: “조건을 충족하는 바이어스 덧셈은 융합됩니다.”",
+        "원문의 “fewer GPU-CPU syncs”가 “fewer GPU-CPU 동기화”로 번역되지 않고 영어로 남아 있어 문체가 일관되지 않습니다. “GPU-CPU 동기화 횟수 감소”가 자연스럽습니다.",
+        "“triangular solves”를 반복해서 “삼각방정식 풀이”로 옮겼습니다(예: “복잡한 LU 및 삼각방정식 풀이”). 이는 일반적으로 “삼각 시스템 풀이” 또는 “삼각행렬 풀이”가 더 정확합니다.",
+        "“PyTorch 2.16 commits the command buffer every 16 kernels”를 “커널마다 16개씩 명령 버퍼를 커밋”으로 번역해 방향이 모호하거나 잘못 읽힙니다. 의미는 “커널 16개마다 명령 버퍼를 커밋”입니다.",
+        "“FP8 gives you another way” 등에서 “FP8가”를 반복 사용해 조사 결합이 부자연스럽습니다. 기술적으로 큰 오류는 아니지만 제목과 본문에서는 “FP8은/FP8이”가 자연스럽습니다."
+      ],
+      "major_errors": 2,
+      "minor_errors": 5
+    },
+    {
+      "id": "L06-pr251-cheap:pr251",
+      "issues": [
+        "Major: The amount “$190 billion annually” is mistranslated as “$190억” (“19억 달러”/about $1.9 billion), a 100-fold numerical error. Evidence: source “$190 billion annually” vs. candidate “매년 약 [$190억을 연구 개발에 투자]”. It should be “연간 1,900억 달러” or “연간 1,900억 달러(약 190 billion dollars)”.",
+        "Major: “memorandum of understanding” is mistranslated as “이해관계 일치서,” which means something like “statement of aligned interests,” not the established legal/organizational term “양해각서(MOU)”. Evidence: “이해관계 일치서(Memorandum of Understanding)”.",
+        "Minor: The internal link target is likely broken after translation. The label is translated to “[참여 방법]” but the fragment remains “#the-first-challenge-climate-risk-intelligence,” while the corresponding Korean heading would normally generate a different slug. Evidence: “[참여 방법](#the-first-challenge-climate-risk-intelligence)”.",
+        "Minor: “Cooling degree days” is rendered as “냉난방도,” which suggests both heating and cooling rather than the specific cooling metric. A more precise term is “냉방도일(Cooling Degree Days)”.",
+        "Minor: “inaugural” is awkwardly translated as “초대 ProtoStar 챌린지”; “첫 번째 ProtoStar 챌린지” or “제1회 ProtoStar 챌린지” is natural and preserves the meaning.",
+        "Minor: The phrase “including applications that combine resources across institutions or disciplines” contains an unintended mixed-script artifact: “기관이나 학제를横跨하여”. “기관이나 학제를 넘어/가로질러 자원을 결합하는” would be natural Korean.",
+        "Minor: Several technical phrases are overly literal and unnatural, such as “AI 준비 완료 형식” and “공공 자금 지원 과학.” More natural terms would be “AI 활용에 적합한 형식”/“AI 준비형식” and “공공 자금이 지원된 과학 연구,” though the meaning remains generally recoverable."
+      ],
+      "major_errors": 2,
+      "minor_errors": 5
+    }
+  ]
+}

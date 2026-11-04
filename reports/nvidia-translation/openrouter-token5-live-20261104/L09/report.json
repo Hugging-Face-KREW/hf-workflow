@@ -1,0 +1,104 @@
+{
+  "family": "L09",
+  "actual_new_outputs": 2,
+  "status_counts": {
+    "completed": 2
+  },
+  "coverage_failures": {},
+  "response_reported_cost_usd": "0.00005060",
+  "new_quality": {
+    "n": 6,
+    "model_declared_usable": 6,
+    "major_error_free_and_invariant_clean": 6,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "code_changed": 0,
+    "url_targets_changed": 0
+  },
+  "by_arm": {
+    "L09-D-condition-partial_switchyard": {
+      "cost_usd": 2.821e-05,
+      "prompt_tokens": 468,
+      "completion_tokens": 109,
+      "quality": {
+        "n": 3,
+        "model_declared_usable": 3,
+        "major_error_free_and_invariant_clean": 3,
+        "major_errors": 0,
+        "minor_errors": 0,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    },
+    "L09-D-platform-partial_switchyard": {
+      "cost_usd": 2.239e-05,
+      "prompt_tokens": 482,
+      "completion_tokens": 61,
+      "quality": {
+        "n": 3,
+        "model_declared_usable": 3,
+        "major_error_free_and_invariant_clean": 3,
+        "major_errors": 0,
+        "minor_errors": 1,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    }
+  },
+  "new_proposals_executed": false,
+  "human_gold": 0,
+  "earlier_openai_results_separate_evaluation": {
+    "C-original": {
+      "n": 5,
+      "model_declared_usable": 5,
+      "major_error_free_and_invariant_clean": 5,
+      "major_errors": 0,
+      "minor_errors": 6,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    },
+    "D-condition-full_luna": {
+      "n": 3,
+      "model_declared_usable": 3,
+      "major_error_free_and_invariant_clean": 3,
+      "major_errors": 0,
+      "minor_errors": 0,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    },
+    "D-condition-partial_luna": {
+      "n": 3,
+      "model_declared_usable": 3,
+      "major_error_free_and_invariant_clean": 3,
+      "major_errors": 0,
+      "minor_errors": 2,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    },
+    "D-platform-full_luna": {
+      "n": 3,
+      "model_declared_usable": 3,
+      "major_error_free_and_invariant_clean": 3,
+      "major_errors": 0,
+      "minor_errors": 0,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    },
+    "D-platform-partial_luna": {
+      "n": 3,
+      "model_declared_usable": 3,
+      "major_error_free_and_invariant_clean": 3,
+      "major_errors": 0,
+      "minor_errors": 1,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    }
+  },
+  "representative_observations": []
+}

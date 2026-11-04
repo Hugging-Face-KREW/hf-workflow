@@ -1,0 +1,17 @@
+{
+  "queried_at_unix": 1793761211.8084219,
+  "http_status": 200,
+  "generation_id": "gen-1793760996-CxiGZa3GlkPptrIQpQAU",
+  "read_only_lookup": true,
+  "id": "gen-1793760996-CxiGZa3GlkPptrIQpQAU",
+  "created_at": "2026-11-04T02:56:36.184Z",
+  "model": "qwen/qwen3.7-flash-20260727",
+  "provider_name": "Alibaba",
+  "total_cost": 3.2e-05,
+  "is_byok": false,
+  "native_tokens_prompt": 369,
+  "native_tokens_completion": 161,
+  "native_tokens_cached": 0,
+  "upstream_inference_cost": 0,
+  "matches_response_cost": true
+}

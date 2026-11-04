@@ -1,0 +1,174 @@
+{
+  "family": "L08",
+  "actual_new_outputs": 5,
+  "status_counts": {
+    "completed": 5
+  },
+  "coverage_failures": {},
+  "response_reported_cost_usd": "0.00013810",
+  "new_quality": {
+    "n": 5,
+    "model_declared_usable": 5,
+    "major_error_free_and_invariant_clean": 4,
+    "major_errors": 1,
+    "minor_errors": 4,
+    "code_changed": 0,
+    "url_targets_changed": 0
+  },
+  "by_arm": {
+    "L08-C-switchyard-pr238_intro": {
+      "cost_usd": 3.2e-05,
+      "prompt_tokens": 369,
+      "completion_tokens": 161,
+      "quality": {
+        "n": 1,
+        "model_declared_usable": 1,
+        "major_error_free_and_invariant_clean": 0,
+        "major_errors": 1,
+        "minor_errors": 1,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    },
+    "L08-C-switchyard-pr238_reasoning": {
+      "cost_usd": 1.392e-05,
+      "prompt_tokens": 217,
+      "completion_tokens": 57,
+      "quality": {
+        "n": 1,
+        "model_declared_usable": 1,
+        "major_error_free_and_invariant_clean": 1,
+        "major_errors": 0,
+        "minor_errors": 0,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    },
+    "L08-C-switchyard-pr238_thanks": {
+      "cost_usd": 2.11e-05,
+      "prompt_tokens": 257,
+      "completion_tokens": 103,
+      "quality": {
+        "n": 1,
+        "model_declared_usable": 1,
+        "major_error_free_and_invariant_clean": 1,
+        "major_errors": 0,
+        "minor_errors": 1,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    },
+    "L08-C-switchyard-pr239_linear": {
+      "cost_usd": 4.507e-05,
+      "prompt_tokens": 510,
+      "completion_tokens": 229,
+      "quality": {
+        "n": 1,
+        "model_declared_usable": 1,
+        "major_error_free_and_invariant_clean": 1,
+        "major_errors": 0,
+        "minor_errors": 1,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    },
+    "L08-C-switchyard-pr239_requirements": {
+      "cost_usd": 2.601e-05,
+      "prompt_tokens": 321,
+      "completion_tokens": 126,
+      "quality": {
+        "n": 1,
+        "model_declared_usable": 1,
+        "major_error_free_and_invariant_clean": 1,
+        "major_errors": 0,
+        "minor_errors": 1,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    }
+  },
+  "new_proposals_executed": false,
+  "human_gold": 0,
+  "earlier_openai_results_separate_evaluation": {
+    "C-luna-pr238_intro": {
+      "n": 1,
+      "model_declared_usable": 1,
+      "major_error_free_and_invariant_clean": 1,
+      "major_errors": 0,
+      "minor_errors": 0,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    },
+    "C-luna-pr238_reasoning": {
+      "n": 1,
+      "model_declared_usable": 1,
+      "major_error_free_and_invariant_clean": 1,
+      "major_errors": 0,
+      "minor_errors": 0,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    },
+    "C-luna-pr238_thanks": {
+      "n": 1,
+      "model_declared_usable": 1,
+      "major_error_free_and_invariant_clean": 1,
+      "major_errors": 0,
+      "minor_errors": 0,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    },
+    "C-luna-pr239_linear": {
+      "n": 1,
+      "model_declared_usable": 1,
+      "major_error_free_and_invariant_clean": 1,
+      "major_errors": 0,
+      "minor_errors": 1,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    },
+    "C-luna-pr239_requirements": {
+      "n": 1,
+      "model_declared_usable": 1,
+      "major_error_free_and_invariant_clean": 1,
+      "major_errors": 0,
+      "minor_errors": 0,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    },
+    "C-original": {
+      "n": 5,
+      "model_declared_usable": 5,
+      "major_error_free_and_invariant_clean": 5,
+      "major_errors": 0,
+      "minor_errors": 8,
+      "code_changed": 0,
+      "url_targets_changed": 0
+    }
+  },
+  "representative_observations": [
+    {
+      "id": "L08-C-switchyard-pr238_intro:pr238_intro",
+      "issues": [
+        "“a drop-in replacement for Apple's Foundation Models framework”가 “애플의 Foundation Models 프레임워크를 위한 대체 API”로 번역되어, 프레임워크 자체를 대체하는 drop-in replacement라는 의미가 “프레임워크를 위한 API”로 바뀌었고 ‘drop-in’의 호환성 의미도 누락되었습니다.",
+        "“multiple inference providers”의 “inference”가 번역되지 않아 “여러 inference 제공자”라는 부자연스럽고 기술적으로 불명확한 표현이 되었습니다."
+      ],
+      "major_errors": 1,
+      "minor_errors": 1
+    }
+  ]
+}

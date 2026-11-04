@@ -1,0 +1,75 @@
+{
+  "family": "L07",
+  "actual_new_outputs": 3,
+  "status_counts": {
+    "completed": 3
+  },
+  "coverage_failures": {},
+  "response_reported_cost_usd": "0.00069790",
+  "new_quality": {
+    "n": 24,
+    "model_declared_usable": 24,
+    "major_error_free_and_invariant_clean": 24,
+    "major_errors": 0,
+    "minor_errors": 14,
+    "code_changed": 0,
+    "url_targets_changed": 0
+  },
+  "by_arm": {
+    "wp-b-v2-baseline": {
+      "cost_usd": 0.00014122,
+      "prompt_tokens": 829,
+      "completion_tokens": 895,
+      "quality": {
+        "n": 8,
+        "model_declared_usable": 8,
+        "major_error_free_and_invariant_clean": 8,
+        "major_errors": 0,
+        "minor_errors": 3,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    },
+    "wp-b-v2-plan_dd": {
+      "cost_usd": 0.00031109,
+      "prompt_tokens": 2561,
+      "completion_tokens": 1802,
+      "quality": {
+        "n": 8,
+        "model_declared_usable": 8,
+        "major_error_free_and_invariant_clean": 8,
+        "major_errors": 0,
+        "minor_errors": 6,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    },
+    "wp-b-v2-plan_real": {
+      "cost_usd": 0.00024559,
+      "prompt_tokens": 1526,
+      "completion_tokens": 1537,
+      "quality": {
+        "n": 8,
+        "model_declared_usable": 8,
+        "major_error_free_and_invariant_clean": 8,
+        "major_errors": 0,
+        "minor_errors": 5,
+        "code_changed": 0,
+        "url_targets_changed": 0
+      },
+      "resolved_model": "qwen/qwen3.7-flash",
+      "provider": "Alibaba",
+      "status": "completed"
+    }
+  },
+  "new_proposals_executed": false,
+  "human_gold": 0,
+  "earlier_openai_results_separate_evaluation": {},
+  "representative_observations": []
+}
