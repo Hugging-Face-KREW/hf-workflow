@@ -1,0 +1,35 @@
+{
+  "status": "local_pipeline_completed",
+  "initial": {
+    "sha": "2d94e12189ace978bf253e3c9fe2b544dcdb938a",
+    "semantic_complete": true,
+    "quality_status": "review_required",
+    "quality_score": 81.0,
+    "segments_requested": 22,
+    "segments_evaluated": 22,
+    "verifier_passed": true,
+    "reason": "Verified exact local SHA/source/target",
+    "seo_exit": 0,
+    "mqm_attempts": 1,
+    "prompt_source": "existing unmerged PR35, commit 973b75b6952a456a0f7944239b8bc657f1892f52; prompt only reused",
+    "review_source": "frozen snapshot, no source fetch"
+  },
+  "feedback_disposition": "actionable",
+  "after_feedback": {
+    "sha": "a3d20c5db40d934dfe7946eda6a4966221a65be5",
+    "semantic_complete": true,
+    "quality_status": "review_required",
+    "quality_score": 81.0,
+    "segments_requested": 22,
+    "segments_evaluated": 22,
+    "verifier_passed": true,
+    "reason": "Verified exact local SHA/source/target",
+    "seo_exit": 0,
+    "mqm_attempts": 1,
+    "prompt_source": "existing unmerged PR35, commit 973b75b6952a456a0f7944239b8bc657f1892f52; prompt only reused",
+    "review_source": "frozen snapshot, no source fetch"
+  },
+  "remote_pr_mutated": false,
+  "remote_loop_restarted": false,
+  "body_quality_repair_claim": false
+}

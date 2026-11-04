@@ -1,0 +1,313 @@
+{
+  "queried_at_unix": 1793761480.097186,
+  "read_only": true,
+  "new_generation_requests": 0,
+  "generation_lookups": 16,
+  "verified": 16,
+  "rows": [
+    {
+      "response_id": "gen-1793761399-WKHfdz6FHGUhsy3B03zL",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L06-pr238-cheap.json",
+      "http_status": 200,
+      "response_reported_cost": 0.00032044,
+      "verified": {
+        "id": "gen-1793761399-WKHfdz6FHGUhsy3B03zL",
+        "created_at": "2026-11-04T03:03:19.674Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 0.00032044,
+        "is_byok": false,
+        "native_tokens_prompt": 1902,
+        "native_tokens_completion": 2026,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761421-X3xeXOqrl67SCA39TLK8",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L06-pr238-switchyard.json",
+      "http_status": 200,
+      "response_reported_cost": 0.000280716,
+      "verified": {
+        "id": "gen-1793761421-X3xeXOqrl67SCA39TLK8",
+        "created_at": "2026-11-04T03:03:41.986Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 0.000280716,
+        "is_byok": false,
+        "native_tokens_prompt": 1902,
+        "native_tokens_completion": 2004,
+        "native_tokens_cached": 1536,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761268-drfQsaGcZw01Z808E6Jq",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L06-pr239-cheap.json",
+      "http_status": 200,
+      "response_reported_cost": 0.00098847,
+      "verified": {
+        "id": "gen-1793761268-drfQsaGcZw01Z808E6Jq",
+        "created_at": "2026-11-04T03:01:08.629Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 0.00098847,
+        "is_byok": false,
+        "native_tokens_prompt": 5480,
+        "native_tokens_completion": 6339,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761334-jDb0MMT5HM5b8OGU7TNS",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L06-pr239-switchyard.json",
+      "http_status": 200,
+      "response_reported_cost": 0.000845276,
+      "verified": {
+        "id": "gen-1793761334-jDb0MMT5HM5b8OGU7TNS",
+        "created_at": "2026-11-04T03:02:14.066Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 0.000845276,
+        "is_byok": false,
+        "native_tokens_prompt": 5480,
+        "native_tokens_completion": 6230,
+        "native_tokens_cached": 5376,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761232-pKhPvjPxYiIOTbsdZvuW",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L06-pr251-cheap.json",
+      "http_status": 200,
+      "response_reported_cost": 0.0004749,
+      "verified": {
+        "id": "gen-1793761232-pKhPvjPxYiIOTbsdZvuW",
+        "created_at": "2026-11-04T03:00:32.075Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 0.0004749,
+        "is_byok": false,
+        "native_tokens_prompt": 2674,
+        "native_tokens_completion": 3036,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761129-h1Uyxd6hFErWB9CMuOVT",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L06-pr252-cheap.json",
+      "http_status": 200,
+      "response_reported_cost": 0.00092838,
+      "verified": {
+        "id": "gen-1793761129-h1Uyxd6hFErWB9CMuOVT",
+        "created_at": "2026-11-04T02:58:49.308Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 0.00092838,
+        "is_byok": false,
+        "native_tokens_prompt": 5336,
+        "native_tokens_completion": 5910,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793760996-CxiGZa3GlkPptrIQpQAU",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L08-C-switchyard-pr238_intro.json",
+      "http_status": 200,
+      "response_reported_cost": 3.2e-05,
+      "verified": {
+        "id": "gen-1793760996-CxiGZa3GlkPptrIQpQAU",
+        "created_at": "2026-11-04T02:56:36.184Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 3.2e-05,
+        "is_byok": false,
+        "native_tokens_prompt": 369,
+        "native_tokens_completion": 161,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761116-XXAPpZmLLtZx67JVprXM",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L08-C-switchyard-pr238_reasoning.json",
+      "http_status": 200,
+      "response_reported_cost": 1.392e-05,
+      "verified": {
+        "id": "gen-1793761116-XXAPpZmLLtZx67JVprXM",
+        "created_at": "2026-11-04T02:58:36.943Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 1.392e-05,
+        "is_byok": false,
+        "native_tokens_prompt": 217,
+        "native_tokens_completion": 57,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761119-xMkxIbDBaeUst8UjiLtK",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L08-C-switchyard-pr238_thanks.json",
+      "http_status": 200,
+      "response_reported_cost": 2.11e-05,
+      "verified": {
+        "id": "gen-1793761119-xMkxIbDBaeUst8UjiLtK",
+        "created_at": "2026-11-04T02:58:39.088Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 2.11e-05,
+        "is_byok": false,
+        "native_tokens_prompt": 257,
+        "native_tokens_completion": 103,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761120-s2xfwc2WO4DouHTaJDKi",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L08-C-switchyard-pr239_linear.json",
+      "http_status": 200,
+      "response_reported_cost": 4.507e-05,
+      "verified": {
+        "id": "gen-1793761120-s2xfwc2WO4DouHTaJDKi",
+        "created_at": "2026-11-04T02:58:40.689Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 4.507e-05,
+        "is_byok": false,
+        "native_tokens_prompt": 510,
+        "native_tokens_completion": 229,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761122-Jcv5HqykwF7WzDfGrgVY",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L08-C-switchyard-pr239_requirements.json",
+      "http_status": 200,
+      "response_reported_cost": 2.601e-05,
+      "verified": {
+        "id": "gen-1793761122-Jcv5HqykwF7WzDfGrgVY",
+        "created_at": "2026-11-04T02:58:42.973Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 2.601e-05,
+        "is_byok": false,
+        "native_tokens_prompt": 321,
+        "native_tokens_completion": 126,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761124-raFpAiY5XY1OZwrQH8Q4",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L09-D-condition-partial_switchyard.json",
+      "http_status": 200,
+      "response_reported_cost": 2.821e-05,
+      "verified": {
+        "id": "gen-1793761124-raFpAiY5XY1OZwrQH8Q4",
+        "created_at": "2026-11-04T02:58:44.923Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 2.821e-05,
+        "is_byok": false,
+        "native_tokens_prompt": 468,
+        "native_tokens_completion": 109,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761127-HXK9bNaRl8tvixPLVYCQ",
+      "local_evidence": "raw/openrouter-token5-live-20261104-L09-D-platform-partial_switchyard.json",
+      "http_status": 200,
+      "response_reported_cost": 2.239e-05,
+      "verified": {
+        "id": "gen-1793761127-HXK9bNaRl8tvixPLVYCQ",
+        "created_at": "2026-11-04T02:58:47.017Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 2.239e-05,
+        "is_byok": false,
+        "native_tokens_prompt": 482,
+        "native_tokens_completion": 61,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761071-Of9iY0HTN3RxKRX3j3Eq",
+      "local_evidence": "raw/openrouter-token5-live-20261104-wp-b-v2-baseline.json",
+      "http_status": 200,
+      "response_reported_cost": 0.00014122,
+      "verified": {
+        "id": "gen-1793761071-Of9iY0HTN3RxKRX3j3Eq",
+        "created_at": "2026-11-04T02:57:51.17Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 0.00014122,
+        "is_byok": false,
+        "native_tokens_prompt": 829,
+        "native_tokens_completion": 895,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761098-KgoCWZteZBrMAWrDCvU8",
+      "local_evidence": "raw/openrouter-token5-live-20261104-wp-b-v2-plan_dd.json",
+      "http_status": 200,
+      "response_reported_cost": 0.00031109,
+      "verified": {
+        "id": "gen-1793761098-KgoCWZteZBrMAWrDCvU8",
+        "created_at": "2026-11-04T02:58:18.016Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 0.00031109,
+        "is_byok": false,
+        "native_tokens_prompt": 2561,
+        "native_tokens_completion": 1802,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    },
+    {
+      "response_id": "gen-1793761082-TiljVwJovCNaKpWNDaSw",
+      "local_evidence": "raw/openrouter-token5-live-20261104-wp-b-v2-plan_real.json",
+      "http_status": 200,
+      "response_reported_cost": 0.00024559,
+      "verified": {
+        "id": "gen-1793761082-TiljVwJovCNaKpWNDaSw",
+        "created_at": "2026-11-04T02:58:02.529Z",
+        "model": "qwen/qwen3.7-flash-20260727",
+        "provider_name": "Alibaba",
+        "total_cost": 0.00024559,
+        "is_byok": false,
+        "native_tokens_prompt": 1526,
+        "native_tokens_completion": 1537,
+        "native_tokens_cached": 0,
+        "upstream_inference_cost": 0
+      },
+      "cost_matches": true
+    }
+  ]
+}

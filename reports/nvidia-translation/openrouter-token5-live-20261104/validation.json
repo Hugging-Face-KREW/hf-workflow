@@ -1,0 +1,13 @@
+{
+  "offline_resume_tests": 31,
+  "report_header_decimal_cost_checks": 4,
+  "paid_generations": 16,
+  "responses_completed": 16,
+  "coverage_failures": 0,
+  "evaluations": 41,
+  "read_only_generation_verified": 16,
+  "non_byok_verified": 16,
+  "automatic_generation_retries": 0,
+  "uncertain_reservations": 0,
+  "invoice_verified": false
+}

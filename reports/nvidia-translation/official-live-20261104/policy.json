@@ -1,0 +1,32 @@
+{
+  "authority": "User updated policy via coordinator: OpenAI direct billing exempt from $10; non-OpenAI incl OpenRouter still capped and blocked until reconciled",
+  "openai_direct": {
+    "allowed": true,
+    "required_scheme": "https",
+    "required_host": "api.openai.com",
+    "required_path_prefix": "/v1/",
+    "pricing_usage_recorded": true,
+    "billing_actual_not_assumed": true,
+    "max_upstream_attempts": 1200,
+    "max_output_tokens_per_request": 16384,
+    "automatic_retries": 0
+  },
+  "non_openai": {
+    "limit_usd": 10,
+    "allowed": false,
+    "remaining_usd": null,
+    "reason": "Historical/fees not fully reconciled; no model substitution"
+  },
+  "remote_smoke_pr": {
+    "number": 256,
+    "paused": true,
+    "resumed": false
+  },
+  "forbidden_scope": {
+    "new_15_proposals_executed": false,
+    "additional_4_plans_executed": false,
+    "merge_allowed": false
+  },
+  "historical_smoke_estimate_corrected_usd": 0.00355445,
+  "historical_smoke_estimate_old_pilot_usd": 0.0033022
+}

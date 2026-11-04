@@ -1,0 +1,83 @@
+{
+  "id": "L02",
+  "title": "피드백 표현 비교",
+  "status": "completed",
+  "result": {
+    "status": "completed",
+    "cases": 1,
+    "arms": [
+      "F0",
+      "F1",
+      "F2",
+      "F3"
+    ],
+    "accepted": 3,
+    "native_direct_agree": true,
+    "human_approved": 0,
+    "scope": "fresh candidates on previously exposed natural input; no superiority claim from this sample"
+  },
+  "failure": null,
+  "metrics": {
+    "arms": {
+      "F0": {
+        "gate_decision": "reject",
+        "reasons": [
+          "no_change",
+          "semantic_review_failed"
+        ],
+        "native_direct_equal": true,
+        "replacement": "[dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다."
+      },
+      "F1": {
+        "gate_decision": "accept_candidate",
+        "reasons": [],
+        "native_direct_equal": true,
+        "replacement": "[데이터셋 카드](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다."
+      },
+      "F2": {
+        "gate_decision": "accept_candidate",
+        "reasons": [],
+        "native_direct_equal": true,
+        "replacement": "[데이터셋 카드](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)"
+      },
+      "F3": {
+        "gate_decision": "accept_candidate",
+        "reasons": [],
+        "native_direct_equal": true,
+        "replacement": "[데이터셋 카드](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다."
+      }
+    },
+    "adjudication_note": "F2 returned only the dataset-card link, omitting the sentence proposition about exact meanings of results. The primary same-model review and shared native/Python contract accepted it. This is a gate false-accept observation by Codex, not human gold and not a repaired result."
+  },
+  "usage": {
+    "actual_upstream_attempts": 8,
+    "completed": 8,
+    "inflight": 0,
+    "errors": 0,
+    "requested_models": {
+      "gpt-5-mini-2025-08-07": 8
+    },
+    "resolved_models": {
+      "gpt-5-mini-2025-08-07": 8
+    },
+    "usage_derived_estimate_usd_known_sum": 0.0060868499999999996,
+    "unknown_estimate_attempts": 0,
+    "provider_reported_cost_usd": null,
+    "billing_confirmed_actual_usd": null,
+    "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+    "input_tokens": 21549,
+    "output_tokens_including_reasoning": 1905,
+    "cache_read_tokens": 13824,
+    "cache_write_tokens": 0,
+    "cache_write_30m_tokens": 0,
+    "cache_write_12h_tokens": 0,
+    "reasoning_tokens": 1216,
+    "service_tiers": {
+      "default": 8
+    },
+    "automatic_upstream_retries": 0,
+    "summed_request_seconds": 22.618057914893143
+  },
+  "human_approved": 0,
+  "new_proposals_executed": false
+}

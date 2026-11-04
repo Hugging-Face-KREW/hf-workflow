@@ -1,0 +1,8 @@
+{
+  "status": "partial_non_openai_arms_blocked",
+  "documents": 4,
+  "completed": 10,
+  "blocked": 6,
+  "candidate_model": "qwen/qwen3.7-flash",
+  "no_substitution": true
+}

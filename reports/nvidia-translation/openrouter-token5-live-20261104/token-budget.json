@@ -1,0 +1,509 @@
+{
+  "limit_usd": "5",
+  "evidence": {
+    "policy": "user_20261104_token_only_5usd",
+    "reconciled_experiment_token_history": true,
+    "local_runner_scope_controlled": true,
+    "historical_upper_usd": ".01228904",
+    "historical_scope": "26 OpenRouter generations Nov1; current key usage matches. Remote prior jobs configured official OpenAI; unrelated spending outside scope.",
+    "fees_excluded_by_latest_user": true
+  },
+  "requests": [
+    {
+      "id": "openrouter-token5-live-20261104-L08-C-switchyard-pr238_intro",
+      "request_sha256": "414a693232cb1e696cb0d7cf09387082962bffe0a65a31341cf544ff8972ca40",
+      "reserved_upper_usd": "0.252",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 369,
+        "completion_tokens": 161,
+        "total_tokens": 530,
+        "cost": 3.2e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 3.2e-05,
+          "upstream_inference_prompt_cost": 1.107e-05,
+          "upstream_inference_completions_cost": 2.093e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-wp-b-v2-baseline",
+      "request_sha256": "026981eeba7ba2e50dd70cdfe0bf1426b71c57ac96fa7fb98a6653c4a843fa23",
+      "reserved_upper_usd": "0.2552",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 829,
+        "completion_tokens": 895,
+        "total_tokens": 1724,
+        "cost": 0.00014122,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00014122,
+          "upstream_inference_prompt_cost": 2.487e-05,
+          "upstream_inference_completions_cost": 0.00011635
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-wp-b-v2-plan_real",
+      "request_sha256": "ffae7501f59ad112237557c88f960be95825f9a387c8547354d7e97b9f0db065",
+      "reserved_upper_usd": "0.2552",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 1526,
+        "completion_tokens": 1537,
+        "total_tokens": 3063,
+        "cost": 0.00024559,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00024559,
+          "upstream_inference_prompt_cost": 4.578e-05,
+          "upstream_inference_completions_cost": 0.00019981
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-wp-b-v2-plan_dd",
+      "request_sha256": "7175a205e974077938470c9bcc1cdcb4cf19f94cecfa859c7508c1661497db3e",
+      "reserved_upper_usd": "0.2552",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 2561,
+        "completion_tokens": 1802,
+        "total_tokens": 4363,
+        "cost": 0.00031109,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00031109,
+          "upstream_inference_prompt_cost": 7.683e-05,
+          "upstream_inference_completions_cost": 0.00023426
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-L08-C-switchyard-pr238_reasoning",
+      "request_sha256": "db17da3da7a22f61755e76abb0040aa0f1e50c43dd85fc0b68869badc7299b22",
+      "reserved_upper_usd": "0.252",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 217,
+        "completion_tokens": 57,
+        "total_tokens": 274,
+        "cost": 1.392e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 1.392e-05,
+          "upstream_inference_prompt_cost": 6.51e-06,
+          "upstream_inference_completions_cost": 7.41e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-L08-C-switchyard-pr238_thanks",
+      "request_sha256": "af0e597496c1a72233272cdd28a2ee0017ea2d714225265d4c67047b3e93b9c9",
+      "reserved_upper_usd": "0.252",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 257,
+        "completion_tokens": 103,
+        "total_tokens": 360,
+        "cost": 2.11e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 2.11e-05,
+          "upstream_inference_prompt_cost": 7.71e-06,
+          "upstream_inference_completions_cost": 1.339e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-L08-C-switchyard-pr239_linear",
+      "request_sha256": "2bdfa799b8eb19e44612f5bb18c36d3bf555994201505c33ae596cd1b88a8433",
+      "reserved_upper_usd": "0.252",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 510,
+        "completion_tokens": 229,
+        "total_tokens": 739,
+        "cost": 4.507e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 4.507e-05,
+          "upstream_inference_prompt_cost": 1.53e-05,
+          "upstream_inference_completions_cost": 2.977e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-L08-C-switchyard-pr239_requirements",
+      "request_sha256": "e29aaf1c5ddb82b207582aebbf97c35839d59c42429374d3c23a9aa041a31efc",
+      "reserved_upper_usd": "0.252",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 321,
+        "completion_tokens": 126,
+        "total_tokens": 447,
+        "cost": 2.601e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 2.601e-05,
+          "upstream_inference_prompt_cost": 9.63e-06,
+          "upstream_inference_completions_cost": 1.638e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-L09-D-condition-partial_switchyard",
+      "request_sha256": "7bab9bd9df66a37ee71ec58d44a6f80e7d0822f20cfc1f48d7c17e92dc62c43d",
+      "reserved_upper_usd": "0.252",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 468,
+        "completion_tokens": 109,
+        "total_tokens": 577,
+        "cost": 2.821e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 2.821e-05,
+          "upstream_inference_prompt_cost": 1.404e-05,
+          "upstream_inference_completions_cost": 1.417e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-L09-D-platform-partial_switchyard",
+      "request_sha256": "ac92a193ca6b4d31a9905e609675fc5cb1c7dd42a7797fb1a788bd3b265d8a86",
+      "reserved_upper_usd": "0.252",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 482,
+        "completion_tokens": 61,
+        "total_tokens": 543,
+        "cost": 2.239e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 2.239e-05,
+          "upstream_inference_prompt_cost": 1.446e-05,
+          "upstream_inference_completions_cost": 7.93e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-L06-pr252-cheap",
+      "request_sha256": "1e67b252ac013e011dc8c837b4bcbafb55495a7ad74a1464f1cb58818c03ead5",
+      "reserved_upper_usd": "0.2631072",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 5336,
+        "completion_tokens": 5910,
+        "total_tokens": 11246,
+        "cost": 0.00092838,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00092838,
+          "upstream_inference_prompt_cost": 0.00016008,
+          "upstream_inference_completions_cost": 0.0007683
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-L06-pr251-cheap",
+      "request_sha256": "11be23f5ccdbd7fe6f5c7f5518b744384e05779170122374a545e72bfca43a89",
+      "reserved_upper_usd": "0.2631072",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 2674,
+        "completion_tokens": 3036,
+        "total_tokens": 5710,
+        "cost": 0.0004749,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0004749,
+          "upstream_inference_prompt_cost": 8.022e-05,
+          "upstream_inference_completions_cost": 0.00039468
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-L06-pr239-cheap",
+      "request_sha256": "3b8d72c5caf3833640568cc684a518d2f0828685f6502f750049a3f59c21a4f7",
+      "reserved_upper_usd": "0.2631072",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 5480,
+        "completion_tokens": 6339,
+        "total_tokens": 11819,
+        "cost": 0.00098847,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00098847,
+          "upstream_inference_prompt_cost": 0.0001644,
+          "upstream_inference_completions_cost": 0.00082407
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-L06-pr239-switchyard",
+      "request_sha256": "3b8d72c5caf3833640568cc684a518d2f0828685f6502f750049a3f59c21a4f7",
+      "reserved_upper_usd": "0.2631072",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 5480,
+        "completion_tokens": 6230,
+        "total_tokens": 11710,
+        "cost": 0.000845276,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 5376,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000845276,
+          "upstream_inference_prompt_cost": 3.5376e-05,
+          "upstream_inference_completions_cost": 0.0008099
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-L06-pr238-cheap",
+      "request_sha256": "161d88193c829e8d8ff1a4d1f048fa335deae944a560f31ff6b33ddbc50b4f96",
+      "reserved_upper_usd": "0.2631072",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 1902,
+        "completion_tokens": 2026,
+        "total_tokens": 3928,
+        "cost": 0.00032044,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00032044,
+          "upstream_inference_prompt_cost": 5.706e-05,
+          "upstream_inference_completions_cost": 0.00026338
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "id": "openrouter-token5-live-20261104-L06-pr238-switchyard",
+      "request_sha256": "161d88193c829e8d8ff1a4d1f048fa335deae944a560f31ff6b33ddbc50b4f96",
+      "reserved_upper_usd": "0.2631072",
+      "status": "completed",
+      "attempt": 1,
+      "automatic_retries": 0,
+      "raw_usage": {
+        "prompt_tokens": 1902,
+        "completion_tokens": 2004,
+        "total_tokens": 3906,
+        "cost": 0.000280716,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 1536,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000280716,
+          "upstream_inference_prompt_cost": 2.0196e-05,
+          "upstream_inference_completions_cost": 0.00026052
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    }
+  ]
+}

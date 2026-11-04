@@ -1,0 +1,67 @@
+{
+  "id": "L10",
+  "title": "링크 보호 전처리",
+  "status": "completed",
+  "result": {
+    "status": "completed",
+    "paired_paragraphs": 24,
+    "arms": {
+      "whole": {
+        "completed": 24,
+        "invariant_ok": 24,
+        "untranslated_labels": 28
+      },
+      "url": {
+        "completed": 24,
+        "invariant_ok": 24,
+        "untranslated_labels": 1
+      }
+    },
+    "control": "legacy 51d5f22 link-whole protector vs existing experimental URL-only protector; current production already uses label-visible protection",
+    "scope": "fresh paragraph generation; deterministic label/structure metrics, not independent human review"
+  },
+  "failure": null,
+  "metrics": {
+    "whole": {
+      "completed": 24,
+      "invariant_ok": 24,
+      "untranslated_labels": 28
+    },
+    "url": {
+      "completed": 24,
+      "invariant_ok": 24,
+      "untranslated_labels": 1
+    }
+  },
+  "usage": {
+    "actual_upstream_attempts": 48,
+    "completed": 48,
+    "inflight": 0,
+    "errors": 0,
+    "requested_models": {
+      "gpt-5-mini-2025-08-07": 48
+    },
+    "resolved_models": {
+      "gpt-5-mini-2025-08-07": 48
+    },
+    "usage_derived_estimate_usd_known_sum": 0.05675275,
+    "unknown_estimate_attempts": 0,
+    "provider_reported_cost_usd": null,
+    "billing_confirmed_actual_usd": null,
+    "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+    "input_tokens": 8987,
+    "output_tokens_including_reasoning": 27253,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cache_write_30m_tokens": 0,
+    "cache_write_12h_tokens": 0,
+    "reasoning_tokens": 20672,
+    "service_tiers": {
+      "default": 48
+    },
+    "automatic_upstream_retries": 0,
+    "summed_request_seconds": 297.3701236268389
+  },
+  "human_approved": 0,
+  "new_proposals_executed": false
+}

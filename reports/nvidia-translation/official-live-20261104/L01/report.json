@@ -1,0 +1,58 @@
+{
+  "id": "L01",
+  "title": "원문 기반 최소 수정",
+  "status": "completed",
+  "result": {
+    "status": "completed",
+    "cases": 1,
+    "arms": [
+      "F1"
+    ],
+    "accepted": 1,
+    "native_direct_agree": true,
+    "human_approved": 0,
+    "scope": "fresh candidates on previously exposed natural input; no superiority claim from this sample"
+  },
+  "failure": null,
+  "metrics": {
+    "arms": {
+      "F1": {
+        "gate_decision": "accept_candidate",
+        "reasons": [],
+        "native_direct_equal": true,
+        "replacement": "[데이터셋 카드](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다."
+      }
+    }
+  },
+  "usage": {
+    "actual_upstream_attempts": 2,
+    "completed": 2,
+    "inflight": 0,
+    "errors": 0,
+    "requested_models": {
+      "gpt-5-mini-2025-08-07": 2
+    },
+    "resolved_models": {
+      "gpt-5-mini-2025-08-07": 2
+    },
+    "usage_derived_estimate_usd_known_sum": 0.0011231499999999998,
+    "unknown_estimate_attempts": 0,
+    "provider_reported_cost_usd": null,
+    "billing_confirmed_actual_usd": null,
+    "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+    "input_tokens": 5227,
+    "output_tokens_including_reasoning": 441,
+    "cache_read_tokens": 4736,
+    "cache_write_tokens": 0,
+    "cache_write_30m_tokens": 0,
+    "cache_write_12h_tokens": 0,
+    "reasoning_tokens": 256,
+    "service_tiers": {
+      "default": 2
+    },
+    "automatic_upstream_retries": 0,
+    "summed_request_seconds": 5.5061182920471765
+  },
+  "human_approved": 0,
+  "new_proposals_executed": false
+}

@@ -1,0 +1,13 @@
+{
+  "source": "Direct human user message in this local chat; supersedes prior fee-inclusive restriction for this execution",
+  "user_quote": "무슨 수수료가 있어? 일단 토큰 비용 기준 $5 안에서 하는 거 문제 없어.",
+  "observed_at_unix": 1793760995.928252,
+  "authorized_scope": "Token costs at most $5 for remaining fixed Qwen comparison arms; credit purchase fees not a blocking condition. Official OpenAI direct exemption from earlier policy retained.",
+  "conservative_inclusion": "Historical Nov1 26 OpenRouter generations $0.01228904 included in $5 token ledger, separately identified.",
+  "paid_calls_before_policy": 0,
+  "only_runner": "This runner; coordinator confirmed read-only verification and no duplicate generation.",
+  "later_coordinator_conveyed_user_quote": "아니 이번 실험만 $10 으로 맞추면 된다는 거였어. 이전 실험이랑은 상관 없고. 지금 크레딧 $10 충전되어 있어서 쓰면 돼. 관리가 안 되더라도 자동 충전을 걸어놓지 않아서 더 쓸 수도 없을 거야.",
+  "later_policy_observed_at_unix": 1793761232.0847528,
+  "latest_scope": "This OpenRouter comparison execution only, at most $10; prior experiments excluded; official OpenAI direct separate. Existing stricter $5 token ledger and historical .01228904 conservative margin retained without reset.",
+  "execution_note": "Pilot verified by independent generation HTTP200, matching cost, canonical model and non-BYOK. Process briefly SIGSTOPped while generation index returned404; SIGCONT resumes existing connection, no retransmission."
+}

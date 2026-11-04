@@ -1,0 +1,33 @@
+[
+  {
+    "id": "L06-pr252-cheap:pr252",
+    "missing_code": [
+      "import os\nfrom transformers import AutoProcessor, AutoModelForMultimodalLM, DistributedConfig\n\ndistributed_config = DistributedConfig(\n    tp_size=int(os.environ[\"WORLD_SIZE\"]),\n    ep_size=int(os.environ[\"WORLD_SIZE\"]),\n)\n\nmodel_id = \"mistralai/Mistral-Large-4-1T-A52B\"\nprocessor = AutoProcessor.from_pretrained(model_id)\nmodel = AutoModelForMultimodalLM.from_pretrained(\n    model_id,\n    distributed_config=distributed_config,\n)\n\n# only text\ntext_messages = [\n    {\n        \"role\": \"user\",\n        \"content\": \"Who are you?\"\n    }\n]\n\n# text + image\nmultimodal_messages = [\n    {\n        \"role\": \"user\",\n        \"content\": [\n            {\n                \"type\": \"image\",\n                \"image\": \"https://huggingface.co/datasets/huggingface/cats-image/resolve/main/cats_image.jpeg\",\n            },\n            {\n                \"type\": \"text\",\n                \"text\": \"How many cats are in the image?\",\n            },\n        ],\n    },\n]\n\nfor messages in [text_messages, multimodal_messages]:\n    inputs = processor.apply_chat_template(\n        messages,\n        add_generation_prompt=True,\n        tokenize=True,\n        return_dict=True,\n        return_tensors=\"pt\",\n        reasoning_effort=\"medium\",\n    ).to(model.device).to(model.dtype)\n    input_len = inputs[\"input_ids\"].shape[-1]\n\n    outputs = model.generate(**inputs, max_new_tokens=100)\n    if int(os.environ[\"RANK\"]) == 0:\n        print(processor.decode(outputs[0][input_len:], skip_special_tokens=False))\n",
+      "# torchrun --nproc-per-node 8 sft.py\nimport os\n\nfrom datasets import load_dataset\nfrom peft import LoraConfig\nfrom transformers import AutoModelForImageTextToText, DistributedConfig\nfrom trl import SFTConfig, SFTTrainer\n\nworld_size = int(os.environ[\"WORLD_SIZE\"])\nmodel_id = \"mistralai/Mistral-Large-4-1T-A52B\"\nmodel = AutoModelForImageTextToText.from_pretrained(\n    model_id,\n    distributed_config=DistributedConfig(fsdp_size=world_size, ep_size=world_size),\n    dtype=\"auto\",\n)\n\ndataset = load_dataset(\"HuggingFaceH4/Multilingual-Thinking\", split=\"train\")\n# the assistant turns carry reasoning, so render them in reasoning mode\ndataset = dataset.map(lambda x: {\"chat_template_kwargs\": {\"reasoning_effort\": \"high\"}})\n\ntrainer = SFTTrainer(\n    model=model,\n    args=SFTConfig(\n        packing=True,\n        max_length=4096,\n        assistant_only_loss=True,\n        learning_rate=1e-4,\n        lr_scheduler_type=\"cosine\",\n        warmup_steps=10,\n    ),\n    train_dataset=dataset,\n    peft_config=LoraConfig(\n        r=16,\n        lora_alpha=32,\n        target_modules=r\".*language_model.*\\.(q_proj|kv_a_proj_with_mqa|kv_b_proj|o_proj|gate_proj|up_proj|down_proj)\",\n    ),\n)\ntrainer.train()\n"
+    ],
+    "added_code": [
+      "import os\nfrom transformers import AutoProcessor, AutoModelForMultimodalLM, DistributedConfig\n\ndistributed_config = DistributedConfig(\n    tp_size=int(os.environ[\"WORLD_SIZE\"]),\n    ep_size=int(os.environ[\"WORLD_SIZE\"]),\n)\n\nmodel_id = \"mistralai/Mistral-Large-4-1T-A52B\"\nprocessor = AutoProcessor.from_pretrained(model_id)\nmodel = AutoModelForMultimodalLM.from_pretrained(\n    model_id,\n    distributed_config=distributed_config,\n)\n\n# 텍스트만\ntext_messages = [\n    {\n        \"role\": \"user\",\n        \"content\": \"Who are you?\"\n    }\n]\n\n# 텍스트 + 이미지\nmultimodal_messages = [\n    {\n        \"role\": \"user\",\n        \"content\": [\n            {\n                \"type\": \"image\",\n                \"image\": \"https://huggingface.co/datasets/huggingface/cats-image/resolve/main/cats_image.jpeg\",\n            },\n            {\n                \"type\": \"text\",\n                \"text\": \"How many cats are in the image?\",\n            },\n        ],\n    },\n]\n\nfor messages in [text_messages, multimodal_messages]:\n    inputs = processor.apply_chat_template(\n        messages,\n        add_generation_prompt=True,\n        tokenize=True,\n        return_dict=True,\n        return_tensors=\"pt\",\n        reasoning_effort=\"medium\",\n    ).to(model.device).to(model.dtype)\n    input_len = inputs[\"input_ids\"].shape[-1]\n\n    outputs = model.generate(**inputs, max_new_tokens=100)\n    if int(os.environ[\"RANK\"]) == 0:\n        print(processor.decode(outputs[0][input_len:], skip_special_tokens=False))\n",
+      "# torchrun --nproc-per-node 8 sft.py\nimport os\n\nfrom datasets import load_dataset\nfrom peft import LoraConfig\nfrom transformers import AutoModelForImageTextToText, DistributedConfig\nfrom trl import SFTConfig, SFTTrainer\n\nworld_size = int(os.environ[\"WORLD_SIZE\"])\nmodel_id = \"mistralai/Mistral-Large-4-1T-A52B\"\nmodel = AutoModelForImageTextToText.from_pretrained(\n    model_id,\n    distributed_config=DistributedConfig(fsdp_size=world_size, ep_size=world_size),\n    dtype=\"auto\",\n)\n\ndataset = load_dataset(\"HuggingFaceH4/Multilingual-Thinking\", split=\"train\")\n# 어시스턴트는 추론을 이어받으므로, 추론 모드로 렌더링합니다\ndataset = dataset.map(lambda x: {\"chat_template_kwargs\": {\"reasoning_effort\": \"high\"}})\n\ntrainer = SFTTrainer(\n    model=model,\n    args=SFTConfig(\n        packing=True,\n        max_length=4096,\n        assistant_only_loss=True,\n        learning_rate=1e-4,\n        lr_scheduler_type=\"cosine\",\n        warmup_steps=10,\n    ),\n    train_dataset=dataset,\n    peft_config=LoraConfig(\n        r=16,\n        lora_alpha=32,\n        target_modules=r\".*language_model.*\\.(q_proj|kv_a_proj_with_mqa|kv_b_proj|o_proj|gate_proj|up_proj|down_proj)\",\n    ),\n)\ntrainer.train()\n"
+    ],
+    "missing_urls": [
+      "#welcome-le-chonk-mistral-large-4-on-hugging-face",
+      "#table-of-contents",
+      "#what-is-new-with-mistral-large-4",
+      "#cybersecurity-capabilities",
+      "#architecture",
+      "#vision-encoder",
+      "#benchmark-results",
+      "#inference-support"
+    ],
+    "added_urls": [
+      "#welcome-le-chonk-hugging-face%EC%9D%98-mistral-large-4",
+      "#%EB%AA%A9%EC%B0%A8",
+      "#mistral-large-4%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EC%A0%90",
+      "#%EC%82%AC%EC%9D%B4%EB%B2%84-%EB%B3%B4%EC%95%88-%EA%B8%B0%EB%8A%A5",
+      "#%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98",
+      "#%EB%B9%84%EC%A0%84-%EC%9D%B8%EC%BD%94%EB%8D%94",
+      "#%EB%B2%A4%EC%B9%98%EB%A7%88%ED%81%AC-%EA%B2%B0%EA%B3%BC",
+      "#%EC%B6%94%EB%A1%A0-%EC%A7%80%EC%9B%90"
+    ]
+  }
+]

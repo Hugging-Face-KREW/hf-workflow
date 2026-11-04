@@ -1,0 +1,8 @@
+{
+  "translations": [
+    {
+      "id": "pr238_linux",
+      "text": "AnyLanguageModel은 FreeBSD에서도 실행되므로,\n동일한 코드가 서버에서도 작동할 수 있습니다."
+    }
+  ]
+}

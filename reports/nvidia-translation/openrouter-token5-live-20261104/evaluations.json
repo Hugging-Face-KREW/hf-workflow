@@ -1,0 +1,529 @@
+[
+  {
+    "id": "L08-C-switchyard-pr238_intro:pr238_intro",
+    "usable": true,
+    "major_errors": 1,
+    "minor_errors": 1,
+    "issues": [
+      "“a drop-in replacement for Apple's Foundation Models framework”가 “애플의 Foundation Models 프레임워크를 위한 대체 API”로 번역되어, 프레임워크 자체를 대체하는 drop-in replacement라는 의미가 “프레임워크를 위한 API”로 바뀌었고 ‘drop-in’의 호환성 의미도 누락되었습니다.",
+      "“multiple inference providers”의 “inference”가 번역되지 않아 “여러 inference 제공자”라는 부자연스럽고 기술적으로 불명확한 표현이 되었습니다."
+    ],
+    "family": "L08",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L06-pr252-cheap:pr252",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 4,
+    "issues": [
+      "부자연스럽고 혼합 문자가 들어간 표현이 있습니다: “사용자의 통제下に 둡니다”는 한국어 문장 안에 일본어/한자 표현이 섞여 있으며, “사용자의 통제하에 둡니다”가 자연스럽습니다.",
+      "기술 용어가 번역되지 않은 채 어색하게 남아 있습니다: “메모리_footprint_가 작고”는 “메모리 풋프린트가 작고” 또는 “메모리 사용량이 적고”가 적절합니다.",
+      "문장에 중국어 문자가 삽입되어 자연스럽지 않습니다: “프리필吞吐量(prefill throughput)는”은 “프리필 처리량(prefill throughput)은”으로 고쳐야 합니다.",
+      "일부 기술 표현이 부분적으로만 번역되어 일관성이 떨어집니다. 예를 들어 “hands-on 보안 문제”는 “실무형 보안 문제” 또는 “직접 수행하는 보안 문제”가 자연스럽고, “day-0 지원”도 문맥에 따라 “출시 당일부터 지원”으로 옮길 수 있습니다. 의미 자체의 누락이나 수치 오류는 보이지 않습니다."
+    ],
+    "family": "L06",
+    "code_changed": true,
+    "url_targets_changed": true,
+    "human_verified": false
+  },
+  {
+    "id": "L08-C-switchyard-pr238_reasoning:pr238_reasoning",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L08",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L08-C-switchyard-pr238_thanks:pr238_thanks",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "하이퍼링크 라벨이 원문의 ‘everyone who contributed’에 해당하는 설명성을 충분히 보존하지 못합니다. 현재 링크 라벨은 “[모든 분들께]”이고 ‘기여해 주신’은 링크 밖에 있으므로, “[기여해 주신 모든 분들께]”처럼 기여자를 명시하는 라벨이 더 적절합니다."
+    ],
+    "family": "L08",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L08-C-switchyard-pr239_linear:pr239_linear",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "`PyTorch 2.15는 [`F.linear`에 연결합니다]`는 무엇을 연결하는지(앞의 GEMV 커널)를 명시하지 않아 다소 모호하고 어색합니다. 이어지는 `이를 직접 사용하며`도 `이를`이 커널을 가리키는지 불분명합니다. 예를 들어 `PyTorch 2.15에서는 이 GEMV 커널이 [`F.linear`에 연결되므로] ... 입력이 이를 직접 사용하며`처럼 옮기면 의미와 연결 관계가 더 명확합니다."
+    ],
+    "family": "L08",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L08-C-switchyard-pr239_requirements:pr239_requirements",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "“MPS 사용 가능성 검사”는 ‘MPS availability check’의 자연스러운 번역인 “MPS 사용 가능 여부 검사” 또는 “MPS 사용 가능성 확인”보다 다소 어색합니다. 의미는 대체로 전달됩니다."
+    ],
+    "family": "L08",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L09-D-condition-partial_switchyard:pr238_shared",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L09",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L09-D-condition-partial_switchyard:pr238_releases",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L09",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L09-D-condition-partial_switchyard:pr238_linux",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L09",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L09-D-platform-partial_switchyard:pr238_shared",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L09",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L09-D-platform-partial_switchyard:pr238_releases",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "“A year ... later” is rendered as “1년 동안” (“for a year”), which slightly shifts the meaning from “after a year has passed” to “over the course of a year.” “1년이 지나고 수십 차례의 릴리스가 나온 후” would be more precise. The product names, versions, URLs, and “dozens” quantity are preserved."
+    ],
+    "family": "L09",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L09-D-platform-partial_switchyard:pr238_linux",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L09",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-baseline:pr238_intro",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-baseline:pr238_shared",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "“호스팅된 추론”은 의미는 전달되지만 한국어 기술 문맥에서는 “호스팅 추론” 또는 “호스팅 환경의 추론”이 더 자연스럽고, “모델을 선택하는 것을 더 쉽게 만듭니다”는 “모델을 더 쉽게 선택할 수 있게 합니다”가 자연스럽습니다."
+    ],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-baseline:pr238_releases",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-baseline:pr238_reasoning",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-baseline:pr238_linux",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-baseline:pr238_thanks",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "“커뮤니티의 피드백과 기여가 우리의 주요 기능들 중 몇 가지를 형성했습니다”는 의미는 전달되지만 한국어로 다소 직역투이고 부자연스럽습니다. “커뮤니티의 피드백과 기여가 주요 기능 여러 가지를 만들어 왔습니다”처럼 표현하는 편이 자연스럽습니다."
+    ],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-baseline:pr239_requirements",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "“MPS 사용 가능성 확인 메시지에서 그 이유를 알려줍니다”는 원문의 “the MPS availability check now tells you why”보다 어색하고 주체가 불명확합니다. “MPS 사용 가능 여부 확인에서 이제 그 이유를 알려줍니다”처럼 옮기는 편이 자연스럽고, “availability”에는 “사용 가능성”보다 “사용 가능 여부”가 적절합니다."
+    ],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-baseline:pr239_linear",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_dd:pr238_intro",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "“drop-in replacement”를 “드롭인 교체품”으로 옮겨 의미는 전달되지만 한국어 기술 문서에서는 다소 직역투이고 어색합니다. “그대로 교체해 사용할 수 있는 대체 구현”처럼 표현하면 더 자연스럽습니다. 그 외에 의미, 누락, 숫자, 고유명사 및 링크 보존에는 문제가 없습니다."
+    ],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_dd:pr238_shared",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_dd:pr238_releases",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "“1년과 수십 번의 릴리스 이후”는 영어의 “A year and dozens of releases later”를 직역한 표현으로 다소 어색합니다. “1년여와 수십 번의 릴리스가 지난 후”처럼 옮기면 더 자연스럽습니다. 제품명, 버전, 링크 및 수량은 정확히 보존되었습니다."
+    ],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_dd:pr238_reasoning",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_dd:pr238_linux",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_dd:pr238_thanks",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "“주요 기능 중 몇몇을 형성하는 데 영향을 미쳤습니다”는 의미는 전달되지만 한국어로 다소 어색합니다. “여러 주요 기능을 만드는 데 영향을 주었습니다”처럼 옮기는 편이 자연스럽습니다."
+    ],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_dd:pr239_requirements",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "Minor omission: “now tells you why” is translated as “알려줍니다,” which conveys that it tells you the reason but omits the temporal emphasis “now” (e.g., “이제 그 이유를 알려줍니다”). Otherwise, the versions, conditions, MPS/Metal terminology, and descriptive hyperlink label are preserved accurately."
+    ],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_dd:pr239_linear",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 2,
+    "issues": [
+      "`eligible bias additions가 병합됩니다`에서 `eligible bias additions`가 번역되지 않았고, ‘적용 가능한 바이어스 덧셈 연산도 함께 융합된다’는 의미가 충분히 전달되지 않습니다.",
+      "원문의 링크 라벨 `connects them to F.linear`가 [`F.linear`]로 축약되어, ‘F.linear에 연결한다’는 링크의 설명성이 줄었습니다."
+    ],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_real:pr238_intro",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 2,
+    "issues": [
+      "“애플의 Foundation Models 프레임워크를 교체할 수 있는(drop-in replacement)”는 ‘drop-in replacement’의 의미를 자연스럽게 전달하지 못하고, “교체할 수 있는”은 단순히 교체가 가능하다는 뜻으로 읽힙니다. “애플의 Foundation Models 프레임워크를 바로 대체해 사용할 수 있는”이 더 정확합니다.",
+      "원문에는 없는 “도구”가 “앱이 사용하는 모델과 제공자(provider)를 선택할 수 있게 해주는 도구”에 추가되었습니다. 큰 의미 변화는 아니지만, AnyLanguageModel의 성격을 도구로 단정하는 불필요한 첨가입니다."
+    ],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_real:pr238_shared",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_real:pr238_releases",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "“1년과 수십 개의 릴리스가 지난 후”는 의미는 전달되지만 한국어로 다소 어색합니다. “1년여와 수십 차례의 릴리스가 지난 뒤”처럼 옮기면 더 자연스럽습니다. 제품명, 버전, 링크 및 출시 의미는 정확히 보존되었습니다."
+    ],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_real:pr238_reasoning",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_real:pr238_linux",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_real:pr238_thanks",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 0,
+    "issues": [],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_real:pr239_requirements",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "“MPS 사용 가능성 확인 메시지에서 그 이유를 알려줍니다”는 원문의 ‘MPS availability check now tells you why’보다 부자연스럽습니다. ‘MPS 사용 가능 여부를 확인할 때 이제 그 이유를 알려줍니다’처럼 옮기는 편이 정확하고 자연스럽습니다."
+    ],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "wp-b-v2-plan_real:pr239_linear",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 1,
+    "issues": [
+      "자연스럽지 않은 영어 혼용이 있습니다. “메모리 대역폭의 대부분이 unused 상태였습니다”는 의미는 전달되지만, “메모리 대역폭의 대부분을 사용하지 못했습니다”가 더 자연스럽고 기술적으로 명확합니다."
+    ],
+    "family": "L07",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L06-pr238-cheap:pr238",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 3,
+    "issues": [
+      "제품명/링크 라벨에 불필요한 문자가 삽입되었습니다. 원문 '[swift-huggingface 1.0]' 및 '[swift-huggingface]'가 각각 '[s swift-huggingface 1.0]' 및 '[s swift-huggingface]'로 번역되어 제품명이 손상되었습니다.",
+      "'a drop-in replacement for Apple's Foundation Models framework'가 'Apple의 Foundation Models 프레임워크를 위한 간단한 대체재'로 옮겨져, 별도 수정 없이 교체해 사용할 수 있다는 'drop-in' 의미가 누락되었습니다.",
+      "'if you have four maxed-out Mac Studios handy'를 '손에 가득 찬 맥 스튜디오 4대가 있다면'으로 번역한 것은 부자연스럽고 의미가 부정확합니다. '최고 사양으로 구성된 Mac Studio 4대가 있다면'처럼 옮기는 것이 적절합니다."
+    ],
+    "family": "L06",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L06-pr238-switchyard:pr238",
+    "usable": true,
+    "major_errors": 1,
+    "minor_errors": 3,
+    "issues": [
+      "중대한 미번역/오역이 있습니다. “또한它们是 개발자들이 활용할 수 있는 다양한 모델 유형 중 하나입니다.”에 중국어 문자와 한국어가 혼입되어 문장이 손상되었습니다. 원문의 “They're also one of many kinds of models developers can put to work.”는 “또한 개발자가 활용할 수 있는 여러 종류의 모델 중 하나이기도 합니다.”처럼 번역해야 합니다.",
+      "“Foundation Models API를 사용하여 앱에 맞는 모델로 사용합니다.”는 문법적으로 부자연스럽고 의미 관계가 불명확합니다. 원문의 의미인 “Foundation Models API를 사용하면서 앱에 맞는 모델을 선택합니다”가 더 정확합니다.",
+      "Open Responses 항목의 “호환 가능한 엔드포인트가 있는 모든 제공자에게”는 문장이 완결되지 않고 의미가 어색합니다. “호환 가능한 엔드포인트를 제공하는 모든 제공자에서 사용할 수 있습니다”처럼 번역해야 합니다.",
+      "“가이드 생성, 스트리밍과 함께 하는 도구 호출”은 의미는 전달되지만 한국어 기술 문체로 부자연스럽습니다. “가이드 생성, 스트리밍을 지원하는 도구 호출”이 자연스럽습니다."
+    ],
+    "family": "L06",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L06-pr239-cheap:pr239",
+    "usable": true,
+    "major_errors": 2,
+    "minor_errors": 5,
+    "issues": [
+      "중대한 기술 용어 오역: 원문의 표는 “Convolutions, padding, and training” 및 “Constant padding”과 “Out-of-place dropout”을 구분하지만, 번역은 TL;DR에서 “합성곱(convolutions), 패딩(dropout)”이라고 하여 padding을 dropout으로 잘못 표기했습니다.",
+      "중대한 기술 용어 오역: “Out-of-place dropout”을 “[위치 비동기 dropout]”으로 번역했습니다. ‘out-of-place’는 입력을 변경하지 않고 별도 출력을 생성한다는 의미이지 ‘위치 비동기’가 아닙니다. “인플레이스가 아닌 드롭아웃” 또는 “비제자리 드롭아웃” 등이 적절합니다.",
+      "자연스럽지 않고 의미가 불명확합니다. “eligible bias additions fused in”을 “자격 있는(bias) 편향 추가가 융합(fused)됩니다”로 옮겼는데, ‘eligible’은 ‘조건을 충족하는/지원되는’이라는 뜻입니다. 예: “조건을 충족하는 바이어스 덧셈은 융합됩니다.”",
+      "원문의 “fewer GPU-CPU syncs”가 “fewer GPU-CPU 동기화”로 번역되지 않고 영어로 남아 있어 문체가 일관되지 않습니다. “GPU-CPU 동기화 횟수 감소”가 자연스럽습니다.",
+      "“triangular solves”를 반복해서 “삼각방정식 풀이”로 옮겼습니다(예: “복잡한 LU 및 삼각방정식 풀이”). 이는 일반적으로 “삼각 시스템 풀이” 또는 “삼각행렬 풀이”가 더 정확합니다.",
+      "“PyTorch 2.16 commits the command buffer every 16 kernels”를 “커널마다 16개씩 명령 버퍼를 커밋”으로 번역해 방향이 모호하거나 잘못 읽힙니다. 의미는 “커널 16개마다 명령 버퍼를 커밋”입니다.",
+      "“FP8 gives you another way” 등에서 “FP8가”를 반복 사용해 조사 결합이 부자연스럽습니다. 기술적으로 큰 오류는 아니지만 제목과 본문에서는 “FP8은/FP8이”가 자연스럽습니다."
+    ],
+    "family": "L06",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L06-pr239-switchyard:pr239",
+    "usable": true,
+    "major_errors": 0,
+    "minor_errors": 8,
+    "issues": [
+      "영어와 중국어가 번역문에 혼입되어 자연스럽지 않습니다. 예: “fewer GPU-CPU 동기화”, “훨씬更快的 로컬 LLM”, “이는伪逆(pseudoinverse)”가 그대로 남아 있습니다.",
+      "일부 기술 용어가 부정확하거나 어색합니다. 예: “복소수 결정값”은 complex determinant의 의미인 “복소수 행렬식”이 더 정확하고, “삼각방정식 풀이”는 triangular solve를 자연스럽게 옮긴 표현이 아닙니다.",
+      "“어휘어(보카불러리)”와 “큰 어휘어”는 vocabulary를 부자연스럽게 번역한 표현입니다. 문맥상 “어휘 크기” 또는 “어휘 집합”이 적절합니다.",
+      "문장 일부가 지나치게 직역되어 읽기 어렵습니다. 예: “언어 모델 디코딩은 선형 레이어와 softmax를 통한 더 빠른 경로를 얻고”, “MPSGraph에서 전용 Metal 커널로 이동한 긴 목록의 연산”이 자연스럽지 않습니다.",
+      "소제목 및 표의 텍스트가 상당 부분 영어로 남아 있습니다. 예: 표 머리글 “Operation | What changes in 2.15”, “Memory metric | MPSGraph padding | Metal padding”, “Model | Before | After | Change”. 기술 식별자는 보존할 수 있지만 설명용 레이블은 한국어로 번역하는 편이 좋습니다.",
+      "“triangular systems”를 “삼각방정식 시스템”으로 옮긴 “**16 × 16 ... FP32 삼각방정식 시스템**”은 선형대수 문맥에서 부정확하고 어색합니다. “삼각 선형 시스템”이 적절합니다.",
+      "문법과 표현이 반복적으로 어색합니다. 예: “FP8가 MPS에 도입되며”, “FP8는”은 한국어 발음상 “FP8이”, “FP8은”이 자연스럽고, “피크를 찍습니다”는 기술 문서에서 다소 구어적입니다.",
+      "이미지 대체 텍스트가 모두 영어로 남아 있습니다. 예: “Bar chart of MoE decoding throughput...” 및 “Stacked bar chart of peak driver memory...”. 사용자에게 표시되는 설명용 텍스트이므로 한국어로 번역하는 것이 바람직합니다."
+    ],
+    "family": "L06",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  },
+  {
+    "id": "L06-pr251-cheap:pr251",
+    "usable": true,
+    "major_errors": 2,
+    "minor_errors": 5,
+    "issues": [
+      "Major: The amount “$190 billion annually” is mistranslated as “$190억” (“19억 달러”/about $1.9 billion), a 100-fold numerical error. Evidence: source “$190 billion annually” vs. candidate “매년 약 [$190억을 연구 개발에 투자]”. It should be “연간 1,900억 달러” or “연간 1,900억 달러(약 190 billion dollars)”.",
+      "Major: “memorandum of understanding” is mistranslated as “이해관계 일치서,” which means something like “statement of aligned interests,” not the established legal/organizational term “양해각서(MOU)”. Evidence: “이해관계 일치서(Memorandum of Understanding)”.",
+      "Minor: The internal link target is likely broken after translation. The label is translated to “[참여 방법]” but the fragment remains “#the-first-challenge-climate-risk-intelligence,” while the corresponding Korean heading would normally generate a different slug. Evidence: “[참여 방법](#the-first-challenge-climate-risk-intelligence)”.",
+      "Minor: “Cooling degree days” is rendered as “냉난방도,” which suggests both heating and cooling rather than the specific cooling metric. A more precise term is “냉방도일(Cooling Degree Days)”.",
+      "Minor: “inaugural” is awkwardly translated as “초대 ProtoStar 챌린지”; “첫 번째 ProtoStar 챌린지” or “제1회 ProtoStar 챌린지” is natural and preserves the meaning.",
+      "Minor: The phrase “including applications that combine resources across institutions or disciplines” contains an unintended mixed-script artifact: “기관이나 학제를横跨하여”. “기관이나 학제를 넘어/가로질러 자원을 결합하는” would be natural Korean.",
+      "Minor: Several technical phrases are overly literal and unnatural, such as “AI 준비 완료 형식” and “공공 자금 지원 과학.” More natural terms would be “AI 활용에 적합한 형식”/“AI 준비형식” and “공공 자금이 지원된 과학 연구,” though the meaning remains generally recoverable."
+    ],
+    "family": "L06",
+    "code_changed": false,
+    "url_targets_changed": false,
+    "human_verified": false
+  }
+]

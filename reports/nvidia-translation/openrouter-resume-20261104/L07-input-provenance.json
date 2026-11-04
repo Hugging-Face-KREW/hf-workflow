@@ -1,0 +1,17 @@
+{
+  "examples": "reports/nvidia-translation/official-live-20261104/L07/dd-reviewed.json",
+  "examples_sha256": "fbf94c25bbbd56d90aa1cd444580ad347ab967f3751e4eea4d2ac1b087f5ce7f",
+  "accepted_ids": [
+    "0",
+    "2",
+    "3",
+    "4",
+    "6",
+    "7"
+  ],
+  "accepted_count": 6,
+  "old_runner_sha256": "06774320c221861e8728fe6d67926a7269a6d151d5471890cde2d592ed10b5fd",
+  "labels_sha256": "e26986a9aba37f94678755998fdcab5a056b0b0a4e25aa0cd333170c12e64e20",
+  "default_parent_path_used": false,
+  "connection": "Existing b() body, only examples path explicitly redirected; baseline/plan_real/plan_dd preserved. Historical heldout name is reused input, not newly held-out."
+}

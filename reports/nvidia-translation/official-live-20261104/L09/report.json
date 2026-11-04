@@ -1,0 +1,77 @@
+{
+  "id": "L09",
+  "title": "증분 갱신 D",
+  "status": "completed_with_non_openai_blocked_arms",
+  "result": {
+    "status": "completed_with_non_openai_blocked_arms",
+    "output_files": 6,
+    "blocked_non_openai": 2,
+    "failed": 2,
+    "coverage_failures": [],
+    "model_substitution": false,
+    "scope": "fresh correction/update requests; existing diagnostic inputs, same-family model review"
+  },
+  "failure": null,
+  "metrics": {
+    "model_reviews": 17,
+    "usable": 17,
+    "reviews_by_group": {
+      "C-original": {
+        "n": 5,
+        "model_usable": 5,
+        "major_errors": 0
+      },
+      "D-condition-full_luna": {
+        "n": 3,
+        "model_usable": 3,
+        "major_errors": 0
+      },
+      "D-condition-partial_luna": {
+        "n": 3,
+        "model_usable": 3,
+        "major_errors": 0
+      },
+      "D-platform-full_luna": {
+        "n": 3,
+        "model_usable": 3,
+        "major_errors": 0
+      },
+      "D-platform-partial_luna": {
+        "n": 3,
+        "model_usable": 3,
+        "major_errors": 0
+      }
+    }
+  },
+  "usage": {
+    "actual_upstream_attempts": 9,
+    "completed": 9,
+    "inflight": 0,
+    "errors": 0,
+    "requested_models": {
+      "gpt-5.6-luna": 9
+    },
+    "resolved_models": {
+      "gpt-5.6-luna": 9
+    },
+    "usage_derived_estimate_usd_known_sum": 0.0061208,
+    "unknown_estimate_attempts": 0,
+    "provider_reported_cost_usd": null,
+    "billing_confirmed_actual_usd": null,
+    "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+    "input_tokens": 8674,
+    "output_tokens_including_reasoning": 3360,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 7080,
+    "cache_write_30m_tokens": 7080,
+    "cache_write_12h_tokens": 0,
+    "reasoning_tokens": 1278,
+    "service_tiers": {
+      "default": 9
+    },
+    "automatic_upstream_retries": 0,
+    "summed_request_seconds": 43.22295354108792
+  },
+  "human_approved": 0,
+  "new_proposals_executed": false
+}

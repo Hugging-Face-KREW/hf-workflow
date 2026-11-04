@@ -1,0 +1,1646 @@
+{
+  "policy": "OpenAI direct excluded from $10; non-OpenAI blocked",
+  "max_actual_attempts": 1200,
+  "calls": [
+    {
+      "id": "Qwen-comparison-evaluation-review-083e0843659d",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "218685f77c03c24a0547066556b020f155df60a35f397d11d90a0c86e07650f0",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761044.641552,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_082394f4545e9cd1016aea9f15cbb487d2a446a66d962b156e",
+      "elapsed_seconds": 5.850504792004358,
+      "input_tokens": 407,
+      "output_tokens": 365,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 207,
+      "service_tier": "default",
+      "estimated_usd": 0.0005193999999999999,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 407,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 365,
+        "output_tokens_details": {
+          "reasoning_tokens": 207
+        },
+        "total_tokens": 772
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-612e1c1f9052",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "89e898379f9c039de78ce3bc646e9cffcabe2edbcd497f9952889cf05362fe6f",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761268.593477,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0fdfa7cbf33a8f3b016aea9ff568c887d294f7581b2f226efd",
+      "elapsed_seconds": 9.827029042004142,
+      "input_tokens": 11847,
+      "output_tokens": 903,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 11844,
+      "cache_write_30m_tokens": 11844,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 602,
+      "service_tier": "default",
+      "estimated_usd": 0.0040452,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 11847,
+        "input_tokens_details": {
+          "cache_write_tokens": 11844,
+          "cached_tokens": 0
+        },
+        "output_tokens": 903,
+        "output_tokens_details": {
+          "reasoning_tokens": 602
+        },
+        "total_tokens": 12750
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-4a39cd7c725b",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "44d64ed08bf356a6047334293aa13113b78347bb6d34da8763a37187c33f22be",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761278.4268858,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_08955ddcab94f846016aea9fff27d887d2bea6d5e0bec11e77",
+      "elapsed_seconds": 2.364945958950557,
+      "input_tokens": 261,
+      "output_tokens": 114,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 71,
+      "service_tier": "default",
+      "estimated_usd": 0.000189,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 261,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 114,
+        "output_tokens_details": {
+          "reasoning_tokens": 71
+        },
+        "total_tokens": 375
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-b2c69d81d1a2",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "05d098f266f12064b229303f3b3dcd623dedfd32b28890680504f79f415d2f8c",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761280.797617,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0ffc7d4b5cb86f84016aeaa001246487d2bc2ed372f6352d0e",
+      "elapsed_seconds": 5.482046167016961,
+      "input_tokens": 310,
+      "output_tokens": 518,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 389,
+      "service_tier": "default",
+      "estimated_usd": 0.0006836,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 310,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 518,
+        "output_tokens_details": {
+          "reasoning_tokens": 389
+        },
+        "total_tokens": 828
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-4ab197ccdbdb",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "ab71a93ad38ef4bb99a2f9e97725713c3384ccc6234bf46a35c7f53ad48bdf14",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761286.284095,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0cd2e3f7565bc3e4016aeaa0068a2887d29641bc858e9abc04",
+      "elapsed_seconds": 5.243099707993679,
+      "input_tokens": 533,
+      "output_tokens": 481,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 320,
+      "service_tier": "default",
+      "estimated_usd": 0.0006837999999999999,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 533,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 481,
+        "output_tokens_details": {
+          "reasoning_tokens": 320
+        },
+        "total_tokens": 1014
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-1402581af6da",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "d866d6ed03f47ffefb2421d6c9703e426ac0ccddebbc6351ce1cf544f8c485ea",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761291.53159,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_075874ea0aaaac64016aeaa00bc4cc87d2ad18915bfd3fb1ab",
+      "elapsed_seconds": 3.2203346250462346,
+      "input_tokens": 360,
+      "output_tokens": 232,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 136,
+      "service_tier": "default",
+      "estimated_usd": 0.00035039999999999995,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 360,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 232,
+        "output_tokens_details": {
+          "reasoning_tokens": 136
+        },
+        "total_tokens": 592
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-2a166fe1c1b3",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "0ed344642c00570e96b3175a94a8954628be1634e0c77673f2e919c49dc68ae4",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761294.757015,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_07f14c54952946d7016aeaa00f032487d28ced4c877f0c0e77",
+      "elapsed_seconds": 2.0477278340258636,
+      "input_tokens": 318,
+      "output_tokens": 112,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 68,
+      "service_tier": "default",
+      "estimated_usd": 0.000198,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 318,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 112,
+        "output_tokens_details": {
+          "reasoning_tokens": 68
+        },
+        "total_tokens": 430
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-102c3807530e",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "72b7f63a7fddaa489a98a2012124153c1530a92be852b5af41376fb611b24c0a",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761296.8128839,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0e1a443b1f45993d016aeaa0110af887d2941f4df45966e145",
+      "elapsed_seconds": 2.5340934170526452,
+      "input_tokens": 409,
+      "output_tokens": 149,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 108,
+      "service_tier": "default",
+      "estimated_usd": 0.00026060000000000005,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 409,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 149,
+        "output_tokens_details": {
+          "reasoning_tokens": 108
+        },
+        "total_tokens": 558
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-6a7f19be0861",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "d8e7f295cc1bafb8e74bfdf489f9e563012915bdf3f49a4e15a54229a7494c65",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761299.3636742,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0c44d4f7b68306db016aeaa01393e887d28953a68b4c19086e",
+      "elapsed_seconds": 1.9430890000076033,
+      "input_tokens": 223,
+      "output_tokens": 105,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 62,
+      "service_tier": "default",
+      "estimated_usd": 0.0001706,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 223,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 105,
+        "output_tokens_details": {
+          "reasoning_tokens": 62
+        },
+        "total_tokens": 328
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-1c06342ab969",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "09498f3f0eb52901f1371e80849636ac6bb8ceeac3cd2603bc0f0490de547a34",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761301.30993,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0a2c7a50ff269884016aeaa015d69087d29e21299b5a793ce3",
+      "elapsed_seconds": 2.8710997920134105,
+      "input_tokens": 276,
+      "output_tokens": 159,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 118,
+      "service_tier": "default",
+      "estimated_usd": 0.000246,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 276,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 159,
+        "output_tokens_details": {
+          "reasoning_tokens": 118
+        },
+        "total_tokens": 435
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-847dfbc6e4b5",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "6cb3b7e10d3f0993573ae11224a231954878944c63c6fd82f99d9a8c0cb8e4b0",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761304.1876538,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_02752019de92fe1d016aeaa018700c87d2a5219232dfdbb390",
+      "elapsed_seconds": 4.998517958971206,
+      "input_tokens": 411,
+      "output_tokens": 371,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 246,
+      "service_tier": "default",
+      "estimated_usd": 0.0005274,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 411,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 371,
+        "output_tokens_details": {
+          "reasoning_tokens": 246
+        },
+        "total_tokens": 782
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-dfdd0be0be04",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "a0880b7338da6e2a4adf0de553462bbd2f5a76bb5dc0c0a46916c0faad9b2ccf",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761309.19117,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_033006e711aae7e3016aeaa01d651c87d2aa0fd3dc3d56f7ac",
+      "elapsed_seconds": 1.9238783749751747,
+      "input_tokens": 224,
+      "output_tokens": 92,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 50,
+      "service_tier": "default",
+      "estimated_usd": 0.00015519999999999998,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 224,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 92,
+        "output_tokens_details": {
+          "reasoning_tokens": 50
+        },
+        "total_tokens": 316
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-a3aa66df3784",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "c1422199a9de26d8bfe0b735d4e4e34dea21af116125c97a4fbfb61cb6e3bf77",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761311.1186812,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0bdb8f6d5b29d956016aeaa01f578487d2ac0c7608fc2b1bd0",
+      "elapsed_seconds": 2.748401749995537,
+      "input_tokens": 418,
+      "output_tokens": 208,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 166,
+      "service_tier": "default",
+      "estimated_usd": 0.00033319999999999997,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 418,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 208,
+        "output_tokens_details": {
+          "reasoning_tokens": 166
+        },
+        "total_tokens": 626
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-1507ebed2a7a",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "5671989d3ed3d93eb7f675a9bc6f48b463e0ee9d2c90503ee8ff01dfb9044fdb",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761313.8776379,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0c61596d34e65d5f016aeaa022174887d2bc154cb0562f176a",
+      "elapsed_seconds": 3.3017169589875266,
+      "input_tokens": 283,
+      "output_tokens": 280,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 161,
+      "service_tier": "default",
+      "estimated_usd": 0.0003926,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 283,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 280,
+        "output_tokens_details": {
+          "reasoning_tokens": 161
+        },
+        "total_tokens": 563
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-9a3cfd9f3fd5",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "c85f07ea9592cb8b68ffecc7aac9154c6c52b0f89349197c4565719f21a95912",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761317.185708,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_07a7645c16be1686016aeaa025702c87d2aff7a99dad203d7c",
+      "elapsed_seconds": 2.0520004999707453,
+      "input_tokens": 414,
+      "output_tokens": 114,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 69,
+      "service_tier": "default",
+      "estimated_usd": 0.0002196,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 414,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 114,
+        "output_tokens_details": {
+          "reasoning_tokens": 69
+        },
+        "total_tokens": 528
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-d41e0f7f9e8e",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "2e33d83c5c7d4a44051d03053a35890627e7b205bf0099c1fd1ae0dfcca7f649",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761319.244458,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_063b82d6c60173bc016aeaa0277d1487d2a502a1c4e6dde796",
+      "elapsed_seconds": 1.9977192499791272,
+      "input_tokens": 262,
+      "output_tokens": 107,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 61,
+      "service_tier": "default",
+      "estimated_usd": 0.0001808,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 262,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 107,
+        "output_tokens_details": {
+          "reasoning_tokens": 61
+        },
+        "total_tokens": 369
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-8fb608644447",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "ad4b3415eedbebad5fc890707f6f9902e4e2cd6b244e23374fbf1b98571f61de",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761321.248257,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_04cfdff7eb1362eb016aeaa029801487d28ba55a4faf7b5d5c",
+      "elapsed_seconds": 1.2575930000166409,
+      "input_tokens": 220,
+      "output_tokens": 38,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 0,
+      "service_tier": "default",
+      "estimated_usd": 8.96e-05,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 220,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 38,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 258
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-653002343cbb",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "33d76e8760955fa8b4cea44af99b8ac5c6fdaa497a6deb5812cafa3763646d6a",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761322.51158,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0bcda6fd7e1f5c5d016aeaa02aba6c87d2b6a59df90ccc4fd2",
+      "elapsed_seconds": 2.9457157499855384,
+      "input_tokens": 297,
+      "output_tokens": 261,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 144,
+      "service_tier": "default",
+      "estimated_usd": 0.0003726,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 297,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 261,
+        "output_tokens_details": {
+          "reasoning_tokens": 144
+        },
+        "total_tokens": 558
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-f94781e053c8",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "e53047be20f3bfc922281850ece8cf5c5a15cb434b725148ed833132079f59d9",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761325.4635332,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_075807ee2f5ec75f016aeaa02dbdf887d2845a17f1301b40ae",
+      "elapsed_seconds": 2.6565542080206797,
+      "input_tokens": 363,
+      "output_tokens": 266,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 132,
+      "service_tier": "default",
+      "estimated_usd": 0.00039180000000000004,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 363,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 266,
+        "output_tokens_details": {
+          "reasoning_tokens": 132
+        },
+        "total_tokens": 629
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-c221abb96089",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "35fa16292bfd95ad6a4de92f6f2cb00588c3fe50b4e2b224270f20b6932e7dd8",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761328.127408,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_05b478eda8e53051016aeaa03057d887d2bbf1620e3ec4460c",
+      "elapsed_seconds": 3.916224125016015,
+      "input_tokens": 556,
+      "output_tokens": 258,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 218,
+      "service_tier": "default",
+      "estimated_usd": 0.00042079999999999993,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 556,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 258,
+        "output_tokens_details": {
+          "reasoning_tokens": 218
+        },
+        "total_tokens": 814
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-f73e09131a21",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "a43c191e0b165eba7e52b1ba4c488777be0f26b5a60981880e2263f4c108e05e",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761332.050223,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0eb20d5ad45fa867016aeaa034472087d29f035d23c9658125",
+      "elapsed_seconds": 3.823231542017311,
+      "input_tokens": 423,
+      "output_tokens": 321,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 195,
+      "service_tier": "default",
+      "estimated_usd": 0.00046980000000000004,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 423,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 321,
+        "output_tokens_details": {
+          "reasoning_tokens": 195
+        },
+        "total_tokens": 744
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-86713869166b",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "5a9a6a5ec331abf25ba7ae661304842e87d781de5b327227e9f5f04187ba8613",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761335.880095,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0084bd5495566354016aeaa03818f887d2a1a909410163fe4c",
+      "elapsed_seconds": 2.4192112919990905,
+      "input_tokens": 278,
+      "output_tokens": 124,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 84,
+      "service_tier": "default",
+      "estimated_usd": 0.00020439999999999998,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 278,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 124,
+        "output_tokens_details": {
+          "reasoning_tokens": 84
+        },
+        "total_tokens": 402
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-f3a66620923d",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "fad5def5b43a3d43cf1f3feaa4d2a5055974fc70b577249997a3df5f9673ea5c",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761338.308089,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0bd08aecea1ff12d016aeaa03a8b4887d28ec814a6913ddc06",
+      "elapsed_seconds": 3.5459415420191363,
+      "input_tokens": 409,
+      "output_tokens": 261,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 138,
+      "service_tier": "default",
+      "estimated_usd": 0.000395,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 409,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 261,
+        "output_tokens_details": {
+          "reasoning_tokens": 138
+        },
+        "total_tokens": 670
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-b2e229642fea",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "d322305f05a53933919c73295bba88b1ebd8ef2d83fe09951ba39c7a33fbb189",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761341.860217,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0d722f8282ea0c50016aeaa03e136087d28b30669f0903c08f",
+      "elapsed_seconds": 1.258243541000411,
+      "input_tokens": 258,
+      "output_tokens": 39,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 0,
+      "service_tier": "default",
+      "estimated_usd": 9.84e-05,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 258,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 39,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 297
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-753ea9cff833",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "baf41c59c7c6cf86af221d04b822fbda6c90db6a6c5b2ed1c99cbd3a49453a4c",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761343.127626,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_05cde76666978a54016aeaa03f580887d29ad0c119596bab9f",
+      "elapsed_seconds": 2.1087019580299966,
+      "input_tokens": 220,
+      "output_tokens": 114,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 74,
+      "service_tier": "default",
+      "estimated_usd": 0.00018079999999999998,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 220,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 114,
+        "output_tokens_details": {
+          "reasoning_tokens": 74
+        },
+        "total_tokens": 334
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-a818edf857c1",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "02947399e129e08de0790a5052d5a7a6d90f75568ac65e5c34ff1b55a72ab757",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761345.247893,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_076256188ca0ce24016aeaa041883087d2b2147c2e22b093a3",
+      "elapsed_seconds": 2.5915303329820745,
+      "input_tokens": 303,
+      "output_tokens": 193,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 97,
+      "service_tier": "default",
+      "estimated_usd": 0.0002922,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 303,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 193,
+        "output_tokens_details": {
+          "reasoning_tokens": 97
+        },
+        "total_tokens": 496
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-af357a1bd89b",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "f958b6d7865685a1b5b13041b62f7e93d504e93890d4e299d65f10a4b4b34d0f",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761347.847635,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_045c0c9ab0515276016aeaa04415d087d2a638a8b959d26606",
+      "elapsed_seconds": 3.130073332984466,
+      "input_tokens": 359,
+      "output_tokens": 264,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 149,
+      "service_tier": "default",
+      "estimated_usd": 0.0003886,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 359,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 264,
+        "output_tokens_details": {
+          "reasoning_tokens": 149
+        },
+        "total_tokens": 623
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-51e31c64edf7",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "f351f2b1c45ef48d1ac8181647ce339a914cfb4e7700fd67f6c726ad24b4ad88",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761350.985226,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0f98c902bc0c5e21016aeaa047384487d2ad5ae8c86156bf4b",
+      "elapsed_seconds": 4.796490625012666,
+      "input_tokens": 546,
+      "output_tokens": 422,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 290,
+      "service_tier": "default",
+      "estimated_usd": 0.0006156,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 546,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 422,
+        "output_tokens_details": {
+          "reasoning_tokens": 290
+        },
+        "total_tokens": 968
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-a50330a5f7c4",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "0d1fd49a2fd9e7281f4cb82939663e012123f684e2a7701cbc56a430eb1e8cc2",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761355.791243,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0e801df40fe15a52016aeaa04c06c087d2b16bab92385f12d0",
+      "elapsed_seconds": 5.492145999975037,
+      "input_tokens": 432,
+      "output_tokens": 486,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 294,
+      "service_tier": "default",
+      "estimated_usd": 0.0006695999999999999,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 432,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 486,
+        "output_tokens_details": {
+          "reasoning_tokens": 294
+        },
+        "total_tokens": 918
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-cf21d70a7234",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "86c9b49cb291245fba878c29428b7a4dae1c79597ba43759ec541af7f39e7634",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761361.2896798,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_06a6f2d4c2800a9d016aeaa051898c87d2b18d0942e9fbb0de",
+      "elapsed_seconds": 2.727479208027944,
+      "input_tokens": 278,
+      "output_tokens": 153,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 111,
+      "service_tier": "default",
+      "estimated_usd": 0.0002392,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 278,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 153,
+        "output_tokens_details": {
+          "reasoning_tokens": 111
+        },
+        "total_tokens": 431
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-c33f08c24a8e",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "c7da3c6a1dcacc93fddee54c30fc11a5bd30e3ba686f4d4ae88398056a19d2d9",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761364.023275,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0eea6272445dda58016aeaa0544b8887d2971b388dd6e2a53b",
+      "elapsed_seconds": 3.429338500020094,
+      "input_tokens": 413,
+      "output_tokens": 223,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 104,
+      "service_tier": "default",
+      "estimated_usd": 0.0003502,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 413,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 223,
+        "output_tokens_details": {
+          "reasoning_tokens": 104
+        },
+        "total_tokens": 636
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-7e127a4d3c02",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "94346a26b2ed54494c2ea1ad0e0b5677992a98e7e22ddb91b66ecbdc5be92d17",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761367.4605281,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0d9414401b4983fa016aeaa057b1d487d285293219cda417c9",
+      "elapsed_seconds": 2.0464925409760326,
+      "input_tokens": 265,
+      "output_tokens": 111,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 67,
+      "service_tier": "default",
+      "estimated_usd": 0.0001862,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 265,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 111,
+        "output_tokens_details": {
+          "reasoning_tokens": 67
+        },
+        "total_tokens": 376
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-4c7b180dc352",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "0072ef06553ba019b07782d03143a3203a8c3797610ffb0b22770c57ad4167af",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761369.5140538,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_06c7454c57b5e588016aeaa059c28887d2b89e3c00be9dd429",
+      "elapsed_seconds": 2.257941249990836,
+      "input_tokens": 222,
+      "output_tokens": 104,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 62,
+      "service_tier": "default",
+      "estimated_usd": 0.0001692,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 222,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 104,
+        "output_tokens_details": {
+          "reasoning_tokens": 62
+        },
+        "total_tokens": 326
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-1384e11544d3",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "74e2ea744d5e60e3ff517a31e6889f0dd7d40775ab4b34578e682890aa0549f7",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761371.77773,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_005581e7613ee147016aeaa05c056887d2855a565ac0c2f2de",
+      "elapsed_seconds": 2.8454293750110082,
+      "input_tokens": 306,
+      "output_tokens": 227,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 185,
+      "service_tier": "default",
+      "estimated_usd": 0.0003336,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 306,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 227,
+        "output_tokens_details": {
+          "reasoning_tokens": 185
+        },
+        "total_tokens": 533
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-90b9ded7eccc",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "14e426639a397c63d60b69cced107cb9ccb343a798d97286a81c6d2b3cfd5584",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761374.63258,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0b420c25abde7f6b016aeaa05ee57c87d2a7dcf14fc63bea77",
+      "elapsed_seconds": 2.8544877499807626,
+      "input_tokens": 365,
+      "output_tokens": 231,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 119,
+      "service_tier": "default",
+      "estimated_usd": 0.0003502,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 365,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 231,
+        "output_tokens_details": {
+          "reasoning_tokens": 119
+        },
+        "total_tokens": 596
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-fa9006db793a",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "174ba59c57740e607f3bb2936c86ba4ad77b3ba2830228a47865f3ac00ed5dc7",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761377.497438,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0832951d4b482269016aeaa061c20c87d2b4c694265ec42f4e",
+      "elapsed_seconds": 5.346163999987766,
+      "input_tokens": 558,
+      "output_tokens": 426,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cache_write_30m_tokens": 0,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 326,
+      "service_tier": "default",
+      "estimated_usd": 0.0006228,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 558,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens": 426,
+        "output_tokens_details": {
+          "reasoning_tokens": 326
+        },
+        "total_tokens": 984
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-4df1fefba0f8",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "bb43c9bc1028e8500c25586a334589f34f79b052b43bbbce05b372eaf0f58f5b",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761471.909842,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0e541312a417d9eb016aeaa0c021f487d2a2fd73b077918484",
+      "elapsed_seconds": 6.0032172499923036,
+      "input_tokens": 4284,
+      "output_tokens": 573,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 4281,
+      "cache_write_30m_tokens": 4281,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 324,
+      "service_tier": "default",
+      "estimated_usd": 0.0017584499999999997,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 4284,
+        "input_tokens_details": {
+          "cache_write_tokens": 4281,
+          "cached_tokens": 0
+        },
+        "output_tokens": 573,
+        "output_tokens_details": {
+          "reasoning_tokens": 324
+        },
+        "total_tokens": 4857
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-ea1b990d5dbe",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "3239c051d236f133be415a41beea664a756c3e742e452e9aee98b8231e7d32ab",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761477.9208581,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_082025f79895c0d8016aeaa0c66a9c87d2bc1e74de5824c314",
+      "elapsed_seconds": 7.399107332981657,
+      "input_tokens": 4254,
+      "output_tokens": 679,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 4251,
+      "cache_write_30m_tokens": 4251,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 375,
+      "service_tier": "default",
+      "estimated_usd": 0.0018781499999999999,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 4254,
+        "input_tokens_details": {
+          "cache_write_tokens": 4251,
+          "cached_tokens": 0
+        },
+        "output_tokens": 679,
+        "output_tokens_details": {
+          "reasoning_tokens": 375
+        },
+        "total_tokens": 4933
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-51540c66b817",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "e15fbadf12a53fd30dad9c9807d765f9dfecb5ed807bd3d7ff74240c92e6660e",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761485.32685,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_097daa5d54a526ab016aeaa0cd919087d2bc9b30ea2ee457fb",
+      "elapsed_seconds": 10.073737750004511,
+      "input_tokens": 11887,
+      "output_tokens": 959,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 11884,
+      "cache_write_30m_tokens": 11884,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 426,
+      "service_tier": "default",
+      "estimated_usd": 0.0041224,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 11887,
+        "input_tokens_details": {
+          "cache_write_tokens": 11884,
+          "cached_tokens": 0
+        },
+        "output_tokens": 959,
+        "output_tokens_details": {
+          "reasoning_tokens": 426
+        },
+        "total_tokens": 12846
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-06669b2729a3",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "46ecbd4b6f0ba114c29e10c5d8708d7c0d792617cc7398e64e3c23ca129986ed",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761495.408767,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_0ed329f7b90a1bb5016aeaa0d7a82487d2b122c1114ff62206",
+      "elapsed_seconds": 10.189086625003256,
+      "input_tokens": 11776,
+      "output_tokens": 1058,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 11773,
+      "cache_write_30m_tokens": 11773,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 493,
+      "service_tier": "default",
+      "estimated_usd": 0.00421345,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 11776,
+        "input_tokens_details": {
+          "cache_write_tokens": 11773,
+          "cached_tokens": 0
+        },
+        "output_tokens": 1058,
+        "output_tokens_details": {
+          "reasoning_tokens": 493
+        },
+        "total_tokens": 12834
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    },
+    {
+      "id": "Qwen-comparison-evaluation-review-7f6209810ca2",
+      "experiment": "Qwen-comparison-evaluation",
+      "requested_model": "gpt-5.6-luna",
+      "api_host": "api.openai.com",
+      "endpoint": "responses",
+      "request_sha256": "68e91e35c739b13b1dfdc461058c116d280b4f817e6f4be0b6f05a628152660d",
+      "status": "completed",
+      "attempt": 1,
+      "sdk_retries": 0,
+      "started_at": 1793761505.6073349,
+      "http_status": 200,
+      "resolved_model": "gpt-5.6-luna",
+      "response_id": "resp_027dd7f5a0779a1f016aeaa0e1d95087d29080b257faa44b2a",
+      "elapsed_seconds": 10.16843716695439,
+      "input_tokens": 6153,
+      "output_tokens": 1023,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 6150,
+      "cache_write_30m_tokens": 6150,
+      "cache_write_12h_tokens": 0,
+      "reasoning_tokens": 516,
+      "service_tier": "default",
+      "estimated_usd": 0.0027657,
+      "provider_reported_cost_usd": null,
+      "raw_usage": {
+        "input_tokens": 6153,
+        "input_tokens_details": {
+          "cache_write_tokens": 6150,
+          "cached_tokens": 0
+        },
+        "output_tokens": 1023,
+        "output_tokens_details": {
+          "reasoning_tokens": 516
+        },
+        "total_tokens": 7176
+      },
+      "cost_is_billing_confirmed": false,
+      "estimate_limitation": null
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "inputs": 39,
+  "labelled_bad": 25,
+  "labelled_good": 14,
+  "decisions": 195,
+  "checks": {
+    "combined": {
+      "n": 39,
+      "false_pass": 8,
+      "false_block": 0
+    },
+    "facts": {
+      "n": 39,
+      "false_pass": 19,
+      "false_block": 0
+    },
+    "generic": {
+      "n": 39,
+      "false_pass": 16,
+      "false_block": 0
+    },
+    "matched": {
+      "n": 39,
+      "false_pass": 6,
+      "false_block": 0
+    },
+    "quality": {
+      "n": 39,
+      "false_pass": 4,
+      "false_block": 0
+    }
+  },
+  "repair_pipelines": {
+    "combined": {
+      "n": 16,
+      "repair_attempted": 7,
+      "approved": 16,
+      "approved_invariant_violation": 1
+    },
+    "generic": {
+      "n": 16,
+      "repair_attempted": 5,
+      "approved": 16,
+      "approved_invariant_violation": 3
+    },
+    "matched": {
+      "n": 16,
+      "repair_attempted": 7,
+      "approved": 16,
+      "approved_invariant_violation": 1
+    }
+  }
+}

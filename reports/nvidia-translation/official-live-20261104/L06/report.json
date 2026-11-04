@@ -1,0 +1,218 @@
+{
+  "id": "L06",
+  "title": "문서 번역 모델 라우팅",
+  "status": "partial_non_openai_arms_blocked",
+  "result": {
+    "status": "partial_non_openai_arms_blocked",
+    "documents": 4,
+    "completed": 10,
+    "blocked": 6,
+    "candidate_model": "qwen/qwen3.7-flash",
+    "no_substitution": true
+  },
+  "failure": null,
+  "metrics": {
+    "by_arm": {
+      "luna": {
+        "status": {
+          "completed": 4
+        },
+        "selected": {
+          "luna": 4
+        }
+      },
+      "cheap": {
+        "status": {
+          "blocked_non_openai_budget_unreconciled": 4
+        },
+        "selected": {
+          "cheap": 4
+        }
+      },
+      "rule": {
+        "status": {
+          "completed": 4
+        },
+        "selected": {
+          "luna": 4
+        }
+      },
+      "switchyard": {
+        "status": {
+          "completed": 2,
+          "blocked_non_openai_budget_unreconciled": 2
+        },
+        "selected": {
+          "luna": 2,
+          "cheap": 2
+        }
+      }
+    },
+    "model_reviews_by_document": {
+      "pr252-quality": {
+        "review": {
+          "reviews": [
+            {
+              "id": "0",
+              "usable": true,
+              "major_errors": 0,
+              "minor_errors": 2,
+              "issues": [
+                "DSA 인덱서의 괄호 설명이 원문의 의미를 어색하게 옮겼습니다(“a direction in other models”를 “한 방향”으로 번역).",
+                "“Llama.cpp과” 등 일부 조사·띄어쓰기와 표현이 다소 어색합니다."
+              ]
+            },
+            {
+              "id": "1",
+              "usable": true,
+              "major_errors": 0,
+              "minor_errors": 1,
+              "issues": [
+                "DSA 인덱서의 괄호 설명이 원문의 의미를 어색하게 옮겼습니다(“a direction in other models”를 “다른 모델에도 적용되는 방향”으로 번역)."
+              ]
+            },
+            {
+              "id": "2",
+              "usable": true,
+              "major_errors": 0,
+              "minor_errors": 2,
+              "issues": [
+                "FP8 저장소를 설명하는 문장에서 동일한 링크가 중복되고 문장 구조가 어색합니다.",
+                "일부 기술 용어가 영어와 한국어로 혼용되어 문체 일관성이 다소 떨어집니다(예: “index”, “examples”, “draft head”)."
+              ]
+            }
+          ]
+        },
+        "lookup": {
+          "0": "luna",
+          "1": "rule",
+          "2": "switchyard"
+        }
+      },
+      "pr251-quality": {
+        "review": {
+          "reviews": [
+            {
+              "id": "0",
+              "usable": true,
+              "major_errors": 0,
+              "minor_errors": 1,
+              "issues": [
+                "“약 [$190 billion을 연구 개발에 투자”는 금액을 한국어로 자연스럽게 옮기지 못한 표현이며, “약 1,900억 달러를 연구 개발에 투자”가 적절합니다."
+              ]
+            },
+            {
+              "id": "1",
+              "usable": false,
+              "major_errors": 1,
+              "minor_errors": 1,
+              "issues": [
+                "“Erkenntnissen”이 독일어로 번역되지 않은 채 남아 있어 명백한 번역 오류입니다.",
+                "“약 [$190 billion을 연구 및 개발에 투자”는 금액을 한국어로 자연스럽게 옮기지 못한 표현이며, “약 1,900억 달러를 연구 개발에 투자”가 적절합니다."
+              ]
+            },
+            {
+              "id": "2",
+              "usable": true,
+              "major_errors": 0,
+              "minor_errors": 1,
+              "issues": [
+                "“[NASA IMPACT의](...) 27개 저장소”는 링크와 조사가 어색하게 결합되어 있으며, “NASA IMPACT의 [27개 저장소](...)”처럼 다듬는 것이 자연스럽습니다."
+              ]
+            }
+          ]
+        },
+        "lookup": {
+          "0": "luna",
+          "1": "rule",
+          "2": "switchyard"
+        }
+      },
+      "pr239-quality": {
+        "review": {
+          "reviews": [
+            {
+              "id": "0",
+              "usable": true,
+              "major_errors": 0,
+              "minor_errors": 0,
+              "issues": []
+            },
+            {
+              "id": "1",
+              "usable": true,
+              "major_errors": 0,
+              "minor_errors": 1,
+              "issues": [
+                "일부 이미지 대체 텍스트에서 처리량 단위(tokens/s)가 반복적으로 생략되어 수치 표현이 약간 덜 명확합니다."
+              ]
+            }
+          ]
+        },
+        "lookup": {
+          "0": "luna",
+          "1": "rule"
+        }
+      },
+      "pr238-quality": {
+        "review": {
+          "reviews": [
+            {
+              "id": "0",
+              "usable": true,
+              "major_errors": 0,
+              "minor_errors": 1,
+              "issues": [
+                "Anthropic API의 \"effort options\"를 \"추론 노력 옵션\"으로 옮겨 표현이 다소 어색하고 기술적 의미가 불명확합니다."
+              ]
+            },
+            {
+              "id": "1",
+              "usable": true,
+              "major_errors": 0,
+              "minor_errors": 1,
+              "issues": [
+                "Anthropic API의 \"effort options\"가 영어 \"effort\"로 남아 있어 한국어 번역의 일관성이 약합니다."
+              ]
+            }
+          ]
+        },
+        "lookup": {
+          "0": "luna",
+          "1": "rule"
+        }
+      }
+    }
+  },
+  "usage": {
+    "actual_upstream_attempts": 18,
+    "completed": 18,
+    "inflight": 0,
+    "errors": 0,
+    "requested_models": {
+      "gpt-5.6-luna": 18
+    },
+    "resolved_models": {
+      "gpt-5.6-luna": 18
+    },
+    "usage_derived_estimate_usd_known_sum": 0.08079425,
+    "unknown_estimate_attempts": 0,
+    "provider_reported_cost_usd": null,
+    "billing_confirmed_actual_usd": null,
+    "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+    "input_tokens": 115971,
+    "output_tokens_including_reasoning": 47383,
+    "cache_read_tokens": 21980,
+    "cache_write_tokens": 93937,
+    "cache_write_30m_tokens": 93937,
+    "cache_write_12h_tokens": 0,
+    "reasoning_tokens": 2759,
+    "service_tiers": {
+      "default": 18
+    },
+    "automatic_upstream_retries": 0,
+    "summed_request_seconds": 338.3496635448537
+  },
+  "human_approved": 0,
+  "new_proposals_executed": false
+}

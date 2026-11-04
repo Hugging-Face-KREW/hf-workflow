@@ -1,0 +1,170 @@
+{
+  "id": "wp-b-v2-plan_dd",
+  "family": "L07",
+  "status": "completed",
+  "requested_model": "qwen/qwen3.7-flash",
+  "resolved_model": "qwen/qwen3.7-flash",
+  "provider": "Alibaba",
+  "usage": {
+    "prompt_tokens": 2561,
+    "completion_tokens": 1802,
+    "total_tokens": 4363,
+    "cost": 0.00031109,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.00031109,
+      "upstream_inference_prompt_cost": 7.683e-05,
+      "upstream_inference_completions_cost": 0.00023426
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "request_sha256": "7175a205e974077938470c9bcc1cdcb4cf19f94cecfa859c7508c1661497db3e",
+  "reserved_upper_usd": "0.2552",
+  "text": "{\n\"plan\": [\n{\"term\": \"AnyLanguageModel\", \"role\": \"product_name\", \"decision\": \"Keep as is. Do not translate.\"},\n{\"term\": \"Foundation Models framework\", \"role\": \"product_name\", \"decision\": \"Translate to '파운데이션 모델 프레임워크' as it refers to Apple's specific framework name in this context, but keep 'Apple' and 'Foundation Models' recognizable. Actually, standard practice for proper noun frameworks is often translation if no official Korean name exists, or keeping English. Given the rule 'Preserve... product/model names', I will keep 'Foundation Models framework' as is or translate descriptively. The example shows 'TorchNeuron' kept. 'Foundation Models' is a specific Apple term. I will translate 'framework' but keep 'Foundation Models' or translate both? Let's look at the example: 'AWS Trainium' -> 'AWS Trainium'. So proper nouns are kept. 'Foundation Models' is a proper noun phrase here. I will keep 'Foundation Models framework' or translate to 'Foundation Models 프레임워크'. Let's stick to keeping the proper noun part and translating common parts if needed, but usually full product names are kept. However, 'Foundation Models' is widely known. I will translate to 'Foundation Models 프레임워크' to be safe and natural, or just 'Foundation Models'. Let's check the bad example: 'previous post' -> '이전 게시물'. It translates common nouns. 'Foundation Models' is a proper name. I will keep it as 'Foundation Models 프레임워크'.\"},\n{\"term\": \"Apple\", \"role\": \"product_name/company\", \"decision\": \"Keep as 'Apple'.\"},\n{\"term\": \"local models\", \"role\": \"common_noun\", \"decision\": \"Translate to '로컬 모델'.\"},\n{\"term\": \"inference providers\", \"role\": \"common_noun\", \"decision\": \"Translate to '추론 제공자'.\"},\n{\"term\": \"transcript\", \"role\": \"common_noun\", \"decision\": \"In LLM context, this usually means the conversation history/turns. Translate to '대화 기록' or '트랜스크립트'. '대화 기록' is more natural for technical blogs explaining functionality.\"},\n{\"term\": \"reasoning blocks\", \"role\": \"api_identifier/concept\", \"decision\": \"Translate to '추론 블록'.\"},\n{\"term\": \"Metal GPU\", \"role\": \"product_name/tech_spec\", \"decision\": \"Keep 'Metal GPU' as Metal is Apple's proprietary API/framework name.\"},\n{\"term\": \"MPS availability check\", \"role\": \"feature_name\", \"decision\": \"Translate to 'MPS 사용 가능성 확인' or 'MPS 가용성 검사'. 'MPS 가용성 검사' is more technical.\"},\n{\"term\": \"GEMV kernels\", \"role\": \"api_identifier\", \"decision\": \"Keep 'GEMV 커널'.\"},\n{\"term\": \"torch.mm\", \"role\": \"api_identifier\", \"decision\": \"Keep 'torch.mm'.\"},\n{\"term\": \"F.linear\", \"role\": \"api_identifier\", \"decision\": \"Keep 'F.linear'.\"},\n{\"term\": \"MPSGraph\", \"role\": \"api_identifier\", \"decision\": \"Keep 'MPSGraph'.\"},\n{\"term\": \"BF16\", \"role\": \"tech_spec\", \"decision\": \"Keep 'BF16'.\"},\n{\"term\": \"MoE models\", \"role\": \"common_noun/product_type\", \"decision\": \"Translate to 'MoE 모델' (Mixture of Experts).\"},\n{\"term\": \"LM heads\", \"role\": \"common_noun/architecture\", \"decision\": \"Translate to 'LM 헤드' or '언어 모델 헤드'. 'LM 헤드' is common in Korean tech circles.\"},\n{\"term\": \"geometric-mean speedup\", \"role\": \"metric\", \"decision\": \"Translate to '기하 평균 속도 향상'.\"},\n{\"term\": \"macOS 15 or later\", \"role\": \"condition\", \"decision\": \"Keep 'macOS 15 이상'.\"},\n{\"term\": \"Python 3.11 or later\", \"role\": \"condition\", \"decision\": \"Keep 'Python 3.11 이상'.\"}\n],\n\"translations\": [\n{\n\"id\": \"pr238_intro\",\n\"text\": \"지난해 11월, 이 블로그에서 [AnyLanguageModel](https://huggingface.co/blog/anylanguagemodel)을 소개했습니다:\\n\\nApple의 Foundation Models 프레임워크를 대체할 수 있는 드롭인 교체품으로,\\n앱에서 사용하는 모델과 제공자를 선택할 수 있게 해줍니다.\\n로컬 모델에 관심이 있었지만\\n시작하는 방법이 항상 명확하지 않았던 앱 개발자들로부터 피드백을 받았습니다.\\n그들은 또한 여러 추론 제공자를 지원하기 위한 추가 복잡성을 피하고 싶어 했습니다.\\nAnyLanguageModel은 이러한 피드백을 바탕으로 탄생했습니다.\"\n},\n{\n\"id\": \"pr238_shared\",\n\"text\": \"로컬 추론과 호스팅된 추론은 각각 강점을 가지고 있으며,\\n이 새로운 세대의 지능형 앱을 구축하는 데 모두 중요한 역할을 합니다.\\n공유 API를 사용하면 각 작업에 적합한 모델을 선택하기가 더 쉬워집니다.\"\n},\n{\n\"id\": \"pr238_releases\",\n\"text\": \"1년과 수십 번의 릴리스 이후,\\n[AnyLanguageModel 1.0](https://github.com/huggingface/AnyLanguageModel/releases/tag/1.0.0)이 출시되었으며,\\n[swift-huggingface 1.0](https://github.com/huggingface/swift-huggingface/releases/tag/1.0.0)\\n및 [swift-xet 1.0](https://github.com/huggingface/swift-xet/releases/tag/1.0.0)도 함께 나왔습니다.\"\n},\n{\n\"id\": \"pr238_reasoning\",\n\"text\": \"추론도 이제 대화 기록의 일부가 되었습니다.\\n제공자를 전환할 때,\\n새로운 제공자가 이를 재생할 수 없는 경우 요청에서 추론 블록이 자동으로 생략됩니다.\"\n},\n{\n\"id\": \"pr238_linux\",\n\"text\": \"AnyLanguageModel은 Linux에서도 실행되므로,\\n동일한 코드가 서버에서도 작동할 수 있습니다.\"\n},\n{\n\"id\": \"pr238_thanks\",\n\"text\": \"커뮤니티의 피드백과 기여는 우리의 주요 기능 중 몇몇을 형성하는 데 영향을 미쳤습니다.\\nAnyLanguageModel을 앱 개발자에게 더 유용하게 만드는 데 도움을 준 [모든 기여자들](https://github.com/huggingface/AnyLanguageModel/graphs/contributors)께 감사드립니다.\"\n},\n{\n\"id\": \"pr239_requirements\",\n\"text\": \"**macOS 15 이상** 및 **Python 3.11 이상**이 설치된 Apple silicon Mac이 필요합니다 ([2.15 호환성 행렬](https://github.com/pytorch/pytorch/blob/release/2.15/RELEASE.md#release-compatibility-matrix) 참조). OS 버전이 너무 오래되거나 Metal GPU를 사용할 수 없는 경우, MPS 가용성 검사에서 그 이유를 알려줍니다.\"\n},\n{\n\"id\": \"pr239_linear\",\n\"text\": \"MPS는 2.14부터 `torch.mm`에 대한 GEMV 커널을 보유하고 있었지만, `F.linear`는 여전히 MPSGraph를 통해 처리되었습니다. PyTorch 2.15는 이를 [`F.linear`](https://github.com/pytorch/pytorch/pull/198721)에 연결하므로, 일반적인 `[1, 1, hidden_size]` 디코딩 입력은 이를 직접 사용하며, eligible bias additions가 병합됩니다. 실제 모델에서 추출한 96개의 BF16 레이어 형태에 걸쳐 이는 **기하 평균 기준 1.23배 속도 향상**을 의미합니다. 가장 큰 성능 개선은 MoE 모델의 게이트와 같은 작은 프로젝션에서 발생하며, 이전 경로에서는 메모리 대역폭의 대부분이 비활용 상태였습니다. 대형 레이어와 LM 헤드는 이미 대역폭 한계에 근접해 있었으므로 1× 근처를 유지합니다.\"\n}\n]\n}",
+  "result": {
+    "plan": [
+      {
+        "term": "AnyLanguageModel",
+        "role": "product_name",
+        "decision": "Keep as is. Do not translate."
+      },
+      {
+        "term": "Foundation Models framework",
+        "role": "product_name",
+        "decision": "Translate to '파운데이션 모델 프레임워크' as it refers to Apple's specific framework name in this context, but keep 'Apple' and 'Foundation Models' recognizable. Actually, standard practice for proper noun frameworks is often translation if no official Korean name exists, or keeping English. Given the rule 'Preserve... product/model names', I will keep 'Foundation Models framework' as is or translate descriptively. The example shows 'TorchNeuron' kept. 'Foundation Models' is a specific Apple term. I will translate 'framework' but keep 'Foundation Models' or translate both? Let's look at the example: 'AWS Trainium' -> 'AWS Trainium'. So proper nouns are kept. 'Foundation Models' is a proper noun phrase here. I will keep 'Foundation Models framework' or translate to 'Foundation Models 프레임워크'. Let's stick to keeping the proper noun part and translating common parts if needed, but usually full product names are kept. However, 'Foundation Models' is widely known. I will translate to 'Foundation Models 프레임워크' to be safe and natural, or just 'Foundation Models'. Let's check the bad example: 'previous post' -> '이전 게시물'. It translates common nouns. 'Foundation Models' is a proper name. I will keep it as 'Foundation Models 프레임워크'."
+      },
+      {
+        "term": "Apple",
+        "role": "product_name/company",
+        "decision": "Keep as 'Apple'."
+      },
+      {
+        "term": "local models",
+        "role": "common_noun",
+        "decision": "Translate to '로컬 모델'."
+      },
+      {
+        "term": "inference providers",
+        "role": "common_noun",
+        "decision": "Translate to '추론 제공자'."
+      },
+      {
+        "term": "transcript",
+        "role": "common_noun",
+        "decision": "In LLM context, this usually means the conversation history/turns. Translate to '대화 기록' or '트랜스크립트'. '대화 기록' is more natural for technical blogs explaining functionality."
+      },
+      {
+        "term": "reasoning blocks",
+        "role": "api_identifier/concept",
+        "decision": "Translate to '추론 블록'."
+      },
+      {
+        "term": "Metal GPU",
+        "role": "product_name/tech_spec",
+        "decision": "Keep 'Metal GPU' as Metal is Apple's proprietary API/framework name."
+      },
+      {
+        "term": "MPS availability check",
+        "role": "feature_name",
+        "decision": "Translate to 'MPS 사용 가능성 확인' or 'MPS 가용성 검사'. 'MPS 가용성 검사' is more technical."
+      },
+      {
+        "term": "GEMV kernels",
+        "role": "api_identifier",
+        "decision": "Keep 'GEMV 커널'."
+      },
+      {
+        "term": "torch.mm",
+        "role": "api_identifier",
+        "decision": "Keep 'torch.mm'."
+      },
+      {
+        "term": "F.linear",
+        "role": "api_identifier",
+        "decision": "Keep 'F.linear'."
+      },
+      {
+        "term": "MPSGraph",
+        "role": "api_identifier",
+        "decision": "Keep 'MPSGraph'."
+      },
+      {
+        "term": "BF16",
+        "role": "tech_spec",
+        "decision": "Keep 'BF16'."
+      },
+      {
+        "term": "MoE models",
+        "role": "common_noun/product_type",
+        "decision": "Translate to 'MoE 모델' (Mixture of Experts)."
+      },
+      {
+        "term": "LM heads",
+        "role": "common_noun/architecture",
+        "decision": "Translate to 'LM 헤드' or '언어 모델 헤드'. 'LM 헤드' is common in Korean tech circles."
+      },
+      {
+        "term": "geometric-mean speedup",
+        "role": "metric",
+        "decision": "Translate to '기하 평균 속도 향상'."
+      },
+      {
+        "term": "macOS 15 or later",
+        "role": "condition",
+        "decision": "Keep 'macOS 15 이상'."
+      },
+      {
+        "term": "Python 3.11 or later",
+        "role": "condition",
+        "decision": "Keep 'Python 3.11 이상'."
+      }
+    ],
+    "translations": [
+      {
+        "id": "pr238_intro",
+        "text": "지난해 11월, 이 블로그에서 [AnyLanguageModel](https://huggingface.co/blog/anylanguagemodel)을 소개했습니다:\n\nApple의 Foundation Models 프레임워크를 대체할 수 있는 드롭인 교체품으로,\n앱에서 사용하는 모델과 제공자를 선택할 수 있게 해줍니다.\n로컬 모델에 관심이 있었지만\n시작하는 방법이 항상 명확하지 않았던 앱 개발자들로부터 피드백을 받았습니다.\n그들은 또한 여러 추론 제공자를 지원하기 위한 추가 복잡성을 피하고 싶어 했습니다.\nAnyLanguageModel은 이러한 피드백을 바탕으로 탄생했습니다."
+      },
+      {
+        "id": "pr238_shared",
+        "text": "로컬 추론과 호스팅된 추론은 각각 강점을 가지고 있으며,\n이 새로운 세대의 지능형 앱을 구축하는 데 모두 중요한 역할을 합니다.\n공유 API를 사용하면 각 작업에 적합한 모델을 선택하기가 더 쉬워집니다."
+      },
+      {
+        "id": "pr238_releases",
+        "text": "1년과 수십 번의 릴리스 이후,\n[AnyLanguageModel 1.0](https://github.com/huggingface/AnyLanguageModel/releases/tag/1.0.0)이 출시되었으며,\n[swift-huggingface 1.0](https://github.com/huggingface/swift-huggingface/releases/tag/1.0.0)\n및 [swift-xet 1.0](https://github.com/huggingface/swift-xet/releases/tag/1.0.0)도 함께 나왔습니다."
+      },
+      {
+        "id": "pr238_reasoning",
+        "text": "추론도 이제 대화 기록의 일부가 되었습니다.\n제공자를 전환할 때,\n새로운 제공자가 이를 재생할 수 없는 경우 요청에서 추론 블록이 자동으로 생략됩니다."
+      },
+      {
+        "id": "pr238_linux",
+        "text": "AnyLanguageModel은 Linux에서도 실행되므로,\n동일한 코드가 서버에서도 작동할 수 있습니다."
+      },
+      {
+        "id": "pr238_thanks",
+        "text": "커뮤니티의 피드백과 기여는 우리의 주요 기능 중 몇몇을 형성하는 데 영향을 미쳤습니다.\nAnyLanguageModel을 앱 개발자에게 더 유용하게 만드는 데 도움을 준 [모든 기여자들](https://github.com/huggingface/AnyLanguageModel/graphs/contributors)께 감사드립니다."
+      },
+      {
+        "id": "pr239_requirements",
+        "text": "**macOS 15 이상** 및 **Python 3.11 이상**이 설치된 Apple silicon Mac이 필요합니다 ([2.15 호환성 행렬](https://github.com/pytorch/pytorch/blob/release/2.15/RELEASE.md#release-compatibility-matrix) 참조). OS 버전이 너무 오래되거나 Metal GPU를 사용할 수 없는 경우, MPS 가용성 검사에서 그 이유를 알려줍니다."
+      },
+      {
+        "id": "pr239_linear",
+        "text": "MPS는 2.14부터 `torch.mm`에 대한 GEMV 커널을 보유하고 있었지만, `F.linear`는 여전히 MPSGraph를 통해 처리되었습니다. PyTorch 2.15는 이를 [`F.linear`](https://github.com/pytorch/pytorch/pull/198721)에 연결하므로, 일반적인 `[1, 1, hidden_size]` 디코딩 입력은 이를 직접 사용하며, eligible bias additions가 병합됩니다. 실제 모델에서 추출한 96개의 BF16 레이어 형태에 걸쳐 이는 **기하 평균 기준 1.23배 속도 향상**을 의미합니다. 가장 큰 성능 개선은 MoE 모델의 게이트와 같은 작은 프로젝션에서 발생하며, 이전 경로에서는 메모리 대역폭의 대부분이 비활용 상태였습니다. 대형 레이어와 LM 헤드는 이미 대역폭 한계에 근접해 있었으므로 1× 근처를 유지합니다."
+      }
+    ]
+  },
+  "coverage_failures": [],
+  "routing_reused": null,
+  "human_approved": false
+}
