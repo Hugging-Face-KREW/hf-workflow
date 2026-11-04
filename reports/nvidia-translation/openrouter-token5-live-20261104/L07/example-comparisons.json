@@ -1,0 +1,85 @@
+{
+  "description_ko": "기존 결과에서 고른 반대 방향의 두 사례. 발췌는 원출력의 연속 문자열이며 minor 수는 발췌가 아닌 전체 문단 평가입니다. 새로운 번역·평가 없음.",
+  "examples": [
+    {
+      "input_id": "pr239_linear",
+      "selection_reason_ko": "합성 예시 추가에서 기준선보다 경미 지적이 늘어난 사례",
+      "source": "MPS has had GEMV kernels for `torch.mm` since 2.14, but `F.linear` still went through MPSGraph. PyTorch 2.15 [connects them to `F.linear`](https://github.com/pytorch/pytorch/pull/198721), so the common `[1, 1, hidden_size]` decoding input uses them directly, with eligible bias additions fused in. Across 96 BF16 layer shapes from real models, that's a **1.23× geometric-mean speedup**. The biggest wins land on small projections, such as the gates in MoE models, where the old path left most of the memory bandwidth unused. Large layers and LM heads were already close to bandwidth-bound, so they stay near 1×.",
+      "source_excerpt": "connects them to `F.linear`",
+      "source_provenance": "reports/nvidia-translation/pr-label-review/labels-final.json",
+      "source_file_sha256": "e26986a9aba37f94678755998fdcab5a056b0b0a4e25aa0cd333170c12e64e20",
+      "candidates": [
+        {
+          "output_id": "wp-b-v2-baseline:pr239_linear",
+          "arm": "baseline",
+          "text": "MPS는 2.14부터 `torch.mm`용 GEMV 커널을 지원해 왔지만, `F.linear`는 여전히 MPSGraph를 통해 처리되었습니다. PyTorch 2.15는 [이를 `F.linear`에 연결](https://github.com/pytorch/pytorch/pull/198721)하여, 일반적인 `[1, 1, hidden_size]` 디코딩 입력이 이를 직접 사용하며, 조건에 맞는 편향 추가(bias additions)가 병합됩니다. 실제 모델들의 96개 BF16 레이어 모양 전반에 걸쳐 이는 **1.23배 기하평균 속도 향상**을 의미합니다. 가장 큰 성능 향상은 MoE 모델의 게이트와 같은 작은 투영(projection) 부분에서 발생하는데, 이전 경로에서는 메모리 대역폭의 대부분이 미사용 상태였습니다. 대형 레이어와 언어 모델 헤드(LM heads)는 이미 대역폭 한계에 가까워 1배 수준을 유지합니다.",
+          "excerpt": "이를 `F.linear`에 연결",
+          "major_errors": 0,
+          "minor_errors": 0,
+          "raw_output": "reports/nvidia-translation/openrouter-token5-live-20261104/outputs/wp-b-v2-baseline.json",
+          "raw_sha256": "617a643bb24d0d123f9fb742f6de3c5c4709e6be384a4702e19d4f3f227708eb"
+        },
+        {
+          "output_id": "wp-b-v2-plan_real:pr239_linear",
+          "arm": "plan_real",
+          "text": "MPS는 2.14부터 `torch.mm`용 GEMV 커널을 지원해 왔으나, `F.linear`는 여전히 MPSGraph를 통해 처리되었습니다. PyTorch 2.15는 이를 [`F.linear`](https://github.com/pytorch/pytorch/pull/198721)에 연결하여, 일반적인 `[1, 1, hidden_size]` 디코딩 입력이 이를 직접 사용하며, 조건에 맞는 바이어스(addition) 연산이 결합(fused)됩니다. 실제 모델에서 추출한 96개의 BF16 레이어 형태에 걸쳐 이는 **기하평균 1.23배 속도 향상**을 의미합니다. 가장 큰 성능 개선은 MoE 모델의 게이트(gates)와 같은 작은 투영(projection) 레이어에서 발생하며, 기존 경로에서는 메모리 대역폭의 대부분이 unused 상태였습니다. 큰 레이어와 LM 헤드(head)는 이미 대역폭 한계에 가까워 1× 근처를 유지합니다.",
+          "excerpt": "`F.linear`",
+          "major_errors": 0,
+          "minor_errors": 1,
+          "raw_output": "reports/nvidia-translation/openrouter-token5-live-20261104/outputs/wp-b-v2-plan_real.json",
+          "raw_sha256": "7b6364d5bd3f20503c4e2418a54b7370c63c1eb65756e5e31af3e93cc6676669"
+        },
+        {
+          "output_id": "wp-b-v2-plan_dd:pr239_linear",
+          "arm": "plan_dd",
+          "text": "MPS는 2.14부터 `torch.mm`에 대한 GEMV 커널을 보유하고 있었지만, `F.linear`는 여전히 MPSGraph를 통해 처리되었습니다. PyTorch 2.15는 이를 [`F.linear`](https://github.com/pytorch/pytorch/pull/198721)에 연결하므로, 일반적인 `[1, 1, hidden_size]` 디코딩 입력은 이를 직접 사용하며, eligible bias additions가 병합됩니다. 실제 모델에서 추출한 96개의 BF16 레이어 형태에 걸쳐 이는 **기하 평균 기준 1.23배 속도 향상**을 의미합니다. 가장 큰 성능 개선은 MoE 모델의 게이트와 같은 작은 프로젝션에서 발생하며, 이전 경로에서는 메모리 대역폭의 대부분이 비활용 상태였습니다. 대형 레이어와 LM 헤드는 이미 대역폭 한계에 근접해 있었으므로 1× 근처를 유지합니다.",
+          "excerpt": "`F.linear`",
+          "major_errors": 0,
+          "minor_errors": 2,
+          "raw_output": "reports/nvidia-translation/openrouter-token5-live-20261104/outputs/wp-b-v2-plan_dd.json",
+          "raw_sha256": "62b4c9b7c8a2013838f78fdf05daf156e48326f5dcc9acd176de8c5847f6c6cc"
+        }
+      ]
+    },
+    {
+      "input_id": "pr238_shared",
+      "selection_reason_ko": "합성 예시 추가에서 기준선보다 경미 지적이 줄어든 사례",
+      "source": "Local and hosted inference each have their strengths,\nand both have a role in building this new generation of intelligent apps.\nA shared API makes it easier to choose the right model for each task.",
+      "source_excerpt": "Local and hosted inference each have their strengths,",
+      "source_provenance": "reports/nvidia-translation/pr-label-review/labels-final.json",
+      "source_file_sha256": "e26986a9aba37f94678755998fdcab5a056b0b0a4e25aa0cd333170c12e64e20",
+      "candidates": [
+        {
+          "output_id": "wp-b-v2-baseline:pr238_shared",
+          "arm": "baseline",
+          "text": "로컬 추론과 호스팅된 추론 각각에는 강점이 있으며,\n이 새로운 세대의 지능형 애플리케이션 구축에 둘 다 중요한 역할을 합니다.\n공유 API는 각 작업에 적합한 모델을 선택하는 것을 더 쉽게 만듭니다.",
+          "excerpt": "로컬 추론과 호스팅된 추론 각각에는 강점이 있으며,",
+          "major_errors": 0,
+          "minor_errors": 1,
+          "raw_output": "reports/nvidia-translation/openrouter-token5-live-20261104/outputs/wp-b-v2-baseline.json",
+          "raw_sha256": "617a643bb24d0d123f9fb742f6de3c5c4709e6be384a4702e19d4f3f227708eb"
+        },
+        {
+          "output_id": "wp-b-v2-plan_real:pr238_shared",
+          "arm": "plan_real",
+          "text": "로컬 추론과 호스팅 추론은 각각 강점을 가지고 있으며,\n이 새로운 세대의 지능형 앱을 구축하는 데 모두 중요한 역할을 합니다.\n공유 API는 각 작업에 적합한 모델을 선택하는 것을 더 쉽게 만듭니다.",
+          "excerpt": "로컬 추론과 호스팅 추론은 각각 강점을 가지고 있으며,",
+          "major_errors": 0,
+          "minor_errors": 0,
+          "raw_output": "reports/nvidia-translation/openrouter-token5-live-20261104/outputs/wp-b-v2-plan_real.json",
+          "raw_sha256": "7b6364d5bd3f20503c4e2418a54b7370c63c1eb65756e5e31af3e93cc6676669"
+        },
+        {
+          "output_id": "wp-b-v2-plan_dd:pr238_shared",
+          "arm": "plan_dd",
+          "text": "로컬 추론과 호스팅된 추론은 각각 강점을 가지고 있으며,\n이 새로운 세대의 지능형 앱을 구축하는 데 모두 중요한 역할을 합니다.\n공유 API를 사용하면 각 작업에 적합한 모델을 선택하기가 더 쉬워집니다.",
+          "excerpt": "로컬 추론과 호스팅된 추론은 각각 강점을 가지고 있으며,",
+          "major_errors": 0,
+          "minor_errors": 0,
+          "raw_output": "reports/nvidia-translation/openrouter-token5-live-20261104/outputs/wp-b-v2-plan_dd.json",
+          "raw_sha256": "62b4c9b7c8a2013838f78fdf05daf156e48326f5dcc9acd176de8c5847f6c6cc"
+        }
+      ]
+    }
+  ]
+}

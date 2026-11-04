@@ -1,0 +1,1904 @@
+{
+  "experiment": "L04",
+  "description_ko": "보존 원자료에서 필요한 필드를 추출한 공개용 사본. expected_bad는 개발용 표시이며 사람 정답이 아닙니다. 새 모델 호출 없음.",
+  "provenance": [
+    {
+      "original_path": "reports/nvidia-translation/official-live-20261104/L04/translations.json",
+      "sha256": "c5d4928beb1117fe0aaa25cafdfb90742eda4bbeb83f7a8f51ddb693ce14db21"
+    },
+    {
+      "original_path": "reports/nvidia-translation/official-live-20261104/L04/evaluations-v2.json",
+      "sha256": "fa04543ebb65803bc9bcb11270642a8deb98c7d61bf40eda5d07da48f49ecabe"
+    },
+    {
+      "original_path": "reports/nvidia-translation/official-live-20261104/L04/evaluation.jsonl",
+      "sha256": "9940952ad9b0ab1234ff56bc3e4bb1b4acfcb22a0a870edaea298b2dcc299ef9"
+    }
+  ],
+  "generation_rows": [
+    {
+      "case_id": "pr253_recap",
+      "split": "new_pr_holdout",
+      "arm": "whole_policy",
+      "source_hash": "22a546169ded1cb2b9f2a04bc4921c506d503ce3d3e1fe54e34e00790ed4db7c",
+      "error": null,
+      "mechanical": [
+        "numbers_changed"
+      ],
+      "remaining_labels": [
+        "AnyLanguageModel 1.0 recap"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "76ae12fe14fd33c9350ffd8934ad1fd7d40de9a123ca15cf2a2835a5174eb288"
+    },
+    {
+      "case_id": "pr253_capability",
+      "split": "new_pr_holdout",
+      "arm": "whole_policy",
+      "source_hash": "5221b576e470fead0aedcaa7ceafea0a46cc7f10bec82099b424b87f512eab9d",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "0a22915e837135ebe4be956da8cc9b5ecf69f1380f7cc8f91de92ea6a1d0c403"
+    },
+    {
+      "case_id": "pr244_announcement",
+      "split": "development_seen",
+      "arm": "whole_policy",
+      "source_hash": "eec95e349dc204bcc4ae049b99869bb0a0690304a0688a12e723d2b68413481c",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "TorchNeuron announcement"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "80edd81e7369bce7171b05c577ff369b73850f8920f2e69d28b4e50ec7b00415"
+    },
+    {
+      "case_id": "pr244_dataset",
+      "split": "development_seen",
+      "arm": "url_generic",
+      "source_hash": "8797ddf88d0008a74484d541d057239d52ae4be2375539f75ae66ab6de294065",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "559d6d4968dd78c366858596111c4300d7bfe06f5c056efa84cf60322a93cfd8"
+    },
+    {
+      "case_id": "pr244_previous",
+      "split": "development_seen",
+      "arm": "url_policy",
+      "source_hash": "7a473845577ba8b15a35b38972d9e4af42ccb06572bfea74b784771f4b423adc",
+      "error": null,
+      "mechanical": [
+        "link_targets_changed"
+      ],
+      "remaining_labels": [],
+      "missing_annotated_names": [
+        "Hugging Face Hub"
+      ],
+      "candidate_exists": true,
+      "candidate_sha256": "99ba70e51243c98e9d39826490a0161533334dde9970be3fd4fc81cb70caec39"
+    },
+    {
+      "case_id": "pr253_ultra",
+      "split": "new_pr_holdout",
+      "arm": "whole_policy",
+      "source_hash": "c8197ed6b6df38d10e0b2f56c45d5bfacc7b617704d194f07d7d30533dfd25da",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "post-trained take on v3"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "cc673e6a8d4945d727a49299d475cb6bbe13ca6de349353855d6d37b92e31a66"
+    },
+    {
+      "case_id": "pr253_differences",
+      "split": "new_pr_holdout",
+      "arm": "whole_generic",
+      "source_hash": "a360fd036abed11f0043f2abe736e42d0c476f26e0f43c120983d4d60c70d253",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "lists the differences"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "cae14eba01221b6164b491823d4f2f60e40306bab4554d58b2e00689a2d6f283"
+    },
+    {
+      "case_id": "pr253_provider",
+      "split": "new_pr_holdout",
+      "arm": "url_policy",
+      "source_hash": "c1a24ef3262cf5bdb7bd90f19f155118582c714420de00e27aadf9d33cf64b5f",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "0839d20b5272360c363afe651e31c2e7d30476ba98c504df3596afedd99a044d"
+    },
+    {
+      "case_id": "pr247_tools",
+      "split": "development_seen",
+      "arm": "whole_policy",
+      "source_hash": "8bae9f3ee305bcc9a195347aae6e7c0c9add315d42c9dc423c6b13a2b6c11208",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "NeMo Speech fine-tuning tools",
+        "medical case study"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "fd9869bdf41f7b4966ec521353823146b3dc9453c99232b6b061fc08bd9e6216"
+    },
+    {
+      "case_id": "pr244_previous",
+      "split": "development_seen",
+      "arm": "whole_generic",
+      "source_hash": "7a473845577ba8b15a35b38972d9e4af42ccb06572bfea74b784771f4b423adc",
+      "error": null,
+      "mechanical": [
+        "alias_missing:Hugging Face Hub"
+      ],
+      "remaining_labels": [
+        "previous post"
+      ],
+      "missing_annotated_names": [
+        "Hugging Face Hub"
+      ],
+      "candidate_exists": true,
+      "candidate_sha256": "1fcbef4129d0e194b4c70be938e5dc9c2147b58eb99a746df8a6c44457072b48"
+    },
+    {
+      "case_id": "pr253_provider",
+      "split": "new_pr_holdout",
+      "arm": "whole_generic",
+      "source_hash": "c1a24ef3262cf5bdb7bd90f19f155118582c714420de00e27aadf9d33cf64b5f",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "small provider"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "d201f020cd76bf40ee4850fc037ba69674a3876a20636283ee5125228f93283a"
+    },
+    {
+      "case_id": "pr253_provider",
+      "split": "new_pr_holdout",
+      "arm": "whole_policy",
+      "source_hash": "c1a24ef3262cf5bdb7bd90f19f155118582c714420de00e27aadf9d33cf64b5f",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "small provider"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "4243f56eb73c62a4295bddeb674e606befec7aea3ef7cd0aff133c3a9f42a916"
+    },
+    {
+      "case_id": "pr247_tools",
+      "split": "development_seen",
+      "arm": "url_policy",
+      "source_hash": "8bae9f3ee305bcc9a195347aae6e7c0c9add315d42c9dc423c6b13a2b6c11208",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "9a5e36a4e40141f06d2ac1f238eafb55b084ee2e49f1b5052e091d158528ef02"
+    },
+    {
+      "case_id": "pr247_demo",
+      "split": "development_seen",
+      "arm": "whole_policy",
+      "source_hash": "e129192f39b4f0575c800cde3e419de05f702c6658732737ee7f6e894218cd9b",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "Hugging Face demo"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "4ee6c7c458f5b6f87e7b604a34f61c74ba13bdae35f0a6b93a36e1c1ffe669c8"
+    },
+    {
+      "case_id": "pr247_tools",
+      "split": "development_seen",
+      "arm": "whole_generic",
+      "source_hash": "8bae9f3ee305bcc9a195347aae6e7c0c9add315d42c9dc423c6b13a2b6c11208",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "NeMo Speech fine-tuning tools",
+        "medical case study"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "817bf05655ae7759dd2e5674da97321eb9ec394355f105b4324972567e592d44"
+    },
+    {
+      "case_id": "pr253_differences",
+      "split": "new_pr_holdout",
+      "arm": "url_policy",
+      "source_hash": "a360fd036abed11f0043f2abe736e42d0c476f26e0f43c120983d4d60c70d253",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "4e49dec4c4b9572fb3945f630f7026a427bd9d3d9bf2c7d97c2e5bc1839bbd87"
+    },
+    {
+      "case_id": "pr253_recap",
+      "split": "new_pr_holdout",
+      "arm": "whole_generic",
+      "source_hash": "22a546169ded1cb2b9f2a04bc4921c506d503ce3d3e1fe54e34e00790ed4db7c",
+      "error": null,
+      "mechanical": [
+        "numbers_changed"
+      ],
+      "remaining_labels": [
+        "AnyLanguageModel 1.0 recap"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "4b298046e87e47b6e140eb3fd232c37e681f580415b59e261f3ac35b400ddb44"
+    },
+    {
+      "case_id": "pr253_english",
+      "split": "new_pr_holdout",
+      "arm": "whole_generic",
+      "source_hash": "8910b8dbf9eb140b4d2844bfe5d5c2854267082786113028177633bba92181ab",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "English-only Parakeet"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "dfa03288d1dd3f306121f01445ec7f75335bdc4c9ecbc036b3d1344ddd1b2380"
+    },
+    {
+      "case_id": "pr244_previous",
+      "split": "development_seen",
+      "arm": "whole_policy",
+      "source_hash": "7a473845577ba8b15a35b38972d9e4af42ccb06572bfea74b784771f4b423adc",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "previous post"
+      ],
+      "missing_annotated_names": [
+        "Hugging Face Hub"
+      ],
+      "candidate_exists": true,
+      "candidate_sha256": "77186c37551ce918e7ee5621c20ebe42828537be3caaa78ced50956a4183503f"
+    },
+    {
+      "case_id": "pr253_english",
+      "split": "new_pr_holdout",
+      "arm": "whole_policy",
+      "source_hash": "8910b8dbf9eb140b4d2844bfe5d5c2854267082786113028177633bba92181ab",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "English-only Parakeet"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "dfa03288d1dd3f306121f01445ec7f75335bdc4c9ecbc036b3d1344ddd1b2380"
+    },
+    {
+      "case_id": "pr244_dataset",
+      "split": "development_seen",
+      "arm": "whole_generic",
+      "source_hash": "8797ddf88d0008a74484d541d057239d52ae4be2375539f75ae66ab6de294065",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "dataset card"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "e6f330373c75a21660ad1b6253d69c23f9bec60d43a8a76ce8c8b347f52bfcb7"
+    },
+    {
+      "case_id": "pr244_dataset",
+      "split": "development_seen",
+      "arm": "url_policy",
+      "source_hash": "8797ddf88d0008a74484d541d057239d52ae4be2375539f75ae66ab6de294065",
+      "error": null,
+      "mechanical": [
+        "link_particle:데이터셋 카드은"
+      ],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "88e867043c4bb419cef224d4cc41c31f96ff7d8fa1350b83db387d0c1dcaab5a"
+    },
+    {
+      "case_id": "pr253_english",
+      "split": "new_pr_holdout",
+      "arm": "url_generic",
+      "source_hash": "8910b8dbf9eb140b4d2844bfe5d5c2854267082786113028177633bba92181ab",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "d24caeffd1b16455f1016000eaa26af5bdb9c8984c1398ac1163ffe6c9712796"
+    },
+    {
+      "case_id": "pr247_pipeline",
+      "split": "development_seen",
+      "arm": "url_generic",
+      "source_hash": "8facb49152c758f0769b3f5803db77104961a1992c7123e46a36bb77d9843ac7",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "NeMo Curator pipeline"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "e6b47d02d04dd0d6c1c5186349bac35a0383db5bae9a055634cf9b524f96a2cd"
+    },
+    {
+      "case_id": "pr253_english",
+      "split": "new_pr_holdout",
+      "arm": "url_policy",
+      "source_hash": "8910b8dbf9eb140b4d2844bfe5d5c2854267082786113028177633bba92181ab",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "d93bd53a1228205c75ac56b8ae5eaf64f8248612ee33b774a1c12c479b1cf198"
+    },
+    {
+      "case_id": "pr253_ultra",
+      "split": "new_pr_holdout",
+      "arm": "whole_generic",
+      "source_hash": "c8197ed6b6df38d10e0b2f56c45d5bfacc7b617704d194f07d7d30533dfd25da",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "post-trained take on v3"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "5cda9a63cfa14286d849f027705ea8e740633cd94eee60d0ce8bdb069b33d71b"
+    },
+    {
+      "case_id": "pr244_announcement",
+      "split": "development_seen",
+      "arm": "url_policy",
+      "source_hash": "eec95e349dc204bcc4ae049b99869bb0a0690304a0688a12e723d2b68413481c",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "8fc92c11213a63282e39b86b203c68ad7b86bb93fbfcd288a476f81f2fcbc8ed"
+    },
+    {
+      "case_id": "pr253_differences",
+      "split": "new_pr_holdout",
+      "arm": "whole_policy",
+      "source_hash": "a360fd036abed11f0043f2abe736e42d0c476f26e0f43c120983d4d60c70d253",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "lists the differences"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "8633219138ef35abdaf33ba183abd3eeba91c7c13314c559e2c992775f0dec07"
+    },
+    {
+      "case_id": "pr253_recap",
+      "split": "new_pr_holdout",
+      "arm": "url_generic",
+      "source_hash": "22a546169ded1cb2b9f2a04bc4921c506d503ce3d3e1fe54e34e00790ed4db7c",
+      "error": null,
+      "mechanical": [
+        "numbers_changed"
+      ],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "4d5c49f4997e493fa9d432a74f9126a17f248a8d32cb1c16f514ff35db8ca02a"
+    },
+    {
+      "case_id": "pr247_demo",
+      "split": "development_seen",
+      "arm": "url_generic",
+      "source_hash": "e129192f39b4f0575c800cde3e419de05f702c6658732737ee7f6e894218cd9b",
+      "error": null,
+      "mechanical": [
+        "protected_name:ModelScope Studios"
+      ],
+      "remaining_labels": [],
+      "missing_annotated_names": [
+        "ModelScope Studios"
+      ],
+      "candidate_exists": true,
+      "candidate_sha256": "c435b3a80fb15a76571e8db428a1c756d917ff9b119fc3fb6a5fe64eda5a62cf"
+    },
+    {
+      "case_id": "pr253_capability",
+      "split": "new_pr_holdout",
+      "arm": "url_generic",
+      "source_hash": "5221b576e470fead0aedcaa7ceafea0a46cc7f10bec82099b424b87f512eab9d",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "75ea890eb7a961ad4e6220a2092ce0051097b25d0793ef2381641583f171398a"
+    },
+    {
+      "case_id": "pr253_provider",
+      "split": "new_pr_holdout",
+      "arm": "url_generic",
+      "source_hash": "c1a24ef3262cf5bdb7bd90f19f155118582c714420de00e27aadf9d33cf64b5f",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "c6f48c3ea2b74d803069cf8839cc63ad98867f62c291ddbb0c1d1055cc31648e"
+    },
+    {
+      "case_id": "pr247_demo",
+      "split": "development_seen",
+      "arm": "url_policy",
+      "source_hash": "e129192f39b4f0575c800cde3e419de05f702c6658732737ee7f6e894218cd9b",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "fda4de998647fafbeba7cf18bd073f377ea374a7dd5048d73cdf260b18929c47"
+    },
+    {
+      "case_id": "pr244_announcement",
+      "split": "development_seen",
+      "arm": "url_generic",
+      "source_hash": "eec95e349dc204bcc4ae049b99869bb0a0690304a0688a12e723d2b68413481c",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "25f8424ab86bbae68475ec8eabe09d3ee9b500fa9507f424d467ac95b8a49059"
+    },
+    {
+      "case_id": "pr247_demo",
+      "split": "development_seen",
+      "arm": "whole_generic",
+      "source_hash": "e129192f39b4f0575c800cde3e419de05f702c6658732737ee7f6e894218cd9b",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "Hugging Face demo"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "723dfb5a8179d26b21e467835ff996d45f6bbd474ff1e8b5180fa15092735159"
+    },
+    {
+      "case_id": "pr247_pipeline",
+      "split": "development_seen",
+      "arm": "url_policy",
+      "source_hash": "8facb49152c758f0769b3f5803db77104961a1992c7123e46a36bb77d9843ac7",
+      "error": null,
+      "mechanical": [
+        "link_targets_changed"
+      ],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "b1d5eb08acdc387e115cb2b748221e827c00d1730ec509597ea1cce030c37a37"
+    },
+    {
+      "case_id": "pr247_tools",
+      "split": "development_seen",
+      "arm": "url_generic",
+      "source_hash": "8bae9f3ee305bcc9a195347aae6e7c0c9add315d42c9dc423c6b13a2b6c11208",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "NeMo Speech fine-tuning tools",
+        "medical case study"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "9f7f7d9b2ef2e4a132bb73de7013a54724cc06df4fa481f54331599cf5563094"
+    },
+    {
+      "case_id": "pr253_ultra",
+      "split": "new_pr_holdout",
+      "arm": "url_generic",
+      "source_hash": "c8197ed6b6df38d10e0b2f56c45d5bfacc7b617704d194f07d7d30533dfd25da",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "8d439b386ae0ea725788abad1df3f2f46391c4e12ef883eefc276a4a307ac9da"
+    },
+    {
+      "case_id": "pr253_capability",
+      "split": "new_pr_holdout",
+      "arm": "whole_generic",
+      "source_hash": "5221b576e470fead0aedcaa7ceafea0a46cc7f10bec82099b424b87f512eab9d",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "3fa421482e4ec6044b247dfd29e54c4ad76eb5e86d46e0c9cbd48a232fa66414"
+    },
+    {
+      "case_id": "pr244_previous",
+      "split": "development_seen",
+      "arm": "url_generic",
+      "source_hash": "7a473845577ba8b15a35b38972d9e4af42ccb06572bfea74b784771f4b423adc",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [
+        "Hugging Face Hub"
+      ],
+      "candidate_exists": true,
+      "candidate_sha256": "f8789025e08094e1c3336d3323d8b761a73ae4bf0f7cfe9555cc321aae0b4f01"
+    },
+    {
+      "case_id": "pr253_ultra",
+      "split": "new_pr_holdout",
+      "arm": "url_policy",
+      "source_hash": "c8197ed6b6df38d10e0b2f56c45d5bfacc7b617704d194f07d7d30533dfd25da",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "7baab8a7abe7e2fc6c7710a17d050f1d435e0d31b9130143f00e4afcaae29f1c"
+    },
+    {
+      "case_id": "pr244_dataset",
+      "split": "development_seen",
+      "arm": "whole_policy",
+      "source_hash": "8797ddf88d0008a74484d541d057239d52ae4be2375539f75ae66ab6de294065",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "dataset card"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "e6f330373c75a21660ad1b6253d69c23f9bec60d43a8a76ce8c8b347f52bfcb7"
+    },
+    {
+      "case_id": "pr247_pipeline",
+      "split": "development_seen",
+      "arm": "whole_policy",
+      "source_hash": "8facb49152c758f0769b3f5803db77104961a1992c7123e46a36bb77d9843ac7",
+      "error": null,
+      "mechanical": [
+        "link_targets_changed"
+      ],
+      "remaining_labels": [
+        "NeMo Curator pipeline",
+        "Granary v2 public manifests"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "21a6ba5cb09d2bc679b2678ea435445cb4b2cd7a7bd44fe0a5f61bf5eecbe60c"
+    },
+    {
+      "case_id": "pr244_announcement",
+      "split": "development_seen",
+      "arm": "whole_generic",
+      "source_hash": "eec95e349dc204bcc4ae049b99869bb0a0690304a0688a12e723d2b68413481c",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [
+        "TorchNeuron announcement"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "c509a41007c1abef5c526fff7bb6d3ccf71bcd451e0c6c2b9c3738601dca2446"
+    },
+    {
+      "case_id": "pr253_differences",
+      "split": "new_pr_holdout",
+      "arm": "url_generic",
+      "source_hash": "a360fd036abed11f0043f2abe736e42d0c476f26e0f43c120983d4d60c70d253",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "972905d2f747b4939ac9b1e4d98d4330ff54bffeca35fc1a3f2e550d96bd64c9"
+    },
+    {
+      "case_id": "pr253_recap",
+      "split": "new_pr_holdout",
+      "arm": "url_policy",
+      "source_hash": "22a546169ded1cb2b9f2a04bc4921c506d503ce3d3e1fe54e34e00790ed4db7c",
+      "error": null,
+      "mechanical": [
+        "numbers_changed"
+      ],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "94041170d56b4104551a50f015766a876012774aeb8ad0993ff28a05f2e547a1"
+    },
+    {
+      "case_id": "pr253_capability",
+      "split": "new_pr_holdout",
+      "arm": "url_policy",
+      "source_hash": "5221b576e470fead0aedcaa7ceafea0a46cc7f10bec82099b424b87f512eab9d",
+      "error": null,
+      "mechanical": [],
+      "remaining_labels": [],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "0cdbffbaca9cf33c4c14c1d86e8e43def795c2851152022433a4deec68caadb2"
+    },
+    {
+      "case_id": "pr247_pipeline",
+      "split": "development_seen",
+      "arm": "whole_generic",
+      "source_hash": "8facb49152c758f0769b3f5803db77104961a1992c7123e46a36bb77d9843ac7",
+      "error": null,
+      "mechanical": [
+        "link_targets_changed"
+      ],
+      "remaining_labels": [
+        "NeMo Curator pipeline",
+        "Granary v2 public manifests"
+      ],
+      "missing_annotated_names": [],
+      "candidate_exists": true,
+      "candidate_sha256": "8318dceae71c1f3182d1e620fef215f6664fee82f28a3f4e967757627eb99ade"
+    }
+  ],
+  "evaluation_rows": [
+    {
+      "id": "pr244_announcement_original",
+      "case_id": "pr244_announcement",
+      "split": "development_seen",
+      "expected_bad": true,
+      "label_reason": "untranslated descriptive link labels",
+      "source": "Select a model to see how to run it. The Space lists the Neuron stack the model was tested on, the packages to install on top of it, and the `run.py` script that ran. The script follows the recipe of the [TorchNeuron announcement](https://huggingface.co/blog/hf-torchneuron): it loads the model with `from_pretrained`, sharded when it needs to be, then generates with a static cache and `torch.compile(backend=\"neuron\")`.",
+      "input_candidate": "모델을 선택하면 실행 방법을 확인할 수 있습니다. Space에는 모델을 테스트한 Neuron 스택, 그 위에 설치해야 하는 패키지, 그리고 실행된 `run.py` 스크립트가 나열됩니다. 이 스크립트는 [TorchNeuron announcement](https://huggingface.co/blog/hf-torchneuron)의 레시피를 따릅니다. 필요할 경우 모델을 샤딩하여 `from_pretrained`로 로드한 다음, 정적 캐시와 `torch.compile(backend=\"neuron\")`를 사용해 생성합니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "The Korean translation accurately preserves meaning, negation, numbers, API names, and code snippets. The phrase \"Space lists\" is correctly rendered as \"Space에는 ... 나열됩니다.\" The conditional \"sharded when it needs to be\" is correctly translated as \"필요할 경우 모델을 샤딩하여.\" The reference and code (`from_pretrained`, `torch.compile(backend=\"neuron\")`, `run.py`) are unchanged and correctly presented. No untranslated technical descriptions that alter meaning were found."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": false,
+        "uncertain": true,
+        "findings": [
+          {
+            "source_quote": "the [TorchNeuron announcement](https://huggingface.co/blog/hf-torchneuron): it loads the model with `from_pretrained`, sharded when it needs to be, then generates with a static cache and `torch.compile(backend=\"neuron\")`.",
+            "target_quote": "이 스크립트는 [TorchNeuron announcement](https://huggingface.co/blog/hf-torchneuron)의 레시피를 따릅니다. 필요할 경우 모델을 샤딩하여 `from_pretrained`로 로드한 다음, 정적 캐시와 `torch.compile(backend=\"neuron\")`를 사용해 생성합니다.",
+            "reason": "The hyperlink label 'TorchNeuron announcement' is left untranslated. Policy asks to translate common descriptions in hyperlink labels while preserving named entities; here 'announcement' is a common word and should be localized (e.g., '발표' or '공지'). Also check particles after links — the candidate adds the Korean particle '의' immediately after the link, which is acceptable if the label is localized; leaving the label in English with a Korean particle is inconsistent.",
+            "suggestion": "Translate the link label (for example, 'TorchNeuron 발표' or 'TorchNeuron 공지') or deliberately preserve it but flag it for review. E.g.: \"이 스크립트는 [TorchNeuron 발표](https://huggingface.co/blog/hf-torchneuron)의 레시피를 따릅니다.\""
+          },
+          {
+            "source_quote": "The Space lists the Neuron stack the model was tested on, the packages to install on top of it, and the `run.py` script that ran.",
+            "target_quote": "Space에는 모델을 테스트한 Neuron 스택, 그 위에 설치해야 하는 패키지, 그리고 실행된 `run.py` 스크립트가 나열됩니다.",
+            "reason": "The term 'Space' is preserved as in source; this matches the policy to preserve known product names. Grammar and meaning are preserved.",
+            "suggestion": "No change needed; acceptable as-is."
+          },
+          {
+            "source_quote": "it loads the model with `from_pretrained`, sharded when it needs to be, then generates with a static cache and `torch.compile(backend=\"neuron\")`.",
+            "target_quote": "필요할 경우 모델을 샤딩하여 `from_pretrained`로 로드한 다음, 정적 캐시와 `torch.compile(backend=\"neuron\")`를 사용해 생성합니다.",
+            "reason": "APIs and code identifiers (`from_pretrained`, `torch.compile(backend=\"neuron\")`) are preserved exactly as required. The meaning (sharded when needed, then generate with static cache and compile) is correctly conveyed.",
+            "suggestion": "No change needed; acceptable as-is."
+          }
+        ],
+        "explanation": "Overall the translation preserves technical meaning, numbers, negation, and API identifiers. The main issue is the untranslated hyperlink label 'TorchNeuron announcement' followed immediately by the Korean particle '의' — policy recommends translating common hyperlink descriptions while preserving named entities, so localizing 'announcement' would be preferable. Marked uncertain because leaving the label in English may be acceptable in some contexts but should be reviewed."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "the [TorchNeuron announcement](https://huggingface.co/blog/hf-torchneuron): it loads the model with `from_pretrained`, sharded when it needs to be, then generates with a static cache and `torch.compile(backend=\"neuron\")`.",
+          "target_quote": "이 스크립트는 [TorchNeuron announcement](https://huggingface.co/blog/hf-torchneuron)의 레시피를 따릅니다. 필요할 경우 모델을 샤딩하여 `from_pretrained`로 로드한 다음, 정적 캐시와 `torch.compile(backend=\"neuron\")`를 사용해 생성합니다.",
+          "reason": "The hyperlink label 'TorchNeuron announcement' is left untranslated. Policy asks to translate common descriptions in hyperlink labels while preserving named entities; here 'announcement' is a common word and should be localized (e.g., '발표' or '공지'). Also check particles after links — the candidate adds the Korean particle '의' immediately after the link, which is acceptable if the label is localized; leaving the label in English with a Korean particle is inconsistent.",
+          "suggestion": "Translate the link label (for example, 'TorchNeuron 발표' or 'TorchNeuron 공지') or deliberately preserve it but flag it for review. E.g.: \"이 스크립트는 [TorchNeuron 발표](https://huggingface.co/blog/hf-torchneuron)의 레시피를 따릅니다.\""
+        },
+        {
+          "source_quote": "The Space lists the Neuron stack the model was tested on, the packages to install on top of it, and the `run.py` script that ran.",
+          "target_quote": "Space에는 모델을 테스트한 Neuron 스택, 그 위에 설치해야 하는 패키지, 그리고 실행된 `run.py` 스크립트가 나열됩니다.",
+          "reason": "The term 'Space' is preserved as in source; this matches the policy to preserve known product names. Grammar and meaning are preserved.",
+          "suggestion": "No change needed; acceptable as-is."
+        },
+        {
+          "source_quote": "it loads the model with `from_pretrained`, sharded when it needs to be, then generates with a static cache and `torch.compile(backend=\"neuron\")`.",
+          "target_quote": "필요할 경우 모델을 샤딩하여 `from_pretrained`로 로드한 다음, 정적 캐시와 `torch.compile(backend=\"neuron\")`를 사용해 생성합니다.",
+          "reason": "APIs and code identifiers (`from_pretrained`, `torch.compile(backend=\"neuron\")`) are preserved exactly as required. The meaning (sharded when needed, then generate with static cache and compile) is correctly conveyed.",
+          "suggestion": "No change needed; acceptable as-is."
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "repair",
+      "repairs": 1,
+      "original_record_sha256": "3335f63891e55a15863002b46afe205712dfea43d1a4bcf209592c5061138ad5"
+    },
+    {
+      "id": "pr244_previous_original",
+      "case_id": "pr244_previous",
+      "split": "development_seen",
+      "expected_bad": true,
+      "label_reason": "untranslated descriptive link labels",
+      "source": "In a [previous post](https://huggingface.co/blog/hf-torchneuron), we introduced TorchNeuron, the native PyTorch backend for AWS Trainium (the `torch-neuronx` package). With it, Transformers runs its own modeling code on Trainium, as it does on any other device, so any Transformers model on the Hub may run. Which ones actually do?",
+      "input_candidate": "[previous post](https://huggingface.co/blog/hf-torchneuron)에서 AWS Trainium용 네이티브 PyTorch 백엔드인 TorchNeuron(`torch-neuronx` 패키지)을 소개했습니다. 이를 사용하면 Transformers가 다른 모든 디바이스에서와 마찬가지로 Trainium에서 자체 모델링 코드를 실행하므로, Hugging Face Hub의 모든 Transformers 모델이 실행될 수 있습니다. 실제로 실행되는 모델은 무엇일까요?",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "The Korean translation accurately conveys the meaning of the English source. Proper names and API/package names are preserved (TorchNeuron, torch-neuronx, AWS Trainium, Transformers, Hugging Face Hub). Negation and numbers are not present in a way that changes meaning. The rhetorical question “Which ones actually do?” is correctly rendered as “실제로 실행되는 모델은 무엇일까요?” No untranslated fragments or grammatical issues were found."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "Translation is accurate and fluent. Technical names, package identifier (`torch-neuronx`), and product names (TorchNeuron, Transformers, AWS Trainium, Hugging Face Hub) are preserved correctly. Negation, meaning, and the final question are rendered faithfully. The Korean particle after the link is correct ('[previous post](...)에서'). No untranslated strings or API/function names need change."
+      },
+      "policy_initial_decision": "pass_candidate",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [],
+      "policy_pass": true,
+      "final_decision": "pass_candidate",
+      "repairs": 0,
+      "original_record_sha256": "3d494c7f73a4d96d9b425b12bc70d025fbff67fa2c337b3fd50a11b58f1eacd0"
+    },
+    {
+      "id": "pr244_dataset_original",
+      "case_id": "pr244_dataset",
+      "split": "development_seen",
+      "expected_bad": true,
+      "label_reason": "untranslated descriptive link labels",
+      "source": "The [dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support) gives the exact meaning of each result.",
+      "input_candidate": "[dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "The translation accurately conveys the original meaning. The link (dataset card) is preserved, there are no changes to negation or numbers, and the technical term is correctly rendered. Grammar and tone are natural in Korean."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "The [dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support) gives the exact meaning of each result.",
+            "target_quote": "[dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다.",
+            "reason": "Terminology/localization: 'dataset card' should be localized per the reviewed terminology policy (map 'dataset card' -> '데이터셋 카드'). The candidate preserved the English label inside the link instead of translating it. Also check Korean particle after a localized label; using '에서' is fine but must follow a localized label.",
+            "suggestion": "Use a localized link label: '[데이터셋 카드](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다.' Preserve the URL exactly."
+          }
+        ],
+        "explanation": "Translation is accurate in meaning and grammar, but it fails the terminology/localization rule: the hyperlink label 'dataset card' should be translated to '데이터셋 카드' and the particle after the link should be checked (current '에서' is appropriate). No issues with negation, numbers, APIs, or untranslated code/URLs."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [
+        "required_term_untranslated:dataset card"
+      ],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "The [dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support) gives the exact meaning of each result.",
+          "target_quote": "[dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다.",
+          "reason": "Terminology/localization: 'dataset card' should be localized per the reviewed terminology policy (map 'dataset card' -> '데이터셋 카드'). The candidate preserved the English label inside the link instead of translating it. Also check Korean particle after a localized label; using '에서' is fine but must follow a localized label.",
+          "suggestion": "Use a localized link label: '[데이터셋 카드](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다.' Preserve the URL exactly."
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "pass_candidate",
+      "repairs": 1,
+      "original_record_sha256": "34af97b7a7c694438855698920d7a3dac8712b35748dd40fda544df4c29bcdd6"
+    },
+    {
+      "id": "pr253_differences_original",
+      "case_id": "pr253_differences",
+      "split": "new_pr_holdout",
+      "expected_bad": true,
+      "label_reason": "untranslated descriptive link labels",
+      "source": "The steps for installing assets, running the analyzer,\nand reading results stay the same.\nThe [README](https://github.com/mattt/AnySpeechRecognizer#transcribe-a-file)\nhas a complete example\nand [lists the differences](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework)\nfrom Apple's framework.",
+      "input_candidate": "에셋 설치, 분석기 실행,\n결과 읽기 단계는 그대로 유지됩니다.\n[README](https://github.com/mattt/AnySpeechRecognizer#transcribe-a-file)에는\n완전한 예제가 포함되어 있으며,\nApple 프레임워크의 [lists the differences](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework)도 제공합니다.",
+      "baseline_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "and [lists the differences](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework)\nfrom Apple's framework.",
+            "target_quote": "Apple 프레임워크의 [lists the differences](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework)도 제공합니다.",
+            "reason": "The bracketed link text 'lists the differences' is left untranslated and appears verbatim in English inside the Korean sentence, which is inconsistent and likely incorrect. The meaning should be expressed in Korean (e.g., '차이점을 나열합니다' or '차이점을 설명합니다').",
+            "suggestion": "Translate the link text and integrate it naturally: 예: 'Apple의 프레임워크와의 차이점을 [나열합니다](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework).' Or: '...차이점에 대해 설명합니다.'"
+          }
+        ],
+        "explanation": "Overall meaning and grammar are mostly preserved, but the untranslated link text 'lists the differences' is incorrect in the Korean version. No negation, numbers, API names, or technical terms were mistranslated otherwise. Fixing the untranslated phrase will make the translation acceptable."
+      },
+      "baseline_pass": false,
+      "policy_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "and [lists the differences](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework)\nfrom Apple's framework.",
+            "target_quote": "Apple 프레임워크의 [lists the differences](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework)도 제공합니다.",
+            "reason": "The hyperlink label 'lists the differences' is untranslated and left in English inside Korean text. The Korean sentence structure is incorrect: the original says the README 'lists the differences from Apple's framework', but the candidate places the English link label after the genitive particle '의' (Apple 프레임워크의), producing ungrammatical ordering and a mismatched link label. Also the policy requires translating common descriptions within hyperlink labels.",
+            "suggestion": "Translate the link label and reorder to natural Korean. Example: \"Apple의 프레임워크와의 차이점을 [나열합니다](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework).\" Or keep the link as the noun phrase: \"그리고 [차이점](https://...#differences-from-apples-speech-framework)을(를) Apple 프레임워크와 비교해 설명합니다.\""
+          },
+          {
+            "source_quote": "The [README](https://github.com/mattt/AnySpeechRecognizer#transcribe-a-file)\nhas a complete example",
+            "target_quote": "[README](https://github.com/mattt/AnySpeechRecognizer#transcribe-a-file)에는\n완전한 예제가 포함되어 있으며,",
+            "reason": "'README' is a document name and was preserved as-is, which matches the policy to preserve inline/fenced code and named entities. The translation of 'has a complete example' to '완전한 예제가 포함되어 있으며' is correct and natural. No change needed.",
+            "suggestion": ""
+          }
+        ],
+        "explanation": "Overall meaning mostly preserved, but the second hyperlink label was left untranslated and the Korean phrasing around the link is ungrammatical and changes the relation 'lists the differences from Apple's framework.' Fix by translating the link label and reordering to match Korean syntax; check the particle placement immediately before/after the link per policy."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "and [lists the differences](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework)\nfrom Apple's framework.",
+          "target_quote": "Apple 프레임워크의 [lists the differences](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework)도 제공합니다.",
+          "reason": "The hyperlink label 'lists the differences' is untranslated and left in English inside Korean text. The Korean sentence structure is incorrect: the original says the README 'lists the differences from Apple's framework', but the candidate places the English link label after the genitive particle '의' (Apple 프레임워크의), producing ungrammatical ordering and a mismatched link label. Also the policy requires translating common descriptions within hyperlink labels.",
+          "suggestion": "Translate the link label and reorder to natural Korean. Example: \"Apple의 프레임워크와의 차이점을 [나열합니다](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework).\" Or keep the link as the noun phrase: \"그리고 [차이점](https://...#differences-from-apples-speech-framework)을(를) Apple 프레임워크와 비교해 설명합니다.\""
+        },
+        {
+          "source_quote": "The [README](https://github.com/mattt/AnySpeechRecognizer#transcribe-a-file)\nhas a complete example",
+          "target_quote": "[README](https://github.com/mattt/AnySpeechRecognizer#transcribe-a-file)에는\n완전한 예제가 포함되어 있으며,",
+          "reason": "'README' is a document name and was preserved as-is, which matches the policy to preserve inline/fenced code and named entities. The translation of 'has a complete example' to '완전한 예제가 포함되어 있으며' is correct and natural. No change needed.",
+          "suggestion": ""
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "pass_candidate",
+      "repairs": 1,
+      "original_record_sha256": "6cbaed63c0641e5ca5902aa6ad48d01c8b35453f4ce7e044f556a9f62eab7ecc"
+    },
+    {
+      "id": "pr247_demo_original",
+      "case_id": "pr247_demo",
+      "split": "development_seen",
+      "expected_bad": true,
+      "label_reason": "untranslated descriptive link labels",
+      "source": "Try Nemotron 3.5 Transcribe in the [Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) or on [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe), then download the checkpoint from [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) or [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe). For self-hosted transcription, get started with [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) or [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html), both offering support from day one.",
+      "input_candidate": "[Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) 또는 [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe)에서 Nemotron 3.5 Transcribe를 사용해 본 다음, [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) 또는 [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe)에서 체크포인트를 다운로드하세요. 자체 호스팅 전사를 시작하려면 [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) 또는 [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html)를 이용하세요. 두 환경 모두 출시 첫날부터 지원을 제공합니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "Translation accurately preserves meaning, names, links, model/version numbers, and intent. Terminology like “checkpoint” → “체크포인트” and “self-hosted transcription” → “자체 호스팅 전사” is appropriate. The final sentence correctly conveys “both offering support from day one.” No negation, numeric, API, or untranslated-description issues were found."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": false,
+        "uncertain": true,
+        "findings": [
+          {
+            "source_quote": "Try Nemotron 3.5 Transcribe in the [Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) or on [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe), then download the checkpoint from [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) or [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe).",
+            "target_quote": "[Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) 또는 [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe)에서 Nemotron 3.5 Transcribe를 사용해 본 다음, [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) 또는 [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe)에서 체크포인트를 다운로드하세요.",
+            "reason": "Korean particle '에서' is placed only after the second link ([ModelScope Studios]) which can imply the location applies only to that link; policy requires checking particles immediately after links. This may create ambiguity about whether 'in the Hugging Face demo' also applies.",
+            "suggestion": "Attach the particle to both links or restructure: e.g. '[Hugging Face demo](...)에서 또는 [ModelScope Studios](...)에서 Nemotron 3.5 Transcribe를 사용해 보세요' or 'Nemotron 3.5 Transcribe를 [Hugging Face demo](...)와 [ModelScope Studios](...)에서 사용해 보세요.'"
+          },
+          {
+            "source_quote": "For self-hosted transcription, get started with [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) or [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html), both offering support from day one.",
+            "target_quote": "자체 호스팅 전사를 시작하려면 [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) 또는 [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html)를 이용하세요. 두 환경 모두 출시 첫날부터 지원을 제공합니다.",
+            "reason": "Meaning preserved; APIs and names are left intact per terminology policy. '두 환경 모두' correctly refers to both tools. No untranslated strings or incorrect numbers/negation.",
+            "suggestion": "Optional minor style: combine into one sentence '자체 호스팅 전사를 시작하려면 ... 를 이용하세요. 두 도구 모두 출시 첫날부터 지원합니다.' but not required."
+          }
+        ],
+        "explanation": "Overall translation is accurate: names, URLs and APIs are preserved and technical meaning is kept. The main actionable issue is a Korean particle placement after link labels that can cause ambiguity about which link the location applies to. Marked as uncertain because this is a minor grammatical/clarity issue rather than a semantic mistranslation; otherwise acceptable."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "Try Nemotron 3.5 Transcribe in the [Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) or on [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe), then download the checkpoint from [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) or [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe).",
+          "target_quote": "[Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) 또는 [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe)에서 Nemotron 3.5 Transcribe를 사용해 본 다음, [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) 또는 [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe)에서 체크포인트를 다운로드하세요.",
+          "reason": "Korean particle '에서' is placed only after the second link ([ModelScope Studios]) which can imply the location applies only to that link; policy requires checking particles immediately after links. This may create ambiguity about whether 'in the Hugging Face demo' also applies.",
+          "suggestion": "Attach the particle to both links or restructure: e.g. '[Hugging Face demo](...)에서 또는 [ModelScope Studios](...)에서 Nemotron 3.5 Transcribe를 사용해 보세요' or 'Nemotron 3.5 Transcribe를 [Hugging Face demo](...)와 [ModelScope Studios](...)에서 사용해 보세요.'"
+        },
+        {
+          "source_quote": "For self-hosted transcription, get started with [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) or [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html), both offering support from day one.",
+          "target_quote": "자체 호스팅 전사를 시작하려면 [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) 또는 [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html)를 이용하세요. 두 환경 모두 출시 첫날부터 지원을 제공합니다.",
+          "reason": "Meaning preserved; APIs and names are left intact per terminology policy. '두 환경 모두' correctly refers to both tools. No untranslated strings or incorrect numbers/negation.",
+          "suggestion": "Optional minor style: combine into one sentence '자체 호스팅 전사를 시작하려면 ... 를 이용하세요. 두 도구 모두 출시 첫날부터 지원합니다.' but not required."
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "pass_candidate",
+      "repairs": 2,
+      "original_record_sha256": "72bcbce42d16fd6450e795c115cbe7d21d6a52c353118a2b9aa8c5442080ad76"
+    },
+    {
+      "id": "pr253_recap_original",
+      "case_id": "pr253_recap",
+      "split": "new_pr_holdout",
+      "expected_bad": true,
+      "label_reason": "untranslated descriptive link labels",
+      "source": "In our [AnyLanguageModel 1.0 recap](https://huggingface.co/blog/anylanguagemodel-1-0),\nwe looked at a year of local and hosted models in Swift.\nWith AnyLanguageModel and swift-huggingface now on their 1.x releases,\nwe're extending the same approach to speech and decisions:\nfamiliar Swift APIs with a choice of model.",
+      "input_candidate": "지난 [AnyLanguageModel 1.0 recap](https://huggingface.co/blog/anylanguagemodel-1-0)에서는\nSwift에서 로컬 및 호스팅 모델을 1년간 살펴봤습니다.\n이제 AnyLanguageModel과 swift-huggingface가 1.x 릴리스에 도달했으므로,\n같은 접근 방식을 음성 및 의사 결정으로 확장합니다.\n익숙한 Swift API와 모델 선택 기능을 제공합니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "The Korean translation accurately preserves meaning, numbers, names (AnyLanguageModel, swift-huggingface), and APIs. Negation and scope are unchanged. Minor stylistic choice: '익숙한 Swift API와' uses API in singular/collective form rather than pluralizing to 'API들', but this does not change meaning."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "The translation preserves meaning, numbers (1.0 in the link, 1.x), and named entities (AnyLanguageModel, swift-huggingface). The link and inline name are left intact and the Korean particle after the link ('에서는') is correct. 'Swift APIs' rendered as 'Swift API' is acceptable in Korean. No negation or untranslated segments were introduced."
+      },
+      "policy_initial_decision": "pass_candidate",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [],
+      "policy_pass": true,
+      "final_decision": "pass_candidate",
+      "repairs": 0,
+      "original_record_sha256": "f4301ff675973d6b9dfdc2613b51fa50ad8fba944bff895f360e27b585e47fe7"
+    },
+    {
+      "id": "pr253_ultra_original",
+      "case_id": "pr253_ultra",
+      "split": "new_pr_holdout",
+      "expected_bad": true,
+      "label_reason": "untranslated descriptive link labels",
+      "source": "**Parakeet Ultra** is Moondream's [post-trained take on v3](https://huggingface.co/moondream/parakeet-ultra).\nIt was more accurate in most of our measurements.",
+      "input_candidate": "**Parakeet Ultra**는 Moondream의 [post-trained take on v3](https://huggingface.co/moondream/parakeet-ultra)입니다.\n대부분의 측정에서 더 정확했습니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "Moondream's [post-trained take on v3](https://huggingface.co/moondream/parakeet-ultra)",
+            "target_quote": "Moondream의 [post-trained take on v3](https://huggingface.co/moondream/parakeet-ultra)",
+            "reason": "The phrase 'post-trained take on v3' is left in English in the candidate. This is a descriptive technical phrase; keeping it in English is acceptable but may be translated for Korean readers.",
+            "suggestion": "Optionally translate to 'v3에 대한 post-trained 버전' or 'v3에 대한 사후(추가) 학습 버전' if you prefer full Korean localization."
+          },
+          {
+            "source_quote": "It was more accurate in most of our measurements.",
+            "target_quote": "대부분의 측정에서 더 정확했습니다.",
+            "reason": "The candidate omits the possessive 'our' from 'our measurements', which slightly changes the nuance (general measurements vs. the author's/organization's measurements).",
+            "suggestion": "Include '우리의' to match the source nuance: '우리의 대부분의 측정에서 더 정확했습니다.' or more naturally '대부분의 측정에서 우리 측의 결과가 더 정확했습니다.'"
+          }
+        ],
+        "explanation": "Overall the translation preserves meaning, numbers, negation, names, and APIs. Grammar is natural. Two minor issues: the technical phrase 'post-trained take on v3' remains untranslated (acceptable but optional to localize), and the candidate drops the possessive 'our' from 'our measurements', which slightly alters the scope. No mistranslations, incorrect negation, or number errors were found."
+      },
+      "baseline_pass": false,
+      "policy_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "Moondream's [post-trained take on v3](https://huggingface.co/moondream/parakeet-ultra)",
+            "target_quote": "Moondream의 [post-trained take on v3](https://huggingface.co/moondream/parakeet-ultra)",
+            "reason": "The hyperlink label 'post-trained take on v3' is a translatable descriptive phrase. Policy requires translating common descriptions within hyperlink labels. Leaving it in English violates the translation guideline.",
+            "suggestion": "Translate the link label into Korean (e.g., 'v3에 대한 사후 학습 버전' or 'v3 기반의 사후 학습 모델') and then check the particle immediately following the link. For example: 'Moondream의 [v3에 대한 사후 학습 버전](https://huggingface.co/moondream/parakeet-ultra)입니다.' — adjust spacing/particles as needed."
+          },
+          {
+            "source_quote": "**Parakeet Ultra**",
+            "target_quote": "**Parakeet Ultra**",
+            "reason": "Product/name preserved correctly. Policy preserves named entities and model names exactly.",
+            "suggestion": "No change needed."
+          },
+          {
+            "source_quote": "It was more accurate in most of our measurements.",
+            "target_quote": "대부분의 측정에서 더 정확했습니다.",
+            "reason": "Meaning, negation, and numeric sense are preserved and the Korean is grammatically correct.",
+            "suggestion": "No change needed."
+          }
+        ],
+        "explanation": "Overall translation preserves names and sentence meaning and is grammatical. However, the hyperlink label contains an untranslated descriptive phrase; per policy, common descriptions inside link labels should be translated. If you translate that label, verify and adjust the Korean particle that follows the link so the sentence reads naturally."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "Moondream's [post-trained take on v3](https://huggingface.co/moondream/parakeet-ultra)",
+          "target_quote": "Moondream의 [post-trained take on v3](https://huggingface.co/moondream/parakeet-ultra)",
+          "reason": "The hyperlink label 'post-trained take on v3' is a translatable descriptive phrase. Policy requires translating common descriptions within hyperlink labels. Leaving it in English violates the translation guideline.",
+          "suggestion": "Translate the link label into Korean (e.g., 'v3에 대한 사후 학습 버전' or 'v3 기반의 사후 학습 모델') and then check the particle immediately following the link. For example: 'Moondream의 [v3에 대한 사후 학습 버전](https://huggingface.co/moondream/parakeet-ultra)입니다.' — adjust spacing/particles as needed."
+        },
+        {
+          "source_quote": "**Parakeet Ultra**",
+          "target_quote": "**Parakeet Ultra**",
+          "reason": "Product/name preserved correctly. Policy preserves named entities and model names exactly.",
+          "suggestion": "No change needed."
+        },
+        {
+          "source_quote": "It was more accurate in most of our measurements.",
+          "target_quote": "대부분의 측정에서 더 정확했습니다.",
+          "reason": "Meaning, negation, and numeric sense are preserved and the Korean is grammatically correct.",
+          "suggestion": "No change needed."
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "pass_candidate",
+      "repairs": 1,
+      "original_record_sha256": "a76613a784d2ece091fca8a0542545f680d491c614dfbf353799b55037df7a61"
+    },
+    {
+      "id": "pr253_english_original",
+      "case_id": "pr253_english",
+      "split": "new_pr_holdout",
+      "expected_bad": true,
+      "label_reason": "untranslated descriptive link labels",
+      "source": "**Parakeet Unified** is NVIDIA's\n[English-only Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b).",
+      "input_candidate": "**Parakeet Unified**는 NVIDIA의\n[English-only Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b)입니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "The Korean sentence accurately conveys the English source. The product name and the linked model name are preserved; leaving “English-only Parakeet” in English is appropriate as it is a proper name and part of the link. No issues with meaning, negation, numbers, untranslated technical terms, names, APIs, or grammar."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "**Parakeet Unified** is NVIDIA's\n[English-only Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b).",
+            "target_quote": "**Parakeet Unified**는 NVIDIA의\n[English-only Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b)입니다.",
+            "reason": "The hyperlink label 'English-only Parakeet' (a descriptive phrase) was left untranslated. According to the terminology policy, common descriptive text inside hyperlink labels should be localized while preserving named entities. The rest of the sentence (entity names, URL, punctuation, and possessive) is preserved correctly.",
+            "suggestion": "Translate the label's descriptive part and preserve the model name. For example: \"[영어 전용 Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b)\". Ensure the particle after the link remains correct (in this case, \")입니다.\" is fine)."
+          }
+        ],
+        "explanation": "The translation preserves the model name, URL, and possessive correctly, but did not localize the descriptive hyperlink label 'English-only'. Per the review policy, translate common descriptions in link text while keeping named entities; update the label to something like '영어 전용 Parakeet'. Grammar and particles after the link are otherwise correct."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "**Parakeet Unified** is NVIDIA's\n[English-only Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b).",
+          "target_quote": "**Parakeet Unified**는 NVIDIA의\n[English-only Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b)입니다.",
+          "reason": "The hyperlink label 'English-only Parakeet' (a descriptive phrase) was left untranslated. According to the terminology policy, common descriptive text inside hyperlink labels should be localized while preserving named entities. The rest of the sentence (entity names, URL, punctuation, and possessive) is preserved correctly.",
+          "suggestion": "Translate the label's descriptive part and preserve the model name. For example: \"[영어 전용 Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b)\". Ensure the particle after the link remains correct (in this case, \")입니다.\" is fine)."
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "pass_candidate",
+      "repairs": 1,
+      "original_record_sha256": "f4f9698bda6ad7e06e32dc78c34841aa9e13fde23bccde039b102c6b8a3c9f66"
+    },
+    {
+      "id": "pr253_capability_original",
+      "case_id": "pr253_capability",
+      "split": "new_pr_holdout",
+      "expected_bad": false,
+      "label_reason": "meaning and identifiers preserved",
+      "source": "Qwen3-ASR gives one final result for each segment of up to 40 seconds,\nwithout volatile results, word timing, or confidence.\nIt runs on the GPU and is slower than Parakeet,\nso it's better suited to transcribing files than live input.",
+      "input_candidate": "Qwen3-ASR은 최대 40초 길이의 각 세그먼트에 대해 최종 결과 하나를 제공하며,\n휘발성 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다.\nGPU에서 실행되며 Parakeet보다 느리므로,\n라이브 입력보다는 파일 전사에 더 적합합니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": true,
+        "findings": [
+          {
+            "source_quote": "without volatile results, word timing, or confidence.",
+            "target_quote": "휘발성 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다.",
+            "reason": "Meaning is preserved, but the Korean phrase '휘발성 결과' is a literal rendering of 'volatile results' and may be uncommon or unclear in Korean technical contexts (readers might prefer '불안정한 결과' or '변동성 결과').",
+            "suggestion": "Consider using '불안정한 결과' or '변동성 결과' for clarity: '불안정한 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다.'"
+          },
+          {
+            "source_quote": "Qwen3-ASR gives one final result for each segment of up to 40 seconds,",
+            "target_quote": "Qwen3-ASR은 최대 40초 길이의 각 세그먼트에 대해 최종 결과 하나를 제공하며,",
+            "reason": "Accurate translation of numbers and meaning; wording is natural and correct.",
+            "suggestion": ""
+          },
+          {
+            "source_quote": "It runs on the GPU and is slower than Parakeet,",
+            "target_quote": "GPU에서 실행되며 Parakeet보다 느리므로,",
+            "reason": "Accurate; names and APIs preserved and untranslated as appropriate.",
+            "suggestion": ""
+          },
+          {
+            "source_quote": "so it's better suited to transcribing files than live input.",
+            "target_quote": "라이브 입력보다는 파일 전사에 더 적합합니다.",
+            "reason": "Meaning preserved; '파일 전사' is acceptable though '파일 전사(오프라인 전사)' could be used for clarity.",
+            "suggestion": "Optionally: '라이브 입력보다는 파일(오프라인) 전사에 더 적합합니다.'"
+          }
+        ],
+        "explanation": "Overall the translation is accurate: numbers, negation, names (Qwen3-ASR, Parakeet), and technical meaning are preserved. The only minor issue is a stylistic/terminology choice for 'volatile results' ('휘발성 결과'), which may be unclear to some Korean readers; alternative terms are suggested. Grammar and APIs are handled correctly."
+      },
+      "baseline_pass": false,
+      "policy_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "Translation accurately preserves meaning, negation, and numbers. Named models (Qwen3-ASR, Parakeet) are preserved. Technical terms are correctly localized (e.g., '단어 타이밍' for 'word timing'), and grammar is natural. No untranslated strings, API names, or particles after links require changes."
+      },
+      "policy_initial_decision": "pass_candidate",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [],
+      "policy_pass": true,
+      "final_decision": "pass_candidate",
+      "repairs": 0,
+      "original_record_sha256": "601c4795711ac837e3c7fa216f03a14ddf8ade546c17b18080fa4519ec171603"
+    },
+    {
+      "id": "prior_code",
+      "case_id": "pr244_announcement",
+      "split": "development_seen",
+      "expected_bad": true,
+      "label_reason": "backslash added inside executable code",
+      "source": "Select a model to see how to run it. The Space lists the Neuron stack the model was tested on, the packages to install on top of it, and the `run.py` script that ran. The script follows the recipe of the [TorchNeuron announcement](https://huggingface.co/blog/hf-torchneuron): it loads the model with `from_pretrained`, sharded when it needs to be, then generates with a static cache and `torch.compile(backend=\"neuron\")`.",
+      "input_candidate": "모델을 선택하면 실행 방법을 확인할 수 있습니다. Space에는 모델을 테스트한 Neuron 스택, 그 위에 설치해야 하는 패키지, 그리고 실행된 `run.py` 스크립트가 나열됩니다. 이 스크립트는 [TorchNeuron 발표](https://huggingface.co/blog/hf-torchneuron)의 레시피를 따릅니다. 필요할 경우 모델을 샤딩하여 `from_pretrained`로 로드한 다음, 정적 캐시와 `torch.compile(backend=\\\"neuron\\\")`를 사용해 생성합니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "The Korean translation accurately conveys the original English meaning, including negation, numbers, and technical API names (`from_pretrained`, `torch.compile(backend=\"neuron\")`). There are no untranslated fragments or grammar issues; the phrasing preserves the original intent (model sharding when needed, using a static cache, and compiling with the Neuron backend)."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "the `run.py` script that ran. The script follows the recipe of the [TorchNeuron announcement](https://huggingface.co/blog/hf-torchneuron): it loads the model with `from_pretrained`, sharded when it needs to be, then generates with a static cache and `torch.compile(backend=\"neuron\")`.",
+            "target_quote": "실행된 `run.py` 스크립트가 나열됩니다. 이 스크립트는 [TorchNeuron 발표](https://huggingface.co/blog/hf-torchneuron)의 레시피를 따릅니다. 필요할 경우 모델을 샤딩하여 `from_pretrained`로 로드한 다음, 정적 캐시와 `torch.compile(backend=\\\"neuron\\\")`를 사용해 생성합니다.",
+            "reason": "Overall meaning preserved, particles after the hyperlink are correct. However the code snippet for torch.compile contains extra backslashes in the candidate, which changes the literal text of the API call and violates the rule to preserve API identifiers exactly.",
+            "suggestion": "Remove the extra escape characters so the code appears exactly as in source: `torch.compile(backend=\"neuron\")`."
+          }
+        ],
+        "explanation": "Translation is accurate in meaning, numbers, negation, and terminology. Named items (Space, TorchNeuron, `from_pretrained`) are preserved appropriately and the particle after the link is correct. The only actionable issue is the extra escaping in the `torch.compile` code fragment; fix that to match the source exactly."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [
+        "inline_code_changed"
+      ],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "the `run.py` script that ran. The script follows the recipe of the [TorchNeuron announcement](https://huggingface.co/blog/hf-torchneuron): it loads the model with `from_pretrained`, sharded when it needs to be, then generates with a static cache and `torch.compile(backend=\"neuron\")`.",
+          "target_quote": "실행된 `run.py` 스크립트가 나열됩니다. 이 스크립트는 [TorchNeuron 발표](https://huggingface.co/blog/hf-torchneuron)의 레시피를 따릅니다. 필요할 경우 모델을 샤딩하여 `from_pretrained`로 로드한 다음, 정적 캐시와 `torch.compile(backend=\\\"neuron\\\")`를 사용해 생성합니다.",
+          "reason": "Overall meaning preserved, particles after the hyperlink are correct. However the code snippet for torch.compile contains extra backslashes in the candidate, which changes the literal text of the API call and violates the rule to preserve API identifiers exactly.",
+          "suggestion": "Remove the extra escape characters so the code appears exactly as in source: `torch.compile(backend=\"neuron\")`."
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "repair",
+      "repairs": 0,
+      "original_record_sha256": "668cf9e9cfaa95f3f8a25d38f5274a1250af3d683a345e0b46a8a46fed833872"
+    },
+    {
+      "id": "prior_product",
+      "case_id": "pr247_demo",
+      "split": "development_seen",
+      "expected_bad": true,
+      "label_reason": "ModelScope Studios must be preserved under frozen policy",
+      "source": "Try Nemotron 3.5 Transcribe in the [Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) or on [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe), then download the checkpoint from [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) or [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe). For self-hosted transcription, get started with [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) or [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html), both offering support from day one.",
+      "input_candidate": "[Hugging Face 데모](https://huggingface.co/spaces/nvidia/nemotron-transcribe) 또는 [ModelScope 스튜디오](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe)에서 Nemotron 3.5 Transcribe를 사용해 본 다음, [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) 또는 [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe)에서 체크포인트를 다운로드하세요. 자체 호스팅 전사를 시작하려면 [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) 또는 [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html)를 이용하세요. 두 환경 모두 출시 첫날부터 지원을 제공합니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "The Korean translation accurately preserves meaning, negation, numeric values, names, and links (Hugging Face, ModelScope, vLLM, SGLang-Omni). Phrases like \"from day one\" are rendered correctly as \"출시 첫날부터\". There are no untranslated segments or API/name mistranslations, and grammar is natural."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "The Korean candidate accurately preserves meaning, numbers, names, API identifiers, and URLs. Named entities (Nemotron 3.5 Transcribe, vLLM, SGLang-Omni, Hugging Face, ModelScope) and all links are preserved exactly per policy. Korean particles following link labels are correct (e.g., '[Hugging Face 데모] 또는 [ModelScope 스튜디오]에서'). The phrase 'both offering support from day one' is translated appropriately as '두 환경 모두 출시 첫날부터 지원을 제공합니다.' No negation, numeric, or untranslated segments were found."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [
+        "protected_name:ModelScope Studios"
+      ],
+      "policy_grounded_findings": [],
+      "policy_pass": false,
+      "final_decision": "pass_candidate",
+      "repairs": 1,
+      "original_record_sha256": "8166b664908bda09da99f048c86eb71cc084242592f203703e1ade4625c312b7"
+    },
+    {
+      "id": "pr253_provider_original",
+      "case_id": "pr253_provider",
+      "split": "new_pr_holdout",
+      "expected_bad": true,
+      "label_reason": "untranslated descriptive link labels",
+      "source": "To add another engine, implement `SpeechRecognitionModel` for its configuration\nand `SpeechRecognitionExecutor` for one module's session.\nThe README includes a [small provider](https://github.com/mattt/AnySpeechRecognizer#custom-providers)\nthat reports placeholder text to help you get started.",
+      "input_candidate": "다른 엔진을 추가하려면 해당 구성에 대해 `SpeechRecognitionModel`를,\n하나의 모듈 세션에 대해 `SpeechRecognitionExecutor`를 구현합니다.\nREADME에는 시작을 돕기 위해 자리표시자 텍스트를 보고하는 [small provider](https://github.com/mattt/AnySpeechRecognizer#custom-providers)가 포함되어 있습니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "The Korean translation accurately conveys the meaning, negation, and numbers from the English source. API/type names (`SpeechRecognitionModel`, `SpeechRecognitionExecutor`) and the link text are preserved. The phrase 'reports placeholder text' is rendered as '자리표시자 텍스트를 보고하는', which is understandable (could optionally be phrased as '표시하는' or '출력하는' for style), but this is not a correctness issue."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "implement `SpeechRecognitionModel` for its configuration",
+            "target_quote": "해당 구성에 대해 `SpeechRecognitionModel`를",
+            "reason": "Korean object particle after the inline code is incorrect. The particle '를' is used after a vowel-final word; `SpeechRecognitionModel` ends with a consonant sound and should take '을'. Also the policy requires checking particles immediately after inline code/links.",
+            "suggestion": "Change to `SpeechRecognitionModel`을"
+          },
+          {
+            "source_quote": "and `SpeechRecognitionExecutor` for one module's session.",
+            "target_quote": "하나의 모듈 세션에 대해 `SpeechRecognitionExecutor`를 구현합니다.",
+            "reason": "Same particle issue as above: use '을' after the inline identifier `SpeechRecognitionExecutor`.",
+            "suggestion": "Change to `SpeechRecognitionExecutor`을 구현합니다."
+          }
+        ],
+        "explanation": "Translation preserves APIs and URL correctly and keeps the meaning. The main problems are two Korean object particles immediately following inline code identifiers — they should be '을' (not '를'). No issues found with negation, numbers, untranslated descriptions, or API names; leaving 'small provider' in English is acceptable under the provided terminology rules."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "implement `SpeechRecognitionModel` for its configuration",
+          "target_quote": "해당 구성에 대해 `SpeechRecognitionModel`를",
+          "reason": "Korean object particle after the inline code is incorrect. The particle '를' is used after a vowel-final word; `SpeechRecognitionModel` ends with a consonant sound and should take '을'. Also the policy requires checking particles immediately after inline code/links.",
+          "suggestion": "Change to `SpeechRecognitionModel`을"
+        },
+        {
+          "source_quote": "and `SpeechRecognitionExecutor` for one module's session.",
+          "target_quote": "하나의 모듈 세션에 대해 `SpeechRecognitionExecutor`를 구현합니다.",
+          "reason": "Same particle issue as above: use '을' after the inline identifier `SpeechRecognitionExecutor`.",
+          "suggestion": "Change to `SpeechRecognitionExecutor`을 구현합니다."
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "repair",
+      "repairs": 2,
+      "original_record_sha256": "e11f233397a87799d715d1682bbedd8a9b347e48e0542d11236590c8f84a8b89"
+    },
+    {
+      "id": "clean_pr244_dataset",
+      "case_id": "pr244_dataset",
+      "split": "development_seen",
+      "expected_bad": false,
+      "label_reason": "correct link localization, meaning and names preserved",
+      "source": "The [dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support) gives the exact meaning of each result.",
+      "input_candidate": "[데이터셋 카드](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "Translation accurately conveys the source meaning. The link, term \"dataset card\", and implication that it provides the exact meaning of each result are preserved. No issues with negation, numbers, names, APIs, untranslated text, or grammar."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "Good translation. The term 'dataset card' was localized to the approved '데이터셋 카드' and the hyperlink was preserved exactly. The Korean particle '에서' immediately following the localized label is correct and natural. Meaning, negation, numbers, names, and formatting are preserved; no untranslated segments or API identifiers present."
+      },
+      "policy_initial_decision": "pass_candidate",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [],
+      "policy_pass": true,
+      "final_decision": "pass_candidate",
+      "repairs": 0,
+      "original_record_sha256": "4efa7b811cc73fa475e9ae304b776afe9f41d5deb584818e02323a4480439e0d"
+    },
+    {
+      "id": "valid_alias",
+      "case_id": "pr244_ui_control",
+      "split": "development_seen",
+      "expected_bad": false,
+      "label_reason": "Hub is an allowed alias and source also uses Hub",
+      "source": "To look up a given model, switch to the **Trending** or **Downloads** view and type part of its name. These views follow the Hub's own rankings, one task at a time, whether a model was tested or not. When a model was left out on purpose, the Space tells you why (most of the time it was not prioritized, sometimes it is truly incompatible). You can also pick the versions of the Neuron compiler (`neuronx-cc`) and of Transformers to look at.",
+      "input_candidate": "특정 모델을 조회하려면 **Trending** 또는 **Downloads** 보기로 전환한 다음 모델 이름의 일부를 입력하세요. 이 보기에서는 모델의 테스트 여부와 관계없이 한 번에 하나의 작업씩 Hub 자체 순위를 따릅니다. 모델을 의도적으로 제외한 경우 Space에서 그 이유를 알려 줍니다(대부분은 우선순위가 높지 않았기 때문이며, 때로는 실제로 호환되지 않기 때문입니다). 확인할 Neuron 컴파일러(`neuronx-cc`) 및 Transformers 버전도 선택할 수 있습니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "Translation is accurate and natural. Terminology and names (Trending, Downloads, Hub, Space, Neuron compiler `neuronx-cc`, Transformers) are preserved. Negation, numbers, and the intended meaning (views follow Hub rankings one task at a time regardless of testing; Space explains intentional omissions and common reasons) are correctly conveyed. No untranslated fragments or grammar issues found."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "Translation is accurate and faithful to the source. Terminology and named entities (Trending, Downloads, Hub, Space, Neuron compiler `neuronx-cc`, Transformers) are preserved per policy. Meaning, negation, and numeric/temporal information are maintained. Korean grammar and particles are correct."
+      },
+      "policy_initial_decision": "pass_candidate",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [],
+      "policy_pass": true,
+      "final_decision": "pass_candidate",
+      "repairs": 0,
+      "original_record_sha256": "25324750a70317f4cae1f5253bba5f0b2402b15b64cc9490795d4555f86a0b9c"
+    },
+    {
+      "id": "clean_pr244_previous",
+      "case_id": "pr244_previous",
+      "split": "development_seen",
+      "expected_bad": false,
+      "label_reason": "correct link localization, meaning and names preserved",
+      "source": "In a [previous post](https://huggingface.co/blog/hf-torchneuron), we introduced TorchNeuron, the native PyTorch backend for AWS Trainium (the `torch-neuronx` package). With it, Transformers runs its own modeling code on Trainium, as it does on any other device, so any Transformers model on the Hub may run. Which ones actually do?",
+      "input_candidate": "[이전 글](https://huggingface.co/blog/hf-torchneuron)에서 AWS Trainium용 네이티브 PyTorch 백엔드인 TorchNeuron(`torch-neuronx` 패키지)을 소개했습니다. 이를 사용하면 Transformers가 다른 모든 디바이스에서와 마찬가지로 Trainium에서 자체 모델링 코드를 실행하므로, Hugging Face Hub의 모든 Transformers 모델이 실행될 수 있습니다. 실제로 실행되는 모델은 무엇일까요?",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "The Korean translation accurately conveys the meaning of the English source. Technical names and API/package identifiers are preserved (TorchNeuron, `torch-neuronx`, Trainium, Transformers). Negation and numbers are not present in this sentence, and nothing is left untranslated. The slight expansion 'Hugging Face Hub' for 'the Hub' is acceptable and clarifies the reference."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "Translation accurately preserves meaning, tense, and modality. All named entities and code identifiers are preserved exactly (TorchNeuron, `torch-neuronx`, Transformers). The link and its immediately following Korean particle are correct ('... )에서'). 'the Hub' was localized to 'Hugging Face Hub', which is an allowed alias and appropriate here. No issues with negation, numbers, or untranslated descriptions."
+      },
+      "policy_initial_decision": "pass_candidate",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [],
+      "policy_pass": true,
+      "final_decision": "pass_candidate",
+      "repairs": 0,
+      "original_record_sha256": "37a08aaaf45521c456cab122ab5687b18d5a6db4c08f36a6a4535cb3b36a6660"
+    },
+    {
+      "id": "clean_english",
+      "case_id": "pr253_english",
+      "split": "new_pr_holdout",
+      "expected_bad": false,
+      "label_reason": "descriptive English-only translated, Parakeet preserved",
+      "source": "**Parakeet Unified** is NVIDIA's\n[English-only Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b).",
+      "input_candidate": "**Parakeet Unified**는 NVIDIA의\n[영어 전용 Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b)입니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "The Korean translation accurately preserves meaning, negation, numbers, names, and the link. The English name “Parakeet Unified” and NVIDIA are unchanged and the note that it is English-only is correctly rendered as “영어 전용 Parakeet”. Grammar and punctuation are natural in Korean. No untranslated fragments or API names were missed."
+      },
+      "baseline_pass": true,
+      "policy_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "**Parakeet Unified** is NVIDIA's\n[English-only Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b).",
+            "target_quote": "**Parakeet Unified**는 NVIDIA의\n[영어 전용 Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b)입니다.",
+            "reason": "Meaning preserved, named entity 'Parakeet Unified' and 'Parakeet' kept; URL preserved exactly. 'English-only' correctly localized to '영어 전용'. Korean grammar and particle after the link ('입니다.') are appropriate.",
+            "suggestion": ""
+          }
+        ],
+        "explanation": "The translation accurately conveys the source meaning, retains the URL and product names unchanged per policy, and uses correct Korean grammar and particles immediately after the link. No issues with negation, numbers, APIs, or untranslated descriptions."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "**Parakeet Unified** is NVIDIA's\n[English-only Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b).",
+          "target_quote": "**Parakeet Unified**는 NVIDIA의\n[영어 전용 Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b)입니다.",
+          "reason": "Meaning preserved, named entity 'Parakeet Unified' and 'Parakeet' kept; URL preserved exactly. 'English-only' correctly localized to '영어 전용'. Korean grammar and particle after the link ('입니다.') are appropriate.",
+          "suggestion": ""
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "repair",
+      "repairs": 0,
+      "original_record_sha256": "e7b6312e5af9298c5bf9d5c02e71cf86c1a3dcac11524b5f970c92af2abfe262"
+    },
+    {
+      "id": "pr247_tools_original",
+      "case_id": "pr247_tools",
+      "split": "development_seen",
+      "expected_bad": true,
+      "label_reason": "untranslated descriptive link labels",
+      "source": "Granary v2’s multilingual data (available on [Hugging Face](https://huggingface.co/datasets/nvidia/Granary-v2) and [ModelScope](https://modelscope.ai/datasets/nv-community/Granary-v2)) and reusable curation pipeline, together with [NeMo Speech fine-tuning tools](https://github.com/NVIDIA-NeMo/Speech/blob/main/tutorials/speechlm2/finetuning/README.md), extend prompt-level control to training: developers can define the written form they need and adapt the model to the speech their applications encounter. In a [medical case study](https://github.com/NVIDIA-NeMo/Speech/blob/main/examples/speechlm2/finetuning/docs/medical-asr-synthetic-data.md), fine-tuning cut word error rate (WER) on held-out speakers by 45.8% relative to the best prompt.",
+      "input_candidate": "Granary v2의 다국어 데이터([Hugging Face](https://huggingface.co/datasets/nvidia/Granary-v2) 및 [ModelScope](https://modelscope.ai/datasets/nv-community/Granary-v2)에서 제공)와 재사용 가능한 큐레이션 파이프라인은 [NeMo Speech fine-tuning tools](https://github.com/NVIDIA-NeMo/Speech/blob/main/tutorials/speechlm2/finetuning/README.md)와 함께 프롬프트 수준의 제어를 학습 단계까지 확장합니다. 개발자는 필요한 표기 형식을 정의하고 애플리케이션에서 접하는 음성에 맞게 모델을 조정할 수 있습니다. [medical case study](https://github.com/NVIDIA-NeMo/Speech/blob/main/examples/speechlm2/finetuning/docs/medical-asr-synthetic-data.md)에서 파인튜닝을 수행한 결과, 보류 화자에 대한 단어 오류율(WER)이 최적 프롬프트 대비 상대적으로 45.8% 감소했습니다.",
+      "baseline_assessment": {
+        "acceptable": false,
+        "uncertain": true,
+        "findings": [
+          {
+            "source_quote": "Granary v2’s multilingual data (available on [Hugging Face]... and [ModelScope]...) and reusable curation pipeline, together with [NeMo Speech fine-tuning tools]..., extend prompt-level control to training: developers can define the written form they need and adapt the model to the speech their applications encounter.",
+            "target_quote": "Granary v2의 다국어 데이터(...에서 제공)와 재사용 가능한 큐레이션 파이프라인은 [NeMo Speech fine-tuning tools]...와 함께 프롬프트 수준의 제어를 학습 단계까지 확장합니다. 개발자는 필요한 표기 형식을 정의하고 애플리케이션에서 접하는 음성에 맞게 모델을 조정할 수 있습니다.",
+            "reason": "Mostly accurate, but the English tool name 'NeMo Speech fine-tuning tools' is left in English (this may be acceptable for proper names). Overall grammar and meaning preserved.",
+            "suggestion": "Either keep the tool name in English (fine) or present a Korean rendering (e.g., 'NeMo Speech 파인튜닝 툴'). No change required if preserving proper names is desired."
+          },
+          {
+            "source_quote": "In a medical case study, fine-tuning cut word error rate (WER) on held-out speakers by 45.8% relative to the best prompt.",
+            "target_quote": "[medical case study]에서 파인튜닝을 수행한 결과, 보류 화자에 대한 단어 오류율(WER)이 최적 프롬프트 대비 상대적으로 45.8% 감소했습니다.",
+            "reason": "'held-out speakers' was translated as '보류 화자', which is unnatural and potentially misleading in Korean. Also the bracketed 'medical case study' remains in English (not translated). '상대적으로 45.8% 감소했습니다' is acceptable but could be made more natural as '45.8% 감소했습니다(최고 프롬프트 대비)'.",
+            "suggestion": "Translate 'held-out speakers' to a clearer phrase such as '검증용(held-out) 화자', '평가용 화자', or '보류된 화자'. Translate or localize 'medical case study' to '의료 사례 연구' or integrate the link text in Korean. Example: '의료 사례 연구에서는 파인튜닝을 통해 평가용 화자의 단어 오류율(WER)이 최적 프롬프트 대비 45.8% 감소했습니다.'"
+          }
+        ],
+        "explanation": "The Korean candidate mostly preserves meaning, numbers, negation and links, and keeps API/tool names. Main issues: unnatural translation of 'held-out speakers' as '보류 화자' and leaving 'medical case study' in English. Tool names in English are acceptable but can be localized if desired. No numeric or negation errors detected."
+      },
+      "baseline_pass": false,
+      "policy_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "[NeMo Speech fine-tuning tools](https://github.com/NVIDIA-NeMo/Speech/blob/main/tutorials/speechlm2/finetuning/README.md)",
+            "target_quote": "[NeMo Speech fine-tuning tools](https://github.com/NVIDIA-NeMo/Speech/blob/main/tutorials/speechlm2/finetuning/README.md)",
+            "reason": "Hyperlink label left in English. Policy: translate common descriptions in hyperlink labels (and map 'fine-tuning' → '파인튜닝'). Also preserve API/URLs exactly (they are preserved).",
+            "suggestion": "Translate label to Korean, e.g. '[NeMo Speech 파인튜닝 도구](... )' or '[NeMo Speech 파인튜닝 툴](... )' while keeping the URL unchanged."
+          },
+          {
+            "source_quote": "In a [medical case study](https://github.com/NVIDIA-NeMo/Speech/blob/main/examples/speechlm2/finetuning/docs/medical-asr-synthetic-data.md)",
+            "target_quote": "[medical case study](https://github.com/NVIDIA-NeMo/Speech/blob/main/examples/speechlm2/finetuning/docs/medical-asr-synthetic-data.md)에서",
+            "reason": "Hyperlink label left untranslated. Policy requires translating common descriptions within hyperlink labels. Also label now has a following Korean particle '에서' — check after localization per policy.",
+            "suggestion": "Translate the label to Korean, e.g. '[의학 사례 연구](...)에서' and ensure the particle placement is correct (keep '에서' immediately after the link)."
+          },
+          {
+            "source_quote": "held-out speakers",
+            "target_quote": "보류 화자",
+            "reason": "'보류 화자' is an incorrect/unnatural translation of 'held-out speakers'. 'Held-out' here means held-out for evaluation (e.g., validation/test), not 'on hold'.",
+            "suggestion": "Use '검증용 화자', '보류된 화자', or '평가용 화자' (e.g. '검증용 화자' is recommended)."
+          },
+          {
+            "source_quote": "cut word error rate (WER) on held-out speakers by 45.8% relative to the best prompt.",
+            "target_quote": "보류 화자에 대한 단어 오류율(WER)이 최적 프롬프트 대비 상대적으로 45.8% 감소했습니다.",
+            "reason": "Word order and phrasing are slightly awkward/unnatural in Korean. '상대적으로' is redundant and '최적 프롬프트' should be '최적의 프롬프트'. Also ensure 'WER' stays as acronym (kept) and the comparison phrasing is clear.",
+            "suggestion": "Rephrase to '검증용 화자에 대한 단어 오류율(WER)이 최적의 프롬프트에 비해 45.8% 감소했습니다.'"
+          },
+          {
+            "source_quote": "Granary v2’s multilingual data (available on [Hugging Face](https://huggingface.co/datasets/nvidia/Granary-v2) and [ModelScope](https://modelscope.ai/datasets/nv-community/Granary-v2))",
+            "target_quote": "Granary v2의 다국어 데이터([Hugging Face](https://huggingface.co/datasets/nvidia/Granary-v2) 및 [ModelScope](https://modelscope.ai/datasets/nv-community/Granary-v2)에서 제공)",
+            "reason": "Overall correct and links/URLs preserved. Check particle placement immediately after link: the candidate placed '에서 제공' inside the parenthesis which preserves the particle right after the link — this is acceptable per policy. No change required.",
+            "suggestion": ""
+          }
+        ],
+        "explanation": "The translation preserves names and URLs but leaves several hyperlink labels in English and uses an unnatural translation for 'held-out speakers'. Per the terminology and link-label rules, common descriptive labels (including link text) should be localized ('fine-tuning'→'파인튜닝', 'medical case study'→'의학 사례 연구'), keeping the URLs exactly. Fix the 'held-out speakers' phrase and adjust the WER sentence to natural Korean (remove redundant '상대적으로', use '최적의 프롬프트에 비해'). After changing link labels, ensure the immediately following Korean particle remains correctly placed (e.g., '[의학 사례 연구](...)에서')."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [
+        "required_term_untranslated:fine-tuning"
+      ],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "[NeMo Speech fine-tuning tools](https://github.com/NVIDIA-NeMo/Speech/blob/main/tutorials/speechlm2/finetuning/README.md)",
+          "target_quote": "[NeMo Speech fine-tuning tools](https://github.com/NVIDIA-NeMo/Speech/blob/main/tutorials/speechlm2/finetuning/README.md)",
+          "reason": "Hyperlink label left in English. Policy: translate common descriptions in hyperlink labels (and map 'fine-tuning' → '파인튜닝'). Also preserve API/URLs exactly (they are preserved).",
+          "suggestion": "Translate label to Korean, e.g. '[NeMo Speech 파인튜닝 도구](... )' or '[NeMo Speech 파인튜닝 툴](... )' while keeping the URL unchanged."
+        },
+        {
+          "source_quote": "In a [medical case study](https://github.com/NVIDIA-NeMo/Speech/blob/main/examples/speechlm2/finetuning/docs/medical-asr-synthetic-data.md)",
+          "target_quote": "[medical case study](https://github.com/NVIDIA-NeMo/Speech/blob/main/examples/speechlm2/finetuning/docs/medical-asr-synthetic-data.md)에서",
+          "reason": "Hyperlink label left untranslated. Policy requires translating common descriptions within hyperlink labels. Also label now has a following Korean particle '에서' — check after localization per policy.",
+          "suggestion": "Translate the label to Korean, e.g. '[의학 사례 연구](...)에서' and ensure the particle placement is correct (keep '에서' immediately after the link)."
+        },
+        {
+          "source_quote": "held-out speakers",
+          "target_quote": "보류 화자",
+          "reason": "'보류 화자' is an incorrect/unnatural translation of 'held-out speakers'. 'Held-out' here means held-out for evaluation (e.g., validation/test), not 'on hold'.",
+          "suggestion": "Use '검증용 화자', '보류된 화자', or '평가용 화자' (e.g. '검증용 화자' is recommended)."
+        },
+        {
+          "source_quote": "cut word error rate (WER) on held-out speakers by 45.8% relative to the best prompt.",
+          "target_quote": "보류 화자에 대한 단어 오류율(WER)이 최적 프롬프트 대비 상대적으로 45.8% 감소했습니다.",
+          "reason": "Word order and phrasing are slightly awkward/unnatural in Korean. '상대적으로' is redundant and '최적 프롬프트' should be '최적의 프롬프트'. Also ensure 'WER' stays as acronym (kept) and the comparison phrasing is clear.",
+          "suggestion": "Rephrase to '검증용 화자에 대한 단어 오류율(WER)이 최적의 프롬프트에 비해 45.8% 감소했습니다.'"
+        },
+        {
+          "source_quote": "Granary v2’s multilingual data (available on [Hugging Face](https://huggingface.co/datasets/nvidia/Granary-v2) and [ModelScope](https://modelscope.ai/datasets/nv-community/Granary-v2))",
+          "target_quote": "Granary v2의 다국어 데이터([Hugging Face](https://huggingface.co/datasets/nvidia/Granary-v2) 및 [ModelScope](https://modelscope.ai/datasets/nv-community/Granary-v2)에서 제공)",
+          "reason": "Overall correct and links/URLs preserved. Check particle placement immediately after link: the candidate placed '에서 제공' inside the parenthesis which preserves the particle right after the link — this is acceptable per policy. No change required.",
+          "suggestion": ""
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "pass_candidate",
+      "repairs": 2,
+      "original_record_sha256": "3fb0df155f24332e0d7fd9677d48c32f6e22e9bb1275f15665f2dbf710c3abfe"
+    },
+    {
+      "id": "seed_number",
+      "case_id": "pr253_capability",
+      "split": "new_pr_holdout",
+      "expected_bad": true,
+      "label_reason": "40 changed to 400 seconds",
+      "source": "Qwen3-ASR gives one final result for each segment of up to 40 seconds,\nwithout volatile results, word timing, or confidence.\nIt runs on the GPU and is slower than Parakeet,\nso it's better suited to transcribing files than live input.",
+      "input_candidate": "Qwen3-ASR은 최대 400초 길이의 각 세그먼트에 대해 최종 결과 하나를 제공하며,\n휘발성 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다.\nGPU에서 실행되며 Parakeet보다 느리므로,\n라이브 입력보다는 파일 전사에 더 적합합니다.",
+      "baseline_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "up to 40 seconds",
+            "target_quote": "최대 400초",
+            "reason": "Number mistranslated: source says 40 seconds, candidate says 400 seconds (extra zero). This changes meaning by an order of magnitude.",
+            "suggestion": "Change to '최대 40초' to match the source."
+          },
+          {
+            "source_quote": "without volatile results, word timing, or confidence",
+            "target_quote": "휘발성 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다",
+            "reason": "'휘발성 결과' is a literal rendering of 'volatile results' and may be unclear or unnatural in Korean technical context. The rest ('단어 타이밍', '신뢰도') is correct.",
+            "suggestion": "Use a clearer term such as '변동성(불안정) 결과' or '중간(일시적) 결과' — e.g. '변동성 있는(또는 중간) 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다.'"
+          }
+        ],
+        "explanation": "The translation is mostly accurate in grammar and structure, and correctly renders API/product names and terms like 'GPU', 'Parakeet', '단어 타이밍', and '신뢰도'. However, a critical numeric error was introduced: 'up to 40 seconds' became '최대 400초', which is incorrect and changes the capability description. Also, 'volatile results' was translated literally as '휘발성 결과', which is awkward in Korean technical writing and should be rephrased for clarity. Fixing these two items will make the translation acceptable."
+      },
+      "baseline_pass": false,
+      "policy_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "Qwen3-ASR gives one final result for each segment of up to 40 seconds,",
+            "target_quote": "Qwen3-ASR은 최대 400초 길이의 각 세그먼트에 대해 최종 결과 하나를 제공하며,",
+            "reason": "Number mistranslated: source says '40 seconds' but candidate says '400초' (extra zero), which changes duration by an order of magnitude.",
+            "suggestion": "Change '최대 400초' to '최대 40초' to match the source."
+          },
+          {
+            "source_quote": "without volatile results, word timing, or confidence.",
+            "target_quote": "휘발성 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다.",
+            "reason": "Meaning preserved, but consider translating 'volatile results' nuance; '휘발성 결과' is acceptable if intended to mean non-deterministic/unstable outputs. No particle issues.",
+            "suggestion": "If 'volatile results' means 'unstable/non-deterministic outputs', consider '불안정한 결과' or keep '휘발성 결과' if that term is established in context."
+          },
+          {
+            "source_quote": "It runs on the GPU and is slower than Parakeet,",
+            "target_quote": "GPU에서 실행되며 Parakeet보다 느리므로,",
+            "reason": "Name and meaning preserved; grammar and particle placement are correct.",
+            "suggestion": "No change needed."
+          },
+          {
+            "source_quote": "so it's better suited to transcribing files than live input.",
+            "target_quote": "라이브 입력보다는 파일 전사에 더 적합합니다.",
+            "reason": "Meaning preserved and natural Korean; 'transcribing files' rendered appropriately as '파일 전사'.",
+            "suggestion": "No change needed."
+          }
+        ],
+        "explanation": "Overall translation is accurate except for a critical numeric error: '40 seconds' became '400초'. Named entities (Qwen3-ASR, Parakeet) and APIs/terms were preserved. Grammar and negation are correct. Recommend fixing the duration to '최대 40초'. Reviewed terminology and particles — no issues found after hyperlinks (none present)."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [
+        "numbers_changed"
+      ],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "Qwen3-ASR gives one final result for each segment of up to 40 seconds,",
+          "target_quote": "Qwen3-ASR은 최대 400초 길이의 각 세그먼트에 대해 최종 결과 하나를 제공하며,",
+          "reason": "Number mistranslated: source says '40 seconds' but candidate says '400초' (extra zero), which changes duration by an order of magnitude.",
+          "suggestion": "Change '최대 400초' to '최대 40초' to match the source."
+        },
+        {
+          "source_quote": "without volatile results, word timing, or confidence.",
+          "target_quote": "휘발성 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다.",
+          "reason": "Meaning preserved, but consider translating 'volatile results' nuance; '휘발성 결과' is acceptable if intended to mean non-deterministic/unstable outputs. No particle issues.",
+          "suggestion": "If 'volatile results' means 'unstable/non-deterministic outputs', consider '불안정한 결과' or keep '휘발성 결과' if that term is established in context."
+        },
+        {
+          "source_quote": "It runs on the GPU and is slower than Parakeet,",
+          "target_quote": "GPU에서 실행되며 Parakeet보다 느리므로,",
+          "reason": "Name and meaning preserved; grammar and particle placement are correct.",
+          "suggestion": "No change needed."
+        },
+        {
+          "source_quote": "so it's better suited to transcribing files than live input.",
+          "target_quote": "라이브 입력보다는 파일 전사에 더 적합합니다.",
+          "reason": "Meaning preserved and natural Korean; 'transcribing files' rendered appropriately as '파일 전사'.",
+          "suggestion": "No change needed."
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "pass_candidate",
+      "repairs": 1,
+      "original_record_sha256": "ab37965e889c01e4e30ab90e4f5370c56000b62d42303cb5b45d9cfa836b6834"
+    },
+    {
+      "id": "clean_product",
+      "case_id": "pr247_demo",
+      "split": "development_seen",
+      "expected_bad": false,
+      "label_reason": "reviewed service name restored",
+      "source": "Try Nemotron 3.5 Transcribe in the [Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) or on [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe), then download the checkpoint from [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) or [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe). For self-hosted transcription, get started with [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) or [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html), both offering support from day one.",
+      "input_candidate": "[Hugging Face 데모](https://huggingface.co/spaces/nvidia/nemotron-transcribe) 또는 [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe)에서 Nemotron 3.5 Transcribe를 사용해 본 다음, [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) 또는 [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe)에서 체크포인트를 다운로드하세요. 자체 호스팅 전사를 시작하려면 [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) 또는 [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html)를 이용하세요. 두 환경 모두 출시 첫날부터 지원을 제공합니다.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "Try Nemotron 3.5 Transcribe in the [Hugging Face demo] or on [ModelScope Studios], then download the checkpoint from [Hugging Face] or [ModelScope].",
+            "target_quote": "[Hugging Face 데모] 또는 [ModelScope Studios]에서 Nemotron 3.5 Transcribe를 사용해 본 다음, [Hugging Face] 또는 [ModelScope]에서 체크포인트를 다운로드하세요.",
+            "reason": "Accurately conveys the sequence (try/demo, then download checkpoint), preserves product and platform names and links, and numbers are unchanged.",
+            "suggestion": "No change required. Optionally, you could clarify 'Transcribe' as a product name by keeping capitalization or adding quotes (e.g., \"Nemotron 3.5 Transcribe\")—current form is acceptable."
+          },
+          {
+            "source_quote": "For self-hosted transcription, get started with [vLLM] or [SGLang-Omni], both offering support from day one.",
+            "target_quote": "자체 호스팅 전사를 시작하려면 [vLLM] 또는 [SGLang-Omni]를 이용하세요. 두 환경 모두 출시 첫날부터 지원을 제공합니다.",
+            "reason": "Meaning is preserved, APIs/tool names are kept, and the phrase 'both offering support from day one' is accurately translated. One minor stylistic note: '전사' is concise but could be clearer as '음성 전사'.",
+            "suggestion": "Consider changing '자체 호스팅 전사' to '자체 호스팅 음성 전사' for clarity, especially if the audience may not infer 'transcription' refers to speech."
+          }
+        ],
+        "explanation": "The Korean candidate faithfully preserves meaning, negation, numbers, product and API names, and links. Grammar and style are natural. Only a minor stylistic suggestion: explicitly specifying '음성 전사' could improve clarity, but the current translation is acceptable."
+      },
+      "baseline_pass": false,
+      "policy_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "Try Nemotron 3.5 Transcribe in the [Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) or on [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe),",
+            "target_quote": "[Hugging Face 데모](https://huggingface.co/spaces/nvidia/nemotron-transcribe) 또는 [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe)에서 Nemotron 3.5 Transcribe를 사용해 본 다음,",
+            "reason": "Meaning preserved, names and links left intact; localization applied to the first link label ('Hugging Face 데모') per terminology rules.",
+            "suggestion": "Optionally add the postposition after the first link for parallel clarity: '[Hugging Face 데모](...)에서 또는 [ModelScope Studios](...)에서 Nemotron 3.5 Transcribe를 사용해 본 다음,' but the current form is acceptable in Korean."
+          },
+          {
+            "source_quote": "then download the checkpoint from [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) or [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe).",
+            "target_quote": "[Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) 또는 [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe)에서 체크포인트를 다운로드하세요.",
+            "reason": "Accurate translation; links and model identifiers preserved exactly as required.",
+            "suggestion": "No change needed."
+          },
+          {
+            "source_quote": "For self-hosted transcription, get started with [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) or [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html), both offering support from day one.",
+            "target_quote": "자체 호스팅 전사를 시작하려면 [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) 또는 [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html)를 이용하세요. 두 환경 모두 출시 첫날부터 지원을 제공합니다.",
+            "reason": "Preserves APIs and names verbatim; 'both offering support from day one' correctly localized.",
+            "suggestion": "No change needed."
+          }
+        ],
+        "explanation": "The candidate translation accurately preserves names, model identifiers, and URLs per the terminology policy. Inline code/identifiers and links are unchanged. Korean localization is natural and preserves the original conditions ('both offering support from day one'). Only minor stylistic consideration: the Korean particle '에서' is attached to the second alternative link; adding it after the first link would make the parallel structure explicit but is not required for correctness."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "Try Nemotron 3.5 Transcribe in the [Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) or on [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe),",
+          "target_quote": "[Hugging Face 데모](https://huggingface.co/spaces/nvidia/nemotron-transcribe) 또는 [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe)에서 Nemotron 3.5 Transcribe를 사용해 본 다음,",
+          "reason": "Meaning preserved, names and links left intact; localization applied to the first link label ('Hugging Face 데모') per terminology rules.",
+          "suggestion": "Optionally add the postposition after the first link for parallel clarity: '[Hugging Face 데모](...)에서 또는 [ModelScope Studios](...)에서 Nemotron 3.5 Transcribe를 사용해 본 다음,' but the current form is acceptable in Korean."
+        },
+        {
+          "source_quote": "then download the checkpoint from [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) or [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe).",
+          "target_quote": "[Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) 또는 [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe)에서 체크포인트를 다운로드하세요.",
+          "reason": "Accurate translation; links and model identifiers preserved exactly as required.",
+          "suggestion": "No change needed."
+        },
+        {
+          "source_quote": "For self-hosted transcription, get started with [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) or [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html), both offering support from day one.",
+          "target_quote": "자체 호스팅 전사를 시작하려면 [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) 또는 [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html)를 이용하세요. 두 환경 모두 출시 첫날부터 지원을 제공합니다.",
+          "reason": "Preserves APIs and names verbatim; 'both offering support from day one' correctly localized.",
+          "suggestion": "No change needed."
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "pass_candidate",
+      "repairs": 1,
+      "original_record_sha256": "afa19ef572e97e52c59370a6a61a209473052ab0638ccf8b834bf7be6122b955"
+    },
+    {
+      "id": "seed_negation",
+      "case_id": "pr253_capability",
+      "split": "new_pr_holdout",
+      "expected_bad": true,
+      "label_reason": "unsupported capabilities changed into supported ones",
+      "source": "Qwen3-ASR gives one final result for each segment of up to 40 seconds,\nwithout volatile results, word timing, or confidence.\nIt runs on the GPU and is slower than Parakeet,\nso it's better suited to transcribing files than live input.",
+      "input_candidate": "Qwen3-ASR은 최대 40초 길이의 각 세그먼트에 대해 최종 결과 하나를 제공하며,\n휘발성 결과, 단어 타이밍 또는 신뢰도는 제공합니다.\nGPU에서 실행되며 Parakeet보다 느리므로,\n라이브 입력보다는 파일 전사에 더 적합합니다.",
+      "baseline_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "without volatile results, word timing, or confidence.",
+            "target_quote": "휘발성 결과, 단어 타이밍 또는 신뢰도는 제공합니다.",
+            "reason": "Negation reversed. The English says these things are NOT provided; the Korean says they ARE provided. Also 'volatile results' translated literally as '휘발성 결과' which is awkward/unclear in Korean.",
+            "suggestion": "Translate the negation correctly and choose clearer wording: e.g. '휘발성(불안정) 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다.' or '휘발성 결과, 단어별 타이밍 및 신뢰도는 제공되지 않습니다.'"
+          }
+        ],
+        "explanation": "The candidate translation is mostly accurate except for a critical negation error in the second line: the source states that volatile results, word timing, and confidence are not provided; the Korean text incorrectly states they are provided. Also consider replacing the literal '휘발성 결과' with clearer phrasing such as '불안정한(변동 가능한) 결과' or omit '휘발성' if context supports '최종 결과만 제공'."
+      },
+      "baseline_pass": false,
+      "policy_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "Qwen3-ASR gives one final result for each segment of up to 40 seconds, without volatile results, word timing, or confidence.",
+            "target_quote": "Qwen3-ASR은 최대 40초 길이의 각 세그먼트에 대해 최종 결과 하나를 제공하며,\n휘발성 결과, 단어 타이밍 또는 신뢰도는 제공합니다.",
+            "reason": "Negation was lost. The English says it does NOT provide volatile results, word timing, or confidence; the Korean reads as if it DOES provide them ('제공합니다').",
+            "suggestion": "Change to negate the listed items, e.g. '휘발성 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다.' or '...을 제공하지 않습니다.'"
+          }
+        ],
+        "explanation": "The candidate correctly conveys segment length, one final result per segment, GPU execution, and that it's slower than Parakeet and better for files than live input. However, a critical negation was dropped for 'without volatile results, word timing, or confidence,' reversing the meaning. No issues with numbers, names, APIs, or particles were found."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "Qwen3-ASR gives one final result for each segment of up to 40 seconds, without volatile results, word timing, or confidence.",
+          "target_quote": "Qwen3-ASR은 최대 40초 길이의 각 세그먼트에 대해 최종 결과 하나를 제공하며,\n휘발성 결과, 단어 타이밍 또는 신뢰도는 제공합니다.",
+          "reason": "Negation was lost. The English says it does NOT provide volatile results, word timing, or confidence; the Korean reads as if it DOES provide them ('제공합니다').",
+          "suggestion": "Change to negate the listed items, e.g. '휘발성 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다.' or '...을 제공하지 않습니다.'"
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "pass_candidate",
+      "repairs": 1,
+      "original_record_sha256": "2bfbfecc615e044bf34931e35f8abc7d0c7568523b525d681c690fca3000da47"
+    },
+    {
+      "id": "seed_identifier",
+      "case_id": "pr253_provider",
+      "split": "new_pr_holdout",
+      "expected_bad": true,
+      "label_reason": "API identifier translated",
+      "source": "To add another engine, implement `SpeechRecognitionModel` for its configuration\nand `SpeechRecognitionExecutor` for one module's session.\nThe README includes a [small provider](https://github.com/mattt/AnySpeechRecognizer#custom-providers)\nthat reports placeholder text to help you get started.",
+      "input_candidate": "다른 엔진을 추가하려면 해당 구성에 대해 `음성인식모델`을,\n하나의 모듈 세션에 대해 `SpeechRecognitionExecutor`를 구현합니다.\nREADME에는 시작을 돕기 위해 자리표시자 텍스트를 보고하는 [작은 제공자 구현 예제](https://github.com/mattt/AnySpeechRecognizer#custom-providers)가 포함되어 있습니다.",
+      "baseline_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "implement `SpeechRecognitionModel` for its configuration",
+            "target_quote": "해당 구성에 대해 `음성인식모델`을,",
+            "reason": "The API/class name `SpeechRecognitionModel` was translated into Korean (`음성인식모델`). Code identifiers should be left unchanged to avoid confusion.",
+            "suggestion": "Keep the identifier as `SpeechRecognitionModel`: 예: 해당 구성에 대해 `SpeechRecognitionModel`을 구현합니다."
+          },
+          {
+            "source_quote": "and `SpeechRecognitionExecutor` for one module's session.",
+            "target_quote": "하나의 모듈 세션에 대해 `SpeechRecognitionExecutor`를 구현합니다.",
+            "reason": "Meaning preserved, but wording could be slightly more natural as '한 모듈의 세션' — not an error. No change required for the API name.",
+            "suggestion": "Optional: '한 모듈의 세션에 대해 `SpeechRecognitionExecutor`를 구현합니다.'"
+          },
+          {
+            "source_quote": "The README includes a [small provider](https://github.com/mattt/AnySpeechRecognizer#custom-providers) that reports placeholder text to help you get started.",
+            "target_quote": "README에는 시작을 돕기 위해 자리표시자 텍스트를 보고하는 [작은 제공자 구현 예제](https://github.com/mattt/AnySpeechRecognizer#custom-providers)가 포함되어 있습니다.",
+            "reason": "Overall meaning preserved. Minor stylistic change: 'small provider' became '작은 제공자 구현 예제' which adds 'implementation example' not explicit in source but acceptable as clarification.",
+            "suggestion": "If literalness is required, use: 'README에는 시작을 돕기 위해 자리표시자 텍스트를 보고하는 [small provider](...)가 포함되어 있습니다.' or '... [작은 제공자](...)'."
+          }
+        ],
+        "explanation": "The translation is mostly accurate, grammar and numbers are fine, and the second API name was left in English. The main issue is that the code identifier `SpeechRecognitionModel` was translated into Korean; code/API names should remain exactly as in the source. Minor stylistic choices (e.g., adding '구현 예제') are acceptable but note the change if literal fidelity is desired."
+      },
+      "baseline_pass": false,
+      "policy_assessment": {
+        "acceptable": false,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "implement `SpeechRecognitionModel` for its configuration",
+            "target_quote": "해당 구성에 대해 `음성인식모델`을,",
+            "reason": "API/class identifier `SpeechRecognitionModel` was translated into Korean (`음성인식모델`). Per the terminology rules and general rule to preserve code/function/API identifiers exactly, this should remain `SpeechRecognitionModel` (with backticks).",
+            "suggestion": "Keep the identifier exactly as in the source: `SpeechRecognitionModel`. For example: \"해당 구성에 대해 `SpeechRecognitionModel`을,\""
+          }
+        ],
+        "explanation": "The candidate correctly preserves `SpeechRecognitionExecutor` and translates the hyperlink label (allowed by policy). The only actionable issue is that the API/class name `SpeechRecognitionModel` was translated into Korean instead of being preserved exactly. The Korean particle after the translated link is correctly applied."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [
+        "inline_code_changed"
+      ],
+      "policy_grounded_findings": [
+        {
+          "source_quote": "implement `SpeechRecognitionModel` for its configuration",
+          "target_quote": "해당 구성에 대해 `음성인식모델`을,",
+          "reason": "API/class identifier `SpeechRecognitionModel` was translated into Korean (`음성인식모델`). Per the terminology rules and general rule to preserve code/function/API identifiers exactly, this should remain `SpeechRecognitionModel` (with backticks).",
+          "suggestion": "Keep the identifier exactly as in the source: `SpeechRecognitionModel`. For example: \"해당 구성에 대해 `SpeechRecognitionModel`을,\""
+        }
+      ],
+      "policy_pass": false,
+      "final_decision": "repair",
+      "repairs": 2,
+      "original_record_sha256": "73a26d9b5f24ff8079bfa61b701a1b3bd695a298dac653d4e87afc17b725b20c"
+    },
+    {
+      "id": "pr247_pipeline_original",
+      "case_id": "pr247_pipeline",
+      "split": "development_seen",
+      "expected_bad": true,
+      "label_reason": "untranslated descriptive link labels",
+      "source": "Developers can run the [NeMo Curator pipeline](https://github.com/NVIDIA-NeMo/Curator/tree/main/tutorials/audio/granary_v2) with Ray and [NVIDIA Dynamo](https://github.com/ai-dynamo/dynamo) backends on their own recordings or authorized public corpora, or build on the [Granary v2 public manifests](https://huggingface.co/datasets/nvidia/Granary-v2). The manifests include the three transcript forms as tn_raw, itn_raw, and itn_clean, the labels described above, entity hints, derived instruction pairs, provenance, and a per-record quality flag. Download source audio separately under each corpus’s original license, and follow the release’s published terms.",
+      "input_candidate": "개발자는 Ray 및 [NVIDIA Dynamo](https://github.com/ai-dynamo/dynamo) 백엔드를 사용하는 [NeMo Curator pipeline](https://github.com/NVIDIA-NeMo/Curator/tree/main/tutorials/audio/granary_v2)를 자체 녹음이나 사용 권한이 있는 공개 코퍼스에서 실행하거나, [Granary v2 public manifests](https://huggingface.co/datasets/nvidia/Granary-v2)를 기반으로 구축할 수 있습니다. 매니페스트에는 위에서 설명한 레이블과 함께 세 가지 전사 형식이 tn_raw, itn_raw, itn_clean으로 포함되며, 엔터티 힌트, 생성된 지시 쌍, 출처 정보, 레코드별 품질 플래그도 포함됩니다. 소스 오디오는 각 코퍼스의 원래 라이선스에 따라 별도로 다운로드하고 릴리스에 게시된 약관을 따르세요.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "authorized public corpora",
+            "target_quote": "사용 권한이 있는 공개 코퍼스",
+            "reason": "Tone and meaning preserved but wording is slightly awkward in Korean; '허가된 공개 코퍼스' or '권한 있는 공개 말뭉치' would be more natural.",
+            "suggestion": "Replace with '허가된 공개 코퍼스' or '권한 있는 공개 말뭉치'."
+          },
+          {
+            "source_quote": "derived instruction pairs",
+            "target_quote": "생성된 지시 쌍",
+            "reason": "Meaning is acceptable, but '파생된 지시 쌍' more directly mirrors 'derived' and is slightly clearer in technical context.",
+            "suggestion": "Use '파생된 지시 쌍' instead of '생성된 지시 쌍'."
+          },
+          {
+            "source_quote": "the [Granary v2 public manifests](https://huggingface.co/datasets/nvidia/Granary-v2)",
+            "target_quote": "[Granary v2 public manifests](https://huggingface.co/datasets/nvidia/Granary-v2)",
+            "reason": "Dataset name is left in English, which is appropriate as a proper name; consider optionally translating 'public manifests' if localizing fully.",
+            "suggestion": "Keep as-is for clarity, or translate as 'Granary v2 공개 매니페스트' if desired for localization."
+          }
+        ],
+        "explanation": "Overall the Korean translation accurately preserves meaning, numbers, negation, API and link references, and grammar. Only minor wording improvements are suggested for naturalness (authorized public corpora, derived instruction pairs) and an optional localization note for the dataset name."
+      },
+      "baseline_pass": false,
+      "policy_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [],
+        "explanation": "Translation is accurate and preserves APIs, names, and numbers. Terminology and entities from the preserve list (NeMo Curator, NVIDIA Dynamo, Granary v2) are kept. The localized word '매니페스트' is used in the body; hyperlink labels remain as in source where appropriate. Particles after links are correctly attached (e.g., ...pipeline](...)를). No negation, number, or API mismatches found."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [
+        "required_term_untranslated:pipeline",
+        "required_term_untranslated:manifest"
+      ],
+      "policy_grounded_findings": [],
+      "policy_pass": false,
+      "final_decision": "repair",
+      "repairs": 2,
+      "original_record_sha256": "36fd84faf0245a80b9b6b89a1aa19cd08fb1d89f7c336c01ee1c784c228bda1a"
+    },
+    {
+      "id": "prior_particle",
+      "case_id": "pr247_pipeline",
+      "split": "development_seen",
+      "expected_bad": true,
+      "label_reason": "파이프라인 followed by 를 rather than 을",
+      "source": "Developers can run the [NeMo Curator pipeline](https://github.com/NVIDIA-NeMo/Curator/tree/main/tutorials/audio/granary_v2) with Ray and [NVIDIA Dynamo](https://github.com/ai-dynamo/dynamo) backends on their own recordings or authorized public corpora, or build on the [Granary v2 public manifests](https://huggingface.co/datasets/nvidia/Granary-v2). The manifests include the three transcript forms as tn_raw, itn_raw, and itn_clean, the labels described above, entity hints, derived instruction pairs, provenance, and a per-record quality flag. Download source audio separately under each corpus’s original license, and follow the release’s published terms.",
+      "input_candidate": "개발자는 Ray 및 [NVIDIA Dynamo](https://github.com/ai-dynamo/dynamo) 백엔드를 사용하는 [NeMo Curator 파이프라인](https://github.com/NVIDIA-NeMo/Curator/tree/main/tutorials/audio/granary_v2)를 자체 녹음이나 사용 권한이 있는 공개 코퍼스에서 실행하거나, [Granary v2 공개 매니페스트](https://huggingface.co/datasets/nvidia/Granary-v2)를 기반으로 구축할 수 있습니다. 매니페스트에는 위에서 설명한 레이블과 함께 세 가지 전사 형식이 tn_raw, itn_raw, itn_clean으로 포함되며, 엔터티 힌트, 생성된 지시 쌍, 출처 정보, 레코드별 품질 플래그도 포함됩니다. 소스 오디오는 각 코퍼스의 원래 라이선스에 따라 별도로 다운로드하고 릴리스에 게시된 약관을 따르세요.",
+      "baseline_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "derived instruction pairs",
+            "target_quote": "생성된 지시 쌍",
+            "reason": "Translation is understandable but 'derived' is more precisely rendered as '파생된' in technical contexts.",
+            "suggestion": "Use '파생된 지시 쌍' instead of '생성된 지시 쌍' for closer fidelity."
+          },
+          {
+            "source_quote": "entity hints",
+            "target_quote": "엔터티 힌트",
+            "reason": "Literal katakana-style borrow is acceptable, but Korean technical style sometimes uses '엔티티' or '엔터티' interchangeably; ensure consistency with project terminology.",
+            "suggestion": "Consider '엔티티 힌트' or '엔티티 힌트' depending on existing project terminology (no change required if already consistent)."
+          }
+        ],
+        "explanation": "The candidate preserves meaning, negation, numbers, API and project names, and transcript labels (tn_raw, itn_raw, itn_clean) exactly. Links and proper nouns are unchanged. Only minor wording suggestions (파생된 vs 생성된; consistency for '엔터티/엔티티') are offered for technical precision and style; otherwise the translation is accurate and fluent."
+      },
+      "baseline_pass": false,
+      "policy_assessment": {
+        "acceptable": true,
+        "uncertain": false,
+        "findings": [
+          {
+            "source_quote": "the manifests include the three transcript forms as tn_raw, itn_raw, and itn_clean, the labels described above, entity hints, derived instruction pairs, provenance, and a per-record quality flag.",
+            "target_quote": "매니페스트에는 위에서 설명한 레이블과 함께 세 가지 전사 형식이 tn_raw, itn_raw, itn_clean으로 포함되며, 엔터티 힌트, 생성된 지시 쌍, 출처 정보, 레코드별 품질 플래그도 포함됩니다.",
+            "reason": "Meaning preserved, numbers and identifiers (tn_raw, itn_raw, itn_clean) and named entities kept unchanged. 'derived instruction pairs' translated as '생성된 지시 쌍' — accurate but could be slightly more literal as '도출된 지시 쌍'.",
+            "suggestion": "Optional: change '생성된 지시 쌍' to '도출된 지시 쌍' if you want to emphasize derivation rather than creation."
+          }
+        ],
+        "explanation": "The translation accurately preserves meaning, negation, numbers, code/API identifiers, and named entities. Inline links and following Korean particles are correctly placed (e.g., '...파이프라인](...)를' and '...매니페스트](...)를'). All reserved names and manifest field names are preserved as required. Only a minor wording suggestion for 'derived' ('생성된' → '도출된') is offered; it's not required."
+      },
+      "policy_initial_decision": "repair",
+      "policy_initial_reasons": [
+        "link_particle:NeMo Curator 파이프라인를"
+      ],
+      "policy_grounded_findings": [],
+      "policy_pass": false,
+      "final_decision": "pass_candidate",
+      "repairs": 2,
+      "original_record_sha256": "36ac13a4132f15dc62162960f7596194953cbc54226820967fb6cec3cd0d3a35"
+    }
+  ]
+}

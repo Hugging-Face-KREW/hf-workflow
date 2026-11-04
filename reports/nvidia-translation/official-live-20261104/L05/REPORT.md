@@ -34,7 +34,9 @@
 
 ### 근거 자료
 
-[평가·설정 원자료](report.json)
+[39개 입력·195개 검사·48개 수정의 행별 근거](comparison-evidence.json) · [재집계 결과](recomputed-metrics.json) · [집계 코드](recount.py) · [당시 단계 요약](report.json)
+
+잘못 통과는 오류로 표시한 입력에서 passed=true인 검사 수이며, 잘못 차단은 정상으로 표시한 입력에서 passed=false인 검사 수입니다. 수정 수는 repair_attempted=true인 행, 승인 후 위반은 approved=true이면서 invariant_ok=false인 행을 셉니다. 의미·용어 조건은 입력별 require_any의 각 묶음에서 하나 이상이 존재하고 forbid의 문자열은 없는지 확인하는 규칙입니다. 공개 파일의 candidate와 규칙으로 이를 다시 계산할 수 있습니다. 원본ID·파일명·해시를 보존했고 원자료는 수정하지 않았습니다.
 
 ### 읽을 때 유의할 점
 

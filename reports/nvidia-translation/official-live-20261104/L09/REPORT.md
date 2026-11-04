@@ -26,6 +26,34 @@ AnyLanguageModel 글의 이웃한 문단 3개를 묶어 두 가지 원문 변경
 
 부분 번역은 전체 재번역보다 번역할 문단을 6→2개로 줄였고 이 두 변경에서 중대 오류는 관찰되지 않았습니다. 경미한 지적은 전체 재번역 0건에 비해 Luna 부분 번역 3건, Qwen 부분 번역 1건이었습니다. 평가 시점·문맥이 달라 두 부분 번역 모델의 일반적인 우열까지 말할 수는 없습니다.
 
+### 실제 변경 문장은 어떻게 번역됐나
+
+두 가상 변경을 모두 보여드립니다. 원문과 출력은 보존된 결과에서 발췌했으며 표에서는 줄바꿈만 공백으로 표시했습니다. 아래 문장을 비교하는 것과, 앞 표에서 완성된 문서 전체를 평가한 것은 구분합니다.
+
+**플랫폼 이름 변경 — 입력ID `pr238_linux`**
+
+원문 발췌: ``AnyLanguageModel also runs on FreeBSD, so the same code can work on a server.``
+
+| 조건 | 실제 출력 발췌 | 원출력ID |
+|---|---|---|
+| 기준선: Luna 전체 재번역 | ``AnyLanguageModel은 FreeBSD에서도 실행되므로, 동일한 코드가 서버에서도 작동할 수 있습니다.`` | `D-platform-full_luna:pr238_linux` |
+| Luna 변경 문단만 | ``AnyLanguageModel은 FreeBSD에서도 실행되므로, 동일한 코드가 서버에서 작동할 수 있습니다.`` | `D-platform-partial_luna:pr238_linux` |
+| Qwen 변경 문단만 | ``AnyLanguageModel은 FreeBSD에서도 실행되므로, 동일한 코드가 서버에서도 작동할 수 있습니다.`` | `L09-D-platform-partial_switchyard:pr238_linux` |
+
+**네트워크 조건 추가 — 입력ID `pr238_shared`**
+
+원문 발췌: ``In this hypothetical example, hosted inference requires a network connection.``
+
+| 조건 | 실제 출력 발췌 | 원출력ID |
+|---|---|---|
+| 기준선: Luna 전체 재번역 | ``이 가상의 예에서는 호스팅 추론에 네트워크 연결이 필요합니다.`` | `D-condition-full_luna:pr238_shared` |
+| Luna 변경 문단만 | ``이 가상의 예에서는 호스팅 추론에 네트워크 연결이 필요합니다.`` | `D-condition-partial_luna:pr238_shared` |
+| Qwen 변경 문단만 | ``이 가상의 예시에서는 호스팅된 추론에 네트워크 연결이 필요합니다.`` | `L09-D-condition-partial_switchyard:pr238_shared` |
+
+플랫폼 변경에서는 전체 재번역과 Qwen 부분 번역의 변경 문단이 같았고, 네트워크 조건은 세 조건 모두 옮겼습니다. 그렇다고 두 예시로 일반적인 동등성을 입증하는 것은 아닙니다. 앞 표의 Qwen 경미한 지적1건은 새로 번역한 문단이 아니라 **재사용한 릴리스 소개 문단**에서 나왔습니다. Luna 부분 번역의3건 중1건은 변경 문단,2건은 재사용 문단이었습니다. 부분 번역의 품질은 변경 문단뿐 아니라 재조립한 문서 전체로 확인해야 합니다.
+
+[두 시나리오의 원문·기준선/실험 전체 출력·원출력ID·재사용 문단 일치 여부](../../openrouter-token5-live-20261104/L09/example-comparisons.json) · [플랫폼 변경 입력](../../openrouter-token5-live-20261104/L09/D-input-platform.json) · [조건 추가 입력](../../openrouter-token5-live-20261104/L09/D-input-condition.json)
+
 ### 적용 판단
 
 변경 문단 번역과 재조립은 추가 검증할 가치가 있습니다. 운영에 쓰려면 실제 변경 이력과 앞뒤 문맥이 강하게 연결된 문단에서도 확인해야 합니다. 이 두 건으로 전체 재번역과 품질이 같다고 단정하지 않습니다.

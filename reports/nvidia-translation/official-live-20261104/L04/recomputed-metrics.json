@@ -1,0 +1,42 @@
+{
+  "evaluation_inputs": 23,
+  "labelled_bad": 17,
+  "labelled_good": 6,
+  "initial_checks": {
+    "baseline_pass": {
+      "false_pass": 9,
+      "false_block": 2
+    },
+    "policy_pass": {
+      "false_pass": 2,
+      "false_block": 2
+    }
+  },
+  "final_decisions": {
+    "repair": 6,
+    "pass_candidate": 17
+  },
+  "repairs": 21,
+  "generation": {
+    "url_generic": {
+      "n": 12,
+      "mechanical_clean": 10,
+      "untranslated_labels": 3
+    },
+    "url_policy": {
+      "n": 12,
+      "mechanical_clean": 8,
+      "untranslated_labels": 0
+    },
+    "whole_generic": {
+      "n": 12,
+      "mechanical_clean": 9,
+      "untranslated_labels": 13
+    },
+    "whole_policy": {
+      "n": 12,
+      "mechanical_clean": 10,
+      "untranslated_labels": 13
+    }
+  }
+}

@@ -1,0 +1,2804 @@
+{
+  "experiment": "L05",
+  "description_ko": "39개 입력과195개 판정·48개 수정 결과의 최소 공개 필드. expected_bad는 개발용 표시이며 사람 정답이 아닙니다. 새 모델 호출 없음.",
+  "provenance": {
+    "dataset_original_path": "reports/nvidia-translation/official-live-20261104/L05/dataset.json",
+    "dataset_sha256": "dd4439d94cbf77dc8d9a731063c39fa6805b081c6515b03f72f9adbff1fde4b1",
+    "decision_directory": "reports/nvidia-translation/official-live-20261104/L05/decisions",
+    "repair_directory": "reports/nvidia-translation/official-live-20261104/L05/pipelines"
+  },
+  "dataset": [
+    {
+      "id": "pr244_previous_original",
+      "case_id": "pr244_previous",
+      "source": "In a [previous post](https://huggingface.co/blog/hf-torchneuron), we introduced TorchNeuron, the native PyTorch backend for AWS Trainium (the `torch-neuronx` package). With it, Transformers runs its own modeling code on Trainium, as it does on any other device, so any Transformers model on the Hub may run. Which ones actually do?",
+      "candidate": "[previous post](https://huggingface.co/blog/hf-torchneuron)에서 AWS Trainium용 네이티브 PyTorch 백엔드인 TorchNeuron(`torch-neuronx` 패키지)을 소개했습니다. 이를 사용하면 Transformers가 다른 모든 디바이스에서와 마찬가지로 Trainium에서 자체 모델링 코드를 실행하므로, Hugging Face Hub의 모든 Transformers 모델이 실행될 수 있습니다. 실제로 실행되는 모델은 무엇일까요?",
+      "expected_bad": true,
+      "origin": "natural_pr",
+      "split": "seen_regression",
+      "gold_reason": "untranslated descriptive link labels"
+    },
+    {
+      "id": "pr244_announcement_original",
+      "case_id": "pr244_announcement",
+      "source": "Select a model to see how to run it. The Space lists the Neuron stack the model was tested on, the packages to install on top of it, and the `run.py` script that ran. The script follows the recipe of the [TorchNeuron announcement](https://huggingface.co/blog/hf-torchneuron): it loads the model with `from_pretrained`, sharded when it needs to be, then generates with a static cache and `torch.compile(backend=\"neuron\")`.",
+      "candidate": "모델을 선택하면 실행 방법을 확인할 수 있습니다. Space에는 모델을 테스트한 Neuron 스택, 그 위에 설치해야 하는 패키지, 그리고 실행된 `run.py` 스크립트가 나열됩니다. 이 스크립트는 [TorchNeuron announcement](https://huggingface.co/blog/hf-torchneuron)의 레시피를 따릅니다. 필요할 경우 모델을 샤딩하여 `from_pretrained`로 로드한 다음, 정적 캐시와 `torch.compile(backend=\"neuron\")`를 사용해 생성합니다.",
+      "expected_bad": true,
+      "origin": "natural_pr",
+      "split": "seen_regression",
+      "gold_reason": "untranslated descriptive link labels"
+    },
+    {
+      "id": "pr244_dataset_original",
+      "case_id": "pr244_dataset",
+      "source": "The [dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support) gives the exact meaning of each result.",
+      "candidate": "[dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다.",
+      "expected_bad": true,
+      "origin": "natural_pr",
+      "split": "seen_regression",
+      "gold_reason": "untranslated descriptive link labels"
+    },
+    {
+      "id": "pr247_tools_original",
+      "case_id": "pr247_tools",
+      "source": "Granary v2’s multilingual data (available on [Hugging Face](https://huggingface.co/datasets/nvidia/Granary-v2) and [ModelScope](https://modelscope.ai/datasets/nv-community/Granary-v2)) and reusable curation pipeline, together with [NeMo Speech fine-tuning tools](https://github.com/NVIDIA-NeMo/Speech/blob/main/tutorials/speechlm2/finetuning/README.md), extend prompt-level control to training: developers can define the written form they need and adapt the model to the speech their applications encounter. In a [medical case study](https://github.com/NVIDIA-NeMo/Speech/blob/main/examples/speechlm2/finetuning/docs/medical-asr-synthetic-data.md), fine-tuning cut word error rate (WER) on held-out speakers by 45.8% relative to the best prompt.",
+      "candidate": "Granary v2의 다국어 데이터([Hugging Face](https://huggingface.co/datasets/nvidia/Granary-v2) 및 [ModelScope](https://modelscope.ai/datasets/nv-community/Granary-v2)에서 제공)와 재사용 가능한 큐레이션 파이프라인은 [NeMo Speech fine-tuning tools](https://github.com/NVIDIA-NeMo/Speech/blob/main/tutorials/speechlm2/finetuning/README.md)와 함께 프롬프트 수준의 제어를 학습 단계까지 확장합니다. 개발자는 필요한 표기 형식을 정의하고 애플리케이션에서 접하는 음성에 맞게 모델을 조정할 수 있습니다. [medical case study](https://github.com/NVIDIA-NeMo/Speech/blob/main/examples/speechlm2/finetuning/docs/medical-asr-synthetic-data.md)에서 파인튜닝을 수행한 결과, 보류 화자에 대한 단어 오류율(WER)이 최적 프롬프트 대비 상대적으로 45.8% 감소했습니다.",
+      "expected_bad": true,
+      "origin": "natural_pr",
+      "split": "seen_regression",
+      "gold_reason": "untranslated descriptive link labels"
+    },
+    {
+      "id": "pr247_pipeline_original",
+      "case_id": "pr247_pipeline",
+      "source": "Developers can run the [NeMo Curator pipeline](https://github.com/NVIDIA-NeMo/Curator/tree/main/tutorials/audio/granary_v2) with Ray and [NVIDIA Dynamo](https://github.com/ai-dynamo/dynamo) backends on their own recordings or authorized public corpora, or build on the [Granary v2 public manifests](https://huggingface.co/datasets/nvidia/Granary-v2). The manifests include the three transcript forms as tn_raw, itn_raw, and itn_clean, the labels described above, entity hints, derived instruction pairs, provenance, and a per-record quality flag. Download source audio separately under each corpus’s original license, and follow the release’s published terms.",
+      "candidate": "개발자는 Ray 및 [NVIDIA Dynamo](https://github.com/ai-dynamo/dynamo) 백엔드를 사용하는 [NeMo Curator pipeline](https://github.com/NVIDIA-NeMo/Curator/tree/main/tutorials/audio/granary_v2)를 자체 녹음이나 사용 권한이 있는 공개 코퍼스에서 실행하거나, [Granary v2 public manifests](https://huggingface.co/datasets/nvidia/Granary-v2)를 기반으로 구축할 수 있습니다. 매니페스트에는 위에서 설명한 레이블과 함께 세 가지 전사 형식이 tn_raw, itn_raw, itn_clean으로 포함되며, 엔터티 힌트, 생성된 지시 쌍, 출처 정보, 레코드별 품질 플래그도 포함됩니다. 소스 오디오는 각 코퍼스의 원래 라이선스에 따라 별도로 다운로드하고 릴리스에 게시된 약관을 따르세요.",
+      "expected_bad": true,
+      "origin": "natural_pr",
+      "split": "seen_regression",
+      "gold_reason": "untranslated descriptive link labels"
+    },
+    {
+      "id": "pr247_demo_original",
+      "case_id": "pr247_demo",
+      "source": "Try Nemotron 3.5 Transcribe in the [Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) or on [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe), then download the checkpoint from [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) or [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe). For self-hosted transcription, get started with [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) or [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html), both offering support from day one.",
+      "candidate": "[Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) 또는 [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe)에서 Nemotron 3.5 Transcribe를 사용해 본 다음, [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) 또는 [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe)에서 체크포인트를 다운로드하세요. 자체 호스팅 전사를 시작하려면 [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) 또는 [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html)를 이용하세요. 두 환경 모두 출시 첫날부터 지원을 제공합니다.",
+      "expected_bad": true,
+      "origin": "natural_pr",
+      "split": "seen_regression",
+      "gold_reason": "untranslated descriptive link labels"
+    },
+    {
+      "id": "pr253_recap_original",
+      "case_id": "pr253_recap",
+      "source": "In our [AnyLanguageModel 1.0 recap](https://huggingface.co/blog/anylanguagemodel-1-0),\nwe looked at a year of local and hosted models in Swift.\nWith AnyLanguageModel and swift-huggingface now on their 1.x releases,\nwe're extending the same approach to speech and decisions:\nfamiliar Swift APIs with a choice of model.",
+      "candidate": "지난 [AnyLanguageModel 1.0 recap](https://huggingface.co/blog/anylanguagemodel-1-0)에서는\nSwift에서 로컬 및 호스팅 모델을 1년간 살펴봤습니다.\n이제 AnyLanguageModel과 swift-huggingface가 1.x 릴리스에 도달했으므로,\n같은 접근 방식을 음성 및 의사 결정으로 확장합니다.\n익숙한 Swift API와 모델 선택 기능을 제공합니다.",
+      "expected_bad": true,
+      "origin": "natural_pr",
+      "split": "seen_regression",
+      "gold_reason": "untranslated descriptive link labels"
+    },
+    {
+      "id": "pr253_differences_original",
+      "case_id": "pr253_differences",
+      "source": "The steps for installing assets, running the analyzer,\nand reading results stay the same.\nThe [README](https://github.com/mattt/AnySpeechRecognizer#transcribe-a-file)\nhas a complete example\nand [lists the differences](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework)\nfrom Apple's framework.",
+      "candidate": "에셋 설치, 분석기 실행,\n결과 읽기 단계는 그대로 유지됩니다.\n[README](https://github.com/mattt/AnySpeechRecognizer#transcribe-a-file)에는\n완전한 예제가 포함되어 있으며,\nApple 프레임워크의 [lists the differences](https://github.com/mattt/AnySpeechRecognizer#differences-from-apples-speech-framework)도 제공합니다.",
+      "expected_bad": true,
+      "origin": "natural_pr",
+      "split": "seen_regression",
+      "gold_reason": "untranslated descriptive link labels"
+    },
+    {
+      "id": "pr253_ultra_original",
+      "case_id": "pr253_ultra",
+      "source": "**Parakeet Ultra** is Moondream's [post-trained take on v3](https://huggingface.co/moondream/parakeet-ultra).\nIt was more accurate in most of our measurements.",
+      "candidate": "**Parakeet Ultra**는 Moondream의 [post-trained take on v3](https://huggingface.co/moondream/parakeet-ultra)입니다.\n대부분의 측정에서 더 정확했습니다.",
+      "expected_bad": true,
+      "origin": "natural_pr",
+      "split": "seen_regression",
+      "gold_reason": "untranslated descriptive link labels"
+    },
+    {
+      "id": "pr253_english_original",
+      "case_id": "pr253_english",
+      "source": "**Parakeet Unified** is NVIDIA's\n[English-only Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b).",
+      "candidate": "**Parakeet Unified**는 NVIDIA의\n[English-only Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b)입니다.",
+      "expected_bad": true,
+      "origin": "natural_pr",
+      "split": "seen_regression",
+      "gold_reason": "untranslated descriptive link labels"
+    },
+    {
+      "id": "pr253_provider_original",
+      "case_id": "pr253_provider",
+      "source": "To add another engine, implement `SpeechRecognitionModel` for its configuration\nand `SpeechRecognitionExecutor` for one module's session.\nThe README includes a [small provider](https://github.com/mattt/AnySpeechRecognizer#custom-providers)\nthat reports placeholder text to help you get started.",
+      "candidate": "다른 엔진을 추가하려면 해당 구성에 대해 `SpeechRecognitionModel`를,\n하나의 모듈 세션에 대해 `SpeechRecognitionExecutor`를 구현합니다.\nREADME에는 시작을 돕기 위해 자리표시자 텍스트를 보고하는 [small provider](https://github.com/mattt/AnySpeechRecognizer#custom-providers)가 포함되어 있습니다.",
+      "expected_bad": true,
+      "origin": "natural_pr",
+      "split": "seen_regression",
+      "gold_reason": "untranslated descriptive link labels"
+    },
+    {
+      "id": "pr253_capability_original",
+      "case_id": "pr253_capability",
+      "source": "Qwen3-ASR gives one final result for each segment of up to 40 seconds,\nwithout volatile results, word timing, or confidence.\nIt runs on the GPU and is slower than Parakeet,\nso it's better suited to transcribing files than live input.",
+      "candidate": "Qwen3-ASR은 최대 40초 길이의 각 세그먼트에 대해 최종 결과 하나를 제공하며,\n휘발성 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다.\nGPU에서 실행되며 Parakeet보다 느리므로,\n라이브 입력보다는 파일 전사에 더 적합합니다.",
+      "expected_bad": false,
+      "origin": "natural_pr",
+      "split": "seen_regression",
+      "gold_reason": "meaning and identifiers preserved"
+    },
+    {
+      "id": "prior_code",
+      "case_id": "pr244_announcement",
+      "source": "Select a model to see how to run it. The Space lists the Neuron stack the model was tested on, the packages to install on top of it, and the `run.py` script that ran. The script follows the recipe of the [TorchNeuron announcement](https://huggingface.co/blog/hf-torchneuron): it loads the model with `from_pretrained`, sharded when it needs to be, then generates with a static cache and `torch.compile(backend=\"neuron\")`.",
+      "candidate": "모델을 선택하면 실행 방법을 확인할 수 있습니다. Space에는 모델을 테스트한 Neuron 스택, 그 위에 설치해야 하는 패키지, 그리고 실행된 `run.py` 스크립트가 나열됩니다. 이 스크립트는 [TorchNeuron 발표](https://huggingface.co/blog/hf-torchneuron)의 레시피를 따릅니다. 필요할 경우 모델을 샤딩하여 `from_pretrained`로 로드한 다음, 정적 캐시와 `torch.compile(backend=\\\"neuron\\\")`를 사용해 생성합니다.",
+      "expected_bad": true,
+      "origin": "observed_model_failure",
+      "split": "seen_regression",
+      "gold_reason": "backslash added inside executable code"
+    },
+    {
+      "id": "prior_product",
+      "case_id": "pr247_demo",
+      "source": "Try Nemotron 3.5 Transcribe in the [Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) or on [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe), then download the checkpoint from [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) or [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe). For self-hosted transcription, get started with [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) or [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html), both offering support from day one.",
+      "candidate": "[Hugging Face 데모](https://huggingface.co/spaces/nvidia/nemotron-transcribe) 또는 [ModelScope 스튜디오](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe)에서 Nemotron 3.5 Transcribe를 사용해 본 다음, [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) 또는 [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe)에서 체크포인트를 다운로드하세요. 자체 호스팅 전사를 시작하려면 [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) 또는 [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html)를 이용하세요. 두 환경 모두 출시 첫날부터 지원을 제공합니다.",
+      "expected_bad": true,
+      "origin": "observed_model_failure",
+      "split": "seen_regression",
+      "gold_reason": "ModelScope Studios must be preserved under frozen policy"
+    },
+    {
+      "id": "prior_particle",
+      "case_id": "pr247_pipeline",
+      "source": "Developers can run the [NeMo Curator pipeline](https://github.com/NVIDIA-NeMo/Curator/tree/main/tutorials/audio/granary_v2) with Ray and [NVIDIA Dynamo](https://github.com/ai-dynamo/dynamo) backends on their own recordings or authorized public corpora, or build on the [Granary v2 public manifests](https://huggingface.co/datasets/nvidia/Granary-v2). The manifests include the three transcript forms as tn_raw, itn_raw, and itn_clean, the labels described above, entity hints, derived instruction pairs, provenance, and a per-record quality flag. Download source audio separately under each corpus’s original license, and follow the release’s published terms.",
+      "candidate": "개발자는 Ray 및 [NVIDIA Dynamo](https://github.com/ai-dynamo/dynamo) 백엔드를 사용하는 [NeMo Curator 파이프라인](https://github.com/NVIDIA-NeMo/Curator/tree/main/tutorials/audio/granary_v2)를 자체 녹음이나 사용 권한이 있는 공개 코퍼스에서 실행하거나, [Granary v2 공개 매니페스트](https://huggingface.co/datasets/nvidia/Granary-v2)를 기반으로 구축할 수 있습니다. 매니페스트에는 위에서 설명한 레이블과 함께 세 가지 전사 형식이 tn_raw, itn_raw, itn_clean으로 포함되며, 엔터티 힌트, 생성된 지시 쌍, 출처 정보, 레코드별 품질 플래그도 포함됩니다. 소스 오디오는 각 코퍼스의 원래 라이선스에 따라 별도로 다운로드하고 릴리스에 게시된 약관을 따르세요.",
+      "expected_bad": true,
+      "origin": "observed_model_failure",
+      "split": "seen_regression",
+      "gold_reason": "파이프라인 followed by 를 rather than 을"
+    },
+    {
+      "id": "valid_alias",
+      "case_id": "pr244_ui_control",
+      "source": "To look up a given model, switch to the **Trending** or **Downloads** view and type part of its name. These views follow the Hub's own rankings, one task at a time, whether a model was tested or not. When a model was left out on purpose, the Space tells you why (most of the time it was not prioritized, sometimes it is truly incompatible). You can also pick the versions of the Neuron compiler (`neuronx-cc`) and of Transformers to look at.",
+      "candidate": "특정 모델을 조회하려면 **Trending** 또는 **Downloads** 보기로 전환한 다음 모델 이름의 일부를 입력하세요. 이 보기에서는 모델의 테스트 여부와 관계없이 한 번에 하나의 작업씩 Hub 자체 순위를 따릅니다. 모델을 의도적으로 제외한 경우 Space에서 그 이유를 알려 줍니다(대부분은 우선순위가 높지 않았기 때문이며, 때로는 실제로 호환되지 않기 때문입니다). 확인할 Neuron 컴파일러(`neuronx-cc`) 및 Transformers 버전도 선택할 수 있습니다.",
+      "expected_bad": false,
+      "origin": "observed_model_candidate",
+      "split": "seen_regression",
+      "gold_reason": "Hub is an allowed alias and source also uses Hub"
+    },
+    {
+      "id": "clean_pr244_dataset",
+      "case_id": "pr244_dataset",
+      "source": "The [dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support) gives the exact meaning of each result.",
+      "candidate": "[데이터셋 카드](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다.",
+      "expected_bad": false,
+      "origin": "reviewed_candidate",
+      "split": "seen_regression",
+      "gold_reason": "correct link localization, meaning and names preserved"
+    },
+    {
+      "id": "clean_pr244_previous",
+      "case_id": "pr244_previous",
+      "source": "In a [previous post](https://huggingface.co/blog/hf-torchneuron), we introduced TorchNeuron, the native PyTorch backend for AWS Trainium (the `torch-neuronx` package). With it, Transformers runs its own modeling code on Trainium, as it does on any other device, so any Transformers model on the Hub may run. Which ones actually do?",
+      "candidate": "[이전 글](https://huggingface.co/blog/hf-torchneuron)에서 AWS Trainium용 네이티브 PyTorch 백엔드인 TorchNeuron(`torch-neuronx` 패키지)을 소개했습니다. 이를 사용하면 Transformers가 다른 모든 디바이스에서와 마찬가지로 Trainium에서 자체 모델링 코드를 실행하므로, Hugging Face Hub의 모든 Transformers 모델이 실행될 수 있습니다. 실제로 실행되는 모델은 무엇일까요?",
+      "expected_bad": false,
+      "origin": "reviewed_candidate",
+      "split": "seen_regression",
+      "gold_reason": "correct link localization, meaning and names preserved"
+    },
+    {
+      "id": "clean_english",
+      "case_id": "pr253_english",
+      "source": "**Parakeet Unified** is NVIDIA's\n[English-only Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b).",
+      "candidate": "**Parakeet Unified**는 NVIDIA의\n[영어 전용 Parakeet](https://huggingface.co/nvidia/parakeet-unified-en-0.6b)입니다.",
+      "expected_bad": false,
+      "origin": "curated_reference",
+      "split": "seen_regression",
+      "gold_reason": "descriptive English-only translated, Parakeet preserved"
+    },
+    {
+      "id": "clean_product",
+      "case_id": "pr247_demo",
+      "source": "Try Nemotron 3.5 Transcribe in the [Hugging Face demo](https://huggingface.co/spaces/nvidia/nemotron-transcribe) or on [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe), then download the checkpoint from [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) or [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe). For self-hosted transcription, get started with [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) or [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html), both offering support from day one.",
+      "candidate": "[Hugging Face 데모](https://huggingface.co/spaces/nvidia/nemotron-transcribe) 또는 [ModelScope Studios](https://modelscope.ai/studios/nv-community/Nemotron-3.5-Transcribe)에서 Nemotron 3.5 Transcribe를 사용해 본 다음, [Hugging Face](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) 또는 [ModelScope](https://modelscope.ai/collections/nv-community/Nemotron-35-Transcribe)에서 체크포인트를 다운로드하세요. 자체 호스팅 전사를 시작하려면 [vLLM](https://github.com/NVIDIA-NeMo/Speech/blob/main/docs/source/speechlm2/vllm_serving.rst) 또는 [SGLang-Omni](https://sgl-project.github.io/sglang-omni/cookbook/nemotron_transcribe.html)를 이용하세요. 두 환경 모두 출시 첫날부터 지원을 제공합니다.",
+      "expected_bad": false,
+      "origin": "curated_reference",
+      "split": "seen_regression",
+      "gold_reason": "reviewed service name restored"
+    },
+    {
+      "id": "seed_number",
+      "case_id": "pr253_capability",
+      "source": "Qwen3-ASR gives one final result for each segment of up to 40 seconds,\nwithout volatile results, word timing, or confidence.\nIt runs on the GPU and is slower than Parakeet,\nso it's better suited to transcribing files than live input.",
+      "candidate": "Qwen3-ASR은 최대 400초 길이의 각 세그먼트에 대해 최종 결과 하나를 제공하며,\n휘발성 결과, 단어 타이밍 또는 신뢰도는 제공하지 않습니다.\nGPU에서 실행되며 Parakeet보다 느리므로,\n라이브 입력보다는 파일 전사에 더 적합합니다.",
+      "expected_bad": true,
+      "origin": "synthetic_mutation",
+      "split": "seen_regression",
+      "gold_reason": "40 changed to 400 seconds"
+    },
+    {
+      "id": "seed_negation",
+      "case_id": "pr253_capability",
+      "source": "Qwen3-ASR gives one final result for each segment of up to 40 seconds,\nwithout volatile results, word timing, or confidence.\nIt runs on the GPU and is slower than Parakeet,\nso it's better suited to transcribing files than live input.",
+      "candidate": "Qwen3-ASR은 최대 40초 길이의 각 세그먼트에 대해 최종 결과 하나를 제공하며,\n휘발성 결과, 단어 타이밍 또는 신뢰도는 제공합니다.\nGPU에서 실행되며 Parakeet보다 느리므로,\n라이브 입력보다는 파일 전사에 더 적합합니다.",
+      "expected_bad": true,
+      "origin": "synthetic_mutation",
+      "split": "seen_regression",
+      "gold_reason": "unsupported capabilities changed into supported ones"
+    },
+    {
+      "id": "seed_identifier",
+      "case_id": "pr253_provider",
+      "source": "To add another engine, implement `SpeechRecognitionModel` for its configuration\nand `SpeechRecognitionExecutor` for one module's session.\nThe README includes a [small provider](https://github.com/mattt/AnySpeechRecognizer#custom-providers)\nthat reports placeholder text to help you get started.",
+      "candidate": "다른 엔진을 추가하려면 해당 구성에 대해 `음성인식모델`을,\n하나의 모듈 세션에 대해 `SpeechRecognitionExecutor`를 구현합니다.\nREADME에는 시작을 돕기 위해 자리표시자 텍스트를 보고하는 [작은 제공자 구현 예제](https://github.com/mattt/AnySpeechRecognizer#custom-providers)가 포함되어 있습니다.",
+      "expected_bad": true,
+      "origin": "synthetic_mutation",
+      "split": "seen_regression",
+      "gold_reason": "API identifier translated"
+    },
+    {
+      "id": "contrast_number_good",
+      "case_id": "contrast_number",
+      "source": "The model accepts audio clips up to 40 seconds.",
+      "candidate": "모델은 최대 40초 길이의 오디오 클립을 입력받습니다.",
+      "expected_bad": false,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "number",
+      "gold_reason": "number minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "40초",
+            "40 초"
+          ]
+        ],
+        "forbid": [
+          "400"
+        ]
+      }
+    },
+    {
+      "id": "contrast_number_bad",
+      "case_id": "contrast_number",
+      "source": "The model accepts audio clips up to 40 seconds.",
+      "candidate": "모델은 최대 400초 길이의 오디오 클립을 입력받습니다.",
+      "expected_bad": true,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "number",
+      "gold_reason": "number minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "40초",
+            "40 초"
+          ]
+        ],
+        "forbid": [
+          "400"
+        ]
+      }
+    },
+    {
+      "id": "contrast_negation_good",
+      "case_id": "contrast_negation",
+      "source": "The executor does not support streaming.",
+      "candidate": "실행기는 스트리밍을 지원하지 않습니다.",
+      "expected_bad": false,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "negation",
+      "gold_reason": "negation minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "지원하지",
+            "미지원",
+            "지원하지는",
+            "지원되지",
+            "지원하지 못"
+          ]
+        ],
+        "forbid": []
+      }
+    },
+    {
+      "id": "contrast_negation_bad",
+      "case_id": "contrast_negation",
+      "source": "The executor does not support streaming.",
+      "candidate": "실행기는 스트리밍을 지원합니다.",
+      "expected_bad": true,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "negation",
+      "gold_reason": "negation minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "지원하지",
+            "미지원",
+            "지원하지는",
+            "지원되지",
+            "지원하지 못"
+          ]
+        ],
+        "forbid": []
+      }
+    },
+    {
+      "id": "contrast_condition_good",
+      "case_id": "contrast_condition",
+      "source": "Use the GPU pipeline only when a compatible GPU is available.",
+      "candidate": "호환되는 GPU가 있을 때만 GPU 파이프라인을 사용하세요.",
+      "expected_bad": false,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "condition",
+      "gold_reason": "condition minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "호환"
+          ],
+          [
+            "때만",
+            "경우에만",
+            "경우만",
+            "있어야",
+            "경우에 한해"
+          ]
+        ],
+        "forbid": []
+      }
+    },
+    {
+      "id": "contrast_condition_bad",
+      "case_id": "contrast_condition",
+      "source": "Use the GPU pipeline only when a compatible GPU is available.",
+      "candidate": "GPU 파이프라인을 사용하세요.",
+      "expected_bad": true,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "condition",
+      "gold_reason": "condition minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "호환"
+          ],
+          [
+            "때만",
+            "경우에만",
+            "경우만",
+            "있어야",
+            "경우에 한해"
+          ]
+        ],
+        "forbid": []
+      }
+    },
+    {
+      "id": "contrast_link_common_good",
+      "case_id": "contrast_link_common",
+      "source": "Read the [dataset card](https://example.org/card) before using the dataset.",
+      "candidate": "데이터셋을 사용하기 전에 [데이터셋 카드](https://example.org/card)를 읽으세요.",
+      "expected_bad": false,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "link_common",
+      "gold_reason": "link_common minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "데이터셋 카드"
+          ],
+          [
+            "https://example.org/card"
+          ]
+        ],
+        "forbid": [
+          "dataset card"
+        ]
+      }
+    },
+    {
+      "id": "contrast_link_common_bad",
+      "case_id": "contrast_link_common",
+      "source": "Read the [dataset card](https://example.org/card) before using the dataset.",
+      "candidate": "데이터셋을 사용하기 전에 [dataset card](https://example.org/card)를 읽으세요.",
+      "expected_bad": true,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "link_common",
+      "gold_reason": "link_common minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "데이터셋 카드"
+          ],
+          [
+            "https://example.org/card"
+          ]
+        ],
+        "forbid": [
+          "dataset card"
+        ]
+      }
+    },
+    {
+      "id": "contrast_product_good",
+      "case_id": "contrast_product",
+      "source": "Try the demo in [ModelScope Studios](https://example.org/studio).",
+      "candidate": "[ModelScope Studios](https://example.org/studio)에서 데모를 사용해 보세요.",
+      "expected_bad": false,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "product",
+      "gold_reason": "product minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "ModelScope Studios"
+          ],
+          [
+            "https://example.org/studio"
+          ]
+        ],
+        "forbid": [
+          "ModelScope 스튜디오"
+        ]
+      }
+    },
+    {
+      "id": "contrast_product_bad",
+      "case_id": "contrast_product",
+      "source": "Try the demo in [ModelScope Studios](https://example.org/studio).",
+      "candidate": "[ModelScope 스튜디오](https://example.org/studio)에서 데모를 사용해 보세요.",
+      "expected_bad": true,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "product",
+      "gold_reason": "product minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "ModelScope Studios"
+          ],
+          [
+            "https://example.org/studio"
+          ]
+        ],
+        "forbid": [
+          "ModelScope 스튜디오"
+        ]
+      }
+    },
+    {
+      "id": "contrast_identifier_good",
+      "case_id": "contrast_identifier",
+      "source": "Call `SpeechRecognitionModel` to load the model.",
+      "candidate": "모델을 불러오려면 `SpeechRecognitionModel`을 호출하세요.",
+      "expected_bad": false,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "identifier",
+      "gold_reason": "identifier minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "`SpeechRecognitionModel`"
+          ]
+        ],
+        "forbid": [
+          "`음성인식모델`"
+        ]
+      }
+    },
+    {
+      "id": "contrast_identifier_bad",
+      "case_id": "contrast_identifier",
+      "source": "Call `SpeechRecognitionModel` to load the model.",
+      "candidate": "모델을 불러오려면 `음성인식모델`을 호출하세요.",
+      "expected_bad": true,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "identifier",
+      "gold_reason": "identifier minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "`SpeechRecognitionModel`"
+          ]
+        ],
+        "forbid": [
+          "`음성인식모델`"
+        ]
+      }
+    },
+    {
+      "id": "contrast_particle_good",
+      "case_id": "contrast_particle",
+      "source": "Run the [pipeline](https://example.org/pipeline).",
+      "candidate": "[파이프라인](https://example.org/pipeline)을 실행하세요.",
+      "expected_bad": false,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "particle",
+      "gold_reason": "particle minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "[파이프라인](https://example.org/pipeline)을",
+            "[파이프라인](https://example.org/pipeline)을 실행"
+          ]
+        ],
+        "forbid": [
+          ")를"
+        ]
+      }
+    },
+    {
+      "id": "contrast_particle_bad",
+      "case_id": "contrast_particle",
+      "source": "Run the [pipeline](https://example.org/pipeline).",
+      "candidate": "[파이프라인](https://example.org/pipeline)를 실행하세요.",
+      "expected_bad": true,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "particle",
+      "gold_reason": "particle minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "[파이프라인](https://example.org/pipeline)을",
+            "[파이프라인](https://example.org/pipeline)을 실행"
+          ]
+        ],
+        "forbid": [
+          ")를"
+        ]
+      }
+    },
+    {
+      "id": "contrast_addition_good",
+      "case_id": "contrast_addition",
+      "source": "The tool supports local inference.",
+      "candidate": "이 도구는 로컬 추론을 지원합니다.",
+      "expected_bad": false,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "addition",
+      "gold_reason": "addition minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "로컬"
+          ],
+          [
+            "추론"
+          ]
+        ],
+        "forbid": [
+          "클라우드",
+          "자동 배포"
+        ]
+      }
+    },
+    {
+      "id": "contrast_addition_bad",
+      "case_id": "contrast_addition",
+      "source": "The tool supports local inference.",
+      "candidate": "이 도구는 로컬 추론과 클라우드 자동 배포를 지원합니다.",
+      "expected_bad": true,
+      "origin": "hand_authored_contrast",
+      "split": "new_synthetic_diagnostic",
+      "category": "addition",
+      "gold_reason": "addition minimal contrast",
+      "invariants": {
+        "require_any": [
+          [
+            "로컬"
+          ],
+          [
+            "추론"
+          ]
+        ],
+        "forbid": [
+          "클라우드",
+          "자동 배포"
+        ]
+      }
+    }
+  ],
+  "decision_rows": [
+    {
+      "id": "clean_english",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_english-combined.json",
+      "original_sha256": "5cc53664bdbaa6e8e778bc46430540f5a857151fbb9e576e6c408fb9d5117b23"
+    },
+    {
+      "id": "clean_english",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_english-facts.json",
+      "original_sha256": "c4341d11547702840d405fd5e29f901b6928bb29f05f47550dbb19c1654c916e"
+    },
+    {
+      "id": "clean_english",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_english-generic.json",
+      "original_sha256": "8fe296f739abaa5bd7b6d33a9d41de58994b9eed3dbf3c39db69e6a6c627cbc4"
+    },
+    {
+      "id": "clean_english",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_english-matched.json",
+      "original_sha256": "a7c7eb1729a7804b9f532c3cbdb7eaa179d9657434078793f23ede37d62485fb"
+    },
+    {
+      "id": "clean_english",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_english-quality.json",
+      "original_sha256": "25e946a22a93ffd970c1aa4362a4fd5420fcfc20804b9ef2aa315f745a634600"
+    },
+    {
+      "id": "clean_pr244_dataset",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_pr244_dataset-combined.json",
+      "original_sha256": "ddaaa98821fc335bb7b4ffc240e8f0ea15201d485ebfaa86f716e58e37a3399f"
+    },
+    {
+      "id": "clean_pr244_dataset",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_pr244_dataset-facts.json",
+      "original_sha256": "92df37fa114f9380905c89224c3adb4df4d80810aa649752bf89e1f61d94364c"
+    },
+    {
+      "id": "clean_pr244_dataset",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_pr244_dataset-generic.json",
+      "original_sha256": "defb045acf5b43b66dbdf174ba37e8a29f59d66fe7c313421b0cff2250e55792"
+    },
+    {
+      "id": "clean_pr244_dataset",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_pr244_dataset-matched.json",
+      "original_sha256": "69ee4eb411dd3076f21ac74a2f5a7174aa3ded06120456449a569fbdb307a4b4"
+    },
+    {
+      "id": "clean_pr244_dataset",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_pr244_dataset-quality.json",
+      "original_sha256": "698b8760c9dde54542436b1dfd5c3327bb608126679642f20eed2106f7021821"
+    },
+    {
+      "id": "clean_pr244_previous",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_pr244_previous-combined.json",
+      "original_sha256": "7e67bd3ad063ceb961472d32511840d4287499301fea4c806ee8b99b662242aa"
+    },
+    {
+      "id": "clean_pr244_previous",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_pr244_previous-facts.json",
+      "original_sha256": "f647f00da69f85b1b2131d153e60f16e463ba8877b7cecaea22194d1d91329a2"
+    },
+    {
+      "id": "clean_pr244_previous",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_pr244_previous-generic.json",
+      "original_sha256": "22427967a14ab2da8c80073b4bca1dd6b50806a5a601841d82e3f41d3904eafb"
+    },
+    {
+      "id": "clean_pr244_previous",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_pr244_previous-matched.json",
+      "original_sha256": "05484b464b71da3d0fc73208a668c6e823674dc7628174a0b0d88246861a328d"
+    },
+    {
+      "id": "clean_pr244_previous",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_pr244_previous-quality.json",
+      "original_sha256": "2bfed7b6206848b9e316a4127000afc70add704b1a5911f3fb968c67fec584a2"
+    },
+    {
+      "id": "clean_product",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_product-combined.json",
+      "original_sha256": "5c28dd0d8e39563df3e1be7c00e4385cf90254905be35fbac35994e6de231a6f"
+    },
+    {
+      "id": "clean_product",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_product-facts.json",
+      "original_sha256": "4b38735df87ad26219615a993f7901b3edcafbd1e9adf578529848a11ac82419"
+    },
+    {
+      "id": "clean_product",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_product-generic.json",
+      "original_sha256": "fc3fc5e171b6f9dc55bfce383c1bbe40d8a60070f4a49b7ec480a3e6879152e4"
+    },
+    {
+      "id": "clean_product",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_product-matched.json",
+      "original_sha256": "65403fd658cd2210eb2f41a3268bebc5e92fae3dea3bae08617da434c1258292"
+    },
+    {
+      "id": "clean_product",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "clean_product-quality.json",
+      "original_sha256": "8818c6cfd188b5ca2a813fb106783014ac42dc1aeacba4ed50de7e8ebd324176"
+    },
+    {
+      "id": "contrast_addition_bad",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_addition_bad-combined.json",
+      "original_sha256": "632c46ea9e151ac9521de3fd020d2a40486a49d9e2caffcd126835a7c957cf85"
+    },
+    {
+      "id": "contrast_addition_bad",
+      "arm": "facts",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_addition_bad-facts.json",
+      "original_sha256": "ce8b262f2135c9ffd5b4831ff704a06265fca24f5cadfc8e00d4d98a33441ac1"
+    },
+    {
+      "id": "contrast_addition_bad",
+      "arm": "generic",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_addition_bad-generic.json",
+      "original_sha256": "4ec7cfeba6477d6c05374600c8e3a40e49273c8bc8a1867442c0629d864a7586"
+    },
+    {
+      "id": "contrast_addition_bad",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_addition_bad-matched.json",
+      "original_sha256": "aedb2d8d2eb16503c60157f57ca22c38f204b819e4124ec0a61882f864c9f7bb"
+    },
+    {
+      "id": "contrast_addition_bad",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_addition_bad-quality.json",
+      "original_sha256": "bf0acdc274ca4e2528e2cff53bf6c28ed6bcaa1ded98a55abb821adbfbcbe2f4"
+    },
+    {
+      "id": "contrast_addition_good",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_addition_good-combined.json",
+      "original_sha256": "88ae4bd7e2ec60e074ead668b0467a0c62f2141809bbbf5cd3b7c15a7f5167fc"
+    },
+    {
+      "id": "contrast_addition_good",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_addition_good-facts.json",
+      "original_sha256": "5ebc6e51a98c21f79742c0fb126908b79be2dc43d6b2a5f252a0abbaa894e32d"
+    },
+    {
+      "id": "contrast_addition_good",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_addition_good-generic.json",
+      "original_sha256": "6e52fb4af201cec50d9f6bb35a983d3e9f161f1d8b1c9a9438f638194b3b9a20"
+    },
+    {
+      "id": "contrast_addition_good",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_addition_good-matched.json",
+      "original_sha256": "65d8ae81e2c1dd742f139f8e0e69e23c1de32bbcd7c1e26031080ea01a1afc78"
+    },
+    {
+      "id": "contrast_addition_good",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_addition_good-quality.json",
+      "original_sha256": "ac8df533e26dc38282ec0d621321c3feba20408c35fe933144050d869ab00cb2"
+    },
+    {
+      "id": "contrast_condition_bad",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_condition_bad-combined.json",
+      "original_sha256": "4db7d1311045f4fe684a645e67cc52ad0dfb4cf93845022d0b1b3a9b4307a097"
+    },
+    {
+      "id": "contrast_condition_bad",
+      "arm": "facts",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_condition_bad-facts.json",
+      "original_sha256": "c7dd797ddcdbb6139f5dcba033055bf4ac911b069b548a70a72889ed8b337e9c"
+    },
+    {
+      "id": "contrast_condition_bad",
+      "arm": "generic",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_condition_bad-generic.json",
+      "original_sha256": "a0edf6a8a3d29250aea1b6d63e24ad425a3ddec8727f14212e0c3a2a995e7f9c"
+    },
+    {
+      "id": "contrast_condition_bad",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_condition_bad-matched.json",
+      "original_sha256": "6affc8004e437554dac120a5a5728cd9c19e9976f2233862f55d66853c3089c0"
+    },
+    {
+      "id": "contrast_condition_bad",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_condition_bad-quality.json",
+      "original_sha256": "eaf04107a797c61a3387a7e620e4e1b2cc568b2277ac56a0927bec14a95c07b3"
+    },
+    {
+      "id": "contrast_condition_good",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_condition_good-combined.json",
+      "original_sha256": "2f976e780ef61f9f60e54b1a0734cbda299e5250af87778b2506931d59268677"
+    },
+    {
+      "id": "contrast_condition_good",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_condition_good-facts.json",
+      "original_sha256": "6f4065dd3a486404934017c381a918a935b670ef09aac03db73edead97b53e38"
+    },
+    {
+      "id": "contrast_condition_good",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_condition_good-generic.json",
+      "original_sha256": "c5ca8a0f8277810eb4cb0392a9d4e02de4cf8fb93dfd6229147eaf0fdffdaaf4"
+    },
+    {
+      "id": "contrast_condition_good",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_condition_good-matched.json",
+      "original_sha256": "df4cef4f040c78977240b405f1291cd2745a24b3ca4f332de5042a9a764596dc"
+    },
+    {
+      "id": "contrast_condition_good",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_condition_good-quality.json",
+      "original_sha256": "a0e3db293b74cd0580b1315315b47bf6bc7f826f49d923126230a8f0051b4196"
+    },
+    {
+      "id": "contrast_identifier_bad",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_identifier_bad-combined.json",
+      "original_sha256": "fd9bb1b6c3a6eb5c7a6f3d43bc20b3adc2cfb3d49bf158986dec0fbafedb4964"
+    },
+    {
+      "id": "contrast_identifier_bad",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_identifier_bad-facts.json",
+      "original_sha256": "ec1de295b013feee5052f1d49a7993db4497d75809aa4304d5e1c8f733c3ab1c"
+    },
+    {
+      "id": "contrast_identifier_bad",
+      "arm": "generic",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_identifier_bad-generic.json",
+      "original_sha256": "7b233cf2449dcdbe82e296f4a87df9b4c34c4f3b9577e904986245bf3d43ba00"
+    },
+    {
+      "id": "contrast_identifier_bad",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_identifier_bad-matched.json",
+      "original_sha256": "f52df9884ac7a9fc30cbaaba248bc335f52254c045ae3b60b455b72bdc84250b"
+    },
+    {
+      "id": "contrast_identifier_bad",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_identifier_bad-quality.json",
+      "original_sha256": "b148c85130e6074146f1be3151e825285494277dc8ffb7d794aa6df9871a72f9"
+    },
+    {
+      "id": "contrast_identifier_good",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_identifier_good-combined.json",
+      "original_sha256": "f74417f88ec09a042174e42d2687b03c34b2547fdfd0f68c390074e22005d41b"
+    },
+    {
+      "id": "contrast_identifier_good",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_identifier_good-facts.json",
+      "original_sha256": "90385b7464fe5106b66a706fba4934f774dcc486be7251330d8dab64c00f3c74"
+    },
+    {
+      "id": "contrast_identifier_good",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_identifier_good-generic.json",
+      "original_sha256": "f37ddb43095267475e8c1bb406bcfc95a9de17d01c6e7d2fadd8af283208788a"
+    },
+    {
+      "id": "contrast_identifier_good",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_identifier_good-matched.json",
+      "original_sha256": "8cedd7def459c778be2cf208c2384937105442790c30bf27b485ec6a0ae671c4"
+    },
+    {
+      "id": "contrast_identifier_good",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_identifier_good-quality.json",
+      "original_sha256": "2689f46811a6000271b302cd1d0800add59dcc5d30c4d817e0a25c442facf2c1"
+    },
+    {
+      "id": "contrast_link_common_bad",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_link_common_bad-combined.json",
+      "original_sha256": "e33f66f2a9c3f989ca50474464cefd1f96240a1e6a63e5e134638b4c18f1f3fc"
+    },
+    {
+      "id": "contrast_link_common_bad",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_link_common_bad-facts.json",
+      "original_sha256": "42411967f1ce2396d01d41ff2d5eaf412bf53c263926b816f429ea7c107cfcab"
+    },
+    {
+      "id": "contrast_link_common_bad",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_link_common_bad-generic.json",
+      "original_sha256": "9a08fe386f3edcfeb8f9aa82044925f086b8dde9612d357a19652aef36c7b8f0"
+    },
+    {
+      "id": "contrast_link_common_bad",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_link_common_bad-matched.json",
+      "original_sha256": "f7bf08e07efb2e6e75135fd058accbe1af4454b934b92c2d5492c6f2bfa47c85"
+    },
+    {
+      "id": "contrast_link_common_bad",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_link_common_bad-quality.json",
+      "original_sha256": "bf3e69bb071782295577a0b6a254b34bbb37e706703820d109e72b061c6564c6"
+    },
+    {
+      "id": "contrast_link_common_good",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_link_common_good-combined.json",
+      "original_sha256": "420e253faf2b186cb6504e37bd66f86a622078138c6261e525d67eedccf3f422"
+    },
+    {
+      "id": "contrast_link_common_good",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_link_common_good-facts.json",
+      "original_sha256": "5b6e6f1df0772230c33aeb02fa9ea395b9a7fd476cea27981d61fd0cdcb74c8a"
+    },
+    {
+      "id": "contrast_link_common_good",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_link_common_good-generic.json",
+      "original_sha256": "96b61ed175b8e4273653ed5b7c7320bd0577557bc03e6f4ae15e4b493c476c6e"
+    },
+    {
+      "id": "contrast_link_common_good",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_link_common_good-matched.json",
+      "original_sha256": "3282e32aad48cbf1dce293572de1f7ee92aba1ec4cea90bfb74dd48ab4ea150a"
+    },
+    {
+      "id": "contrast_link_common_good",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_link_common_good-quality.json",
+      "original_sha256": "ffd4f2474b81afc3dd1e85bee7ede1f54eac3db94ad4f9a9bffe2b489426c88e"
+    },
+    {
+      "id": "contrast_negation_bad",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_negation_bad-combined.json",
+      "original_sha256": "f5c2f689999bdbaaaf46a3e95bca00b7015fcdaac143dd4078c68dee230e4522"
+    },
+    {
+      "id": "contrast_negation_bad",
+      "arm": "facts",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_negation_bad-facts.json",
+      "original_sha256": "2332fce8138631f3d67b56034e18348ba469038ab2061e3e5fb2021bdea94826"
+    },
+    {
+      "id": "contrast_negation_bad",
+      "arm": "generic",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_negation_bad-generic.json",
+      "original_sha256": "54f1349610255bec834991458d36fc43fc0e05ce8fbcf0176710b3a0f451b465"
+    },
+    {
+      "id": "contrast_negation_bad",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_negation_bad-matched.json",
+      "original_sha256": "1353276cb85cbca407e2b7f257ca9cffaeac68bda039ef46de0d22855e72c69f"
+    },
+    {
+      "id": "contrast_negation_bad",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_negation_bad-quality.json",
+      "original_sha256": "d170166624cbe1df40b6c98869f6b6d5c85e69761d28f73cb5bf3fe3c75f8c3f"
+    },
+    {
+      "id": "contrast_negation_good",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_negation_good-combined.json",
+      "original_sha256": "2f1b246a73ab4ef6d9f6cffc880fb2de2725ca5bef9f00bd9bb0210d272a5d3c"
+    },
+    {
+      "id": "contrast_negation_good",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_negation_good-facts.json",
+      "original_sha256": "348eb57b01c8c810330e21dfab13c97f6deab0b5c2a640d61b2d4059722e3568"
+    },
+    {
+      "id": "contrast_negation_good",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_negation_good-generic.json",
+      "original_sha256": "354b38855c8ecb9849d8f4aee5653182ea1040590f6cf78e6c48bee9fc36d1f7"
+    },
+    {
+      "id": "contrast_negation_good",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_negation_good-matched.json",
+      "original_sha256": "856f763f12518e4b6527da9685f04a335506df64ea3d61897059fa1159254488"
+    },
+    {
+      "id": "contrast_negation_good",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_negation_good-quality.json",
+      "original_sha256": "b367f77f4a96810630c6910561a934c067dc3204de73ad825ada03afb6313f30"
+    },
+    {
+      "id": "contrast_number_bad",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_number_bad-combined.json",
+      "original_sha256": "45d2b4c7a309b235c028ae7af098843db10381f011b0c4d3d63075c60f5186ac"
+    },
+    {
+      "id": "contrast_number_bad",
+      "arm": "facts",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_number_bad-facts.json",
+      "original_sha256": "9df2df2ed22d94c030e6a15355cc3787370fd9cb96de1bc9e0ea90973786b0f5"
+    },
+    {
+      "id": "contrast_number_bad",
+      "arm": "generic",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_number_bad-generic.json",
+      "original_sha256": "c6c1ba75ae2c79cce464cb6ba4c6bd8041e09f02b5ea90cad2081059cf258a71"
+    },
+    {
+      "id": "contrast_number_bad",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_number_bad-matched.json",
+      "original_sha256": "a03998cff58b55363eccb392393ff740aa14380c8e145f078fcbfc9ba73718f1"
+    },
+    {
+      "id": "contrast_number_bad",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_number_bad-quality.json",
+      "original_sha256": "ce09027896003bc1fb29b2450d8a23b8c439cc325497c516e745272bd71f7e56"
+    },
+    {
+      "id": "contrast_number_good",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_number_good-combined.json",
+      "original_sha256": "cf83a5c7df51247a944e2f5922793e15a38effc23c0bcb5251a6920564d742ca"
+    },
+    {
+      "id": "contrast_number_good",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_number_good-facts.json",
+      "original_sha256": "841ad582c9b2fbac9a7d73c00fb85b561ecfedc152a6ff128d933f6ba1fdb7dc"
+    },
+    {
+      "id": "contrast_number_good",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_number_good-generic.json",
+      "original_sha256": "f12087dcc9191ed956730cec5a8b3a3aef2581ea7ef5abe86b7eabd548a3d774"
+    },
+    {
+      "id": "contrast_number_good",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_number_good-matched.json",
+      "original_sha256": "0ffdb467b474b382a11138cf3f4f5863a84938e4519bed20ad308bbc647cc9f3"
+    },
+    {
+      "id": "contrast_number_good",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_number_good-quality.json",
+      "original_sha256": "eb9b4c9abbd5d7a2fcd8d9df13fd11a63c93d4833b4397202e7243602da22955"
+    },
+    {
+      "id": "contrast_particle_bad",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_particle_bad-combined.json",
+      "original_sha256": "b9b4bb86888592b9ad45d2b89ba7e910f021778dbf5b79730972d707aaac329f"
+    },
+    {
+      "id": "contrast_particle_bad",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_particle_bad-facts.json",
+      "original_sha256": "cb125a8e6bf966be6972ddcd21a4174666de2672527e7589e9b986d69ad9623a"
+    },
+    {
+      "id": "contrast_particle_bad",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_particle_bad-generic.json",
+      "original_sha256": "108fb3b9ba1e506048d92a07ad331131addef6cec42f91a9054515a11cef8114"
+    },
+    {
+      "id": "contrast_particle_bad",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_particle_bad-matched.json",
+      "original_sha256": "c8dfa880545a2d826fa8ea1beb0d73ee3516199a726929753e8594a17bf997d6"
+    },
+    {
+      "id": "contrast_particle_bad",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_particle_bad-quality.json",
+      "original_sha256": "5f7d60c83336289ba8ffa841333cd830214d453e0e8c8be54484a0dc7931875f"
+    },
+    {
+      "id": "contrast_particle_good",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_particle_good-combined.json",
+      "original_sha256": "51f35f8d847ff44e1993713bca6050a283cbe43b6d2d82660a0eda06a8594de9"
+    },
+    {
+      "id": "contrast_particle_good",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_particle_good-facts.json",
+      "original_sha256": "b607edba1ad0ea2c52b7418fbbadb76b6b725ea2f9b584707f4b7beb28d6ecc8"
+    },
+    {
+      "id": "contrast_particle_good",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_particle_good-generic.json",
+      "original_sha256": "8001ca70f6de95a8b16cc811ffa8cf44c0507ed5352f5febaa60b2a5b1b7b5d4"
+    },
+    {
+      "id": "contrast_particle_good",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_particle_good-matched.json",
+      "original_sha256": "fe15db3d87eaaf141c4e87ffb268ba53f159fe48e6edd6916175ddd2bdac4b2e"
+    },
+    {
+      "id": "contrast_particle_good",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_particle_good-quality.json",
+      "original_sha256": "1903b3f7b103b36da15128fa7c528939215b0d6abb055987737b4578bd725e2b"
+    },
+    {
+      "id": "contrast_product_bad",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_product_bad-combined.json",
+      "original_sha256": "cc3e9c87b0ce2501ca4ed6592ef1d08919a1ffd9da0926ec41f20a1984613129"
+    },
+    {
+      "id": "contrast_product_bad",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_product_bad-facts.json",
+      "original_sha256": "fbaa35b8c172ca5e48670ee224b4efd603cfae1d28fbedfb09668b0ac51c26bc"
+    },
+    {
+      "id": "contrast_product_bad",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_product_bad-generic.json",
+      "original_sha256": "1c17acad7024a88bfc5afe807ccdaea58a3880294817f9d72df487eb92124b87"
+    },
+    {
+      "id": "contrast_product_bad",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_product_bad-matched.json",
+      "original_sha256": "5b50c4f7ceceb6ee94b67736fdb9f4e201b57ea357f00bcebb926b02c91ca89d"
+    },
+    {
+      "id": "contrast_product_bad",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "contrast_product_bad-quality.json",
+      "original_sha256": "f5653fbc643f76ba3550c7bd281163a23fb88f49862e079abeff6cf89ff2b5e0"
+    },
+    {
+      "id": "contrast_product_good",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_product_good-combined.json",
+      "original_sha256": "51c5373b45b06f565fa825277b4560020d2ab4118b6ab05e2a4d8c8eadcf172a"
+    },
+    {
+      "id": "contrast_product_good",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_product_good-facts.json",
+      "original_sha256": "127fefa3cb2e42eb8d8b7a90c28ffd8c76a4653e874bb1b43f35fe8dce9cfd1e"
+    },
+    {
+      "id": "contrast_product_good",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_product_good-generic.json",
+      "original_sha256": "402e885ae92193544c4584d2e6972a57a1edb354bf94d12c3f51504054b86f9e"
+    },
+    {
+      "id": "contrast_product_good",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_product_good-matched.json",
+      "original_sha256": "257266760d915b875b653a909449cbdca14a10ee6425aa1e8ce0a669ad6e8ed7"
+    },
+    {
+      "id": "contrast_product_good",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "contrast_product_good-quality.json",
+      "original_sha256": "dbdcc2048591d71cb008d89d9276827a0871f92eecd16bcd6dfa803f1a6f5f69"
+    },
+    {
+      "id": "pr244_announcement_original",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr244_announcement_original-combined.json",
+      "original_sha256": "99468e5ebe8a1b66f563fd534e008b5d9bebad99bfc40462a214dd12add344cf"
+    },
+    {
+      "id": "pr244_announcement_original",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr244_announcement_original-facts.json",
+      "original_sha256": "7b3565f6d25260745bd56a799ec3cf5508e34975430aa7e88109ea3210ec51b8"
+    },
+    {
+      "id": "pr244_announcement_original",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr244_announcement_original-generic.json",
+      "original_sha256": "57859d74d50d4bbed9f2eda4e5bf8b7d006e3b495526dc4d746f510526f966d6"
+    },
+    {
+      "id": "pr244_announcement_original",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr244_announcement_original-matched.json",
+      "original_sha256": "849b134934e6accbcdd377d0e6c572c0707bd75ae0fdd9cf6a7a845f9959a7e0"
+    },
+    {
+      "id": "pr244_announcement_original",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr244_announcement_original-quality.json",
+      "original_sha256": "a9d972af0987a83759d88f2e097966f95292e1dc20071a25c82a19e64bf9fdf7"
+    },
+    {
+      "id": "pr244_dataset_original",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr244_dataset_original-combined.json",
+      "original_sha256": "b2691de66019e49ab1a4020adbe971ac787737e132bfc79d0af3a0c393379c28"
+    },
+    {
+      "id": "pr244_dataset_original",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr244_dataset_original-facts.json",
+      "original_sha256": "1c4059955ae43302a5c1fd09bef4c104685cf3003f73c2aa09861eea05c0c739"
+    },
+    {
+      "id": "pr244_dataset_original",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr244_dataset_original-generic.json",
+      "original_sha256": "4fdecbc2bffdca1b25ba1f7c70f71bb35993bc147f051c25c3eaae5754c7bb84"
+    },
+    {
+      "id": "pr244_dataset_original",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr244_dataset_original-matched.json",
+      "original_sha256": "1d3b706fcbbe520a932a973303888b00e0c73921efbb81d4d2d2ee2428158957"
+    },
+    {
+      "id": "pr244_dataset_original",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr244_dataset_original-quality.json",
+      "original_sha256": "3784c744d7e502f40e31ada61adf0d3beb3630326145546c6b967543c27b8719"
+    },
+    {
+      "id": "pr244_previous_original",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr244_previous_original-combined.json",
+      "original_sha256": "91586caef47171773fbba1aa2f32af6c6bf2ef874bbe42376d6c7c6ae2e5709b"
+    },
+    {
+      "id": "pr244_previous_original",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr244_previous_original-facts.json",
+      "original_sha256": "2a04901547f3d50812b57c5aa4789ac3e69b5d62c371e128c326f1cced58591e"
+    },
+    {
+      "id": "pr244_previous_original",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr244_previous_original-generic.json",
+      "original_sha256": "d1b79f4708471c70039636ccfb6cd830d92784402e9bc3737449c68a734baab2"
+    },
+    {
+      "id": "pr244_previous_original",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr244_previous_original-matched.json",
+      "original_sha256": "481a141d156bf6a6aaf132fe027d1ebe82c304ce251f4bcd9dc35295bd1f96f5"
+    },
+    {
+      "id": "pr244_previous_original",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr244_previous_original-quality.json",
+      "original_sha256": "333bfda72090f3bb07309ca883ad3f69947ff5347389234651a0229cb901165d"
+    },
+    {
+      "id": "pr247_demo_original",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr247_demo_original-combined.json",
+      "original_sha256": "2839577bd57891911c96d795268bea8c1f131d68e9d30e6f95037e83d771b536"
+    },
+    {
+      "id": "pr247_demo_original",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr247_demo_original-facts.json",
+      "original_sha256": "e8c54cb66969eb375ccbe38e41033e360eefbf39a50983c130496fdf0def4dba"
+    },
+    {
+      "id": "pr247_demo_original",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr247_demo_original-generic.json",
+      "original_sha256": "cf6c02588c66baa7dc3c408d209a2ac676a4c5d94401d8a46da838f3c4e94193"
+    },
+    {
+      "id": "pr247_demo_original",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr247_demo_original-matched.json",
+      "original_sha256": "3afe25fd924384e9f6095f2b88933f504c2bef1c65e72d339b95a2098939054d"
+    },
+    {
+      "id": "pr247_demo_original",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr247_demo_original-quality.json",
+      "original_sha256": "0cdbf0a70747652301d75bf405c6afeef1678f7304c78f99d5758a8157958832"
+    },
+    {
+      "id": "pr247_pipeline_original",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr247_pipeline_original-combined.json",
+      "original_sha256": "a2be75c442920adaa078c2b03033202e581943a5d1c32fc4e1f018d255e47efc"
+    },
+    {
+      "id": "pr247_pipeline_original",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr247_pipeline_original-facts.json",
+      "original_sha256": "14b24a4e01394c24c27a4e9770d51c86ab63686ab67a21fc5a2ffd984b77b024"
+    },
+    {
+      "id": "pr247_pipeline_original",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr247_pipeline_original-generic.json",
+      "original_sha256": "6e11cd90863e195495fa5d88ad675df82aef3fa666b4449f98efbae6795d379e"
+    },
+    {
+      "id": "pr247_pipeline_original",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr247_pipeline_original-matched.json",
+      "original_sha256": "ab27854fd6f06b7bf39a50d4ec3c24e0e44fe13a5725269537e516173624a427"
+    },
+    {
+      "id": "pr247_pipeline_original",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr247_pipeline_original-quality.json",
+      "original_sha256": "fff8d419bff20186dae51a6de44c4c4f22b892f4d6b15f87a143af2a6ab11a05"
+    },
+    {
+      "id": "pr247_tools_original",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr247_tools_original-combined.json",
+      "original_sha256": "3075ee35c3d2cf2b257b9fedde92a3b53ed36bc827ae0ada65635d86d6078d85"
+    },
+    {
+      "id": "pr247_tools_original",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr247_tools_original-facts.json",
+      "original_sha256": "e394d81aeaf179b8a65e8d295abc69709be660685513e1352c4a4deceb2157cb"
+    },
+    {
+      "id": "pr247_tools_original",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr247_tools_original-generic.json",
+      "original_sha256": "f5be93eaca807629c83e23b3fc00b7d472c62de220e2cbdad0cb3384933977cf"
+    },
+    {
+      "id": "pr247_tools_original",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr247_tools_original-matched.json",
+      "original_sha256": "b5a9291b81f0308de6215f4741c8627f0c5c2b6fc2de7750690b2e75708c0f1d"
+    },
+    {
+      "id": "pr247_tools_original",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr247_tools_original-quality.json",
+      "original_sha256": "5475cfe6cde19cb918c411893724a1c64c5ff0a5263d72c3005e304bf2a94aa5"
+    },
+    {
+      "id": "pr253_capability_original",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_capability_original-combined.json",
+      "original_sha256": "b421639c1eb7e26bb8ed3c45c7d7990cafcfd8d65c41d7985a6e288b4e7083a3"
+    },
+    {
+      "id": "pr253_capability_original",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_capability_original-facts.json",
+      "original_sha256": "a4c0b6cd36eee63b798ae44a443638a412fe04425e88cc7c3fdf18a32e2382fb"
+    },
+    {
+      "id": "pr253_capability_original",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_capability_original-generic.json",
+      "original_sha256": "9ab754df100f410f443ef68955f36bae58bdb8ec9ef375e4ef2afc3acf98a8a5"
+    },
+    {
+      "id": "pr253_capability_original",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_capability_original-matched.json",
+      "original_sha256": "25c4a48c65a985587f416093c7a349f35d10234064308e2d07fae47340d6d1ca"
+    },
+    {
+      "id": "pr253_capability_original",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_capability_original-quality.json",
+      "original_sha256": "5de4f2700e595bf8ae4411c2968ee8dc28c9c684a61d57e0fdd38801baddd27d"
+    },
+    {
+      "id": "pr253_differences_original",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr253_differences_original-combined.json",
+      "original_sha256": "0b5ecd34b06954ced95344e957dea7199a13c1c5bcb31aa1c144e278f8e71ed4"
+    },
+    {
+      "id": "pr253_differences_original",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_differences_original-facts.json",
+      "original_sha256": "d61abeeef7e8c8141bdcdb14debc6dc3f4b1c0460bd3e18b2ec582ed150548a9"
+    },
+    {
+      "id": "pr253_differences_original",
+      "arm": "generic",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr253_differences_original-generic.json",
+      "original_sha256": "c5eb9f397277e24fe9727c25e946271fcccd63ec69c94d6af5089408c0f786a2"
+    },
+    {
+      "id": "pr253_differences_original",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr253_differences_original-matched.json",
+      "original_sha256": "652e9ffc418980c5337de02dbad65106b33fe2ae717c0e7aebd85c808e68eca8"
+    },
+    {
+      "id": "pr253_differences_original",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr253_differences_original-quality.json",
+      "original_sha256": "143ac109645ec8b226d5e8a87055095e1dfdbe3be1d6054267cd4966ec36232f"
+    },
+    {
+      "id": "pr253_english_original",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_english_original-combined.json",
+      "original_sha256": "0515627004435c8a12a05b13e6e0dc78fd0bc220299f9d59a992939f6e80a9a5"
+    },
+    {
+      "id": "pr253_english_original",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_english_original-facts.json",
+      "original_sha256": "8343e61b09850c7fed48f0b9154a3505b35adf15fcbec06c6190b1a8c8d60522"
+    },
+    {
+      "id": "pr253_english_original",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_english_original-generic.json",
+      "original_sha256": "de0c1d7f5012231e84353e687506e698a12723cfbb1c8701bcd32a5a3211830c"
+    },
+    {
+      "id": "pr253_english_original",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_english_original-matched.json",
+      "original_sha256": "a8d51d7d7c81a4bf76696afcdc42d645a3528e04be8717171a0b5c48a351f327"
+    },
+    {
+      "id": "pr253_english_original",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_english_original-quality.json",
+      "original_sha256": "8d4afff3782aad76a0f576ecebd848875e88cb77042f8dfe01c2c3fd3388fe4b"
+    },
+    {
+      "id": "pr253_provider_original",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr253_provider_original-combined.json",
+      "original_sha256": "be3476a1081f1d93fd4c6140b63d1723156747443670e843eba20ac70f436676"
+    },
+    {
+      "id": "pr253_provider_original",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_provider_original-facts.json",
+      "original_sha256": "d08e5a395856da0658ff3d4689aa019a8e3e34eb7078a310018d02bc83b95d21"
+    },
+    {
+      "id": "pr253_provider_original",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_provider_original-generic.json",
+      "original_sha256": "b583f21617ff4f2d96494c852322ea9dc0a44c38eee513dee5f3d22b5f4a45ab"
+    },
+    {
+      "id": "pr253_provider_original",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr253_provider_original-matched.json",
+      "original_sha256": "b53818840efaca0c44f36a3cd3dfc3394f7790aa7189f6c1817283bd3ea24aad"
+    },
+    {
+      "id": "pr253_provider_original",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr253_provider_original-quality.json",
+      "original_sha256": "e5e28560db1286f4234ae1b0cc9c24e2865b170b10eea466953fc6c5dffc8a7c"
+    },
+    {
+      "id": "pr253_recap_original",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_recap_original-combined.json",
+      "original_sha256": "7e6e5832ce180acbdce35bf4446b8cf065310e4cde3a3b17ee71317405354c17"
+    },
+    {
+      "id": "pr253_recap_original",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_recap_original-facts.json",
+      "original_sha256": "4a5ed43979e6d21540c200b9d4f0ee556a9e16bf97205d02a08e2dad00f89cc1"
+    },
+    {
+      "id": "pr253_recap_original",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_recap_original-generic.json",
+      "original_sha256": "c256e0b4775bdcf96cb5ca97aefc9dfc02dfa36a51f12c047480ba18924afa26"
+    },
+    {
+      "id": "pr253_recap_original",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_recap_original-matched.json",
+      "original_sha256": "e32a3f5b36d19f365f04aa436518d5f8cfb9fb04507c1b45fb615bc7d8fa985b"
+    },
+    {
+      "id": "pr253_recap_original",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr253_recap_original-quality.json",
+      "original_sha256": "f36d72c6b7d63f62e8ef506a3041d723dc7a9cd24a6e7f8f24740f9b79eb98d0"
+    },
+    {
+      "id": "pr253_ultra_original",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr253_ultra_original-combined.json",
+      "original_sha256": "15b01252e63acb39df87eee17a20e37a9fa3277f85aa76835466b475bcf82172"
+    },
+    {
+      "id": "pr253_ultra_original",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_ultra_original-facts.json",
+      "original_sha256": "9fda4a59b3e91e8d2ece32d230730db1873c562b90b3ffa18249f0f41fcba1a5"
+    },
+    {
+      "id": "pr253_ultra_original",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "pr253_ultra_original-generic.json",
+      "original_sha256": "072a79e5c3d9450d0088ff74ab68638142ccf0f5584c6c8df9e32a749291b919"
+    },
+    {
+      "id": "pr253_ultra_original",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr253_ultra_original-matched.json",
+      "original_sha256": "0e9afc8fcbbd4cb34f2d7076206e8a7c04dd664a21cb27ac168ac254c26b55ba"
+    },
+    {
+      "id": "pr253_ultra_original",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "pr253_ultra_original-quality.json",
+      "original_sha256": "c581f1ffa65ea42f02e6d87b0c2569e7471fa5a0910212920f5824d08787afab"
+    },
+    {
+      "id": "prior_code",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_code-combined.json",
+      "original_sha256": "13075a42573ca7c23cc0df83068ab906d08c5042f5e99019e69f5debc138b902"
+    },
+    {
+      "id": "prior_code",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_code-facts.json",
+      "original_sha256": "519fb6ee70c661a3b821accb9931d53012058ce92452d2912023e047cac59e74"
+    },
+    {
+      "id": "prior_code",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_code-generic.json",
+      "original_sha256": "9235a55d042813f9a1ab3c4f4ef4c078654ca5ebd5184477179bf31f13cd36f6"
+    },
+    {
+      "id": "prior_code",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "prior_code-matched.json",
+      "original_sha256": "835804c713a2bd3308ece08c69b7f4ed1040444c969e7ce7b7756538f4868785"
+    },
+    {
+      "id": "prior_code",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_code-quality.json",
+      "original_sha256": "05257ad318f2c0224e39a5aaf4ba2ff2b2cb332c23bc5426aca6c19badb93947"
+    },
+    {
+      "id": "prior_particle",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_particle-combined.json",
+      "original_sha256": "fcd4812a098be64c84ff0100bfed22b9f938e6e0250adf1cbc18105587d0dc5c"
+    },
+    {
+      "id": "prior_particle",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_particle-facts.json",
+      "original_sha256": "08a2b0e074d9294101d86d21e161e156b11519d863c5ee512502d4f67b83783b"
+    },
+    {
+      "id": "prior_particle",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_particle-generic.json",
+      "original_sha256": "e2f8017fe43470b73aee995cd63dd68a6c9f59036b82400f1650b6c14b5f2505"
+    },
+    {
+      "id": "prior_particle",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_particle-matched.json",
+      "original_sha256": "586b54e5956f9438336e4d912f4a94b6c118fb1c25137492259df4412aea3dee"
+    },
+    {
+      "id": "prior_particle",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_particle-quality.json",
+      "original_sha256": "c53ecdfef890cd485f78c1d4fff2731a91fed7383963088741811a4e87a4c136"
+    },
+    {
+      "id": "prior_product",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_product-combined.json",
+      "original_sha256": "518ae969e082c2787dcce01266b35ecc3aa0ac24f640a970e63e744fe8cc02cc"
+    },
+    {
+      "id": "prior_product",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_product-facts.json",
+      "original_sha256": "c0ddbb7a909d2d3c9ca9b2932479e03b97f3258baebb6a54474b843477758653"
+    },
+    {
+      "id": "prior_product",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_product-generic.json",
+      "original_sha256": "fa9e4f3d11dd001398e1b135cc1dce54a3e2ffb5e4b28ed4b9855c79a01076d4"
+    },
+    {
+      "id": "prior_product",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "prior_product-matched.json",
+      "original_sha256": "da3302d21bc45f2a141e382161a9f2341c43cdf4adacde081c9f6ff086ee02e3"
+    },
+    {
+      "id": "prior_product",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "prior_product-quality.json",
+      "original_sha256": "ee16567997d38b6bac5158fd2cabe103ef5343b3028e4f55f32b330c97e034a3"
+    },
+    {
+      "id": "seed_identifier",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_identifier-combined.json",
+      "original_sha256": "28e9fd39071ceb1bef430e75ed1568cd0694304e659076e3495c003cb76b2eb8"
+    },
+    {
+      "id": "seed_identifier",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "seed_identifier-facts.json",
+      "original_sha256": "1524a6d47ded9d335b315b3fa08eaf1bd172923f732b6b8d0efd10e053636769"
+    },
+    {
+      "id": "seed_identifier",
+      "arm": "generic",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_identifier-generic.json",
+      "original_sha256": "f304983d946046d352c8c371ce4a2b4c78071b3e8dff9da011ce48352fb12841"
+    },
+    {
+      "id": "seed_identifier",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_identifier-matched.json",
+      "original_sha256": "fdd7677e1936fb9569c260b377358469e6ed101a03266dde592b439c6da8afed"
+    },
+    {
+      "id": "seed_identifier",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_identifier-quality.json",
+      "original_sha256": "bb448cc1d37a4b30d04bd4d0efbd8fb4146dd0d89a7e80c0997dc71c513fe7a9"
+    },
+    {
+      "id": "seed_negation",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_negation-combined.json",
+      "original_sha256": "f5da55fdb514db6eb749b378187a351df002fcc3e2c084239593e624db836c27"
+    },
+    {
+      "id": "seed_negation",
+      "arm": "facts",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_negation-facts.json",
+      "original_sha256": "f55d2908ee31abb3ed16e261df753a12c49322418538d3f94bc7c9932bf2ca42"
+    },
+    {
+      "id": "seed_negation",
+      "arm": "generic",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_negation-generic.json",
+      "original_sha256": "2886e61ed9d2d14700a710cfc9f3563ea65cdd38ac85afd942bf931e496f284f"
+    },
+    {
+      "id": "seed_negation",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_negation-matched.json",
+      "original_sha256": "15d939fe55eda8da959712304a6e9efb5616033581c2264c67203ac1a502a2df"
+    },
+    {
+      "id": "seed_negation",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_negation-quality.json",
+      "original_sha256": "23830e0232bda39ecc3d17d9046f7fb7dc974c97b5c846c9c8898196da4b45ec"
+    },
+    {
+      "id": "seed_number",
+      "arm": "combined",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_number-combined.json",
+      "original_sha256": "f13bea10b8293967a2287acb8e9f0b9de29a5179a04ddc3cc82fc68b676a36f1"
+    },
+    {
+      "id": "seed_number",
+      "arm": "facts",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_number-facts.json",
+      "original_sha256": "ad3ec5015204288d846fd6045752629b02e72e37b001ff1253d70050343af099"
+    },
+    {
+      "id": "seed_number",
+      "arm": "generic",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_number-generic.json",
+      "original_sha256": "97357f2db895959ba96b8a8b431a2a24ce8edbdbd67ffde77d019e8d5921ffb5"
+    },
+    {
+      "id": "seed_number",
+      "arm": "matched",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_number-matched.json",
+      "original_sha256": "45900660b56684ffa79da08719a12d9fddb708fc34c5fb864c2d1e38cc7ad83e"
+    },
+    {
+      "id": "seed_number",
+      "arm": "quality",
+      "passed": false,
+      "noncanonical": [],
+      "original_file": "seed_number-quality.json",
+      "original_sha256": "18f96ae33c8ba8f1b32ddbfe692436697e14af1d9ec95fcaae9c8c5119bfea7a"
+    },
+    {
+      "id": "valid_alias",
+      "arm": "combined",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "valid_alias-combined.json",
+      "original_sha256": "8234a63dc72a50c85fea6d38c8ece2aa2c18d16c11b6f686fa7757bcc2e4a2cc"
+    },
+    {
+      "id": "valid_alias",
+      "arm": "facts",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "valid_alias-facts.json",
+      "original_sha256": "e33d807a4d6232583eab0ad92a25de083dfa2132c03ec09beef8c51bb7494160"
+    },
+    {
+      "id": "valid_alias",
+      "arm": "generic",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "valid_alias-generic.json",
+      "original_sha256": "1791740ac1745a16c7bbf582f8796d52599ba1a1312c00945993b960ad11fa92"
+    },
+    {
+      "id": "valid_alias",
+      "arm": "matched",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "valid_alias-matched.json",
+      "original_sha256": "db9b4ccd081aa4ff03217a3b5159c764195ddf0cd11ee29235160d802c21c8e7"
+    },
+    {
+      "id": "valid_alias",
+      "arm": "quality",
+      "passed": true,
+      "noncanonical": [],
+      "original_file": "valid_alias-quality.json",
+      "original_sha256": "e7bf6c29a2b5add007be986a95fd72dc70a2511b52d5b8774c8ecdada19ae857"
+    }
+  ],
+  "repair_rows": [
+    {
+      "id": "contrast_addition_bad",
+      "arm": "combined",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "이 도구는 로컬 추론을 지원합니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_addition_bad-combined.json",
+      "original_sha256": "2c33190fe6e2e6481ffa90f50f437cfca385a685b6f92524898fd13b61f36bbf"
+    },
+    {
+      "id": "contrast_addition_bad",
+      "arm": "generic",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "이 도구는 로컬 추론을 지원합니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_addition_bad-generic.json",
+      "original_sha256": "e430d83261803ea4c7c211e7923c2dc0440de4bf6ddd8b7f38556f0921ef897e"
+    },
+    {
+      "id": "contrast_addition_bad",
+      "arm": "matched",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "이 도구는 로컬 추론을 지원합니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_addition_bad-matched.json",
+      "original_sha256": "0e859561066f3f2b41076df301325eb6070386a2e292ff4b0696a7264d3f1e50"
+    },
+    {
+      "id": "contrast_addition_good",
+      "arm": "combined",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "이 도구는 로컬 추론을 지원합니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_addition_good-combined.json",
+      "original_sha256": "a898aad80cf8c396b601f13d7e59e6116201da7946d4d248dd16b759ae702d69"
+    },
+    {
+      "id": "contrast_addition_good",
+      "arm": "generic",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "이 도구는 로컬 추론을 지원합니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_addition_good-generic.json",
+      "original_sha256": "1cc415a500c5dcef205cefd1c20ea178902558ad51f7b3e665b4d5364cc66390"
+    },
+    {
+      "id": "contrast_addition_good",
+      "arm": "matched",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "이 도구는 로컬 추론을 지원합니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_addition_good-matched.json",
+      "original_sha256": "f94096caaffca54c1328732b99d9284cef4b644c184c1caa0f89b132a0693fe1"
+    },
+    {
+      "id": "contrast_condition_bad",
+      "arm": "combined",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "호환 가능한 GPU가 있을 때만 GPU 파이프라인을 사용하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_condition_bad-combined.json",
+      "original_sha256": "cb84533a6210f4e737f77687b3db21d25e6b0e6087bb2c026fd36ea353f16b1d"
+    },
+    {
+      "id": "contrast_condition_bad",
+      "arm": "generic",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "호환되는 GPU가 있는 경우에만 GPU 파이프라인을 사용하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_condition_bad-generic.json",
+      "original_sha256": "af3aa50015d18602a208517edeed844cc37c4d2c7ae08846bc61413573ec4579"
+    },
+    {
+      "id": "contrast_condition_bad",
+      "arm": "matched",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "호환되는 GPU가 있을 때만 GPU 파이프라인을 사용하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_condition_bad-matched.json",
+      "original_sha256": "94b29778efd4fd878d3cb33578f38bc33517044d24e6e1670621626bda840354"
+    },
+    {
+      "id": "contrast_condition_good",
+      "arm": "combined",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "호환되는 GPU가 있을 때만 GPU 파이프라인을 사용하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_condition_good-combined.json",
+      "original_sha256": "16023caf6a014bd1c38d3f08f71751205afb6997c805e7a5e92eb340da21a8f6"
+    },
+    {
+      "id": "contrast_condition_good",
+      "arm": "generic",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "호환되는 GPU가 있을 때만 GPU 파이프라인을 사용하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_condition_good-generic.json",
+      "original_sha256": "b9ae782367c1963604057093ab5b3a146231b38072cab2313282ea2541db98ad"
+    },
+    {
+      "id": "contrast_condition_good",
+      "arm": "matched",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "호환되는 GPU가 있을 때만 GPU 파이프라인을 사용하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_condition_good-matched.json",
+      "original_sha256": "b2ae1b271f3ad0fa45fffa5ee522e10f8d77fa6201070688c5bd4a80e596b2a8"
+    },
+    {
+      "id": "contrast_identifier_bad",
+      "arm": "combined",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "모델을 불러오려면 `SpeechRecognitionModel`을 호출하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_identifier_bad-combined.json",
+      "original_sha256": "cffc9609ed51ded0f868c42f3a3f8c6791cdab71f41506eae3a0b47a1e1740e5"
+    },
+    {
+      "id": "contrast_identifier_bad",
+      "arm": "generic",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "모델을 로드하려면 `SpeechRecognitionModel`을 호출하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_identifier_bad-generic.json",
+      "original_sha256": "23817d3ece33caae193477428d88fc383a852f01bfd635a54cbfd8877a1fbd4d"
+    },
+    {
+      "id": "contrast_identifier_bad",
+      "arm": "matched",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "모델을 로드하려면 `SpeechRecognitionModel`을 호출하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_identifier_bad-matched.json",
+      "original_sha256": "92a6c112096374432c27daa040205eaf177a6ba68159be4e73078836a701a882"
+    },
+    {
+      "id": "contrast_identifier_good",
+      "arm": "combined",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "모델을 불러오려면 `SpeechRecognitionModel`을 호출하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_identifier_good-combined.json",
+      "original_sha256": "21f6d7b36efb4cf572a552514437334b09b3fd874945a52c1d846ff502923352"
+    },
+    {
+      "id": "contrast_identifier_good",
+      "arm": "generic",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "모델을 불러오려면 `SpeechRecognitionModel`을 호출하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_identifier_good-generic.json",
+      "original_sha256": "ac6111c149ab49b5c2245aa83a5f0e64da80d7a56addf99acf85594a56f16fd7"
+    },
+    {
+      "id": "contrast_identifier_good",
+      "arm": "matched",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "모델을 불러오려면 `SpeechRecognitionModel`을 호출하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_identifier_good-matched.json",
+      "original_sha256": "568f5decaadc117273ad4c39b876397e75f75af4a43bf08b06984bc31ae76a9d"
+    },
+    {
+      "id": "contrast_link_common_bad",
+      "arm": "combined",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "데이터셋을 사용하기 전에 [데이터셋 카드](https://example.org/card)를 읽으세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_link_common_bad-combined.json",
+      "original_sha256": "2f8b31fdffed31c025eadbfbf5f0054bc8d08a92ffb2be12364ef0b40e05482b"
+    },
+    {
+      "id": "contrast_link_common_bad",
+      "arm": "generic",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "데이터셋을 사용하기 전에 [dataset card](https://example.org/card)를 읽으세요.",
+      "invariant_ok": false,
+      "published": false,
+      "original_file": "contrast_link_common_bad-generic.json",
+      "original_sha256": "214f11738c3b4db3018eeb525b5b27c1b3ff5bfd36ab575c09bd707f540ee2d2"
+    },
+    {
+      "id": "contrast_link_common_bad",
+      "arm": "matched",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "데이터셋을 사용하기 전에 [데이터셋 카드](https://example.org/card)를 읽으세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_link_common_bad-matched.json",
+      "original_sha256": "fbea7078c0775d08ca4899ba24b67abf17322bc2b76c4ee7825140b7e23f861a"
+    },
+    {
+      "id": "contrast_link_common_good",
+      "arm": "combined",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "데이터셋을 사용하기 전에 [데이터셋 카드](https://example.org/card)를 읽으세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_link_common_good-combined.json",
+      "original_sha256": "0cee9b85f8fa35de0c430dbaf997e5420a87a970a2a3d3899f77d0514058a94e"
+    },
+    {
+      "id": "contrast_link_common_good",
+      "arm": "generic",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "데이터셋을 사용하기 전에 [데이터셋 카드](https://example.org/card)를 읽으세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_link_common_good-generic.json",
+      "original_sha256": "8d872cce2eca823af428f704b6c666230de9796f9c3e4328ef9a9f6f87007c63"
+    },
+    {
+      "id": "contrast_link_common_good",
+      "arm": "matched",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "데이터셋을 사용하기 전에 [데이터셋 카드](https://example.org/card)를 읽으세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_link_common_good-matched.json",
+      "original_sha256": "ecee550e0f296d8f918b96f2a41a34834c51669845f4233b86e13784165b8e7f"
+    },
+    {
+      "id": "contrast_negation_bad",
+      "arm": "combined",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "실행기는 스트리밍을 지원하지 않습니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_negation_bad-combined.json",
+      "original_sha256": "2deeb971d640d26f320f50ccffa2aafc89ffbde269802614f90e4b7febe77dd8"
+    },
+    {
+      "id": "contrast_negation_bad",
+      "arm": "generic",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "실행기는 스트리밍을 지원하지 않습니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_negation_bad-generic.json",
+      "original_sha256": "8f083a9ee956beb3bd987d85495a6afeb23f0ee961b28ad106e46846f60499ba"
+    },
+    {
+      "id": "contrast_negation_bad",
+      "arm": "matched",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "실행기는 스트리밍을 지원하지 않습니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_negation_bad-matched.json",
+      "original_sha256": "c511971674cd28a57d901a6803aa5c1c2132aa1a843b04ae2b81ea203beedf14"
+    },
+    {
+      "id": "contrast_negation_good",
+      "arm": "combined",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "실행기는 스트리밍을 지원하지 않습니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_negation_good-combined.json",
+      "original_sha256": "2e5e45f9b1dd06f9e86d4fc4b2516d40334316e174f48a52c2ca17d710d1f063"
+    },
+    {
+      "id": "contrast_negation_good",
+      "arm": "generic",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "실행기는 스트리밍을 지원하지 않습니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_negation_good-generic.json",
+      "original_sha256": "e1c6c93505e4ab21c48f037dee8828f71a9c2f438a34bbe93da12356dc621c2e"
+    },
+    {
+      "id": "contrast_negation_good",
+      "arm": "matched",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "실행기는 스트리밍을 지원하지 않습니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_negation_good-matched.json",
+      "original_sha256": "751ed03cf0c458138766472c202e918c849dfc5602d5b58cd2d864a1455abd24"
+    },
+    {
+      "id": "contrast_number_bad",
+      "arm": "combined",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "모델은 최대 40초 길이의 오디오 클립을 입력받습니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_number_bad-combined.json",
+      "original_sha256": "db37f665e6797603f866a53755fea5ed801c5488b4401cb0fb7d865594aca5bb"
+    },
+    {
+      "id": "contrast_number_bad",
+      "arm": "generic",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "모델은 최대 40초 길이의 오디오 클립을 입력받습니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_number_bad-generic.json",
+      "original_sha256": "a7464825989b0c1feb806b9b2497c4aad614bccc43ea38d3c70acfa25f02e5bb"
+    },
+    {
+      "id": "contrast_number_bad",
+      "arm": "matched",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "모델은 최대 40초 길이의 오디오 클립을 입력받습니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_number_bad-matched.json",
+      "original_sha256": "ab839e9843291c4ca3c295931cc9e111282a000f50a416812cfa6bfb4ecf958e"
+    },
+    {
+      "id": "contrast_number_good",
+      "arm": "combined",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "모델은 최대 40초 길이의 오디오 클립을 입력받습니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_number_good-combined.json",
+      "original_sha256": "52059a87ddced313d5355df7dc385b5949b95a4f8d632080fddfb898bd97145c"
+    },
+    {
+      "id": "contrast_number_good",
+      "arm": "generic",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "모델은 최대 40초 길이의 오디오 클립을 입력받습니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_number_good-generic.json",
+      "original_sha256": "ac339d26300c70c9a2eb764ce7a7aed1871b53d9343a2dd5473e464166010c7e"
+    },
+    {
+      "id": "contrast_number_good",
+      "arm": "matched",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "모델은 최대 40초 길이의 오디오 클립을 입력받습니다.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_number_good-matched.json",
+      "original_sha256": "b8dcc741459e67fbc238b19d82324e0ec3f22615423dc672f9e100bce72c9a25"
+    },
+    {
+      "id": "contrast_particle_bad",
+      "arm": "combined",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "[파이프라인](https://example.org/pipeline)를 실행하세요.",
+      "invariant_ok": false,
+      "published": false,
+      "original_file": "contrast_particle_bad-combined.json",
+      "original_sha256": "2952fdb4395945df788da3e70c01ef98d422cab9ec909189661e2034a850ba36"
+    },
+    {
+      "id": "contrast_particle_bad",
+      "arm": "generic",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "[파이프라인](https://example.org/pipeline)를 실행하세요.",
+      "invariant_ok": false,
+      "published": false,
+      "original_file": "contrast_particle_bad-generic.json",
+      "original_sha256": "652afaf399a51a94e951b1e238d2b78986423afcbd585d24691b74b2d3844eba"
+    },
+    {
+      "id": "contrast_particle_bad",
+      "arm": "matched",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "[파이프라인](https://example.org/pipeline)를 실행하세요.",
+      "invariant_ok": false,
+      "published": false,
+      "original_file": "contrast_particle_bad-matched.json",
+      "original_sha256": "2624c6879de14acf5c016612cb3dbcf2c2df2587cb437f4b18e840d7f97bc374"
+    },
+    {
+      "id": "contrast_particle_good",
+      "arm": "combined",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "[파이프라인](https://example.org/pipeline)을 실행하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_particle_good-combined.json",
+      "original_sha256": "10b4c321440cdd69ec104a26a8178805ce4648d2094faa109ce3500d79c1dcb3"
+    },
+    {
+      "id": "contrast_particle_good",
+      "arm": "generic",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "[파이프라인](https://example.org/pipeline)을 실행하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_particle_good-generic.json",
+      "original_sha256": "a9267c552338a4f1cd79cc29576a52fc4d6f2b6831c11da5962f2db6e3e93304"
+    },
+    {
+      "id": "contrast_particle_good",
+      "arm": "matched",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "[파이프라인](https://example.org/pipeline)을 실행하세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_particle_good-matched.json",
+      "original_sha256": "c956292a4960cb3734c1811425370fd7766b30f920aea310dba98415069a9fa8"
+    },
+    {
+      "id": "contrast_product_bad",
+      "arm": "combined",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "[ModelScope Studios](https://example.org/studio)에서 데모를 사용해 보세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_product_bad-combined.json",
+      "original_sha256": "43c49a6a99599c40d05dd4d86f3ac03aeefe0b9cffe8f9e3a59521e0c629d8b0"
+    },
+    {
+      "id": "contrast_product_bad",
+      "arm": "generic",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "[ModelScope 스튜디오](https://example.org/studio)에서 데모를 사용해 보세요.",
+      "invariant_ok": false,
+      "published": false,
+      "original_file": "contrast_product_bad-generic.json",
+      "original_sha256": "336893145227ea9fc16f5a3edd70aec0fe2d07924512793016ce40ef3e4bf42d"
+    },
+    {
+      "id": "contrast_product_bad",
+      "arm": "matched",
+      "initial_pass": false,
+      "repair_attempted": true,
+      "changed": true,
+      "approved": true,
+      "candidate": "[ModelScope Studios](https://example.org/studio)에서 데모를 사용해 보세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_product_bad-matched.json",
+      "original_sha256": "1a2207a31f39a16f5ed144ea5878cd155062a1760572ad9e887f33346ee021b3"
+    },
+    {
+      "id": "contrast_product_good",
+      "arm": "combined",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "[ModelScope Studios](https://example.org/studio)에서 데모를 사용해 보세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_product_good-combined.json",
+      "original_sha256": "9c4f3b7f6d0e501bc644f36d78d3be1759bbc67d1cd011c74bf71e2fdf07b102"
+    },
+    {
+      "id": "contrast_product_good",
+      "arm": "generic",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "[ModelScope Studios](https://example.org/studio)에서 데모를 사용해 보세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_product_good-generic.json",
+      "original_sha256": "5ee4d29251b6f471b94238d41ba5b481ac4d1ab5f7e940ff52f1c94f97da460b"
+    },
+    {
+      "id": "contrast_product_good",
+      "arm": "matched",
+      "initial_pass": true,
+      "repair_attempted": false,
+      "changed": false,
+      "approved": true,
+      "candidate": "[ModelScope Studios](https://example.org/studio)에서 데모를 사용해 보세요.",
+      "invariant_ok": true,
+      "published": false,
+      "original_file": "contrast_product_good-matched.json",
+      "original_sha256": "d580430a6767cf85d32392b77d9e1573e1b87a5faeab56f3f16fd943dd64d996"
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "description_ko": "두 가상 변경 모두 공개. 전체재번역/Luna부분/Qwen부분의 변경문단과 완성문서에서 추출한 실제 문자열. 기존 출력에서 추출했으며 원본은 불변.",
+  "examples": [
+    {
+      "scenario": "platform",
+      "changed_input_id": "pr238_linux",
+      "source": "AnyLanguageModel also runs on FreeBSD,\nso the same code can work on a server.",
+      "source_excerpt": "AnyLanguageModel also runs on FreeBSD,\nso the same code can work on a server.",
+      "input_provenance": "reports/nvidia-translation/official-live-20261104/L09/D-input-platform.json",
+      "input_sha256": "b6742ec01eb6a964a700c0aae6ac53b605ce9a95b943bce5b7a464edc0d38285",
+      "candidates": [
+        {
+          "output_id": "D-platform-full_luna:pr238_linux",
+          "arm": "full_luna",
+          "changed_text": "AnyLanguageModel은 FreeBSD에서도 실행되므로,\n동일한 코드가 서버에서도 작동할 수 있습니다.",
+          "excerpt": "AnyLanguageModel은 FreeBSD에서도 실행되므로,\n동일한 코드가 서버에서도 작동할 수 있습니다.",
+          "assembled_translations": [
+            {
+              "id": "pr238_shared",
+              "text": "로컬 추론과 호스팅 추론은 각각 강점을 지니며,\n둘 다 이 새로운 세대의 지능형 앱을 구축하는 데 중요한 역할을 합니다.\n공유 API를 사용하면 각 작업에 적합한 모델을 더 쉽게 선택할 수 있습니다."
+            },
+            {
+              "id": "pr238_releases",
+              "text": "1년이 지나고 수십 차례의 릴리스가 이어진 끝에,\n[AnyLanguageModel 1.0](https://github.com/huggingface/AnyLanguageModel/releases/tag/1.0.0)이 출시되었으며,\n[swift-huggingface 1.0](https://github.com/huggingface/swift-huggingface/releases/tag/1.0.0)과\n[swift-xet 1.0](https://github.com/huggingface/swift-xet/releases/tag/1.0.0)도 함께 출시되었습니다."
+            },
+            {
+              "id": "pr238_linux",
+              "text": "AnyLanguageModel은 FreeBSD에서도 실행되므로,\n동일한 코드가 서버에서도 작동할 수 있습니다."
+            }
+          ],
+          "unchanged_neighbors": [
+            {
+              "id": "pr238_shared",
+              "matches_previous_translation": false
+            },
+            {
+              "id": "pr238_releases",
+              "matches_previous_translation": false
+            }
+          ],
+          "raw_output": "reports/nvidia-translation/official-live-20261104/L09/D-platform-full_luna.json",
+          "raw_sha256": "83b4b34f981eec8705dc4d599d0af449630ddbec05170136c4f47144fb02a6b8"
+        },
+        {
+          "output_id": "D-platform-partial_luna:pr238_linux",
+          "arm": "partial_luna",
+          "changed_text": "AnyLanguageModel은 FreeBSD에서도 실행되므로,\n동일한 코드가 서버에서 작동할 수 있습니다.",
+          "excerpt": "AnyLanguageModel은 FreeBSD에서도 실행되므로,\n동일한 코드가 서버에서 작동할 수 있습니다.",
+          "assembled_translations": [
+            {
+              "id": "pr238_shared",
+              "text": "로컬 추론과 호스팅 추론은 각각 장점이 있으며,\n이 새로운 세대의 지능형 앱을 구축하는 데 모두 중요한 역할을 합니다.\n공유 API를 사용하면 각 작업에 적합한 모델을 더 쉽게 선택할 수 있습니다."
+            },
+            {
+              "id": "pr238_releases",
+              "text": "1년 동안 수십 차례의 릴리스를 거쳐\n[AnyLanguageModel 1.0](https://github.com/huggingface/AnyLanguageModel/releases/tag/1.0.0)이 출시되었고,\n[swift-huggingface 1.0](https://github.com/huggingface/swift-huggingface/releases/tag/1.0.0) 및\n[swift-xet 1.0](https://github.com/huggingface/swift-xet/releases/tag/1.0.0)도 함께 제공됩니다."
+            },
+            {
+              "id": "pr238_linux",
+              "text": "AnyLanguageModel은 FreeBSD에서도 실행되므로,\n동일한 코드가 서버에서 작동할 수 있습니다."
+            }
+          ],
+          "unchanged_neighbors": [
+            {
+              "id": "pr238_shared",
+              "matches_previous_translation": true
+            },
+            {
+              "id": "pr238_releases",
+              "matches_previous_translation": true
+            }
+          ],
+          "raw_output": "reports/nvidia-translation/official-live-20261104/L09/D-platform-partial_luna.json",
+          "raw_sha256": "e813cdc0aeb006323d2ca9c3e0b0659c699bb7078500c6fcaaf7381a01e98323"
+        },
+        {
+          "output_id": "L09-D-platform-partial_switchyard:pr238_linux",
+          "arm": "partial_switchyard",
+          "changed_text": "AnyLanguageModel은 FreeBSD에서도 실행되므로,\n동일한 코드가 서버에서도 작동할 수 있습니다.",
+          "excerpt": "AnyLanguageModel은 FreeBSD에서도 실행되므로,\n동일한 코드가 서버에서도 작동할 수 있습니다.",
+          "assembled_translations": [
+            {
+              "id": "pr238_shared",
+              "text": "로컬 추론과 호스팅 추론은 각각 장점이 있으며,\n이 새로운 세대의 지능형 앱을 구축하는 데 모두 중요한 역할을 합니다.\n공유 API를 사용하면 각 작업에 적합한 모델을 더 쉽게 선택할 수 있습니다."
+            },
+            {
+              "id": "pr238_releases",
+              "text": "1년 동안 수십 차례의 릴리스를 거쳐\n[AnyLanguageModel 1.0](https://github.com/huggingface/AnyLanguageModel/releases/tag/1.0.0)이 출시되었고,\n[swift-huggingface 1.0](https://github.com/huggingface/swift-huggingface/releases/tag/1.0.0) 및\n[swift-xet 1.0](https://github.com/huggingface/swift-xet/releases/tag/1.0.0)도 함께 제공됩니다."
+            },
+            {
+              "id": "pr238_linux",
+              "text": "AnyLanguageModel은 FreeBSD에서도 실행되므로,\n동일한 코드가 서버에서도 작동할 수 있습니다."
+            }
+          ],
+          "unchanged_neighbors": [
+            {
+              "id": "pr238_shared",
+              "matches_previous_translation": true
+            },
+            {
+              "id": "pr238_releases",
+              "matches_previous_translation": true
+            }
+          ],
+          "raw_output": "reports/nvidia-translation/openrouter-token5-live-20261104/outputs/L09-D-platform-partial_switchyard.json",
+          "raw_sha256": "47e9d8c0ad6f20d0e86bf6629c3f1d4a33f6ff767de6c436d79a883a4ac69e8f"
+        }
+      ]
+    },
+    {
+      "scenario": "condition",
+      "changed_input_id": "pr238_shared",
+      "source": "Local and hosted inference each have their strengths,\nand both have a role in building this new generation of intelligent apps.\nA shared API makes it easier to choose the right model for each task.\nIn this hypothetical example, hosted inference requires a network connection.",
+      "source_excerpt": "In this hypothetical example, hosted inference requires a network connection.",
+      "input_provenance": "reports/nvidia-translation/official-live-20261104/L09/D-input-condition.json",
+      "input_sha256": "828deb4d6e19d00084518af1b103fb3e0282b8cf69e4f1fc39f258a4adf8c8fd",
+      "candidates": [
+        {
+          "output_id": "D-condition-full_luna:pr238_shared",
+          "arm": "full_luna",
+          "changed_text": "로컬 추론과 호스팅 추론은 각각 강점이 있으며,\n둘 다 이 새로운 세대의 지능형 앱을 구축하는 데 역할을 합니다.\n공유 API를 사용하면 각 작업에 적합한 모델을 더 쉽게 선택할 수 있습니다.\n이 가상의 예에서는 호스팅 추론에 네트워크 연결이 필요합니다.",
+          "excerpt": "이 가상의 예에서는 호스팅 추론에 네트워크 연결이 필요합니다.",
+          "assembled_translations": [
+            {
+              "id": "pr238_shared",
+              "text": "로컬 추론과 호스팅 추론은 각각 강점이 있으며,\n둘 다 이 새로운 세대의 지능형 앱을 구축하는 데 역할을 합니다.\n공유 API를 사용하면 각 작업에 적합한 모델을 더 쉽게 선택할 수 있습니다.\n이 가상의 예에서는 호스팅 추론에 네트워크 연결이 필요합니다."
+            },
+            {
+              "id": "pr238_releases",
+              "text": "1년이 지나고 수십 차례의 릴리스가 나온 후,\n[AnyLanguageModel 1.0](https://github.com/huggingface/AnyLanguageModel/releases/tag/1.0.0)이 출시되었으며,\n[swift-huggingface 1.0](https://github.com/huggingface/swift-huggingface/releases/tag/1.0.0)과\n[swift-xet 1.0](https://github.com/huggingface/swift-xet/releases/tag/1.0.0)도 함께 출시되었습니다."
+            },
+            {
+              "id": "pr238_linux",
+              "text": "AnyLanguageModel은 Linux에서도 실행되므로,\n동일한 코드가 서버에서도 작동할 수 있습니다."
+            }
+          ],
+          "unchanged_neighbors": [
+            {
+              "id": "pr238_releases",
+              "matches_previous_translation": false
+            },
+            {
+              "id": "pr238_linux",
+              "matches_previous_translation": true
+            }
+          ],
+          "raw_output": "reports/nvidia-translation/official-live-20261104/L09/D-condition-full_luna.json",
+          "raw_sha256": "8b5b61715055e0a99c817a3b476778ab074ebc33fa3520eed64c679d6c521988"
+        },
+        {
+          "output_id": "D-condition-partial_luna:pr238_shared",
+          "arm": "partial_luna",
+          "changed_text": "로컬 추론과 호스팅 추론은 각각 강점이 있으며,\n둘 다 차세대 지능형 앱을 구축하는 데 중요한 역할을 합니다.\n공유 API를 사용하면 각 작업에 적합한 모델을 더 쉽게 선택할 수 있습니다.\n이 가상의 예에서는 호스팅 추론에 네트워크 연결이 필요합니다.",
+          "excerpt": "이 가상의 예에서는 호스팅 추론에 네트워크 연결이 필요합니다.",
+          "assembled_translations": [
+            {
+              "id": "pr238_shared",
+              "text": "로컬 추론과 호스팅 추론은 각각 강점이 있으며,\n둘 다 차세대 지능형 앱을 구축하는 데 중요한 역할을 합니다.\n공유 API를 사용하면 각 작업에 적합한 모델을 더 쉽게 선택할 수 있습니다.\n이 가상의 예에서는 호스팅 추론에 네트워크 연결이 필요합니다."
+            },
+            {
+              "id": "pr238_releases",
+              "text": "1년 동안 수십 차례의 릴리스를 거쳐\n[AnyLanguageModel 1.0](https://github.com/huggingface/AnyLanguageModel/releases/tag/1.0.0)이 출시되었고,\n[swift-huggingface 1.0](https://github.com/huggingface/swift-huggingface/releases/tag/1.0.0) 및\n[swift-xet 1.0](https://github.com/huggingface/swift-xet/releases/tag/1.0.0)도 함께 제공됩니다."
+            },
+            {
+              "id": "pr238_linux",
+              "text": "AnyLanguageModel은 Linux에서도 실행되므로,\n동일한 코드가 서버에서도 작동할 수 있습니다."
+            }
+          ],
+          "unchanged_neighbors": [
+            {
+              "id": "pr238_releases",
+              "matches_previous_translation": true
+            },
+            {
+              "id": "pr238_linux",
+              "matches_previous_translation": true
+            }
+          ],
+          "raw_output": "reports/nvidia-translation/official-live-20261104/L09/D-condition-partial_luna.json",
+          "raw_sha256": "5ff4cd3ee82d8188310f6f160a78444b56cbd1e0023aa18ae9f5b29dec3086f3"
+        },
+        {
+          "output_id": "L09-D-condition-partial_switchyard:pr238_shared",
+          "arm": "partial_switchyard",
+          "changed_text": "로컬 추론과 호스팅된 추론은 각각 장점이 있으며, 둘 다 이 새로운 세대의 지능형 애플리케이션 구축에서 역할을 합니다.\n공유 API를 사용하면 각 작업에 적합한 모델을 선택하기가 더 쉬워집니다.\n이 가상의 예시에서는 호스팅된 추론에 네트워크 연결이 필요합니다.",
+          "excerpt": "이 가상의 예시에서는 호스팅된 추론에 네트워크 연결이 필요합니다.",
+          "assembled_translations": [
+            {
+              "id": "pr238_shared",
+              "text": "로컬 추론과 호스팅된 추론은 각각 장점이 있으며, 둘 다 이 새로운 세대의 지능형 애플리케이션 구축에서 역할을 합니다.\n공유 API를 사용하면 각 작업에 적합한 모델을 선택하기가 더 쉬워집니다.\n이 가상의 예시에서는 호스팅된 추론에 네트워크 연결이 필요합니다."
+            },
+            {
+              "id": "pr238_releases",
+              "text": "1년 동안 수십 차례의 릴리스를 거쳐\n[AnyLanguageModel 1.0](https://github.com/huggingface/AnyLanguageModel/releases/tag/1.0.0)이 출시되었고,\n[swift-huggingface 1.0](https://github.com/huggingface/swift-huggingface/releases/tag/1.0.0) 및\n[swift-xet 1.0](https://github.com/huggingface/swift-xet/releases/tag/1.0.0)도 함께 제공됩니다."
+            },
+            {
+              "id": "pr238_linux",
+              "text": "AnyLanguageModel은 Linux에서도 실행되므로,\n동일한 코드가 서버에서도 작동할 수 있습니다."
+            }
+          ],
+          "unchanged_neighbors": [
+            {
+              "id": "pr238_releases",
+              "matches_previous_translation": true
+            },
+            {
+              "id": "pr238_linux",
+              "matches_previous_translation": true
+            }
+          ],
+          "raw_output": "reports/nvidia-translation/openrouter-token5-live-20261104/outputs/L09-D-condition-partial_switchyard.json",
+          "raw_sha256": "1df9c8d287531df1707b9849c218d3b17d8654bca2126d217dd4c1c8ded1b8e2"
+        }
+      ]
+    }
+  ]
+}
