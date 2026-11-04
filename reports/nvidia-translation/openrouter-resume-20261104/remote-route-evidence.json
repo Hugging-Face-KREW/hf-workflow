@@ -1,0 +1,43 @@
+{
+  "pinned_workflow_ref": "3f1035c7f759b1538a4132b4edc89bdc4e57d391",
+  "caller_ref": "96e45b2a563efdacf7884ef57a6536919f24fd0c",
+  "source": "Preserved pinned checkouts and artifacts; no secret values queried",
+  "review_runs": [
+    "41670309598",
+    "41670317634",
+    "41670353774",
+    "41670356554",
+    "41670728736"
+  ],
+  "classification": "Configured official OpenAI SDK default route; no non-OpenAI override evidence in inspected execution configuration",
+  "billing_proof": "Configuration inference, not captured network destination or invoice. SDK route classified from explicit configuration; not from model name or secret name alone. No extra experiment-attributable non-OpenAI invocation found in inspected local ledger/configuration.",
+  "evidence": [
+    {
+      "file": "/private/tmp/hf-blog-workflow-ref-update-20261103/.github/workflows/hf-agent-review.yml",
+      "sha256": "d505737445706fd197d27a54b5ecb2c8ff6cc1266ae074e21150056fc910832f",
+      "finding": "Caller pins workflow 3f1035c; explicitly maps OPENAI_API_KEY. No base URL secret/input/env mapped."
+    },
+    {
+      "file": "/private/tmp/hf-workflow-smoke-20261104/.github/workflows/reusable-pr-review.yml",
+      "sha256": "1429ae6f77551da22a3e8dba2881d5418a2ce9c3223cfcb1643bdbe239ea2f06",
+      "finding": "Hosted Ubuntu review matrix; maps OPENAI_API_KEY and model/provider vars. No OPENAI_BASE_URL or OpenRouter endpoint override."
+    },
+    {
+      "file": "/private/tmp/hf-workflow-smoke-20261104/scripts/hf_agent/run_skill_review.py",
+      "sha256": "85f288e6120eba806d021d7e9666fa42d92d3eab6d5eb537f4910ae057d49be2",
+      "finding": "Quality subprocess command has no --llm-judge-base-url argument; no dotenv loader."
+    },
+    {
+      "file": "/private/tmp/hf-workflow-smoke-20261104/skills/quality/tools/translation_quality_harness.py",
+      "sha256": "056ecc5367e64d76fca891be7dafc2fa690a0ad66b25c1490cd66b8c6e25800c",
+      "finding": "CLI default base URL comes only from OPENAI_BASE_URL env; empty default means standard OpenAI SDK. No dotenv loader."
+    },
+    {
+      "file": "/private/tmp/hf-workflow-smoke-20261104/skills/seo/tools/openai_integration.py",
+      "sha256": "e184564f87aebd5c9b86d0a90527f4b4b8e5e20c9799793b5f1712bb3f1d74f5",
+      "finding": "SEO creates OpenAI(api_key=...) with no base_url argument or dotenv loader."
+    }
+  ],
+  "paid_calls": 0,
+  "unrelated_account_spend_in_scope": false
+}

@@ -1,0 +1,16 @@
+{
+  "verified_price_and_token_bounds": false,
+  "provider_slug": null,
+  "response_provider_name": null,
+  "context_token_upper": null,
+  "prompt_usd_per_million": ".2",
+  "completion_usd_per_million": ".8",
+  "cache_read_usd_per_million": null,
+  "cache_write_usd_per_million": null,
+  "request_fee_upper_usd": null,
+  "ancillary_fee_upper_usd": null,
+  "reasoning_in_output_cap": false,
+  "byok_disabled_confirmed": false,
+  "model": "qwen/qwen3.7-flash",
+  "status": "blocked; no account/provider compatibility or fee assumptions"
+}
