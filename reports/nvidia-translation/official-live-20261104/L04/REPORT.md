@@ -1,112 +1,45 @@
-# 전처리와 제한 수정 루프 실제 실행 결과
+# L04. 링크를 얼마나 숨길지, 용어 정책을 줄지 비교
 
-**최신 예산 지시: 공식 OpenAI 직접 청구는 한도 제외. 비OpenAI는 총 $10 한도와 미정산 arm 차단 유지.**
+**링크 설명을 모델에 보여주면 미번역은 줄었습니다. 그러나 코드·URL 등 기계 검사까지 함께 보면 용어 정책을 더한 조건이 가장 좋지는 않았습니다.**
 
-상태: `completed`. 새 upstream 호출 154회, 완료 154회, 진행 중 0회입니다.
+### 비교 1: 초벌 번역의 전처리와 프롬프트
 
-## 입력 모델과 대조군
+기술 문단 12개를 네 조건으로 번역했습니다. 모델은 모두 gpt-5-mini-2025-08-07입니다. 링크 전체 보호는 과거 방식이며, 현재 운영은 이미 링크 설명을 번역할 수 있게 개선돼 있습니다.
 
-요청 모델: `{"gpt-5-mini-2025-08-07": 154}`. 원본 입력·조건은 `execution-plan.json`과 이 폴더의 snapshot/manifest 또는 원본 참조에 고정했습니다. 비OpenAI arm은 다른 모델로 대체하지 않습니다.
+| 조건 | 모델에 보이는 링크 부분 | 용어 정책 추가 | 코드·URL 등 기계 검사 통과 문단 | 남은 영어 링크 설명 수 |
+|---|---|---|---:|---:|
+| 기준선 | 링크 전체를 숨김 | 없음 | 9/12 | 13 |
+| 링크 전체 보호 + 정책 | 링크 전체를 숨김 | 있음 | 10/12 | 13 |
+| URL만 보호 | 설명은 보이고 URL만 숨김 | 없음 | 10/12 | 3 |
+| URL만 보호 + 정책 | 설명은 보이고 URL만 숨김 | 있음 | 8/12 | 0 |
 
-## 실제 결과
+링크 설명 수는 여러 문단에 남은 표현의 총개수입니다. 이 표는 의미 정확도를 평가한 표가 아닙니다. 가려 둔 문자열을 되돌리는 데 실패한 경우는 네 조건 모두 0건이었습니다.
 
-```json
-{
-  "result": {
-    "status": "completed",
-    "generation_cases": 12,
-    "generation_arms": 4,
-    "max_repairs": 2,
-    "ecl_control": "51d5f22 original link-whole protector, deliberate legacy contrast; not current production default",
-    "scope": "fresh model calls; v2 reuses valid first assessments from this new run, not old historical calls"
-  },
-  "metrics": {
-    "translation_arms": {
-      "url_generic": {
-        "n": 12,
-        "restore_failure": 0,
-        "mechanical_clean": 10,
-        "remaining_descriptive_labels": 3
-      },
-      "url_policy": {
-        "n": 12,
-        "restore_failure": 0,
-        "mechanical_clean": 8,
-        "remaining_descriptive_labels": 0
-      },
-      "whole_generic": {
-        "n": 12,
-        "restore_failure": 0,
-        "mechanical_clean": 9,
-        "remaining_descriptive_labels": 13
-      },
-      "whole_policy": {
-        "n": 12,
-        "restore_failure": 0,
-        "mechanical_clean": 10,
-        "remaining_descriptive_labels": 13
-      }
-    },
-    "validation_loops": 23,
-    "repairs": 21,
-    "final_decisions": {
-      "repair": 6,
-      "pass_candidate": 17
-    }
-  },
-  "failure": null
-}
-```
+기준선보다 URL만 보호한 조건의 미번역이 13→3개로 줄고 기계 검사 통과도 9→10개로 늘었습니다. 정책까지 추가하면 미번역은 0개가 됐지만 기계 검사 통과는 8개로 줄었습니다. 미번역 하나만 줄었다고 최선으로 선택할 수는 없습니다.
 
-## 사용량과 비용
+### 비교 2: 평가 기준을 구체화하고 최대 두 번 수정
 
-```json
-{
-  "actual_upstream_attempts": 154,
-  "completed": 154,
-  "inflight": 0,
-  "errors": 0,
-  "requested_models": {
-    "gpt-5-mini-2025-08-07": 154
-  },
-  "resolved_models": {
-    "gpt-5-mini-2025-08-07": 154
-  },
-  "usage_derived_estimate_usd_known_sum": 0.19506575,
-  "unknown_estimate_attempts": 0,
-  "provider_reported_cost_usd": null,
-  "billing_confirmed_actual_usd": null,
-  "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
-  "input_tokens": 91079,
-  "output_tokens_including_reasoning": 86148,
-  "cache_read_tokens": 0,
-  "cache_write_tokens": 0,
-  "cache_write_30m_tokens": 0,
-  "cache_write_12h_tokens": 0,
-  "reasoning_tokens": 51520,
-  "service_tiers": {
-    "default": 154
-  },
-  "automatic_upstream_retries": 0,
-  "summed_request_seconds": 928.2007677548099
-}
-```
+위 48개 번역물과 **별개인** 번역 후보 23개를 사용했습니다. 개발 단계에서 오류가 있다고 표시한 후보 17개와 정상으로 표시한 후보 6개입니다. 이 표시는 사람 정답 검수 결과가 아닙니다.
 
-사용량은 원본 응답에서 수집했습니다. 위 금액은 cache read/write와 reasoning 포함 output을 반영한 단가 기반 추정이며 청구서 확인값이 아닙니다. 서비스 tier나 긴 문맥 등 계산하지 않은 조건은 추정 미확인으로 남깁니다. SDK upstream 자동 재시도는 0이며, 명시적 프로토콜 재검증·실패·fallback은 각각 기록합니다. Data Designer의 로컬 프록시 재요청은 발생 시 각 전달 시도로 계측하고 전체 upstream 8회로 제한합니다.
+| 검사 조건 | 오류 후보 17개 중 잘못 통과시킨 수 | 정상 후보 6개 중 잘못 막은 수 |
+|---|---:|---:|
+| 기준선: 일반적인 번역 평가 지시 | 9 | 2 |
+| 용어·링크·문법 정책을 구체화한 평가 | 2 | 2 |
 
-## 해석과 한계
+같은 초기 후보를 구체적인 정책으로 평가했을 때 놓친 오류가 줄었습니다. 이후 정책 평가에서 지적된 부분을 최대 두 번 수정하고 재검사한 결과, 23개 중 17개가 최종 자동 검사를 통과했고 6개는 추가 수정이 필요하다고 남았습니다. 이 17개를 독립적인 번역 품질 검수 성공으로 세지는 않습니다. 실제 게시 파일에 반영하지 않고 수정 후보만 평가했습니다.
 
-이전 historical/dev 입력을 다시 사용한 진단·회귀 실험입니다. 사람 정답 승인 수는 0이며, 별도 호출의 model judge도 같은 모델 계열 편향을 가질 수 있습니다. 일부 실험은 합성 오류·가상 업데이트를 포함합니다. 무료 회귀, 과거 결과, 이번 새 호출을 섞지 않습니다. 병렬 실험의 벽시계 시간은 통제된 지연 성능 비교가 아닙니다.
+### 적용 판단
 
-## 비교 관찰과 채택 판단
+링크 설명을 모델에 보여주는 방향은 유지할 근거가 있습니다. 구체적인 평가 정책도 유망하지만, 미번역 감소와 코드·URL 보존을 함께 봐야 합니다. 이번 결과로 용어 정책 추가나 제한 수정 루프를 무조건 운영에 채택하지는 않습니다.
 
-whole은 과거 링크 전체 숨김, url은 URL만 숨김입니다. generic은 일반 프롬프트, policy는 검토된 용어 정책을 추가합니다.
+### 근거 자료
 
-| 조건 | 생성 수 | 복원 실패 | 기계 검사 무결점 | 잔여 설명 라벨 |
-|---|---:|---:|---:|---:|
-| url_generic | 12 | 0 | 10 | 3 |
-| url_policy | 12 | 0 | 8 | 0 |
-| whole_generic | 12 | 0 | 9 | 13 |
-| whole_policy | 12 | 0 | 10 | 13 |
+[평가·설정 원자료](report.json)
 
-별도 오류 seed의 제한 수정 루프는 23개, 수정 시도 21회, 마지막 pass_candidate 17개/repair 잔류 6개였습니다. 이 seed 평가는 위 48개 생성물의 종단 평가가 아닙니다. URL 노출은 라벨 현지화에 도움이 됐지만 기계 검사 결과도 함께 보아야 합니다. 현재 운영에 이미 반영된 방향이며 NVIDIA 고유 효과로 채택하지 않습니다. 실패 시 승인 중단과 제한 루프만 후속 회귀 조건으로 유지합니다.
+### 읽을 때 유의할 점
+
+사람이 정답을 확정한 평가가 아니라, 이미 여러 번 사용한 개발 자료에 대한 모델 평가입니다. 표의 수치는 이 표본에서 관찰한 결과이며 운영 품질을 보장하지 않습니다.
+
+### 실험 비용
+
+- OpenAI **$0.1951 추정** — 직접 호출 154회, 번역·평가 등 이 실험에 기록된 호출 포함.

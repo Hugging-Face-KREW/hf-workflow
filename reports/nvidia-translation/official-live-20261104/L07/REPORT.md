@@ -1,70 +1,44 @@
-> 후속 실행 완료: 이 문서는 이전 OpenAI 단계의 기록입니다. [L07 Qwen 실제 실행·평가 결과](../../openrouter-token5-live-20261104/L07/REPORT.md).
+# L07. Data Designer로 만든 예시를 더 넣으면 번역이 좋아지는가
 
-# Data Designer와 계획 B 실제 실행 결과
+**이 표본에서는 예시를 추가한 조건이 기본 번역보다 좋아졌다는 근거를 찾지 못했습니다. 기본 번역부터 중대 오류와 코드·URL 위반이 없었습니다.**
 
-**최신 예산 지시: 공식 OpenAI 직접 청구는 한도 제외. 비OpenAI는 총 $10 한도와 미정산 arm 차단 유지.**
+### 기준선과 실험 조건
 
-상태: `data_generation_completed_translation_contrast_blocked`. 새 upstream 호출 9회, 완료 9회, 진행 중 0회입니다.
+NeMo Data Designer로 좋은 번역·나쁜 번역의 대비 예시 8개를 만들고, 별도 모델 검토에서 사용 가능으로 표시된 6개를 골랐습니다. 예시 생성·검토 모델은 gpt-5.6-luna였습니다. 번역에는 qwen/qwen3.7-flash를 사용해 같은 영어 문단 8개를 세 조건으로 번역했습니다.
 
-## 입력 모델과 대조군
+| 조건 | 번역 요청에 넣은 내용 |
+|---|---|
+| 기준선: 기본 번역 | 공통 번역 지시와 번역할 원문 |
+| 용어 계획 + 실제 예시 | 기준선 + 번역 전 용어 계획 작성 + 기존 개발 문단의 예시 4개 |
+| 용어 계획 + 실제·합성 예시 | 직전 조건 + Data Designer 예시 6개 |
 
-요청 모델: `{"gpt-5.6-luna": 9}`. 원본 입력·조건은 `execution-plan.json`과 이 폴더의 snapshot/manifest 또는 원본 참조에 고정했습니다. 비OpenAI arm은 다른 모델로 대체하지 않습니다.
+세 번째 조건은 합성 예시 6개를 더 넣는 방식이 도움이 되는지를 보기 위한 것입니다. 실제 예시만 쓰는 두 번째 조건과 비교해, 예시 추가를 포함한 번역 방식 전체의 효과를 봅니다. Data Designer와 다른 예시 생성 도구의 성능 차이는 비교하지 않았습니다.
 
-## 실제 결과
+### 기준선보다 나아졌나
 
-```json
-{
-  "result": {
-    "status": "data_generation_completed_translation_contrast_blocked",
-    "dd_rows": 8,
-    "dd_usable": 6,
-    "translation_model_unchanged": "qwen/qwen3.7-flash"
-  },
-  "metrics": {},
-  "failure": null
-}
-```
+| 조건 | 평가 문단 | 중대 오류 없음 | 코드·URL 모두 보존 | 경미한 오류 지적 수 |
+|---|---:|---:|---:|---:|
+| 기준선: 기본 번역 | 8 | 8/8 | 8/8 | 3 |
+| 용어 계획 + 실제 예시 | 8 | 8/8 | 8/8 | 5 |
+| 용어 계획 + 실제·합성 예시 | 8 | 8/8 | 8/8 | 6 |
 
-## 사용량과 비용
+번역 요청은 조건당 한 번씩 총 3회였고, 각 응답에 문단 8개가 들어 있어 평가 대상은 24개입니다. 즉 요청 횟수는 3회, 평가한 번역 문단은 24개입니다.
 
-```json
-{
-  "actual_upstream_attempts": 9,
-  "completed": 9,
-  "inflight": 0,
-  "errors": 0,
-  "requested_models": {
-    "gpt-5.6-luna": 9
-  },
-  "resolved_models": {
-    "gpt-5.6-luna": 9
-  },
-  "usage_derived_estimate_usd_known_sum": 0.00487495,
-  "unknown_estimate_attempts": 0,
-  "provider_reported_cost_usd": null,
-  "billing_confirmed_actual_usd": null,
-  "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
-  "input_tokens": 2814,
-  "output_tokens_including_reasoning": 3525,
-  "cache_read_tokens": 0,
-  "cache_write_tokens": 1643,
-  "cache_write_30m_tokens": 1643,
-  "cache_write_12h_tokens": 0,
-  "reasoning_tokens": 1660,
-  "service_tiers": {
-    "default": 9
-  },
-  "automatic_upstream_retries": 0,
-  "summed_request_seconds": 41.5778383340803
-}
-```
+예시를 더한 조건은 중대 오류나 코드·URL 보존에서 개선되지 않았고, 경미한 오류 지적도 줄지 않았습니다. 지적 3→5→6건만으로 일반적인 성능 저하를 단정할 수는 없지만, 이번 표본에서는 예시 추가의 실익이 보이지 않습니다.
 
-사용량은 원본 응답에서 수집했습니다. 위 금액은 cache read/write와 reasoning 포함 output을 반영한 단가 기반 추정이며 청구서 확인값이 아닙니다. 서비스 tier나 긴 문맥 등 계산하지 않은 조건은 추정 미확인으로 남깁니다. SDK upstream 자동 재시도는 0이며, 명시적 프로토콜 재검증·실패·fallback은 각각 기록합니다. Data Designer의 로컬 프록시 재요청은 발생 시 각 전달 시도로 계측하고 전체 upstream 8회로 제한합니다.
+### 적용 판단
 
-## 해석과 한계
+Data Designer로 예시를 만들고 선별해 실제 번역에 연결하는 과정은 작동했습니다. 그러나 운영 프롬프트에 이 여섯 예시를 넣을 근거는 아직 없습니다. 더 어려운 입력에서 개선되는지를 봐야 하며, 현재 결과를 예시 생성 기능의 작동 확인과 번역 개선의 입증으로 구분합니다.
 
-이전 historical/dev 입력을 다시 사용한 진단·회귀 실험입니다. 사람 정답 승인 수는 0이며, 별도 호출의 model judge도 같은 모델 계열 편향을 가질 수 있습니다. 일부 실험은 합성 오류·가상 업데이트를 포함합니다. 무료 회귀, 과거 결과, 이번 새 호출을 섞지 않습니다. 병렬 실험의 벽시계 시간은 통제된 지연 성능 비교가 아닙니다.
+### 근거 자료
 
-## 비교 관찰과 채택 판단
+[전체 조건의 평가 원자료](../../openrouter-token5-live-20261104/L07/report.json) · [초기 OpenAI 단계 원자료](report.json)
 
-NeMo Data Designer로 실제 8행을 생성하고 별도 Luna 검토에서 6행 사용 가능 판정을 받았습니다. 나머지 2행은 검토 불통과로 보존했습니다. 계획 B는 이 예시 유무/선정 방식에 따른 번역 대조 실험이지만 기존 Qwen 모델을 바꾸지 않아 3개 arm 전부 미실행입니다. 데이터 생성 기능의 실행은 확인했고, 예시가 번역 품질을 높이는지는 보류합니다. 모델 검토 6/8을 사람 검수나 최종 번역 성공으로 세지 않습니다.
+### 읽을 때 유의할 점
+
+사람이 정답을 확정한 평가가 아니라, 이미 여러 번 사용한 개발 자료에 대한 모델 평가입니다. 표의 수치는 이 표본에서 관찰한 결과이며 운영 품질을 보장하지 않습니다.
+
+### 실험 비용
+
+- OpenRouter **$0.0007** — 후속 Qwen 번역 요청 3회.
+- OpenAI **$0.0128 추정** — 직접 호출 33회, 번역·평가 등 이 실험에 기록된 호출 포함.

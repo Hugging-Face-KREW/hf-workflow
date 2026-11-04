@@ -1,108 +1,44 @@
-> 후속 실행 완료: 이 문서는 이전 OpenAI 단계의 기록입니다. [L08 Qwen 실제 실행·평가 결과](../../openrouter-token5-live-20261104/L08/REPORT.md).
+# L08. 지적받은 문단을 Qwen으로 고쳐도 Luna만큼 좋은가
 
-# 부분 수정 라우팅 C 실제 실행 결과
+**Qwen 수정은 기존 문단의 경미한 문제를 일부 줄였지만, Luna 수정에는 없던 중대 오류가 1건 남았습니다. 이 결과로 Luna를 Qwen으로 바꾸기는 어렵습니다.**
 
-**최신 예산 지시: 공식 OpenAI 직접 청구는 한도 제외. 비OpenAI는 총 $10 한도와 미정산 arm 차단 유지.**
+### 기준선과 실험 조건
 
-상태: `completed_with_non_openai_blocked_arms`. 새 upstream 호출 12회, 완료 12회, 진행 중 0회입니다.
+영어 설명어와 링크 설명 등을 고칠 필요가 있다고 표시된 문단 5개를 사용했습니다. 두 수정 조건에는 같은 원문·기존 번역·오류 지적을 주고, 대상 문단만 수정하게 했습니다.
 
-## 입력 모델과 대조군
+| 조건 | 무엇을 했나 |
+|---|---|
+| 수정 전 참고값 | 기존 번역을 그대로 평가 |
+| 기준선: Luna 수정 | 다섯 문단 모두 gpt-5.6-luna로 수정 |
+| Switchyard 선택에 따른 Qwen 수정 | 기존 분류기가 선택한 qwen/qwen3.7-flash로 수정 |
 
-요청 모델: `{"gpt-5.6-luna": 12}`. 원본 입력·조건은 `execution-plan.json`과 이 폴더의 snapshot/manifest 또는 원본 참조에 고정했습니다. 비OpenAI arm은 다른 모델로 대체하지 않습니다.
+이번 후속 실행은 마지막 행의 다섯 요청을 채웠습니다. 분류기를 다시 호출하거나 지적 내용을 바꾸지 않았습니다.
 
-## 실제 결과
+### 기준선과 비교한 결과
 
-```json
-{
-  "result": {
-    "status": "completed_with_non_openai_blocked_arms",
-    "output_files": 10,
-    "blocked_non_openai": 5,
-    "failed": 5,
-    "coverage_failures": [],
-    "model_substitution": false,
-    "scope": "fresh correction/update requests; existing diagnostic inputs, same-family model review"
-  },
-  "metrics": {
-    "model_reviews": 10,
-    "usable": 10,
-    "reviews_by_group": {
-      "C-luna-pr238_intro": {
-        "n": 1,
-        "model_usable": 1,
-        "major_errors": 0
-      },
-      "C-luna-pr238_reasoning": {
-        "n": 1,
-        "model_usable": 1,
-        "major_errors": 0
-      },
-      "C-luna-pr238_thanks": {
-        "n": 1,
-        "model_usable": 1,
-        "major_errors": 0
-      },
-      "C-luna-pr239_linear": {
-        "n": 1,
-        "model_usable": 1,
-        "major_errors": 0
-      },
-      "C-luna-pr239_requirements": {
-        "n": 1,
-        "model_usable": 1,
-        "major_errors": 0
-      },
-      "C-original": {
-        "n": 5,
-        "model_usable": 5,
-        "major_errors": 0
-      }
-    }
-  },
-  "failure": null
-}
-```
+| 조건 | 중대 오류 없음 | 코드 보존 | URL 보존 | 세 조건 모두 충족 | 경미한 오류 지적 수 |
+|---|---:|---:|---:|---:|---:|
+| 수정 전 참고값 | 5/5 | 5/5 | 5/5 | 5/5 | 8 |
+| 기준선: Luna 수정 | 5/5 | 5/5 | 5/5 | 5/5 | 1 |
+| Switchyard 선택에 따른 Qwen 수정 | 4/5 | 5/5 | 5/5 | 4/5 | 4 |
 
-## 사용량과 비용
+종합 조건은 중대 오류 0건·코드 동일·URL 동일을 모두 만족하는 것입니다. 경미한 문제까지 없다는 뜻은 아닙니다. 수정 전 문단은 설명어 미번역 등 경미한 문제가 있어 이 종합 조건만으로는 수정 효과를 구분하지 못합니다. 그래서 경미한 오류 수도 함께 표시했습니다.
 
-```json
-{
-  "actual_upstream_attempts": 12,
-  "completed": 12,
-  "inflight": 0,
-  "errors": 0,
-  "requested_models": {
-    "gpt-5.6-luna": 12
-  },
-  "resolved_models": {
-    "gpt-5.6-luna": 12
-  },
-  "usage_derived_estimate_usd_known_sum": 0.0065880999999999995,
-  "unknown_estimate_attempts": 0,
-  "provider_reported_cost_usd": null,
-  "billing_confirmed_actual_usd": null,
-  "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
-  "input_tokens": 12061,
-  "output_tokens_including_reasoning": 3047,
-  "cache_read_tokens": 0,
-  "cache_write_tokens": 10390,
-  "cache_write_30m_tokens": 10390,
-  "cache_write_12h_tokens": 0,
-  "reasoning_tokens": 1190,
-  "service_tiers": {
-    "default": 12
-  },
-  "automatic_upstream_retries": 0,
-  "summed_request_seconds": 39.49219391704537
-}
-```
+Luna는 경미한 지적을 8→1건으로 줄이고 중대 오류는 추가하지 않았습니다. Qwen도 경미한 지적은 8→4건으로 줄었지만, AnyLanguageModel 소개 문단에서 ‘프레임워크를 바로 대체한다’는 의미를 ‘프레임워크를 위한 대체 API’로 옮겨 중대 오류가 지적됐습니다. 따라서 ‘오류 1건이 남았다’는 사실보다 **Luna 기준선보다 중대 오류 결과가 나빠졌다**는 점이 중요합니다.
 
-사용량은 원본 응답에서 수집했습니다. 위 금액은 cache read/write와 reasoning 포함 output을 반영한 단가 기반 추정이며 청구서 확인값이 아닙니다. 서비스 tier나 긴 문맥 등 계산하지 않은 조건은 추정 미확인으로 남깁니다. SDK upstream 자동 재시도는 0이며, 명시적 프로토콜 재검증·실패·fallback은 각각 기록합니다. Data Designer의 로컬 프록시 재요청은 발생 시 각 전달 시도로 계측하고 전체 upstream 8회로 제한합니다.
+### 적용 판단
 
-## 해석과 한계
+이 다섯 문단에서는 Luna 수정이 더 나았습니다. Qwen의 비용이 낮더라도 모든 수정에 일괄 적용하지 않고 수정 후 원문 대조를 거쳐야 합니다. 평가 시점·문맥이 같은 통제 실험은 아니므로 정확한 성능 차이로 일반화하지는 않습니다.
 
-이전 historical/dev 입력을 다시 사용한 진단·회귀 실험입니다. 사람 정답 승인 수는 0이며, 별도 호출의 model judge도 같은 모델 계열 편향을 가질 수 있습니다. 일부 실험은 합성 오류·가상 업데이트를 포함합니다. 무료 회귀, 과거 결과, 이번 새 호출을 섞지 않습니다. 병렬 실험의 벽시계 시간은 통제된 지연 성능 비교가 아닙니다.
+### 근거 자료
 
-## 비교 관찰과 채택 판단
+[전체 조건의 평가 원자료](../../openrouter-token5-live-20261104/L08/report.json) · [초기 OpenAI 단계 원자료](report.json)
 
-C는 5개 지적 대상 문단의 부분 수정입니다. 고정 Luna 5개는 완료했고 네이티브 라우터가 고른 Qwen 5개는 비용 미정산으로 차단했습니다. failed=5는 이 차단과 동일하며 별도 파싱 오류가 아닙니다. coverage 누락/중복은 0개입니다. 모델 검토상 수정 5/5와 원본 대조 5/5가 모두 사용 가능하므로 이 작은 표본에서 품질 상승은 입증되지 않았습니다. 실제 부분 수정 연결만 확인했고 라우팅 채택은 보류합니다.
+### 읽을 때 유의할 점
+
+사람이 정답을 확정한 평가가 아니라, 이미 여러 번 사용한 개발 자료에 대한 모델 평가입니다. 표의 수치는 이 표본에서 관찰한 결과이며 운영 품질을 보장하지 않습니다.
+
+### 실험 비용
+
+- OpenRouter **$0.0001** — 후속 Qwen 번역 요청 5회.
+- OpenAI **$0.0090 추정** — 직접 호출 17회, 번역·평가 등 이 실험에 기록된 호출 포함.

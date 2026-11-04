@@ -1,103 +1,44 @@
-> 후속 실행 완료: 이 문서는 이전 OpenAI 단계의 기록입니다. [L09 Qwen 실제 실행·평가 결과](../../openrouter-token5-live-20261104/L09/REPORT.md).
+# L09. 원문 일부가 바뀌면 전체를 다시 번역해야 하는가
 
-# 증분 갱신 D 실제 실행 결과
+**두 가상 변경에서는 바뀐 문단만 번역하고 나머지를 재사용해도 중대 오류·코드·URL 검사를 통과했습니다. 다만 전체 재번역보다 경미한 오류가 적지는 않았습니다.**
 
-**최신 예산 지시: 공식 OpenAI 직접 청구는 한도 제외. 비OpenAI는 총 $10 한도와 미정산 arm 차단 유지.**
+### 기준선과 실험 조건
 
-상태: `completed_with_non_openai_blocked_arms`. 새 upstream 호출 9회, 완료 9회, 진행 중 0회입니다.
+AnyLanguageModel 글의 이웃한 문단 3개를 묶어 두 가지 원문 변경을 만들었습니다. 하나는 Linux를 FreeBSD로 바꾸는 가상 변경, 다른 하나는 네트워크 연결 조건을 한 문단에 추가하는 가상 변경입니다. 실제 원문의 변경 이력은 아닙니다. 모델은 gpt-5.6-luna와 qwen/qwen3.7-flash입니다.
 
-## 입력 모델과 대조군
+| 조건 | 시나리오 하나당 새로 번역한 문단 | 나머지 문단 처리 |
+|---|---:|---|
+| 기준선: Luna 전체 재번역 | 3개 | 모두 새 번역 사용 |
+| Luna 변경 문단만 번역 | 1개 | 기존 번역 2개를 그대로 재사용 |
+| Switchyard가 선택한 Qwen으로 변경 문단만 번역 | 1개 | 기존 번역 2개를 그대로 재사용 |
 
-요청 모델: `{"gpt-5.6-luna": 9}`. 원본 입력·조건은 `execution-plan.json`과 이 폴더의 snapshot/manifest 또는 원본 참조에 고정했습니다. 비OpenAI arm은 다른 모델로 대체하지 않습니다.
+세 조건 모두 완성된 3문단 문서로 평가했습니다. 부분 번역 조건은 문단 ID가 맞고 빠짐·중복이 없는지 확인한 후 재조립했습니다. 일반적인 초벌 번역 전체를 청킹한 실험이 아니라, **원문 갱신 때 변경 문단만 다시 번역한 실험**입니다.
 
-## 실제 결과
+### 기준선과 비교한 결과
 
-```json
-{
-  "result": {
-    "status": "completed_with_non_openai_blocked_arms",
-    "output_files": 6,
-    "blocked_non_openai": 2,
-    "failed": 2,
-    "coverage_failures": [],
-    "model_substitution": false,
-    "scope": "fresh correction/update requests; existing diagnostic inputs, same-family model review"
-  },
-  "metrics": {
-    "model_reviews": 17,
-    "usable": 17,
-    "reviews_by_group": {
-      "C-original": {
-        "n": 5,
-        "model_usable": 5,
-        "major_errors": 0
-      },
-      "D-condition-full_luna": {
-        "n": 3,
-        "model_usable": 3,
-        "major_errors": 0
-      },
-      "D-condition-partial_luna": {
-        "n": 3,
-        "model_usable": 3,
-        "major_errors": 0
-      },
-      "D-platform-full_luna": {
-        "n": 3,
-        "model_usable": 3,
-        "major_errors": 0
-      },
-      "D-platform-partial_luna": {
-        "n": 3,
-        "model_usable": 3,
-        "major_errors": 0
-      }
-    }
-  },
-  "failure": null
-}
-```
+| 조건 | 두 시나리오에서 새로 번역한 문단 수 | 완성 문서의 평가 문단 | 중대 오류 없음·코드/URL 보존 | 경미한 오류 지적 수 |
+|---|---:|---:|---:|---:|
+| 기준선: Luna 전체 재번역 | 6 | 6 | 6/6 | 0 |
+| Luna 변경 문단만 번역 | 2 | 6 | 6/6 | 3 |
+| Switchyard 선택에 따른 Qwen 부분 번역 | 2 | 6 | 6/6 | 1 |
 
-## 사용량과 비용
+분모 6에는 두 문서의 재사용 이웃 문단도 들어 있습니다. Qwen이 새로 번역한 것은 2개 문단이지 6개가 아닙니다. 후속 API 요청도 시나리오당 한 번씩 2회였습니다.
 
-```json
-{
-  "actual_upstream_attempts": 9,
-  "completed": 9,
-  "inflight": 0,
-  "errors": 0,
-  "requested_models": {
-    "gpt-5.6-luna": 9
-  },
-  "resolved_models": {
-    "gpt-5.6-luna": 9
-  },
-  "usage_derived_estimate_usd_known_sum": 0.0061208,
-  "unknown_estimate_attempts": 0,
-  "provider_reported_cost_usd": null,
-  "billing_confirmed_actual_usd": null,
-  "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
-  "input_tokens": 8674,
-  "output_tokens_including_reasoning": 3360,
-  "cache_read_tokens": 0,
-  "cache_write_tokens": 7080,
-  "cache_write_30m_tokens": 7080,
-  "cache_write_12h_tokens": 0,
-  "reasoning_tokens": 1278,
-  "service_tiers": {
-    "default": 9
-  },
-  "automatic_upstream_retries": 0,
-  "summed_request_seconds": 43.22295354108792
-}
-```
+부분 번역은 전체 재번역보다 번역할 문단을 6→2개로 줄였고 이 두 변경에서 중대 오류는 관찰되지 않았습니다. 경미한 지적은 전체 재번역 0건에 비해 Luna 부분 번역 3건, Qwen 부분 번역 1건이었습니다. 평가 시점·문맥이 달라 두 부분 번역 모델의 일반적인 우열까지 말할 수는 없습니다.
 
-사용량은 원본 응답에서 수집했습니다. 위 금액은 cache read/write와 reasoning 포함 output을 반영한 단가 기반 추정이며 청구서 확인값이 아닙니다. 서비스 tier나 긴 문맥 등 계산하지 않은 조건은 추정 미확인으로 남깁니다. SDK upstream 자동 재시도는 0이며, 명시적 프로토콜 재검증·실패·fallback은 각각 기록합니다. Data Designer의 로컬 프록시 재요청은 발생 시 각 전달 시도로 계측하고 전체 upstream 8회로 제한합니다.
+### 적용 판단
 
-## 해석과 한계
+변경 문단 번역과 재조립은 추가 검증할 가치가 있습니다. 운영에 쓰려면 실제 변경 이력과 앞뒤 문맥이 강하게 연결된 문단에서도 확인해야 합니다. 이 두 건으로 전체 재번역과 품질이 같다고 단정하지 않습니다.
 
-이전 historical/dev 입력을 다시 사용한 진단·회귀 실험입니다. 사람 정답 승인 수는 0이며, 별도 호출의 model judge도 같은 모델 계열 편향을 가질 수 있습니다. 일부 실험은 합성 오류·가상 업데이트를 포함합니다. 무료 회귀, 과거 결과, 이번 새 호출을 섞지 않습니다. 병렬 실험의 벽시계 시간은 통제된 지연 성능 비교가 아닙니다.
+### 근거 자료
 
-## 비교 관찰과 채택 판단
+[전체 조건의 평가 원자료](../../openrouter-token5-live-20261104/L09/report.json) · [초기 OpenAI 단계 원자료](report.json)
 
-D는 조건 변경/플랫폼 변경의 두 가상 원문 갱신을 전체 재번역(full_luna)과 변경 부분 번역 후 재조립(partial_luna)으로 비교합니다. 2×2=4개 조건은 완료, Switchyard가 고른 Qwen 2개는 차단했습니다. 각 완성 문서의 3문단, 총 12개가 모델 검토에서 사용 가능했으며 별도 C 원본 5개 대조도 동일 판정입니다. coverage 누락/중복 0개입니다. 재조립 경로는 실행됐지만 가상 변경 2건으로 의미 보존이나 비용 우위를 일반화하지 않습니다. 실제 업데이트 회귀 자료를 늘리기 전 운영 채택은 보류합니다.
+### 읽을 때 유의할 점
+
+사람이 정답을 확정한 평가가 아니라, 이미 여러 번 사용한 개발 자료에 대한 모델 평가입니다. 표의 수치는 이 표본에서 관찰한 결과이며 운영 품질을 보장하지 않습니다.
+
+### 실험 비용
+
+- OpenRouter **$0.0001** — 후속 Qwen 번역 요청 2회.
+- OpenAI **$0.0077 추정** — 직접 호출 15회, 번역·평가 등 이 실험에 기록된 호출 포함.
