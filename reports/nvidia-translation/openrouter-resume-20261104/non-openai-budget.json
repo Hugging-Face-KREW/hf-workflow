@@ -1,0 +1,11 @@
+{
+  "limit_usd": "10",
+  "evidence": {
+    "reconciled_experiment_non_openai_history_and_fees": false,
+    "local_runner_scope_controlled": true,
+    "historical_upper_usd": null,
+    "verified_openrouter_26_generation_cost_usd": "0.01228904",
+    "scope": "Known partial inference cost only, not all non-OpenAI history/fees. OpenAI direct costs excluded. No mixed historical ledger imported."
+  },
+  "requests": []
+}
