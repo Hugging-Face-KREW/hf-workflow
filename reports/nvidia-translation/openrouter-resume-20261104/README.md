@@ -9,7 +9,7 @@
 기존 승인 키를 정상 인증 헤더에만 사용해 공식 GET `/api/v1/key` 1회와 `/api/v1/generation?id=...` 26회를 조회했습니다. 모두 HTTP 200입니다. 새 로그인, 관리키 사용, 키 발급, 충전·결제 설정 변경은 하지 않았습니다.
 
 - 보존된 과거 OpenRouter generation 26/26의 ID·모델·비용이 일치했습니다. timestamp 차이는 최대 0.976초로 원래 응답의 정수초 표기와 부합합니다. 모두 non-BYOK입니다.
-- 26건의 조회된 inference 비용 합계는 **$0.01228904**입니다. 현 키 usage도 이 합계와 일치합니다. 이번 실험의 확인된 과거 inference 비용이며, 다른 계정 잔액이나 key label은 공개하지 않습니다.
+- 26건은 **2026-11-01 20:59:10~21:09:01 KST**(UTC 11:59:10.719~12:09:01.217)의 과거 실행이며, 조회된 inference 비용 합계는 **$0.01228904**입니다. **11월 4일 이번 재개 시도의 신규 OpenRouter 유료 호출·비용은 0**입니다. 현 키 usage도 이 합계와 일치합니다. 이번 실험의 확인된 과거 inference 비용이며, 다른 계정 잔액이나 key label은 공개하지 않습니다.
 - key의 `limit_remaining`과 `effective_budget`도 확인했지만, 키의 사용 가능액은 실험의 과거 수수료를 정산한 값이 아닙니다. 식별정보와 인증정보를 저장하지 않은 필요한 숫자만 저장소 밖 0600 파일에 보관했습니다. 공개 리포트에는 잔액·한도 숫자를 담지 않습니다.
 - 과거 #256의 고정 workflow·caller·리뷰 도구를 읽었습니다. hosted Ubuntu의 명시적 환경/인수에는 base URL override가 없고, 품질/SEO는 OpenAI SDK 기본 경로를 사용하도록 구성돼 있습니다. 따라서 **공식 OpenAI 기본 경로로 구성된 호출**로 분류합니다. 이는 설정에 근거한 추론이며 실제 네트워크 캡처나 청구서 증명은 아닙니다. 검사한 실험 원장·설정에서 추가 실험귀속 비OpenAI 호출의 근거는 찾지 못했습니다. 무관한 다른 키 지출 가능성만으로 범위를 넓히지 않습니다.
 
@@ -19,9 +19,26 @@
 
 실험에 배분할 **과거 충전·처리·세금 등 수수료의 금액 또는 보수적 상한**은 inference 조회에서 나오지 않습니다. 이를 0이나 단순 inference 비용 비율로 가정하지 않았습니다. 필요한 최소 정보는 **확인된 $0.01228904 이외의 추가 실험귀속 비OpenAI 비용·수수료를 합친 확정액 또는 보수적 상한(USD) 한 수치**입니다. 그 상한과 이번 실행의 요청별 최대비용을 합쳐 $10 이하인지 확인해야 합니다.
 
-현재 provider 옵션/가격·캐시 쓰기·부수비용 상한과 account 호환도 확인되지 않았으므로 별도 계약 파일은 미승인 상태입니다. 과거 성공 기록이나 공개 모델 등록만으로 현재 호환성을 가정하지 않습니다. 유료 1건 검증, 나머지 번역, JSON·coverage·코드/URL·모델 품질 평가는 이번 단계에서 실행하지 않았습니다. 기존 차단 기록도 그대로 보존했습니다.
+공식 공개 catalog/provider endpoint에서 확인 가능한 값은 아래에 채웠습니다. 요청당/부수비용과 account 호환 등 미확인 항목 때문에 별도 계약 파일은 미승인 상태입니다. 과거 성공 기록이나 공개 모델 등록만으로 현재 호환성을 가정하지 않습니다. 유료 1건 검증, 나머지 번역, JSON·coverage·코드/URL·모델 품질 평가는 이번 단계에서 실행하지 않았습니다. 검증된 provider 계약과 수수료 상한이 확보되면 1건 제한 실행→실제 사용량 확인→나머지 비교군 순으로 진행할 계획이며, 준비를 실제 실행 완료로 세지 않습니다. 기존 차단 기록도 그대로 보존했습니다.
 
 OpenRouter 공식 자료상 [key 조회](https://openrouter.ai/docs/api/api-reference/api-keys/get-current-api-key)는 키 사용량/한도 정보를, [generation 조회](https://openrouter.ai/docs/api/api-reference/generations/get-request-&-usage-metadata-for-a-generation)는 개별 생성 비용 정보를 제공합니다. [요금 안내](https://openrouter.ai/pricing)는 구매 시 수수료와 inference 비용을 구분합니다. [provider max_price](https://openrouter.ai/docs/guides/routing/provider-selection#max-price)는 요청/토큰별 가격 제한을 지원하지만 과거 수수료 정산을 대신하지 않습니다.
+
+## 공식 공개 catalog에서 추가 확인한 값
+
+인증 없이 공식 GET models와 모델 endpoints를 읽었고 모두 HTTP 200입니다. [원본 공개 응답](public-catalog.json) · [명시적 계약](provider-contract.json)
+
+| 항목 | 확인한 값 |
+|---|---|
+| 요청 alias → canonical | qwen/qwen3.7-flash → qwen/qwen3.7-flash-20260727 |
+| provider 이름 / 기본 tag | Alibaba / alibaba |
+| 별도 지역 variant | alibaba/us-east-1; 기본 tag와 가격이 달라 별도 제외 계약 필요 |
+| context / prompt 최대 / completion 최대 | 1,000,000 / 983,616 / 65,536 tokens |
+| 기본 endpoint 최악 tier 단가: 입력 / 출력 | $0.20 / $0.80 per million |
+| 기본 endpoint 최악 tier: cache read / write | $0.04 / $0.25 per million |
+| 파라미터 | max_tokens, reasoning, response_format 지원; reasoning 필수 아님 |
+| 아직 미확인 | 요청당 fee(필드 없음≠0), 부수비용, BYOK/현재 계정 호환, provider 제외·가격 계약의 전체 적용 확인 |
+
+응답 모델은 alias와 공식 canonical 두 값만 명시적으로 허용하도록 수정했습니다. 다른 모델은 계속 거부합니다. 과거 응답이 canonical을 반환한 정상 상황을 잘못 모델 변경으로 처리하지 않습니다. region variant는 같은 base slug prefix에 걸릴 수 있으므로 ignore 계약에 명시했고, 검증 완료 전 호출하지 않습니다. 공개 가격 등록은 현재 키/옵션 호환의 유료 검증을 대신하지 않습니다.
 
 ## 새로 준비한 고정 비교군
 
@@ -46,6 +63,6 @@ OpenAI가 섞인 옛 원장은 재사용하지 않았습니다. 새 [non-openai-
 - 입력 할인은 가정하지 않고 검증된 전체 context ceiling을 최악 입력 수로 잡아 uncached/read/write 중 가장 높은 단가를 사용합니다. 출력 cap에는 reasoning이 포함돼야 하며 요청당·부수비용의 검증된 상한도 더합니다. 미확인 필드는 차단합니다.
 - 이는 **이 로컬 실행기의 원장**입니다. 계정 전체나 외부 실행기의 분산 잠금을 배포한 것은 아닙니다.
 
-실제 socket을 막고 API 환경키를 제거한 무료 검사 **28개 통과**입니다. 30개 프로세스가 동시에 예약하는 시험에서 과거비용 fixture $8 + 요청별 fixture $0.1 × 20개만 허용해 정확히 $10을 지켰습니다. fixture 금액은 실제 계정 비용이 아닙니다. [검증 기록](validation.json)
+실제 socket을 막고 API 환경키를 제거한 무료 검사 **29개 통과**입니다. 30개 프로세스가 동시에 예약하는 시험에서 과거비용 fixture $8 + 요청별 fixture $0.1 × 20개만 허용해 정확히 $10을 지켰습니다. fixture 금액은 실제 계정 비용이 아닙니다. [검증 기록](validation.json)
 
 감사용 소스는 이 날짜의 로컬 경로·기존 runner·고정 자료에 의존합니다. 다른 환경에 바로 배포할 범용 실행기를 제공하거나 비용 확인을 자동 승인하는 코드는 아닙니다. 기존 [실제 OpenAI 실험 결과](../official-live-20261104/README.md)와 이번 미실행 준비를 구분합니다.

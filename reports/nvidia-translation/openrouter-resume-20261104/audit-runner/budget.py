@@ -70,6 +70,7 @@ class Ledger:
 
 def quote(payload,contract):
  if payload.get('model')!='qwen/qwen3.7-flash':raise Blocked('Only fixed Qwen comparison model allowed')
+ if not contract.get('allowed_response_models') or not set(contract['allowed_response_models']) <= {'qwen/qwen3.7-flash','qwen/qwen3.7-flash-20260727'}:raise Blocked('Verified alias/canonical allowlist required')
  if contract.get('verified_price_and_token_bounds') is not True:raise Blocked('Provider price/token/cache/fee upper bounds unverified')
  if set(payload)-{'model','messages','max_tokens','response_format','reasoning','provider','temperature','seed'}:raise Blocked('Unpriced request features')
  messages=payload.get('messages',[])
@@ -86,6 +87,7 @@ def quote(payload,contract):
  rates=[pmax,money(contract.get('cache_read_usd_per_million')),money(contract.get('cache_write_usd_per_million'))]
  request=money(contract.get('request_fee_upper_usd'));ancillary=money(contract.get('ancillary_fee_upper_usd'))
  provider_options={'only':[provider],'allow_fallbacks':False,'require_parameters':True,'max_price':{'prompt':float(pmax),'completion':float(omax),'request':float(request),'image':0}}
+ if contract.get('provider_ignore'):provider_options['ignore']=contract['provider_ignore']
  if payload.get('provider')!=provider_options:raise Blocked('Provider pin/price cap/fallback contract mismatch')
  if payload.get('reasoning')!={'enabled':False}:raise Blocked('Reasoning configuration changed')
  # Reasoning must be included in enforced output cap, otherwise contract unverified.

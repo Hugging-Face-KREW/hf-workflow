@@ -1,5 +1,5 @@
 {
-  "offline_tests_passed": 28,
+  "offline_tests_passed": 29,
   "real_sockets_blocked": true,
   "parallel_process_test": {
     "processes": 30,
@@ -19,5 +19,6 @@
     "L07": 3,
     "L08": 5,
     "L09": 2
-  }
+  },
+  "canonical_mapping_test": "Official canonical accepted; unrelated model/provider rejected"
 }

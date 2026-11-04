@@ -16,7 +16,7 @@ class RouterMeter:
   except (requests.RequestException,ValueError):
    self.ledger.finish(identifier,{},False);raise Blocked('Uncertain response; reservation retained, no retry') from None
   choice=(data.get('choices') or [{}])[0];text=choice.get('message',{}).get('content')
-  identity_ok=data.get('model')==payload['model'] and data.get('provider')==self.contract['response_provider_name']
+  identity_ok=data.get('model') in self.contract['allowed_response_models'] and data.get('provider')==self.contract['response_provider_name']
   complete=identity_ok and isinstance(data.get('usage'),dict) and data['usage'].get('cost') is not None and r.status_code==200 and choice.get('finish_reason')=='stop' and isinstance(text,str) and bool(text.strip())
   self.ledger.finish(identifier,data.get('usage',{}),complete)
   if not complete:raise Blocked('Failed/incomplete response; reservation retained')

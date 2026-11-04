@@ -654,5 +654,10 @@
   "time_comparison_max_difference_seconds": 0.9760000705718994,
   "minimum_information_needed": [
     "A confirmed or conservative upper bound, in USD, for additional experiment-attributable non-OpenAI charges and credit-purchase/processing/tax fees beyond the verified $0.01228904. Unrelated account activity is outside scope."
-  ]
+  ],
+  "historical_created_at_min_utc": "2026-11-01T11:59:10.719Z",
+  "historical_created_at_max_utc": "2026-11-01T12:09:01.217Z",
+  "resume_date": "2026-11-04",
+  "new_resume_paid_calls": 0,
+  "new_resume_paid_cost_usd": 0
 }

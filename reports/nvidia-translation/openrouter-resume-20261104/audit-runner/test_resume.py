@@ -6,7 +6,7 @@ from budget import Ledger,Blocked,quote
 from transport import RouterMeter
 
 EVIDENCE={'reconciled_experiment_non_openai_history_and_fees':True,'local_runner_scope_controlled':True,'historical_upper_usd':'8'}
-CONTRACT={'verified_price_and_token_bounds':True,'context_token_upper':262144,'provider_slug':'qwen','response_provider_name':'Qwen','prompt_usd_per_million':'.2','completion_usd_per_million':'.8','cache_read_usd_per_million':'.2','cache_write_usd_per_million':'.2','request_fee_upper_usd':'0','ancillary_fee_upper_usd':'.01','reasoning_in_output_cap':True,'byok_disabled_confirmed':True}
+CONTRACT={'verified_price_and_token_bounds':True,'allowed_response_models':['qwen/qwen3.7-flash','qwen/qwen3.7-flash-20260727'],'context_token_upper':262144,'provider_slug':'qwen','response_provider_name':'Qwen','prompt_usd_per_million':'.2','completion_usd_per_million':'.8','cache_read_usd_per_million':'.2','cache_write_usd_per_million':'.2','request_fee_upper_usd':'0','ancillary_fee_upper_usd':'.01','reasoning_in_output_cap':True,'byok_disabled_confirmed':True}
 PAYLOAD={'model':'qwen/qwen3.7-flash','messages':[{'role':'user','content':'Read the [dataset card](https://example.org).'}],'max_tokens':2500,'reasoning':{'enabled':False},'provider':{'only':['qwen'],'allow_fallbacks':False,'require_parameters':True,'max_price':{'prompt':.2,'completion':.8,'request':0.0,'image':0}}}
 
 def ledger(tmp_path,evidence=None):
@@ -95,7 +95,7 @@ def test_l07_uses_new_six_examples_and_preserves_arms(monkeypatch):
  assert 'Additional reviewed synthetic examples:' not in rows[1]['prompt']
  assert len(accepted)==6 and len(dd['expected_ids'])==len(set(dd['expected_ids']))
 
-@pytest.mark.parametrize('model,provider,expected',[('qwen/qwen3.7-flash','Qwen',True),('other','Qwen',False),('qwen/qwen3.7-flash','other',False)])
+@pytest.mark.parametrize('model,provider,expected',[('qwen/qwen3.7-flash','Qwen',True),('qwen/qwen3.7-flash-20260727','Qwen',True),('other','Qwen',False),('qwen/qwen3.7-flash','other',False)])
 def test_actual_response_identity_and_usage_checked(tmp_path,monkeypatch,model,provider,expected):
  import requests
  l=ledger(tmp_path)

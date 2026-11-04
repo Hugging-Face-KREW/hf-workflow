@@ -1,16 +1,43 @@
 {
   "verified_price_and_token_bounds": false,
-  "provider_slug": null,
-  "response_provider_name": null,
-  "context_token_upper": null,
+  "provider_slug": "alibaba",
+  "response_provider_name": "Alibaba",
+  "context_token_upper": 1000000,
   "prompt_usd_per_million": ".2",
   "completion_usd_per_million": ".8",
-  "cache_read_usd_per_million": null,
-  "cache_write_usd_per_million": null,
+  "cache_read_usd_per_million": ".04",
+  "cache_write_usd_per_million": ".25",
   "request_fee_upper_usd": null,
   "ancillary_fee_upper_usd": null,
   "reasoning_in_output_cap": false,
   "byok_disabled_confirmed": false,
   "model": "qwen/qwen3.7-flash",
-  "status": "blocked; no account/provider compatibility or fee assumptions"
+  "status": "known catalog metadata populated; unresolved fee/account/routing contract remains blocked",
+  "allowed_response_models": [
+    "qwen/qwen3.7-flash",
+    "qwen/qwen3.7-flash-20260727"
+  ],
+  "provider_ignore": [
+    "alibaba/us-east-1"
+  ],
+  "max_prompt_tokens": 983616,
+  "max_completion_tokens": 65536,
+  "catalog_sources": [
+    "https://openrouter.ai/api/v1/models",
+    "https://openrouter.ai/api/v1/models/qwen/qwen3.7-flash/endpoints"
+  ],
+  "confirmed_from_catalog": [
+    "alias/canonical mapping",
+    "provider response name and endpoint tag",
+    "context/max prompt/max completion ceilings",
+    "three token pricing tiers including cache read/write",
+    "reasoning not mandatory and disable/max_tokens supported",
+    "response_format supported"
+  ],
+  "unverified": [
+    "request_fee_upper_usd: not present in endpoint pricing; not assumed zero",
+    "ancillary_fee_upper_usd and attributable past purchase/processing/tax upper bound",
+    "byok_disabled_confirmed/current account route compatibility",
+    "end-to-end enforcement of exact provider exclusion/price/cache bounds before paid execution"
+  ]
 }
