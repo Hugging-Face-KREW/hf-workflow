@@ -1,0 +1,46 @@
+{
+  "source_span": "The [dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support) gives the exact meaning of each result.",
+  "original_target_span": "[dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다.",
+  "arms": [
+    {
+      "arm": "F0",
+      "generation": "[dataset card](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다.",
+      "review": {
+        "resolved": false,
+        "no_new_major_errors": true,
+        "explanation": "The reported issue (English link text 'dataset card' left untranslated) is still present in the candidate — the link text remains 'dataset card' rather than a Korean translation. No other substantive changes or new major errors were introduced in the candidate; the rest of the translation and code/links appear preserved."
+      },
+      "gate_decision": "reject"
+    },
+    {
+      "arm": "F1",
+      "generation": "[데이터셋 카드](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다.",
+      "review": {
+        "resolved": true,
+        "no_new_major_errors": true,
+        "explanation": "The candidate translates the previously-untranslated link text 'dataset card' to '데이터셋 카드' while preserving the URL, resolving the reported issue. No new major errors were introduced. (Other untranslated link texts such as 'previous post' and 'look it up' are pre-existing and outside the scope of this specific finding.)"
+      },
+      "gate_decision": "accept_candidate"
+    },
+    {
+      "arm": "F2",
+      "generation": "[데이터셋 카드](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)",
+      "review": {
+        "resolved": true,
+        "no_new_major_errors": true,
+        "explanation": "The candidate translates the link text 'dataset card' to '데이터셋 카드' and preserves the URL, addressing the finding. No new major errors were introduced in the edit."
+      },
+      "gate_decision": "accept_candidate"
+    },
+    {
+      "arm": "F3",
+      "generation": "[데이터셋 카드](https://huggingface.co/datasets/aws-neuron/torch-neuronx-model-support)에서 각 결과의 정확한 의미를 확인할 수 있습니다.",
+      "review": {
+        "resolved": true,
+        "no_new_major_errors": true,
+        "explanation": "The finding requested translating link text 'dataset card' was fixed in the candidate: it appears as '[데이터셋 카드]' while the URL target was preserved. No new major errors were introduced—the rest of the translation remains consistent with the source."
+      },
+      "gate_decision": "accept_candidate"
+    }
+  ]
+}

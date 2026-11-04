@@ -1,0 +1,144 @@
+{
+  "id": "L05",
+  "title": "내장 Guardrails 및 직접 검사",
+  "status": "completed",
+  "result": {
+    "status": "completed",
+    "cases": 39,
+    "arms": [
+      "generic",
+      "facts",
+      "quality",
+      "combined",
+      "matched"
+    ],
+    "max_repairs": 1,
+    "scope": "fresh native/direct judges; all input previously exposed diagnostic/regression, not human gold"
+  },
+  "failure": null,
+  "metrics": {
+    "decisions": 195,
+    "arms": {
+      "generic": {
+        "n": 39,
+        "false_pass_on_exposed_labels": 16,
+        "false_block_on_exposed_labels": 0,
+        "noncanonical_verdicts": 0
+      },
+      "facts": {
+        "n": 39,
+        "false_pass_on_exposed_labels": 19,
+        "false_block_on_exposed_labels": 0,
+        "noncanonical_verdicts": 0
+      },
+      "quality": {
+        "n": 39,
+        "false_pass_on_exposed_labels": 4,
+        "false_block_on_exposed_labels": 0,
+        "noncanonical_verdicts": 0
+      },
+      "combined": {
+        "n": 39,
+        "false_pass_on_exposed_labels": 8,
+        "false_block_on_exposed_labels": 0,
+        "noncanonical_verdicts": 0
+      },
+      "matched": {
+        "n": 39,
+        "false_pass_on_exposed_labels": 6,
+        "false_block_on_exposed_labels": 0,
+        "noncanonical_verdicts": 0
+      }
+    },
+    "by_exposed_split": {
+      "new_synthetic_diagnostic": {
+        "generic": {
+          "n": 16,
+          "false_pass": 3,
+          "false_block": 0
+        },
+        "facts": {
+          "n": 16,
+          "false_pass": 4,
+          "false_block": 0
+        },
+        "quality": {
+          "n": 16,
+          "false_pass": 0,
+          "false_block": 0
+        },
+        "combined": {
+          "n": 16,
+          "false_pass": 1,
+          "false_block": 0
+        },
+        "matched": {
+          "n": 16,
+          "false_pass": 1,
+          "false_block": 0
+        }
+      },
+      "seen_regression": {
+        "generic": {
+          "n": 23,
+          "false_pass": 13,
+          "false_block": 0
+        },
+        "facts": {
+          "n": 23,
+          "false_pass": 15,
+          "false_block": 0
+        },
+        "quality": {
+          "n": 23,
+          "false_pass": 4,
+          "false_block": 0
+        },
+        "combined": {
+          "n": 23,
+          "false_pass": 7,
+          "false_block": 0
+        },
+        "matched": {
+          "n": 23,
+          "false_pass": 5,
+          "false_block": 0
+        }
+      }
+    },
+    "split_note": "new_synthetic_diagnostic is a historical split name: reused diagnostic, not fresh held-out data",
+    "repair_pipeline_rows": 48,
+    "approved_invariant_failure": 5
+  },
+  "usage": {
+    "actual_upstream_attempts": 313,
+    "completed": 313,
+    "inflight": 0,
+    "errors": 0,
+    "requested_models": {
+      "gpt-5-mini-2025-08-07": 313
+    },
+    "resolved_models": {
+      "gpt-5-mini-2025-08-07": 313
+    },
+    "usage_derived_estimate_usd_known_sum": 0.14515075,
+    "unknown_estimate_attempts": 0,
+    "provider_reported_cost_usd": null,
+    "billing_confirmed_actual_usd": null,
+    "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+    "input_tokens": 115187,
+    "output_tokens_including_reasoning": 58177,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cache_write_30m_tokens": 0,
+    "cache_write_12h_tokens": 0,
+    "reasoning_tokens": 45760,
+    "service_tiers": {
+      "default": 313
+    },
+    "automatic_upstream_retries": 0,
+    "summed_request_seconds": 804.4172290895949
+  },
+  "human_approved": 0,
+  "new_proposals_executed": false
+}

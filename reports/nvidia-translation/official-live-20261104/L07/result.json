@@ -1,0 +1,6 @@
+{
+  "status": "data_generation_completed_translation_contrast_blocked",
+  "dd_rows": 8,
+  "dd_usable": 6,
+  "translation_model_unchanged": "qwen/qwen3.7-flash"
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "experiment": "L01",
+    "exit_code": 0,
+    "elapsed_seconds": 6.427064895629883,
+    "log": "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L01-run.log"
+  },
+  {
+    "experiment": "L02",
+    "exit_code": 0,
+    "elapsed_seconds": 23.723124027252197,
+    "log": "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L02-run.log"
+  },
+  {
+    "experiment": "L04",
+    "exit_code": 0,
+    "elapsed_seconds": 335.64021015167236,
+    "log": "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L04-run.log"
+  },
+  {
+    "experiment": "L03",
+    "exit_code": 0,
+    "elapsed_seconds": 527.8121201992035,
+    "log": "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L03-run.log"
+  },
+  {
+    "experiment": "L05",
+    "exit_code": 0,
+    "elapsed_seconds": 281.0808758735657,
+    "log": "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L05-run.log"
+  },
+  {
+    "experiment": "L07",
+    "exit_code": 0,
+    "elapsed_seconds": 44.866963148117065,
+    "log": "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L07-run.log"
+  },
+  {
+    "experiment": "L08",
+    "exit_code": 0,
+    "elapsed_seconds": 40.597275257110596,
+    "log": "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L08-run.log"
+  },
+  {
+    "experiment": "L09",
+    "exit_code": 0,
+    "elapsed_seconds": 44.07940602302551,
+    "log": "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L09-run.log"
+  },
+  {
+    "experiment": "L10",
+    "exit_code": 0,
+    "elapsed_seconds": 102.0549042224884,
+    "log": "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L10-run.log"
+  },
+  {
+    "experiment": "L06",
+    "exit_code": 0,
+    "elapsed_seconds": 339.90192222595215,
+    "log": "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L06-run.log"
+  }
+]

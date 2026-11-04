@@ -1,0 +1,11 @@
+{
+  "status": "completed",
+  "cases": 1,
+  "arms": [
+    "F1"
+  ],
+  "accepted": 1,
+  "native_direct_agree": true,
+  "human_approved": 0,
+  "scope": "fresh candidates on previously exposed natural input; no superiority claim from this sample"
+}

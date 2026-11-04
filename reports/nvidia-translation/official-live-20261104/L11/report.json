@@ -1,0 +1,75 @@
+{
+  "id": "L11",
+  "title": "로컬 전체 파이프라인",
+  "status": "local_pipeline_completed",
+  "result": {
+    "status": "local_pipeline_completed",
+    "initial": {
+      "sha": "2d94e12189ace978bf253e3c9fe2b544dcdb938a",
+      "semantic_complete": true,
+      "quality_status": "review_required",
+      "quality_score": 81.0,
+      "segments_requested": 22,
+      "segments_evaluated": 22,
+      "verifier_passed": true,
+      "reason": "Verified exact local SHA/source/target",
+      "seo_exit": 0,
+      "mqm_attempts": 1,
+      "prompt_source": "existing unmerged PR35, commit 973b75b6952a456a0f7944239b8bc657f1892f52; prompt only reused",
+      "review_source": "frozen snapshot, no source fetch"
+    },
+    "feedback_disposition": "actionable",
+    "after_feedback": {
+      "sha": "a3d20c5db40d934dfe7946eda6a4966221a65be5",
+      "semantic_complete": true,
+      "quality_status": "review_required",
+      "quality_score": 81.0,
+      "segments_requested": 22,
+      "segments_evaluated": 22,
+      "verifier_passed": true,
+      "reason": "Verified exact local SHA/source/target",
+      "seo_exit": 0,
+      "mqm_attempts": 1,
+      "prompt_source": "existing unmerged PR35, commit 973b75b6952a456a0f7944239b8bc657f1892f52; prompt only reused",
+      "review_source": "frozen snapshot, no source fetch"
+    },
+    "remote_pr_mutated": false,
+    "remote_loop_restarted": false,
+    "body_quality_repair_claim": false
+  },
+  "failure": null,
+  "metrics": {},
+  "usage": {
+    "actual_upstream_attempts": 54,
+    "completed": 54,
+    "inflight": 0,
+    "errors": 0,
+    "requested_models": {
+      "gpt-5.6-luna": 49,
+      "gpt-5-nano": 5
+    },
+    "resolved_models": {
+      "gpt-5.6-luna": 49,
+      "gpt-5-nano-2025-08-07": 5
+    },
+    "usage_derived_estimate_usd_known_sum": 0.04525666,
+    "unknown_estimate_attempts": 0,
+    "provider_reported_cost_usd": null,
+    "billing_confirmed_actual_usd": null,
+    "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+    "input_tokens": 540841,
+    "output_tokens_including_reasoning": 15062,
+    "cache_read_tokens": 454548,
+    "cache_write_tokens": 83105,
+    "cache_write_30m_tokens": 83105,
+    "cache_write_12h_tokens": 0,
+    "reasoning_tokens": 1199,
+    "service_tiers": {
+      "default": 54
+    },
+    "automatic_upstream_retries": 0,
+    "summed_request_seconds": 195.15593049791642
+  },
+  "human_approved": 0,
+  "new_proposals_executed": false
+}

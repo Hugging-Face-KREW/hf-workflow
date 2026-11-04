@@ -1,0 +1,9 @@
+{
+  "status": "completed_with_non_openai_blocked_arms",
+  "output_files": 6,
+  "blocked_non_openai": 2,
+  "failed": 2,
+  "coverage_failures": [],
+  "model_substitution": false,
+  "scope": "fresh correction/update requests; existing diagnostic inputs, same-family model review"
+}

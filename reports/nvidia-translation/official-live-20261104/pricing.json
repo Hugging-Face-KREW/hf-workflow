@@ -1,0 +1,33 @@
+{
+  "currency": "USD per 1M text tokens",
+  "verified_on_kst": "2026-11-04",
+  "sources": [
+    "https://developers.openai.com/api/docs/models/gpt-5.6-luna",
+    "https://developers.openai.com/api/docs/models/gpt-5-mini",
+    "https://developers.openai.com/api/docs/models/gpt-5-nano",
+    "https://developers.openai.com/api/docs/guides/prompt-caching"
+  ],
+  "rates": {
+    "gpt-5.6-luna": {
+      "ordinary_input": 0.2,
+      "cache_read": 0.02,
+      "cache_write_30m": 0.25,
+      "cache_write_12h": 0.5,
+      "output_including_reasoning": 1.2,
+      "long_context_above_272k": "estimate is null in this runner"
+    },
+    "gpt-5-mini-2025-08-07": {
+      "ordinary_input": 0.25,
+      "cache_read": 0.025,
+      "cache_write_ordinary_rate_no_extra_fee": 0.25,
+      "output_including_reasoning": 2
+    },
+    "gpt-5-nano": {
+      "ordinary_input": 0.05,
+      "cache_read": 0.005,
+      "cache_write_ordinary_rate_no_extra_fee": 0.05,
+      "output_including_reasoning": 0.4
+    }
+  },
+  "limitations": "Standard/default service tier only. Usage-derived estimate is not invoice/billing-confirmed. Unmodelled tier/input conditions yield null; cache writes are replacement input categories, not additive full-input fees."
+}

@@ -1,0 +1,13 @@
+{
+  "status": "completed",
+  "cases": 39,
+  "arms": [
+    "generic",
+    "facts",
+    "quality",
+    "combined",
+    "matched"
+  ],
+  "max_repairs": 1,
+  "scope": "fresh native/direct judges; all input previously exposed diagnostic/regression, not human gold"
+}

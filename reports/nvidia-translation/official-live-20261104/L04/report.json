@@ -1,0 +1,79 @@
+{
+  "id": "L04",
+  "title": "전처리와 제한 수정 루프",
+  "status": "completed",
+  "result": {
+    "status": "completed",
+    "generation_cases": 12,
+    "generation_arms": 4,
+    "max_repairs": 2,
+    "ecl_control": "51d5f22 original link-whole protector, deliberate legacy contrast; not current production default",
+    "scope": "fresh model calls; v2 reuses valid first assessments from this new run, not old historical calls"
+  },
+  "failure": null,
+  "metrics": {
+    "translation_arms": {
+      "url_generic": {
+        "n": 12,
+        "restore_failure": 0,
+        "mechanical_clean": 10,
+        "remaining_descriptive_labels": 3
+      },
+      "url_policy": {
+        "n": 12,
+        "restore_failure": 0,
+        "mechanical_clean": 8,
+        "remaining_descriptive_labels": 0
+      },
+      "whole_generic": {
+        "n": 12,
+        "restore_failure": 0,
+        "mechanical_clean": 9,
+        "remaining_descriptive_labels": 13
+      },
+      "whole_policy": {
+        "n": 12,
+        "restore_failure": 0,
+        "mechanical_clean": 10,
+        "remaining_descriptive_labels": 13
+      }
+    },
+    "validation_loops": 23,
+    "repairs": 21,
+    "final_decisions": {
+      "repair": 6,
+      "pass_candidate": 17
+    }
+  },
+  "usage": {
+    "actual_upstream_attempts": 154,
+    "completed": 154,
+    "inflight": 0,
+    "errors": 0,
+    "requested_models": {
+      "gpt-5-mini-2025-08-07": 154
+    },
+    "resolved_models": {
+      "gpt-5-mini-2025-08-07": 154
+    },
+    "usage_derived_estimate_usd_known_sum": 0.19506575,
+    "unknown_estimate_attempts": 0,
+    "provider_reported_cost_usd": null,
+    "billing_confirmed_actual_usd": null,
+    "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+    "input_tokens": 91079,
+    "output_tokens_including_reasoning": 86148,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cache_write_30m_tokens": 0,
+    "cache_write_12h_tokens": 0,
+    "reasoning_tokens": 51520,
+    "service_tiers": {
+      "default": 154
+    },
+    "automatic_upstream_retries": 0,
+    "summed_request_seconds": 928.2007677548099
+  },
+  "human_approved": 0,
+  "new_proposals_executed": false
+}

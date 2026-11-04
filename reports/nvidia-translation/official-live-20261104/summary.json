@@ -1,0 +1,389 @@
+{
+  "policy": "OpenAI direct exempt, non-OpenAI $10 unresolved/blocked",
+  "experiments": [
+    {
+      "id": "L01",
+      "title": "원문 기반 최소 수정",
+      "status": "completed",
+      "usage": {
+        "actual_upstream_attempts": 2,
+        "completed": 2,
+        "inflight": 0,
+        "errors": 0,
+        "requested_models": {
+          "gpt-5-mini-2025-08-07": 2
+        },
+        "resolved_models": {
+          "gpt-5-mini-2025-08-07": 2
+        },
+        "usage_derived_estimate_usd_known_sum": 0.0011231499999999998,
+        "unknown_estimate_attempts": 0,
+        "provider_reported_cost_usd": null,
+        "billing_confirmed_actual_usd": null,
+        "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+        "input_tokens": 5227,
+        "output_tokens_including_reasoning": 441,
+        "cache_read_tokens": 4736,
+        "cache_write_tokens": 0,
+        "cache_write_30m_tokens": 0,
+        "cache_write_12h_tokens": 0,
+        "reasoning_tokens": 256,
+        "service_tiers": {
+          "default": 2
+        },
+        "automatic_upstream_retries": 0,
+        "summed_request_seconds": 5.5061182920471765
+      }
+    },
+    {
+      "id": "L02",
+      "title": "피드백 표현 비교",
+      "status": "completed",
+      "usage": {
+        "actual_upstream_attempts": 8,
+        "completed": 8,
+        "inflight": 0,
+        "errors": 0,
+        "requested_models": {
+          "gpt-5-mini-2025-08-07": 8
+        },
+        "resolved_models": {
+          "gpt-5-mini-2025-08-07": 8
+        },
+        "usage_derived_estimate_usd_known_sum": 0.0060868499999999996,
+        "unknown_estimate_attempts": 0,
+        "provider_reported_cost_usd": null,
+        "billing_confirmed_actual_usd": null,
+        "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+        "input_tokens": 21549,
+        "output_tokens_including_reasoning": 1905,
+        "cache_read_tokens": 13824,
+        "cache_write_tokens": 0,
+        "cache_write_30m_tokens": 0,
+        "cache_write_12h_tokens": 0,
+        "reasoning_tokens": 1216,
+        "service_tiers": {
+          "default": 8
+        },
+        "automatic_upstream_retries": 0,
+        "summed_request_seconds": 22.618057914893143
+      }
+    },
+    {
+      "id": "L03",
+      "title": "용어 정책 및 편집 범위",
+      "status": "completed",
+      "usage": {
+        "actual_upstream_attempts": 112,
+        "completed": 112,
+        "inflight": 0,
+        "errors": 0,
+        "requested_models": {
+          "gpt-5-mini-2025-08-07": 112
+        },
+        "resolved_models": {
+          "gpt-5-mini-2025-08-07": 112
+        },
+        "usage_derived_estimate_usd_known_sum": 0.11392125,
+        "unknown_estimate_attempts": 0,
+        "provider_reported_cost_usd": null,
+        "billing_confirmed_actual_usd": null,
+        "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+        "input_tokens": 65077,
+        "output_tokens_including_reasoning": 48826,
+        "cache_read_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_30m_tokens": 0,
+        "cache_write_12h_tokens": 0,
+        "reasoning_tokens": 29376,
+        "service_tiers": {
+          "default": 112
+        },
+        "automatic_upstream_retries": 0,
+        "summed_request_seconds": 523.047329166031
+      }
+    },
+    {
+      "id": "L04",
+      "title": "전처리와 제한 수정 루프",
+      "status": "completed",
+      "usage": {
+        "actual_upstream_attempts": 154,
+        "completed": 154,
+        "inflight": 0,
+        "errors": 0,
+        "requested_models": {
+          "gpt-5-mini-2025-08-07": 154
+        },
+        "resolved_models": {
+          "gpt-5-mini-2025-08-07": 154
+        },
+        "usage_derived_estimate_usd_known_sum": 0.19506575,
+        "unknown_estimate_attempts": 0,
+        "provider_reported_cost_usd": null,
+        "billing_confirmed_actual_usd": null,
+        "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+        "input_tokens": 91079,
+        "output_tokens_including_reasoning": 86148,
+        "cache_read_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_30m_tokens": 0,
+        "cache_write_12h_tokens": 0,
+        "reasoning_tokens": 51520,
+        "service_tiers": {
+          "default": 154
+        },
+        "automatic_upstream_retries": 0,
+        "summed_request_seconds": 928.2007677548099
+      }
+    },
+    {
+      "id": "L05",
+      "title": "내장 Guardrails 및 직접 검사",
+      "status": "completed",
+      "usage": {
+        "actual_upstream_attempts": 313,
+        "completed": 313,
+        "inflight": 0,
+        "errors": 0,
+        "requested_models": {
+          "gpt-5-mini-2025-08-07": 313
+        },
+        "resolved_models": {
+          "gpt-5-mini-2025-08-07": 313
+        },
+        "usage_derived_estimate_usd_known_sum": 0.14515075,
+        "unknown_estimate_attempts": 0,
+        "provider_reported_cost_usd": null,
+        "billing_confirmed_actual_usd": null,
+        "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+        "input_tokens": 115187,
+        "output_tokens_including_reasoning": 58177,
+        "cache_read_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_30m_tokens": 0,
+        "cache_write_12h_tokens": 0,
+        "reasoning_tokens": 45760,
+        "service_tiers": {
+          "default": 313
+        },
+        "automatic_upstream_retries": 0,
+        "summed_request_seconds": 804.4172290895949
+      }
+    },
+    {
+      "id": "L06",
+      "title": "문서 번역 모델 라우팅",
+      "status": "partial_non_openai_arms_blocked",
+      "usage": {
+        "actual_upstream_attempts": 18,
+        "completed": 18,
+        "inflight": 0,
+        "errors": 0,
+        "requested_models": {
+          "gpt-5.6-luna": 18
+        },
+        "resolved_models": {
+          "gpt-5.6-luna": 18
+        },
+        "usage_derived_estimate_usd_known_sum": 0.08079425,
+        "unknown_estimate_attempts": 0,
+        "provider_reported_cost_usd": null,
+        "billing_confirmed_actual_usd": null,
+        "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+        "input_tokens": 115971,
+        "output_tokens_including_reasoning": 47383,
+        "cache_read_tokens": 21980,
+        "cache_write_tokens": 93937,
+        "cache_write_30m_tokens": 93937,
+        "cache_write_12h_tokens": 0,
+        "reasoning_tokens": 2759,
+        "service_tiers": {
+          "default": 18
+        },
+        "automatic_upstream_retries": 0,
+        "summed_request_seconds": 338.3496635448537
+      }
+    },
+    {
+      "id": "L07",
+      "title": "Data Designer와 계획 B",
+      "status": "data_generation_completed_translation_contrast_blocked",
+      "usage": {
+        "actual_upstream_attempts": 9,
+        "completed": 9,
+        "inflight": 0,
+        "errors": 0,
+        "requested_models": {
+          "gpt-5.6-luna": 9
+        },
+        "resolved_models": {
+          "gpt-5.6-luna": 9
+        },
+        "usage_derived_estimate_usd_known_sum": 0.00487495,
+        "unknown_estimate_attempts": 0,
+        "provider_reported_cost_usd": null,
+        "billing_confirmed_actual_usd": null,
+        "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+        "input_tokens": 2814,
+        "output_tokens_including_reasoning": 3525,
+        "cache_read_tokens": 0,
+        "cache_write_tokens": 1643,
+        "cache_write_30m_tokens": 1643,
+        "cache_write_12h_tokens": 0,
+        "reasoning_tokens": 1660,
+        "service_tiers": {
+          "default": 9
+        },
+        "automatic_upstream_retries": 0,
+        "summed_request_seconds": 41.5778383340803
+      }
+    },
+    {
+      "id": "L08",
+      "title": "부분 수정 라우팅 C",
+      "status": "completed_with_non_openai_blocked_arms",
+      "usage": {
+        "actual_upstream_attempts": 12,
+        "completed": 12,
+        "inflight": 0,
+        "errors": 0,
+        "requested_models": {
+          "gpt-5.6-luna": 12
+        },
+        "resolved_models": {
+          "gpt-5.6-luna": 12
+        },
+        "usage_derived_estimate_usd_known_sum": 0.0065880999999999995,
+        "unknown_estimate_attempts": 0,
+        "provider_reported_cost_usd": null,
+        "billing_confirmed_actual_usd": null,
+        "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+        "input_tokens": 12061,
+        "output_tokens_including_reasoning": 3047,
+        "cache_read_tokens": 0,
+        "cache_write_tokens": 10390,
+        "cache_write_30m_tokens": 10390,
+        "cache_write_12h_tokens": 0,
+        "reasoning_tokens": 1190,
+        "service_tiers": {
+          "default": 12
+        },
+        "automatic_upstream_retries": 0,
+        "summed_request_seconds": 39.49219391704537
+      }
+    },
+    {
+      "id": "L09",
+      "title": "증분 갱신 D",
+      "status": "completed_with_non_openai_blocked_arms",
+      "usage": {
+        "actual_upstream_attempts": 9,
+        "completed": 9,
+        "inflight": 0,
+        "errors": 0,
+        "requested_models": {
+          "gpt-5.6-luna": 9
+        },
+        "resolved_models": {
+          "gpt-5.6-luna": 9
+        },
+        "usage_derived_estimate_usd_known_sum": 0.0061208,
+        "unknown_estimate_attempts": 0,
+        "provider_reported_cost_usd": null,
+        "billing_confirmed_actual_usd": null,
+        "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+        "input_tokens": 8674,
+        "output_tokens_including_reasoning": 3360,
+        "cache_read_tokens": 0,
+        "cache_write_tokens": 7080,
+        "cache_write_30m_tokens": 7080,
+        "cache_write_12h_tokens": 0,
+        "reasoning_tokens": 1278,
+        "service_tiers": {
+          "default": 9
+        },
+        "automatic_upstream_retries": 0,
+        "summed_request_seconds": 43.22295354108792
+      }
+    },
+    {
+      "id": "L10",
+      "title": "링크 보호 전처리",
+      "status": "completed",
+      "usage": {
+        "actual_upstream_attempts": 48,
+        "completed": 48,
+        "inflight": 0,
+        "errors": 0,
+        "requested_models": {
+          "gpt-5-mini-2025-08-07": 48
+        },
+        "resolved_models": {
+          "gpt-5-mini-2025-08-07": 48
+        },
+        "usage_derived_estimate_usd_known_sum": 0.05675275,
+        "unknown_estimate_attempts": 0,
+        "provider_reported_cost_usd": null,
+        "billing_confirmed_actual_usd": null,
+        "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+        "input_tokens": 8987,
+        "output_tokens_including_reasoning": 27253,
+        "cache_read_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_write_30m_tokens": 0,
+        "cache_write_12h_tokens": 0,
+        "reasoning_tokens": 20672,
+        "service_tiers": {
+          "default": 48
+        },
+        "automatic_upstream_retries": 0,
+        "summed_request_seconds": 297.3701236268389
+      }
+    },
+    {
+      "id": "L11",
+      "title": "로컬 전체 파이프라인",
+      "status": "local_pipeline_completed",
+      "usage": {
+        "actual_upstream_attempts": 54,
+        "completed": 54,
+        "inflight": 0,
+        "errors": 0,
+        "requested_models": {
+          "gpt-5.6-luna": 49,
+          "gpt-5-nano": 5
+        },
+        "resolved_models": {
+          "gpt-5.6-luna": 49,
+          "gpt-5-nano-2025-08-07": 5
+        },
+        "usage_derived_estimate_usd_known_sum": 0.04525666,
+        "unknown_estimate_attempts": 0,
+        "provider_reported_cost_usd": null,
+        "billing_confirmed_actual_usd": null,
+        "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+        "input_tokens": 540841,
+        "output_tokens_including_reasoning": 15062,
+        "cache_read_tokens": 454548,
+        "cache_write_tokens": 83105,
+        "cache_write_30m_tokens": 83105,
+        "cache_write_12h_tokens": 0,
+        "reasoning_tokens": 1199,
+        "service_tiers": {
+          "default": 54
+        },
+        "automatic_upstream_retries": 0,
+        "summed_request_seconds": 195.15593049791642
+      }
+    }
+  ],
+  "official_openai_calls": 739,
+  "official_usage_estimate_known_sum": 0.66173526,
+  "unknown_estimate_attempts": 0,
+  "non_openai_new_paid_calls": 0,
+  "non_openai_remaining_usd": null,
+  "historical_smoke_corrected_estimate_usd": 0.00355445,
+  "human_approved": 0,
+  "proposal_15_and_additional_4_executed": false
+}

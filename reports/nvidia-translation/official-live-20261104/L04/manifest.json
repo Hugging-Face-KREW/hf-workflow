@@ -1,0 +1,22 @@
+{
+  "hashes": {
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round3/run.py": "de92aa0d27c50cdd98da6b1e09788dd0204c21e3ccfb91799978b0c6b8bf93f9",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round3/client.py": "6e82785990a5b8c316324e712204e1564a573439e6454af63865579ba0878181",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round3/common.py": "bde777946e793cd4a11dd3d31078d24a2019ce5fc48aaa7c5229447faffe6e68",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round3/protection.py": "29c1123c90cdeee7766cccae3c38b0d852f75c1f3577f62a4f33602d71a89eaa",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round3/validation.py": "b62bc87e09145013c7e2fc9d5af6855c073470a78627e1028261050dfac3b401",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round3/policy.json": "5969cebe8b360a3236ec4888a1b22520efd59c315382f725f2cb8886923cc1a1",
+    "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L04/cases.jsonl": "dca2a226fb69d4cc65864258f129e11b351913f296f75456d74bb704ff0fb693",
+    "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L04/evaluation.jsonl": "9940952ad9b0ab1234ff56bc3e4bb1b4acfcb22a0a870edaea298b2dcc299ef9"
+  },
+  "model": "gpt-5-mini-2025-08-07",
+  "arms": [
+    "whole_generic",
+    "whole_policy",
+    "url_generic",
+    "url_policy"
+  ],
+  "parallel_requests": 3,
+  "repeats": 1,
+  "max_repairs": 2
+}

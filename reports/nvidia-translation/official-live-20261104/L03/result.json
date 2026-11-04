@@ -1,0 +1,10 @@
+{
+  "status": "completed",
+  "cases": 16,
+  "arms": [
+    "A",
+    "B",
+    "C"
+  ],
+  "scope": "fresh generation/detection/judge; same previously exposed input; model-only review"
+}

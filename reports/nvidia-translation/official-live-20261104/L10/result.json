@@ -1,0 +1,18 @@
+{
+  "status": "completed",
+  "paired_paragraphs": 24,
+  "arms": {
+    "whole": {
+      "completed": 24,
+      "invariant_ok": 24,
+      "untranslated_labels": 28
+    },
+    "url": {
+      "completed": 24,
+      "invariant_ok": 24,
+      "untranslated_labels": 1
+    }
+  },
+  "control": "legacy 51d5f22 link-whole protector vs existing experimental URL-only protector; current production already uses label-visible protection",
+  "scope": "fresh paragraph generation; deterministic label/structure metrics, not independent human review"
+}

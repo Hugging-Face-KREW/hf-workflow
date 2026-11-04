@@ -1,0 +1,91 @@
+{
+  "id": "L03",
+  "title": "용어 정책 및 편집 범위",
+  "status": "completed",
+  "result": {
+    "status": "completed",
+    "cases": 16,
+    "arms": [
+      "A",
+      "B",
+      "C"
+    ],
+    "scope": "fresh generation/detection/judge; same previously exposed input; model-only review"
+  },
+  "failure": null,
+  "metrics": {
+    "rows": 48,
+    "A": {
+      "n": 16,
+      "decisions": {
+        "model_pass_candidate": 14,
+        "reject": 1,
+        "needs_review": 1
+      },
+      "native_direct_agreement": 16,
+      "remaining_english_labels": 2,
+      "missing_curated_terms": 2,
+      "model_meaning_preserved": 16,
+      "model_localization_complete": 15,
+      "model_unnecessary_change": 2
+    },
+    "B": {
+      "n": 16,
+      "decisions": {
+        "needs_review": 2,
+        "reject": 1,
+        "model_pass_candidate": 13
+      },
+      "native_direct_agreement": 16,
+      "remaining_english_labels": 2,
+      "missing_curated_terms": 2,
+      "model_meaning_preserved": 15,
+      "model_localization_complete": 14,
+      "model_unnecessary_change": 3
+    },
+    "C": {
+      "n": 16,
+      "decisions": {
+        "model_pass_candidate": 15,
+        "needs_review": 1
+      },
+      "native_direct_agreement": 16,
+      "remaining_english_labels": 1,
+      "missing_curated_terms": 1,
+      "model_meaning_preserved": 16,
+      "model_localization_complete": 15,
+      "model_unnecessary_change": 1
+    }
+  },
+  "usage": {
+    "actual_upstream_attempts": 112,
+    "completed": 112,
+    "inflight": 0,
+    "errors": 0,
+    "requested_models": {
+      "gpt-5-mini-2025-08-07": 112
+    },
+    "resolved_models": {
+      "gpt-5-mini-2025-08-07": 112
+    },
+    "usage_derived_estimate_usd_known_sum": 0.11392125,
+    "unknown_estimate_attempts": 0,
+    "provider_reported_cost_usd": null,
+    "billing_confirmed_actual_usd": null,
+    "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+    "input_tokens": 65077,
+    "output_tokens_including_reasoning": 48826,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cache_write_30m_tokens": 0,
+    "cache_write_12h_tokens": 0,
+    "reasoning_tokens": 29376,
+    "service_tiers": {
+      "default": 112
+    },
+    "automatic_upstream_retries": 0,
+    "summed_request_seconds": 523.047329166031
+  },
+  "human_approved": 0,
+  "new_proposals_executed": false
+}

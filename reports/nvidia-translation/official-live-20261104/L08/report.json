@@ -1,0 +1,82 @@
+{
+  "id": "L08",
+  "title": "부분 수정 라우팅 C",
+  "status": "completed_with_non_openai_blocked_arms",
+  "result": {
+    "status": "completed_with_non_openai_blocked_arms",
+    "output_files": 10,
+    "blocked_non_openai": 5,
+    "failed": 5,
+    "coverage_failures": [],
+    "model_substitution": false,
+    "scope": "fresh correction/update requests; existing diagnostic inputs, same-family model review"
+  },
+  "failure": null,
+  "metrics": {
+    "model_reviews": 10,
+    "usable": 10,
+    "reviews_by_group": {
+      "C-luna-pr238_intro": {
+        "n": 1,
+        "model_usable": 1,
+        "major_errors": 0
+      },
+      "C-luna-pr238_reasoning": {
+        "n": 1,
+        "model_usable": 1,
+        "major_errors": 0
+      },
+      "C-luna-pr238_thanks": {
+        "n": 1,
+        "model_usable": 1,
+        "major_errors": 0
+      },
+      "C-luna-pr239_linear": {
+        "n": 1,
+        "model_usable": 1,
+        "major_errors": 0
+      },
+      "C-luna-pr239_requirements": {
+        "n": 1,
+        "model_usable": 1,
+        "major_errors": 0
+      },
+      "C-original": {
+        "n": 5,
+        "model_usable": 5,
+        "major_errors": 0
+      }
+    }
+  },
+  "usage": {
+    "actual_upstream_attempts": 12,
+    "completed": 12,
+    "inflight": 0,
+    "errors": 0,
+    "requested_models": {
+      "gpt-5.6-luna": 12
+    },
+    "resolved_models": {
+      "gpt-5.6-luna": 12
+    },
+    "usage_derived_estimate_usd_known_sum": 0.0065880999999999995,
+    "unknown_estimate_attempts": 0,
+    "provider_reported_cost_usd": null,
+    "billing_confirmed_actual_usd": null,
+    "billing_scope": "Official OpenAI direct; exempt from non-OpenAI $10 cap",
+    "input_tokens": 12061,
+    "output_tokens_including_reasoning": 3047,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 10390,
+    "cache_write_30m_tokens": 10390,
+    "cache_write_12h_tokens": 0,
+    "reasoning_tokens": 1190,
+    "service_tiers": {
+      "default": 12
+    },
+    "automatic_upstream_retries": 0,
+    "summed_request_seconds": 39.49219391704537
+  },
+  "human_approved": 0,
+  "new_proposals_executed": false
+}

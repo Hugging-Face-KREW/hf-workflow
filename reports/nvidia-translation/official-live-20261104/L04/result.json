@@ -1,0 +1,8 @@
+{
+  "status": "completed",
+  "generation_cases": 12,
+  "generation_arms": 4,
+  "max_repairs": 2,
+  "ecl_control": "51d5f22 original link-whole protector, deliberate legacy contrast; not current production default",
+  "scope": "fresh model calls; v2 reuses valid first assessments from this new run, not old historical calls"
+}

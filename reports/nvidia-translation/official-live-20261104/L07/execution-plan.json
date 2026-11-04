@@ -1,0 +1,13 @@
+{
+  "experiment": "L07",
+  "official_openai_direct_only": true,
+  "non_openai": "blocked without substitution",
+  "new_proposals_executed": false,
+  "source_scope": "previously exposed frozen diagnostic/regression inputs",
+  "runner_sha256": "96b1df724b3631b7da530e5ba09ca1ce13d1492319555153ebe7694a83463926",
+  "meter_sha256": "946ebc3c40fea137ed502c22e678633b133535d11f1c5e50c659314add837c88",
+  "sdk_retries": 0,
+  "legacy_control_ecl_sha256": "effeb089ff5457338d8abb194f8a2dff72bbe52be55c4afeed3c146c620f7761",
+  "quality_helper_sha256": "056ecc5367e64d76fca891be7dafc2fa690a0ad66b25c1490cd66b8c6e25800c",
+  "new_run_outputs": "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L07"
+}

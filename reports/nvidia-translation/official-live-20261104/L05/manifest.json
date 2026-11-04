@@ -1,0 +1,42 @@
+{
+  "hashes": {
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/r4client.py": "5d8080e0a3ab30a86e3cf0fca11ff65cfb50fa1a65ea4ea0f1cd3705a8a581ad",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/run.py": "c9bbbeaaf5e057e92d9577c5f4e6bf6a7a0ae57b85e51f500d636defea43c9d6",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/r4lib.py": "6a6ebbe783ccc4a4d457e29a4a2686086b8281bd049fab5b791a7a13a991197e",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/native.py": "f1f4e096e0198d6da67612d1682276e286973f02fbe1af1f5a75d5959eb59cf4",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/test_native.py": "675fa4fd7d077eff659d8ddfc100e898c5fa0ec20d25aa3508d722d65518d540",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/prepare.py": "7587376cd2a5b322d63cdd35b96eb361b45c6c65a224429bc04032c18dda28b8",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/configs/quality/prompts.yml": "cc437d1b23d10521ba3d763397a4dde5f778433c41857922c3fbee9e6d60415e",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/configs/quality/config.yml": "609225d978aacbdf450f5ad1e0be3143f5d4020e724e6d5339c840bffa0940eb",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/configs/quality/rails.co": "2805383a0ff7132ebdd67934fff53d0e90c998b67b01537251ebf86f85431eaa",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/configs/combined/prompts.yml": "3382bfd1086c7bb00221dec5ea4f97bc49e61ff9dc6da6bf6034e58cbc6fcc41",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/configs/combined/config.yml": "4bd3e0f83840ba16be25b0c6637b5a54f1b58920ad1a5223bbbf7dab808c4cc3",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/configs/combined/rails.co": "2805383a0ff7132ebdd67934fff53d0e90c998b67b01537251ebf86f85431eaa",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/configs/facts/prompts.yml": "ad07176e3dbc4ee417e90538edf3fe92bfeedf695befa9368dafde793c81fd54",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/configs/facts/config.yml": "2d6084dbdb686ef93b6513e6fb74d73027b3f93b905281d101a68305434228f9",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round4/configs/facts/rails.co": "2805383a0ff7132ebdd67934fff53d0e90c998b67b01537251ebf86f85431eaa",
+    "/Users/simso/Project/hf-workflow/reports/nvidia-translation/official-live-20261104/L05/dataset.json": "dd4439d94cbf77dc8d9a731063c39fa6805b081c6515b03f72f9adbff1fde4b1",
+    "/Users/simso/Project/hf-workflow/specs/nvidia-native-rails-round4-plan.md": "0a4b8dd1dfe2ffc650a2865da30a5536c702d8560e0e7dead27dc283508ed6aa",
+    "/Users/simso/Project/hf-workflow/specs/nvidia-native-rails-round4-plan.html": "bd35c4008a9bd57326dc06e04769589e46528f7e3c8161ee86164ca650abcd68",
+    "/Users/simso/Project/hf-workflow/experiments/nvidia_translation/round3/policy.json": "5969cebe8b360a3236ec4888a1b22520efd59c315382f725f2cb8886923cc1a1",
+    "/tmp/hf-nvidia-experiment-venv/lib/python3.12/site-packages/nemoguardrails/library/self_check/facts/actions.py": "d32b90c46c8d5e2cd6e1624d2c7b10dfcc0ee3156589f4a0a7e4d5b5a006f477",
+    "/tmp/hf-nvidia-experiment-venv/lib/python3.12/site-packages/nemoguardrails/library/self_check/facts/flows.v1.co": "6e9f28ac8dc44c59b488c69a780e088e79a38c6d767bc9939225e7ae52685bde",
+    "/tmp/hf-nvidia-experiment-venv/lib/python3.12/site-packages/nemoguardrails/library/self_check/output_check/actions.py": "358e3c9399ae29aa566b0455829d45facd3979d42a8cfd86a67a19bb944caf89",
+    "/tmp/hf-nvidia-experiment-venv/lib/python3.12/site-packages/nemoguardrails/library/self_check/output_check/flows.v1.co": "c946fadfdedb4614c9dbb6bb06beeb0e1e94df01dce2fdd65b981960bd05819e",
+    "/tmp/hf-nvidia-experiment-venv/lib/python3.12/site-packages/nemoguardrails/llm/output_parsers.py": "bb8c8940fb13936e6e14b916e90fc2dfe1225976c8bf1cfe685d5334799e5326"
+  },
+  "model": "gpt-5-mini-2025-08-07",
+  "nemo_version": "0.24.1",
+  "arms": [
+    "generic",
+    "facts",
+    "quality",
+    "combined",
+    "matched"
+  ],
+  "repeats": 1,
+  "max_repairs": 1,
+  "global_limit_usd": 10,
+  "temperature": "omitted for GPT-5; reasoning low",
+  "custom_quality_actions": false
+}
