@@ -32,23 +32,23 @@ NeMo Data Designer로 좋은 번역·나쁜 번역의 대비 예시 8개를 만�
 
 **입력ID `pr239_linear` — 합성 예시 추가에서 기준선보다 경미 지적이 늘어난 사례**
 
-원문 발췌: ``connects them to `F.linear```
+원문 발췌: `` connects them to `F.linear` ``
 
 | 조건 | 실제 출력 발췌 | 문단 전체 경미 지적 수 | 원출력ID와 자료 |
 |---|---|---:|---|
-| 기준선: 기본 번역 | ``이를 `F.linear`에 연결`` | 0 | [wp-b-v2-baseline:pr239_linear](../../openrouter-token5-live-20261104/outputs/wp-b-v2-baseline.json) |
-| 계획 + 실제 예시 | ```F.linear``` | 1 | [wp-b-v2-plan_real:pr239_linear](../../openrouter-token5-live-20261104/outputs/wp-b-v2-plan_real.json) |
-| 계획 + 실제·합성 예시 | ```F.linear``` | 2 | [wp-b-v2-plan_dd:pr239_linear](../../openrouter-token5-live-20261104/outputs/wp-b-v2-plan_dd.json) |
+| 기준선: 기본 번역 | `` 이를 `F.linear`에 연결 `` | 0 | [wp-b-v2-baseline:pr239_linear](../../openrouter-token5-live-20261104/outputs/wp-b-v2-baseline.json) |
+| 계획 + 실제 예시 | `` `F.linear` `` | 1 | [wp-b-v2-plan_real:pr239_linear](../../openrouter-token5-live-20261104/outputs/wp-b-v2-plan_real.json) |
+| 계획 + 실제·합성 예시 | `` `F.linear` `` | 2 | [wp-b-v2-plan_dd:pr239_linear](../../openrouter-token5-live-20261104/outputs/wp-b-v2-plan_dd.json) |
 
 **입력ID `pr238_shared` — 합성 예시 추가에서 기준선보다 경미 지적이 줄어든 사례**
 
-원문 발췌: ``Local and hosted inference each have their strengths,``
+원문 발췌: `` Local and hosted inference each have their strengths, ``
 
 | 조건 | 실제 출력 발췌 | 문단 전체 경미 지적 수 | 원출력ID와 자료 |
 |---|---|---:|---|
-| 기준선: 기본 번역 | ``로컬 추론과 호스팅된 추론 각각에는 강점이 있으며,`` | 1 | [wp-b-v2-baseline:pr238_shared](../../openrouter-token5-live-20261104/outputs/wp-b-v2-baseline.json) |
-| 계획 + 실제 예시 | ``로컬 추론과 호스팅 추론은 각각 강점을 가지고 있으며,`` | 0 | [wp-b-v2-plan_real:pr238_shared](../../openrouter-token5-live-20261104/outputs/wp-b-v2-plan_real.json) |
-| 계획 + 실제·합성 예시 | ``로컬 추론과 호스팅된 추론은 각각 강점을 가지고 있으며,`` | 0 | [wp-b-v2-plan_dd:pr238_shared](../../openrouter-token5-live-20261104/outputs/wp-b-v2-plan_dd.json) |
+| 기준선: 기본 번역 | `` 로컬 추론과 호스팅된 추론 각각에는 강점이 있으며, `` | 1 | [wp-b-v2-baseline:pr238_shared](../../openrouter-token5-live-20261104/outputs/wp-b-v2-baseline.json) |
+| 계획 + 실제 예시 | `` 로컬 추론과 호스팅 추론은 각각 강점을 가지고 있으며, `` | 0 | [wp-b-v2-plan_real:pr238_shared](../../openrouter-token5-live-20261104/outputs/wp-b-v2-plan_real.json) |
+| 계획 + 실제·합성 예시 | `` 로컬 추론과 호스팅된 추론은 각각 강점을 가지고 있으며, `` | 0 | [wp-b-v2-plan_dd:pr238_shared](../../openrouter-token5-live-20261104/outputs/wp-b-v2-plan_dd.json) |
 
 첫 사례에서는 합성 예시 조건이 링크 설명을 F.linear 이름만으로 줄였고, 같은 문단의 설명어 미번역도 지적됐습니다. 두 번째는 표현이 정리돼 경미한 지적이 줄어든 사례입니다. 두 방향 모두 있지만 전체8문단 합계는 기준선3건·실제 예시5건·합성 예시 추가6건이므로, 이 발췌만으로 예시 추가가 유리하다고 일반화하지 않습니다. [원문·전체 후보·원출력ID·발췌의 공개 대조 자료](../../openrouter-token5-live-20261104/L07/example-comparisons.json)
 
